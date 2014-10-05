@@ -1,0 +1,2 @@
+labor,1.0
+widgets,2.0,labor,.25
