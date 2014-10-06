@@ -48,13 +48,13 @@ public class GoodsFileReader {
 		double initialPrice = Double.parseDouble(lineComponents[1].trim());
 		Map<Good, Double> inputsMap = parseInputGoods(lineComponents, internalGoodsList);
 		Set<Good> keys = inputsMap.keySet();
-		List<Need> inputsList = new ArrayList<Need>(keys.size());
+		List<Good> inputsList = new ArrayList<Good>(keys.size());
 		for (Iterator<Good> i = keys.iterator(); i.hasNext(); ) {
 			Good key = i.next();
 			Double qty = inputsMap.get(key);
-			inputsList.add(new GoodsQuantity(key, qty));
+			inputsList.add(new Good(key, qty));
 		}
-		internalGoodsList.put(name, new Good(initialPrice, inputsList));
+		internalGoodsList.put(name, Good.makePrototype(initialPrice, inputsList));
 	}
 
 	private  Map<Good, Double> parseInputGoods(String[] lineComponents, Map<String, Good> goodsSoFar) {

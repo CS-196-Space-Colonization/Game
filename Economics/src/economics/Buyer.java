@@ -1,6 +1,6 @@
 package economics;
 
 public interface Buyer {
-	void addNeed(Need need);
-	void buyNeeds(Market market);
+	void addNeed(Stock need);
+	void buyGoods(Market market);
 }

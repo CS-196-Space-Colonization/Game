@@ -3,5 +3,5 @@ package economics;
 import java.util.Map;
 
 public interface Need {
-	double portionFulfilled(Map<Good, Double> stock);
+	double portionFulfilled(Map<String, Good> stock);
 }
