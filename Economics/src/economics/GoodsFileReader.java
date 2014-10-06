@@ -2,13 +2,9 @@ package economics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -47,14 +43,7 @@ public class GoodsFileReader {
 		String name = lineComponents[0].trim();
 		double initialPrice = Double.parseDouble(lineComponents[1].trim());
 		Map<Good, Double> inputsMap = parseInputGoods(lineComponents, internalGoodsList);
-		Set<Good> keys = inputsMap.keySet();
-		List<Good> inputsList = new ArrayList<Good>(keys.size());
-		for (Iterator<Good> i = keys.iterator(); i.hasNext(); ) {
-			Good key = i.next();
-			Double qty = inputsMap.get(key);
-			inputsList.add(new Good(key, qty));
-		}
-		internalGoodsList.put(name, Good.makePrototype(initialPrice, inputsList));
+		internalGoodsList.put(name, Good.makePrototype(initialPrice, ImmutableMap.copyOf(inputsMap)));
 	}
 
 	private  Map<Good, Double> parseInputGoods(String[] lineComponents, Map<String, Good> goodsSoFar) {

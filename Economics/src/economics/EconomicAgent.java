@@ -1,49 +1,46 @@
 package economics;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EconomicAgent implements Buyer, Seller {
 	
-	private Map<Good, Stock> stock = new HashMap<Good, Stock>();
-	private Market market;
+	private Map<Good, Double> inventory = new HashMap<Good, Double>();
 	private Producer factory;
-	private double health;
+	private Market market;
 	
 	public EconomicAgent(Good firmProduces) {
 		if (firmProduces == null)
 			throw new NullPointerException("Cannot have a non-productive firm!");
-		factory = new Factory(firmProduces);
+		factory = new Factory(firmProduces, 1.0);
+	}
+	
+	public void enterMarket(Market market) {
+		this.market = market;
 	}
 	
 	public double getMoney() {
-		return stock.get("money").getQuantity();
+		return inventory.get(market.GOOD_PROTOTYPES.get("money"));
 	}
-	public Stock getStock() {
-		return new Stock(stock.get(firmOutput));
+	public Double getDouble() {
+		return new Double(inventory.get(factory.productionGood()));
 	}
 	
 	public void step() {
 		buyGoods(market);
-		factory.performMaintenance(stock);
-		Stock output = factory.step(stock);
+		factory.performMaintenance(inventory);
+		factory.runProductionStep(inventory);
+		postAdvertisement();
 	}
 
 	@Override
-	public void postAdvertisement(Market market) {
+	public void postAdvertisement() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void buyGoods(Market market) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addNeed(Stock need) {
 		// TODO Auto-generated method stub
 		
 	}

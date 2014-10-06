@@ -6,46 +6,37 @@ import java.util.Set;
 
 public class Factory implements Producer {
 	private static final double baseHealthLoss = .03;
-	private Stock production;
-	private Map<Good, Stock> maintenanceGoods;
+	private Good production;
+	private Map<Good, Double> maintenanceGoods;
 	private double health;
 	private double efficiency;
+	private double throughput;
 
-	public Factory(Stock production, Map<Good, Stock> maintenanceGoods) {
-		this.production = production;
-		this.maintenanceGoods = maintenanceGoods;
+	public Factory(Good productionGood, double productionQuantity) {
+		this.production = productionGood;
+		this.throughput = productionQuantity;
+		this.maintenanceGoods = getMaintenanceGoods(productionGood);
 		health = 1.0;
 		efficiency = 1.0;
 	}
 
-	@Override
-	public void step(Map<Good, Stock> stock) {
-		double produced = production.getQuantity();
-		Set<Good> keys = production.getGood().inputGoods.keySet();
-		for (Iterator<Good> i = keys.iterator(); i.hasNext();) {
-			Good good = i.next();
-			double needed = production.getGood().inputGoods.get(good) * production.getQuantity();
-			double available = stock.get(good).getQuantity();
-			double actual = Math.max(needed, available);
-			produced = Math.min(produced, actual/needed);
-			stock.get(good).changeQuantity(-needed / efficiency);
-		}
-		produced *= health;
-		stock.get(production.getGood()).changeQuantity(produced);
+	private Map<Good, Double> getMaintenanceGoods(Good productionGood) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void performMaintenance(Map<Good, Stock> stock) {
+	public void performMaintenance(Map<Good, Double> inventory) {
 		Set<Good> keys = maintenanceGoods.keySet();
 		double repairModifier = health < .99 ? 1.0 : 2.0;
 		for (Iterator<Good> i = keys.iterator(); i.hasNext();) {
 			Good good = i.next();
-			double needed = maintenanceGoods.get(good).getQuantity();
-			double available = stock.get(good).getQuantity();
+			double needed = maintenanceGoods.get(good);
+			double available = inventory.get(good);
 			double actual = Math.max(needed*repairModifier, available);
 			double healthLoss = calculateHealthLoss(actual, needed);
 			health -= healthLoss;
-			stock.get(good).changeQuantity(-actual);
+			inventory.put(good, new Double(inventory.get(good) - actual));
 		}
 		
 	}
@@ -55,8 +46,24 @@ public class Factory implements Producer {
 	}
 
 	@Override
-	public Stock getDailyProduction() {
-		return new Stock(production.getGood(), production.getQuantity() * health * efficiency);
+	public void runProductionStep(Map<Good, Double> inventory) {
+		double produced = throughput;
+		Set<Good> keys = production.inputGoods.keySet();
+		for (Iterator<Good> i = keys.iterator(); i.hasNext();) {
+			Good good = i.next();
+			double needed = production.inputGoods.get(good) * throughput;
+			double available = inventory.get(good);
+			double actual = Math.max(needed, available);
+			produced = Math.min(produced, actual/needed);
+			inventory.put(good, new Double(inventory.get(good) - needed / efficiency));
+		}
+		produced *= health;
+		inventory.put(production, new Double(inventory.get(production) + produced));
+	}
+
+	@Override
+	public Good productionGood() {
+		return production;
 	}
 
 }

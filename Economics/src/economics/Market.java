@@ -27,8 +27,8 @@ public class Market {
 		}
 	}
 	
-	public List<Transaction> getOffers(Good Gooded) {
-		return market.get(Gooded);
+	public List<Transaction> getOffers(Good needed) {
+		return market.get(needed);
 	}
 
 	public void addAdvertisement(Transaction transaction) {

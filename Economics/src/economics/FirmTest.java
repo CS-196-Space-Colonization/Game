@@ -17,7 +17,7 @@ public class FirmTest extends TestCase {
 	public void testInitiallyPoor() {
 		EconomicAgent firmUnderTest = givenDefaultFirm();
 		assert(firmUnderTest.getMoney() == 0.0);
-		assert(firmUnderTest.getStock() == 0.0);
+		assert(firmUnderTest.getDouble() == 0.0);
 	}
 
 	
@@ -25,7 +25,7 @@ public class FirmTest extends TestCase {
 	public void testStep() {
 		EconomicAgent firmUnderTest = givenDefaultFirm();
 		firmUnderTest.step();
-		assert(firmUnderTest.getStock() == firmUnderTest.getDailyProduction());
+		assert(firmUnderTest.getDouble() == firmUnderTest.getDailyProduction());
 	}
 	
 	@Test
