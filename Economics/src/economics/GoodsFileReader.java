@@ -2,28 +2,32 @@ package economics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 
-public class GoodsCreator {
+public class GoodsFileReader {
 	private File goodsFile;
-	private Map<String, Good> internalGoodsList = new HashMap<String, Good>();
 	private ImmutableMap<String, Good> finalGoodsList;
 	
-	public GoodsCreator(File goodsFile) {
+	public GoodsFileReader(File goodsFile) {
 		this.goodsFile = goodsFile;
 		makeGoodsList();
 	}
 	
 	private void makeGoodsList() {
 		int lineNumber = 0;
+		Map<String, Good> internalGoodsList = new HashMap<String, Good>();
 		try (Scanner configuration = new Scanner(goodsFile)) {
 			while (configuration.hasNext()) {
 				lineNumber++;
-				addGoodFromLine(configuration.nextLine());
+				addGoodFromLine(internalGoodsList, configuration.nextLine());
 			}
 		} catch (FileNotFoundException e) {
 			System.err.printf("Resource data file %s not found!\n", goodsFile.toString());
@@ -35,14 +39,22 @@ public class GoodsCreator {
 			System.err.println(e);
 		}
 		finalGoodsList = ImmutableMap.copyOf(internalGoodsList);
+		internalGoodsList = null;
 	}
 
-	private void addGoodFromLine(String line) {
+	private void addGoodFromLine(Map<String, Good> internalGoodsList, String line) {
 		String[] lineComponents = line.toLowerCase().split(",");
 		String name = lineComponents[0].trim();
 		double initialPrice = Double.parseDouble(lineComponents[1].trim());
-		Map<Good, Double> inputs = parseInputGoods(lineComponents, internalGoodsList);
-		internalGoodsList.put(name, new Good(initialPrice, inputs));
+		Map<Good, Double> inputsMap = parseInputGoods(lineComponents, internalGoodsList);
+		Set<Good> keys = inputsMap.keySet();
+		List<Need> inputsList = new ArrayList<Need>(keys.size());
+		for (Iterator<Good> i = keys.iterator(); i.hasNext(); ) {
+			Good key = i.next();
+			Double qty = inputsMap.get(key);
+			inputsList.add(new GoodsQuantity(key, qty));
+		}
+		internalGoodsList.put(name, new Good(initialPrice, inputsList));
 	}
 
 	private  Map<Good, Double> parseInputGoods(String[] lineComponents, Map<String, Good> goodsSoFar) {
@@ -51,7 +63,7 @@ public class GoodsCreator {
 			String inputGoodName = lineComponents[i].toLowerCase().trim();
 			Good inputGood = goodsSoFar.get(inputGoodName);
 			if (inputGood == null) {
-				System.err.println("Attempt to define processed good before raw good! (Did you switch the order?");
+				System.err.println("Attempt to define finished good before raw good! (Did you switch the order?");
 				throw new NullPointerException();
 			}
 			double inputGoodQuantity = Double.parseDouble(lineComponents[i+1].trim());
