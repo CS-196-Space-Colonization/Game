@@ -1,8 +1,9 @@
 package economics;
 
 public interface Transaction {
-	Double getOffer();
-	Double getPrice();
-	double getRemaining();
+	Quantity getOffer();
+	Quantity getPrice();
+	Quantity getRevenue();
 	void execute(double amt);
+	double getMarginalPrice();
 }

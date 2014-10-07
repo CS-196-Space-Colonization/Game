@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class GoodsFileReader {
 	private File goodsFile;
-	private ImmutableMap<String, Good> finalGoodsList;
+	private ImmutableMap<String, Product> finalGoodsList;
 	
 	public GoodsFileReader(File goodsFile) {
 		this.goodsFile = goodsFile;
@@ -18,11 +18,11 @@ public class GoodsFileReader {
 	}
 	
 	private void makeGoodsList() {
-		int lineNumber = 0;
-		Map<String, Good> internalGoodsList = new HashMap<String, Good>();
+		int lineDouble = 0;
+		Map<String, Product> internalGoodsList = new HashMap<String, Product>();
 		try (Scanner configuration = new Scanner(goodsFile)) {
 			while (configuration.hasNext()) {
-				lineNumber++;
+				lineDouble++;
 				addGoodFromLine(internalGoodsList, configuration.nextLine());
 			}
 		} catch (FileNotFoundException e) {
@@ -30,7 +30,7 @@ public class GoodsFileReader {
 			e.printStackTrace();
 			System.err.println(e);
 		} catch (NumberFormatException e) {
-			System.err.printf("Malformed number on line %d of %s", lineNumber, goodsFile.toString());
+			System.err.printf("Malformed Double on line %d of %s", lineDouble, goodsFile.toString());
 			e.printStackTrace();
 			System.err.println(e);
 		}
@@ -38,30 +38,30 @@ public class GoodsFileReader {
 		internalGoodsList = null;
 	}
 
-	private void addGoodFromLine(Map<String, Good> internalGoodsList, String line) {
+	private void addGoodFromLine(Map<String, Product> internalGoodsList, String line) {
 		String[] lineComponents = line.toLowerCase().split(",");
 		String name = lineComponents[0].trim();
 		double initialPrice = Double.parseDouble(lineComponents[1].trim());
-		Map<Good, Double> inputsMap = parseInputGoods(lineComponents, internalGoodsList);
-		internalGoodsList.put(name, Good.makePrototype(initialPrice, ImmutableMap.copyOf(inputsMap)));
+		Map<Product, Quantity> inputsMap = parseInputGoods(lineComponents, internalGoodsList);
+		internalGoodsList.put(name, Product.makePrototype(initialPrice, ImmutableMap.copyOf(inputsMap)));
 	}
 
-	private  Map<Good, Double> parseInputGoods(String[] lineComponents, Map<String, Good> goodsSoFar) {
-		Map<Good, Double> result = new HashMap<Good, Double>(lineComponents.length / 2 - 1);
+	private  Map<Product, Quantity> parseInputGoods(String[] lineComponents, Map<String, Product> goodsSoFar) {
+		Map<Product, Quantity> result = new HashMap<>(lineComponents.length / 2 - 1);
 		for (int i = 2; i < lineComponents.length; i += 2) {
 			String inputGoodName = lineComponents[i].toLowerCase().trim();
-			Good inputGood = goodsSoFar.get(inputGoodName);
+			Product inputGood = goodsSoFar.get(inputGoodName);
 			if (inputGood == null) {
 				System.err.println("Attempt to define finished good before raw good! (Did you switch the order?");
 				throw new NullPointerException();
 			}
 			double inputGoodQuantity = Double.parseDouble(lineComponents[i+1].trim());
-			result.put(inputGood, inputGoodQuantity);
+			result.put(inputGood, new Quantity(inputGood, inputGoodQuantity));
 		}
 		return result;
 	}
 	
-	public ImmutableMap<String, Good> getGoodsList() {
+	public ImmutableMap<String, Product> getGoodsList() {
 		return finalGoodsList;
 	}
 }

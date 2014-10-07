@@ -1,5 +1,5 @@
 package economics;
 
-public interface Seller {
-	void postAdvertisement();
+public interface Seller extends EconomicAgent {
+	void postAdvertisements();
 }

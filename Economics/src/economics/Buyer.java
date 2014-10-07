@@ -1,5 +1,9 @@
 package economics;
 
-public interface Buyer {
-	void buyGoods(Market market);
+import java.util.List;
+
+public interface Buyer extends EconomicAgent {
+	List<Need> getNeeds();
+	void setNeeds(List<Need> needs);
+	void buyGoods();
 }

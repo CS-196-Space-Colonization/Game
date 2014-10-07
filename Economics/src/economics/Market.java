@@ -10,28 +10,36 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public class Market {
-	public final ImmutableMap<String, Good> GOOD_PROTOTYPES;
-	private Map<Good, LinkedList<Transaction>> market;
+	public final ImmutableMap<String, Product> GOOD_PROTOTYPES;
+	private Map<Product, LinkedList<Transaction>> market;
+	private Map<Product, Double> lastPrices;
 	
-	public Market(ImmutableMap<String, Good> goods) {
+	public Market(ImmutableMap<String, Product> goods) {
 		GOOD_PROTOTYPES = goods;
-		market = new HashMap<Good, LinkedList<Transaction>>();
+		market = new HashMap<Product, LinkedList<Transaction>>();
+		lastPrices = new HashMap<>();
 		refreshOffers();
 	}
 	
 	private void refreshOffers() {
 		ImmutableSet<String> keys = GOOD_PROTOTYPES.keySet();
 		for (Iterator<String> i = keys.iterator(); i.hasNext();) {
-			Good forSale = GOOD_PROTOTYPES.get(i.next());
+			Product forSale = GOOD_PROTOTYPES.get(i.next());
 			market.put(forSale, new LinkedList<Transaction>());
 		}
 	}
 	
-	public List<Transaction> getOffers(Good needed) {
+	public List<Transaction> getOffers(Product needed) {
 		return market.get(needed);
 	}
 
 	public void addAdvertisement(Transaction transaction) {
-		market.get(transaction.getOffer()).add(transaction);
+	}
+
+	public double getLastPrice(Product product) {
+		Double lastPrice = lastPrices.get(product);
+		if (lastPrice == null)
+			return 0.0;
+		return product.getInitialPrice();
 	}
 }

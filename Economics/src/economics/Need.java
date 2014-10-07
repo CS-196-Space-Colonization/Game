@@ -1,7 +1,17 @@
 package economics;
 
-import java.util.Map;
+public class Need {
+	private Quantity need;
+	
+	public Need(Quantity need) {
+		this.need = need;
+	}
+	
+	public double portionFulfilled(Quantity has) {
+		return has.getQuantity() / need.getQuantity();
+	}
 
-public interface Need {
-	double portionFulfilled(Map<String, Good> inventory);
+	public Quantity getNeed() {
+		return need;
+	}
 }
