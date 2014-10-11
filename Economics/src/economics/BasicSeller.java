@@ -1,5 +1,7 @@
 package economics;
 
+import economics.products.Product;
+
 public class BasicSeller implements Seller, Observer {
 	private final Inventory inventory;
 	private Market market;

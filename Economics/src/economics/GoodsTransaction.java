@@ -25,6 +25,7 @@ public class GoodsTransaction implements Transaction, Observable {
 		offer = offer.subtract(offer.getUnit(), amtBought);
 		price = price.subtract(price.getUnit(), moneyExchanged);
 		revenue = revenue.add(revenue.getUnit(), moneyExchanged);
+		alertObservers();
 	}
 
 

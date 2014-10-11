@@ -9,6 +9,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import economics.products.Product;
+
 public class Market {
 	public final ImmutableMap<String, Product> GOOD_PROTOTYPES;
 	private Map<Product, LinkedList<Transaction>> market;

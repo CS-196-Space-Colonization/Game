@@ -1,10 +1,13 @@
 package economics;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import economics.products.Product;
+
 public class BasicBuyer implements Buyer {
-	private NeedTreeNode needs;
+	private List<Need> needs;
 	private Inventory inventory;
 	private Market market;
 	
@@ -29,18 +32,20 @@ public class BasicBuyer implements Buyer {
 	}
 	
 	@Override
-	public NeedTreeNode getNeeds() {
-		return needs.copy();
+	public List<Need> getNeeds() {
+		List<Need> needsCopy = new LinkedList<>();
+		needsCopy.addAll(needs);
+		return needsCopy;
 	}
 
 	@Override
-	public void setNeeds(NeedTreeNode needs) {
+	public void setNeeds(List<Need> needs) {
 		this.needs = needs;
 	}
 
 	@Override
 	public void buyGoods() {
-		for (BasicNeed need : needs.toList()) {
+		for (Need need : needs) {
 			buyNeed(need);
 			if (getSpendingMoney() <= 0.0)
 				return;
@@ -51,7 +56,7 @@ public class BasicBuyer implements Buyer {
 		return inventory.getQuantityOf(market.GOOD_PROTOTYPES.get("money"));
 	}
 
-	private void buyNeed(BasicNeed need) {
+	private void buyNeed(Need need) {
 		Product productNeeded = (Product)need.getNeed().getUnit();
 		List<Transaction> offers = market.getOffers(productNeeded);
 		Quantity bought = new Quantity(productNeeded, 0.0);
@@ -59,7 +64,7 @@ public class BasicBuyer implements Buyer {
 		do {
 			Transaction bestOffer = Collections.min(offers, new BasicDealScorer());
 			bestOffer.execute(calculateBought(bought, bestOffer, amtNeeded));
-		} while(need.portionFulfilled(inventory) < 1.0 && getSpendingMoney() > 0.0);
+		} while(need.portionFulfilled(bought) < 1.0 && getSpendingMoney() > 0.0);
 	}
 
 	private double calculateBought(Quantity bought, Transaction bestOffer, double amtNeeded) {

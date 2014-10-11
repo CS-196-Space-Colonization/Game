@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import economics.products.Product;
+
 public class Inventory {
 	private Map<Product, Quantity> inventory;
 	
@@ -26,6 +28,10 @@ public class Inventory {
 		for (Product product : other.getProducts()) {
 			addProduct(product, other.getQuantityOf(product));
 		}
+	}
+	
+	public boolean isEmpty() {
+		return inventory.isEmpty();
 	}
 	
 	public boolean contains(Product product) {

@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import economics.products.Product;
+
 public class Manufactory implements Producer {
 	private static final double maxHealthChange = .03;
 	private Product production;
 	private Inventory inventory;
-	private NeedTreeNode inputNeed;
-	private NeedTreeNode maintenanceNeeds;
+	private NeedSet inputNeed;
+	private NeedSet maintenanceNeeds;
 	private double health;
 	private double efficiency;
 	private double throughput;
@@ -18,7 +20,6 @@ public class Manufactory implements Producer {
 	public Manufactory(Product productionGood, double productionQuantity) {
 		this.production = productionGood;
 		this.throughput = productionQuantity;
-		throughput = 10.0;
 		health = 1.0;
 		efficiency = 1.0;
 		setMaintenanceNeed(productionGood);
@@ -26,7 +27,7 @@ public class Manufactory implements Producer {
 	}
 
 	private void setMaintenanceNeed(Product productionGood) {
-		maintenanceNeeds = null;
+		maintenanceNeeds = new NeedSet(new LinkedList<Need>());
 	}
 
 	@Override
@@ -49,15 +50,15 @@ public class Manufactory implements Producer {
 	}
 
 	private void setInputNeed() {
-		List<BasicNeed> inputNeeds = new LinkedList<BasicNeed>();
+		List<Need> inputNeeds = new LinkedList<Need>();
 		Map<Product, Quantity> inputQuantities = production.getInputGoods();
 		Set<Product> inputGoods = inputQuantities.keySet();
 		for (Product product : inputGoods) {
 			Quantity baseQuantity = inputQuantities.get(product);
 			Quantity actualQuantity = new Quantity(product, baseQuantity.getQuantity() * throughput / efficiency);
-			inputNeeds.add(new BasicNeed(actualQuantity));
+			inputNeeds.add(new Need(actualQuantity));
 		}
-		inputNeed = null;
+		inputNeed = new NeedSet(inputNeeds);
 	}
 	
 
