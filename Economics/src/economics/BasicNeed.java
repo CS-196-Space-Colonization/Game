@@ -2,6 +2,7 @@ package economics;
 
 import java.util.ArrayList;
 import java.util.List;
+import economics.products.*;
 
 public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
 	private Quantity need;
