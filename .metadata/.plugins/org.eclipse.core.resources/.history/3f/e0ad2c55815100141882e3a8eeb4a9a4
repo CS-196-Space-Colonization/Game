@@ -1,0 +1,21 @@
+package AI;
+
+public class Reputation {
+	 //holds the reputation for ever player throughout the game
+	static int[] reputations;
+	
+	public Reputation(int numberOfPlayers)
+	{
+		reputations = new int[numberOfPlayers];
+	}
+	
+	/*
+	 * @Precondition: playerNumber is a valid number within the range of reputations
+	 */
+	public static int getReputation(int playerNumber)
+	{
+		return reputations[playerNumber];
+	}
+	
+	
+}

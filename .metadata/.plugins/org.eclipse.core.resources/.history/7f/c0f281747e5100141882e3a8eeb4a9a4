@@ -1,0 +1,6 @@
+package AI;
+
+public class Reputation {
+	//holds the reputation for ever player
+
+}
