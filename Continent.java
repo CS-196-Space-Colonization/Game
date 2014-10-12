@@ -1,23 +1,21 @@
 /**
  * Created by chthonic7 on 10/8/14.
  */
-public enum Continent {
-    BASIC, ADVANCED, ADVANCING, SPACE;
-
-    protected double size;
-    //LET'S IGNORE RESOURCE STUFF, IT DOESN'T WORK
-    protected Resource[] res=new Resource[]; //heck, how long is this supposed to be?
+public class Continent {
+    protected double size; //Placeholder for bigness of the continent
+    protected Res res=new Res();
     protected int population;
-    protected final Planet planet;   //We might want the continent to know what planet owns it, but I'm not sure why...
-    protected String owner="";
+    private final Planet planet;   //We might want the continent to know what planet owns it, but I'm not sure why...
+    protected String owner="", name="";
+    //Tech=techtree
 
-    public Continent(Planet owner, Resource[] res, int population, double size){
-        this.planet=owner;
+    public Continent(Planet planet, Res res, int population, double size, String owner, String name){
+        this.planet=planet;
         this.population=population;
         this.size=size;
-        this.res=new Resource[res.length];
-        for (int i=0;i<res.length;i++) this.res[i]=res[i];
-        this.techLevel=Tech.BASIC;
+        this.res=res;
+        this.owner=owner;
+        this.name=name;
     }
 
     public double getSize() {
@@ -32,9 +30,16 @@ public enum Continent {
         return population;
     }
 
-    public void setPopulation(int population) {
-        this.population = population;
-    }
+    public void setPopulation(int population) { this.population = population; }
     //population dynamics will be just implement logic using get/set pop/res
-    //TODO: Once I find out what exactly are the resources, getters and setters will be made for those as well.
+
+    public double getResource(String resourceName){
+        return res.getResource(resourceName);
+    }
+    public boolean setResource(String resourceName, double value){
+        return res.setResource(resourceName,value);
+    }
+    public String toString(){
+        return planet.toString()+" Continent="+name;
+    }
 }

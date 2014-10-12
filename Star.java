@@ -7,9 +7,10 @@ public class Star {
     ;
     protected Planet[] planets;
     //TODO: add other space objects to system
-    protected double[] radii; //this list and previous should be connected
+    protected double[] radii;
     //TODO: Add more star characteristics
-    protected Resource[] res = new Resource[]; //this will be filled by grabbing from below
-    double locationX;
-    double locationY;
+    protected Res res = new Res(); //this will be filled by grabbing from below
+    private double locationX;
+    private double locationY;
+    private String name, owner;
 }
