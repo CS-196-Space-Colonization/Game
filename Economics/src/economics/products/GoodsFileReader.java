@@ -39,15 +39,15 @@ public class GoodsFileReader {
 
 	private void addLineToProducts(String line) {
 		String[] lineComponents = splitLine(line);
-		String name = getName(lineComponents);
 		Product good = getProductData(lineComponents);
-		goodsList.put(name, good);
+		goodsList.put(good.getType(), good);
 	}
 
 	private Product getProductData(String[] lineComponents) {
+		String name = getName(lineComponents);
 		double initialPrice = getInitialPrice(lineComponents);
 		Map<Product, Quantity> inputProducts = getInputGoods(lineComponents);
-		Product good = new Product(initialPrice, inputProducts);
+		Product good = new Product(name, initialPrice, inputProducts);
 		return good;
 	}
 

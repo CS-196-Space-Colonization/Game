@@ -14,7 +14,9 @@ public class Inventory {
 	}
 	
 	public Inventory(Map<Product, Quantity> inventory) {
-		this.inventory = inventory;
+		Map<Product, Quantity> copy = new HashMap<>();
+		copy.putAll(inventory);
+		this.inventory = copy;
 	}
 	
 	public void transferContentsFrom(Inventory other) {
@@ -35,7 +37,7 @@ public class Inventory {
 	}
 	
 	public boolean contains(Product product) {
-		return inventory.get(product) == null;
+		return inventory.get(product) != null;
 	}
 	
 	public void setQuantityOf(Product product, double quantity) {
