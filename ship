@@ -1,0 +1,194 @@
+public class ship 
+{
+	private String name;
+	private double[] qualities;
+	private int cost;
+	private String image;
+	private int crew;
+	public ship(String nameOfShip)
+	{
+		name = nameOfShip;
+		qualities = new double[19];
+		cost = 10;
+		image = "[]";
+		crew = 1;
+		setEqualStats(10.0);
+	}
+	public ship(String nameOfShip, double[] stats, int Cost, String display, int Crew)
+	{
+		name = nameOfShip;
+		qualities = stats;
+		cost = Cost;
+		image = display;
+		crew = Crew;
+	}
+	public String getName()
+	{
+		return name;
+	}
+	public void setStats(double regPower, double spPower, double regDefence, double spDefence, double regCoolDown, double spCooldown, 
+			double regWeaponsAccuracy, double spWeaponsAccuracy, double HP,	double regAttackRange, double spAttackRange, double MovementSpeed, 
+			double Repair, double build, double transport, double spArmor, double regArmor, double spWeapon, double regWeapon)
+	{
+		qualities[0] = regPower;
+		qualities[1] = spPower;
+		qualities[2] = regDefence;
+		qualities[3] = spDefence;
+		qualities[4] = regCoolDown;
+		qualities[5] = spCooldown;
+		qualities[6] = regWeaponsAccuracy;
+		qualities[7] = spWeaponsAccuracy;
+		qualities[8] = HP;
+		qualities[9] = regAttackRange;
+		qualities[10] = spAttackRange;
+		qualities[11] = MovementSpeed;
+		qualities[12] = Repair;
+		qualities[13] = build;
+		qualities[14] = transport;
+		qualities[15] = spArmor;
+		qualities[16] = regArmor;
+		qualities[17] = spWeapon;
+		qualities[18] = regWeapon;
+		
+	}
+	public void setEqualStats(double stat)
+	{
+		double[] temp = new double[19];
+		for(int i = 0; i < temp.length; i++)
+		{
+			temp[i] = stat;
+		}
+		temp[6] = 0.5;
+		temp[7] = 0.5;
+		qualities = temp;
+	}
+	
+	public double[] getStats()
+	{
+		return qualities;
+	}
+	public double getRegPower()
+	{
+		return qualities[0];
+	}
+	public double getSpPower()
+	{
+		return qualities[1];
+	}
+	public double getRegDefence()
+	{
+		return qualities[2];
+	}
+	public double getSpDefence()
+	{
+		return qualities[3];
+	}
+	public double getregAttackCooldown()
+	{
+		return qualities[4];
+	}
+	public double getSpAttackCooldown()
+	{
+		return qualities[5];
+	}
+	public double getRegWeaponsAccuracy()
+	{
+		return qualities[6];
+	}
+	public double getSpWeaponsAccuracy()
+	{
+		return qualities[7];
+	}
+	public double getHP()
+	{
+		return qualities[8];
+	}
+	public double getRegAttackRandge()
+	{
+		return qualities[9];
+	}
+	public double getSpAttackRange()
+	{
+		return qualities[10];
+	}
+	public double getMovementSpeed()
+	{
+		return qualities[11];
+	}
+	public double getRepairAbility()
+	{
+		return qualities[12];
+	}
+	public double getBuildAbility()
+	{
+		return qualities[13];
+	}
+	public double getTransportAbility()
+	{
+		return qualities[14];
+	}
+	public double getSpArmorStat()
+	{
+		return qualities[15];
+	}
+	public double getRegArmorStat()
+	{
+		return qualities[16];
+	}
+	public double getSpWeaponStat()
+	{
+		return qualities[17];
+	}
+	public double getRegWeaponStat()
+	{
+		return qualities[18];
+	}
+	public int getCost()
+	{
+		return cost;
+	}
+	public void changeHP(ship one, double damage)
+	{
+		if((one.getHP() - damage) <= 0)
+		{
+			one.qualities[8] = 0;
+		}
+		else if(damage <= 0)
+		{
+			one.qualities[8] = one.qualities[8];
+		}
+		else
+		{
+			one.qualities[8] = one.getHP() - damage;
+		}
+	}
+	public double getQuality(int place)
+	{
+		return qualities[place];
+	}
+	public void calcSpDamage(ship attack, ship defend)
+	{
+		double damage = ((attack.getSpPower() + attack.getSpWeaponStat()) * attack.getSpWeaponsAccuracy()) - (defend.getSpDefence() + defend.getSpArmorStat());
+		defend.changeHP(defend, damage);
+	}
+	public void calcRegDamage(ship attack, ship defend)
+	{
+		double damage = defend.getHP() - ((attack.getRegPower() + attack.getRegWeaponStat()) * attack.getRegWeaponsAccuracy()) - (defend.getRegDefence() + defend.getRegArmorStat());
+		defend.changeHP(defend, damage);
+	}
+	public void setCost(int Cost)
+	{
+		cost = Cost;
+	}
+	public void battle(ship a, ship b)
+	{
+		a.calcRegDamage(a, b);
+		a.calcRegDamage(b, a);
+		b.calcSpDamage(a, b);
+		b.calcSpDamage(b, a);
+	}
+	public int getCrewAmount()
+	{
+		return crew;
+	}
+}
