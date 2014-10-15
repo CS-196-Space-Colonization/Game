@@ -46,7 +46,7 @@ public class Manufactory implements Producer {
 	@Override
 	public void runProductionStep() {
 		double quantityProduced = inputNeed.portionFulfilled(inventory) * throughput;
-		inventory.addProduct(production, quantityProduced);
+		inventory.addQuantityOfProduct(production, quantityProduced);
 	}
 
 	private void setInputNeed() {

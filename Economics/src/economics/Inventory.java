@@ -21,14 +21,12 @@ public class Inventory {
 	
 	public void transferContentsFrom(Inventory other) {
 		addInventoryFrom(other);
-		for (Product product : other.getProducts()) {
-			other.removeProductFromInventory(product, other.getQuantityOf(product));
-		}
+		other.clear();
 	}
 	
 	public void addInventoryFrom(Inventory other) {
 		for (Product product : other.getProducts()) {
-			addProduct(product, other.getQuantityOf(product));
+			addQuantityOfProductImpl(product, other.getQuantityOf(product));
 		}
 	}
 	
@@ -41,7 +39,7 @@ public class Inventory {
 	}
 	
 	public void setQuantityOf(Product product, double quantity) {
-		inventory.put(product, new Quantity(product, quantity));
+		inventory.put(product, new Quantity(product, Math.max(0.0, quantity)));
 	}
 	
 	public double getQuantityOf(Product product) {
@@ -49,8 +47,18 @@ public class Inventory {
 			return 0.0;
 		return inventory.get(product).getQuantity();
 	}
+	
+	public void addQuantityOfProduct(Product product, double quantity) {
+		assertNotNegative(quantity);
+		addQuantityOfProductImpl(product, quantity);
+	}
 
-	public void addProduct(Product product, double quantity) {
+	private void assertNotNegative(double quantity) {
+		if (quantity < 0.0)
+			throw new IllegalArgumentException("Quantity must not be negative!");
+	}
+
+	private void addQuantityOfProductImpl(Product product, double quantity) {
 		if (contains(product))
 			setQuantityOf(product, inventory.get(product).getQuantity() + quantity);
 		else
@@ -58,28 +66,40 @@ public class Inventory {
 	}
 	
 	public void removeQuantityOfProduct(Product product, double quantity) {
+		assertNotNegative(quantity);
 		double oldQuantity = getQuantityOf(product);
 		if (oldQuantity >= quantity) {
-			removeProductFromInventory(product, quantity);
+			removeQuantityOfProductImpl(product, quantity);
 		} else {
-			removeProductFromInventory(product, oldQuantity);
+			removeQuantityOfProductImpl(product, oldQuantity);
 		}
 	}
 	
-	private void removeProductFromInventory(Product product, double quantity) {
-		addProduct(product, -quantity);
+	private void removeQuantityOfProductImpl(Product product, double quantity) {
+		addQuantityOfProductImpl(product, -quantity);
+		if (Double.compare(getQuantityOf(product), 0.0) == 0)
+			inventory.remove(product);
 	}
 	
 	public Set<Product> getProducts() {
 		return inventory.keySet();
 	}
-
-	public static Inventory fromMap(Map<Product, Double> goods) {
-		Inventory result = new Inventory();
-		Set<Product> keySet = goods.keySet();
-		for (Product product : keySet) {
-			result.addProduct(product, goods.get(product));
+	
+	public void clear() {
+		inventory.clear();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof Inventory))
+			return false;
+		
+		Inventory RHS = (Inventory)other;
+		for (Product product : getProducts()) {
+			if (Double.compare(getQuantityOf(product), RHS.getQuantityOf(product)) != 0)
+				return false;
 		}
-		return result;
+		
+		return getProducts().equals(RHS.getProducts());
 	}
 }

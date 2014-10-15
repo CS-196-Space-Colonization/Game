@@ -43,6 +43,6 @@ public class BasicSeller implements Seller, Observer {
 		Quantity asset = completed.getOffer();
 		Quantity money = completed.getRevenue();
 		inventory.setQuantityOf((Product)asset.getUnit(), asset.getQuantity());
-		inventory.addProduct((Product)money.getUnit(), money.getQuantity());
+		inventory.addQuantityOfProduct((Product)money.getUnit(), money.getQuantity());
 	}
 }
