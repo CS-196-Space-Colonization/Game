@@ -1,13 +1,11 @@
 /**
  * Created by chthonic7 on 10/8/14.
  */
-public class Cluster {
-    protected StarSystem[] starSystems;
-    private Res res=new Res(); //this will be filled by grabbing from below
-    private double locationX;
-    private double locationY;
-    private String owner, name;
-    public Cluster(){
-
+public class Cluster extends Territory{
+    public Cluster(double locationX, double locationY, Sector sector, StarSystem[] starsys, String name, String owner){
+        super(locationX,locationY,sector,starsys,name,owner);
+    }
+    public String toString(){
+        return superTerr.toString()+" Cluster="+name;
     }
 }

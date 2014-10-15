@@ -1,4 +1,5 @@
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 /**
@@ -11,15 +12,17 @@ import java.util.Scanner;
 public class Res {
     //Initial assumption is a text file that has all the resource information
     private String path;
+    private final String dir="/resources";
+    private Path path1;
     private File file;
     private Scanner reader;
 
     /**
      * Initialize with the file
-     * @param resFile
+     * @param resFile file name for this resource
      */
     public Res(String resFile){
-        path=resFile;
+        path=dir+resFile;
         file=new File(path);
         try{reader=new Scanner(file);}
         catch (Exception e){
@@ -30,21 +33,47 @@ public class Res {
      * Empty constructor will create new file for this
      */
     public Res(){
-        path=""; //TODO: Think of names for new files.
+        path=dir+"resFile"; //TODO: Think of names for new files.
         file=new File(path);
-        try{
-            file.createNewFile();
-            reader=new Scanner(file);
+        int i=1;
+        do {
+            try {
+                file.createNewFile();
+                reader = new Scanner(file);
+                return;
+            } catch (Exception e) {
+                path=dir+"resFile"+i;
+                i++;
+            }
         }
-        catch(Exception e){System.out.println(e);}
+        while(file.exists());
     }
     public double getResource(String name){
-       //Insert database query
+        //Insert database query
+        //Or for now, just do a search in the textfile
+        String line;
+        while(reader.hasNextLine()){
+            line=reader.nextLine();
+            if(line.indexOf(name+"=")==0) {
+                reader.close();
+                return Double.parseDouble(line);
+            }
+        }
         return 0.0;
     }
-    public boolean setResource(String resouce, double value){
-        //Insert database instruction. If successful, then return true, if not, return false
+    public boolean setResource(String resource, double value){
+        //Insert database instruction. Or for now, write to file If successful, then return true, if not, return false
+        String line;
         if(value<0) return false;
-        else return true;
+        else {
+            while (reader.hasNextLine()){
+                line=reader.nextLine();
+                if(line.indexOf(resource+"=")==0){
+
+                }
+            }
+
+            return true;
+        }
     }
 }

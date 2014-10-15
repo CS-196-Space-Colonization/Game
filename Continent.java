@@ -1,21 +1,18 @@
 /**
  * Created by chthonic7 on 10/8/14.
  */
-public class Continent {
-    protected double size; //Placeholder for bigness of the continent
+public class Continent extends Territory{
+    protected double size; //Placeholder for area of the continent
     protected Res res=new Res();
     protected int population;
-    private final Planet planet;   //We might want the continent to know what planet owns it, but I'm not sure why...
     protected String owner="", name="";
     //Tech=techtree
 
     public Continent(Planet planet, Res res, int population, double size, String owner, String name){
-        this.planet=planet;
+        super(-1,-1,planet,null,name, owner); //This Continents don't have a spatial position, nor do they have subterritories
         this.population=population;
         this.size=size;
         this.res=res;
-        this.owner=owner;
-        this.name=name;
     }
 
     public double getSize() {
@@ -39,7 +36,9 @@ public class Continent {
     public boolean setResource(String resourceName, double value){
         return res.setResource(resourceName,value);
     }
+    //Something higher up will implement the game mechanics of the
+
     public String toString(){
-        return planet.toString()+" Continent="+name;
+        return superTerr.toString()+" Continent="+name; //Just gives the hierarchical info of teh territory
     }
 }
