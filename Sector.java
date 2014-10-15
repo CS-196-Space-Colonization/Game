@@ -6,4 +6,7 @@ public class Sector extends Territory{
     public Sector(double locationX, double locationY, Cluster[] clusters, String name, String owner){
         super(locationX,locationY,null,clusters,name,owner);
     }
+    public String toString(){
+        return "Sector="+name+super.toString();
+    }
 }

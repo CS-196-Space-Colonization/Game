@@ -6,6 +6,6 @@ public class Cluster extends Territory{
         super(locationX,locationY,sector,starsys,name,owner);
     }
     public String toString(){
-        return superTerr.toString()+" Cluster="+name;
+        return superTerr.toString()+" Cluster="+name+super.toString();
     }
 }

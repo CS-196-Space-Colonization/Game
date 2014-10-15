@@ -39,6 +39,6 @@ public class Planet extends Territory{
     }
 
     public String toString(){
-        return superTerr.toString()+" Planet="+name;
+        return superTerr.toString()+" Planet="+name+super.toString();
     }
 }

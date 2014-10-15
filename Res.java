@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Res {
     //Initial assumption is a text file that has all the resource information
     private String path;
-    private final String dir="/resources";
+    private final String dir="resources/";
     private Path path1;
     private File file;
     private Scanner reader;
@@ -24,7 +24,9 @@ public class Res {
     public Res(String resFile){
         path=dir+resFile;
         file=new File(path);
-        try{reader=new Scanner(file);}
+        try{
+            reader=new Scanner(file);
+        }
         catch (Exception e){
             System.out.print(e);}
     }
@@ -36,17 +38,18 @@ public class Res {
         path=dir+"resFile"; //TODO: Think of names for new files.
         file=new File(path);
         int i=1;
-        do {
-            try {
-                file.createNewFile();
-                reader = new Scanner(file);
-                return;
-            } catch (Exception e) {
-                path=dir+"resFile"+i;
-                i++;
-            }
+        while(file.exists()){
+            path=dir+"resFile"+i;
+            file=new File(path);
         }
-        while(file.exists());
+        try {
+            file.createNewFile();
+            reader = new Scanner(file);
+            return;
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
     public double getResource(String name){
         //Insert database query
@@ -56,7 +59,7 @@ public class Res {
             line=reader.nextLine();
             if(line.indexOf(name+"=")==0) {
                 reader.close();
-                return Double.parseDouble(line);
+                return Double.parseDouble(line.substring(name.length()+1));
             }
         }
         return 0.0;

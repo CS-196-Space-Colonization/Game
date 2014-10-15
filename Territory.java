@@ -75,4 +75,7 @@ public abstract class Territory {
          */
         return sum;
     }
+    public String toString(){
+        return "("+locationX+","+locationY+") is owned by "+owner+"\n";
+    }
 }

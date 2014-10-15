@@ -6,6 +6,6 @@ public class StarSystem extends Territory{
         super(locationX,locationY,cluster,stars,name,owner);
     }
     public String toString(){
-        return superTerr.toString()+" Star System="+name;
+        return superTerr.toString()+" Star System="+name+super.toString();
     }
 }
