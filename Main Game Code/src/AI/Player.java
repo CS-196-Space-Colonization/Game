@@ -8,7 +8,6 @@ public class Player
 {
 	//viewable to others
 	public Technology currentTech;
-	public Reputation rep; // Ai only
 	public ArrayList<Player> allies;
 	public boolean atWar;
 	
@@ -26,5 +25,16 @@ public class Player
 	
 	public int level;
 	
-	
+	public Player(Map map, int playerNumber)
+	{
+		currentTech = new Technology();
+		allies = new ArrayList<Player>();
+		atWar = false;
+		money = 0;
+		researched = new ArrayList<Technology>();
+		trades = new ArrayList<Trade>();
+		this.playerNumber = playerNumber;
+		this.map = map;
+		units = new ArrayList<Unit>();
+	}
 }

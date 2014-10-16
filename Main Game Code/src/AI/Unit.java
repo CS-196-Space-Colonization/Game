@@ -1,3 +1,6 @@
+/*
+ * Mark will be handling most of this stuff, so hold on until he has a class that I work with
+ */
 package AI;
 
 import java.util.ArrayList;
