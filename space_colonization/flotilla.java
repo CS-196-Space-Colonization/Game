@@ -43,10 +43,6 @@ public class flotilla {
 	{
 		checkRemoveShip();
 		names = new String[Flotilla.length];
-		for(int i = 0; i < 19; i++)
-		{
-			qualities[i] = 0;
-		}
 		worth = 0;
 		crew = 0;
 		for(int i = 0; i < Flotilla.length; i++)
@@ -149,11 +145,200 @@ public class flotilla {
 			Total = Total + Flotilla[i].getHP();
 		return Total;
 	}
+	static double HPfactor = 10;
+	public static void calcSpDamage(flotilla attack, flotilla defend)
+	{
+		double damage = ((attack.getSpPower() + attack.getSpWeaponStat())) / (defend.getSpDefence() + defend.getSpArmorStat()) * HPfactor;
+		defend.setHP(damage);
+	}
+	public static void calcRegDamage(flotilla attack, flotilla defend)
+	{
+		double damage = ((attack.getRegPower() + attack.getRegWeaponStat())) / (defend.getRegDefence() + defend.getRegArmorStat()) * HPfactor;
+		defend.setHP(damage);
+	}
+	public void setHP(double damage)
+	{
+		double temp = damage;
+		double shipHP = 0;
+		for(int i = 0; i < Flotilla.length; i++)
+		{
+			shipHP = getShip(i).getHP();
+			if(temp > shipHP)
+			{
+				temp = temp - shipHP;
+				getShip(i).setHP(shipHP);
+			}
+			else
+			{
+				getShip(i).setHP(temp);
+				temp = 0;
+				break;
+			}
+		}
+	}
 	public static void battle(flotilla a, flotilla d)
 	{
-		int damage = 0;
-		
-		
+		a.setFlotillaStats();
+		d.setFlotillaStats();
+		calcRegDamage(a, d);
+		calcRegDamage(d, a);
+		calcSpDamage(a, d);
+		calcSpDamage(d, a);
+		a.checkRemoveShip();
+		d.checkRemoveShip();
+		a.setFlotillaStats();
+		d.setFlotillaStats();
 	}
-	
+	public double getRegPower()
+	{
+		return qualities[0];
+	}
+	public void setShipRegPower(int ship, double qual)
+	{
+		getShip(ship).setStat(0, qual);
+	}
+	public double getSpPower()
+	{
+		return qualities[1];
+	}
+	public void setShipSpPower(int ship, double qual)
+	{
+		getShip(ship).setStat(1, qual);
+	}
+	public double getRegDefence()
+	{
+		return qualities[2];
+	}
+	public void setShipRegDefence(int ship, double qual)
+	{
+		getShip(ship).setStat(2, qual);
+	}
+	public double getSpDefence()
+	{
+		return qualities[3];
+	}
+	public void setShipSpDefence(int ship, double qual)
+	{
+		getShip(ship).setStat(3, qual);
+	}
+	public double getregAttackCooldown()
+	{
+		return qualities[4];
+	}
+	public void setShipRegCooldown(int ship, double qual)
+	{
+		getShip(ship).setStat(4, qual);
+	}
+	public double getSpAttackCooldown()
+	{
+		return qualities[5];
+	}
+	public void setShipSpCooldown(int ship, double qual)
+	{
+		getShip(ship).setStat(5, qual);
+	}
+	public double getRegAccuracy()
+	{
+		return qualities[6];//can increase with longer life if I get there;
+	}
+	public void setShipRegAccuracy(int ship, double qual)
+	{
+		getShip(ship).setStat(6, qual);
+	}
+	public double getSpAccuracy()
+	{
+		return qualities[7];
+	}
+	public void setShipSpAccuracy(int ship, double qual)
+	{
+		getShip(ship).setStat(7, qual);
+	}
+	public double getHPstat()
+	{
+		return qualities[8];
+	}
+	public void setShipHP(int ship, double damage)
+	{
+		getShip(ship).setStat(8, damage);
+	}
+	public double getRegRange()
+	{
+		return qualities[9];
+	}
+	public void setShipRegRange(int ship, double qual)
+	{
+		getShip(ship).setStat(9, qual);
+	}
+	public double getSpRange()
+	{
+		return qualities[10];
+	}
+	public void setShipSpRange(int ship, double qual)
+	{
+		getShip(ship).setStat(10, qual);
+	}
+	public double getMovementSpeed()
+	{
+		return qualities[11];
+	}
+	public void setShipMovementSpeed(int ship, double qual)
+	{
+		getShip(ship).setStat(11, qual);
+	}
+	public double getRepairAbility()
+	{
+		return qualities[12];
+	}
+	public void setShipRepairAbility(int ship, double qual)
+	{
+		getShip(ship).setStat(12, qual);
+	}
+	public double getBuildAbility()
+	{
+		return qualities[13];
+	}
+	public void setShipBuildAbillity(int ship, double qual)
+	{
+		getShip(ship).setStat(13, qual);
+	}
+	public double getTransportAbility()
+	{
+		return qualities[14];
+	}
+	public void setShipTransportAbility(int ship, double qual)
+	{
+		getShip(ship).setStat(14, qual);
+	}
+	public double getSpArmorStat()
+	{
+		return qualities[15];
+	}
+	public void setShipSpArmorStat(int ship, double qual)
+	{
+		getShip(ship).setStat(15, qual);
+	}
+	public double getRegArmorStat()
+	{
+		return qualities[16];
+	}
+	public void setShipRegArmorStat(int ship, double qual)
+	{
+		getShip(ship).setStat(16, qual);
+	}
+	public double getSpWeaponStat()
+	{
+		return qualities[17];
+	}
+	public void setShipSpWeaponStat(int ship, double qual)
+	{
+		getShip(ship).setStat(17, qual);
+	}
+	public double getRegWeaponStat()
+	{
+		return qualities[18];
+	}
+	public void setShipRegWeaponStat(int ship, double qual)
+	{
+		getShip(ship).setStat(18, qual);
+	}
 }

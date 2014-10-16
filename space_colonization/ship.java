@@ -24,6 +24,10 @@ public class ship
 		image = display;
 		crew = Crew;
 	}
+	public void setStat(int stat, double num)
+	{
+		qualities[stat] = num;
+	}
 	public String getImage()
 	{
 		return image;
@@ -217,14 +221,15 @@ public class ship
 	{
 		return qualities[place];
 	}
+	static double HPfactor = 10;
 	public static void calcSpDamage(ship attack, ship defend)
 	{
-		double damage = ((attack.getSpPower() + attack.getSpWeaponStat())) / (defend.getSpDefence() + defend.getSpArmorStat());
+		double damage = ((attack.getSpPower() + attack.getSpWeaponStat())) / (defend.getSpDefence() + defend.getSpArmorStat()) * HPfactor;
 		defend.setHP(damage);
 	}
 	public static void calcRegDamage(ship attack, ship defend)
 	{
-		double damage = ((attack.getRegPower() + attack.getRegWeaponStat())) / (defend.getRegDefence() + defend.getRegArmorStat());
+		double damage = ((attack.getRegPower() + attack.getRegWeaponStat())) / (defend.getRegDefence() + defend.getRegArmorStat())  * HPfactor;
 		defend.setHP(damage);
 	}
 	public static void battle(ship a, ship b)
