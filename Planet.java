@@ -11,9 +11,6 @@ public class Planet extends Territory{
     //private Res res=new Res(); //this will be filled by grabbing from below
     protected Continent[] continents;
     //TODO: INSERT ATMO CONDITIONS
-    private String name,owner;
-    private double locationX;
-    private double locationY;
     public Planet(double locationX, double locationY, PlanetType type, Star star, Continent[] continents, String name, String owner){
         super(locationX,locationY,star,continents,name,owner);
         this.type=type;

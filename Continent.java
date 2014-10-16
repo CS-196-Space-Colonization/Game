@@ -5,7 +5,6 @@ public class Continent extends Territory{
     protected double size; //Placeholder for area of the continent
     protected Res res;
     protected int population;
-    protected String owner="", name="";
     //Tech=techtree
 
     public Continent(Planet planet, Res res, int population, double size, String name, String owner){
