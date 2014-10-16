@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import economics.products.Product;
+import economics.products.Quantity;
 
 public class Inventory {
 	private Map<Product, Quantity> inventory;
@@ -26,7 +27,7 @@ public class Inventory {
 	
 	public void addInventoryFrom(Inventory other) {
 		for (Product product : other.getProducts()) {
-			addQuantityOfProductImpl(product, other.getQuantityOf(product));
+			addQuantityOfProductImpl(product, other.getAmountOf(product));
 		}
 	}
 	
@@ -42,7 +43,11 @@ public class Inventory {
 		inventory.put(product, new Quantity(product, Math.max(0.0, quantity)));
 	}
 	
-	public double getQuantityOf(Product product) {
+	public Quantity getQuantityOf(Product product) {
+		return inventory.get(product);
+	}
+	
+	public double getAmountOf(Product product) {
 		if (!contains(product))
 			return 0.0;
 		return inventory.get(product).getQuantity();
@@ -67,7 +72,7 @@ public class Inventory {
 	
 	public void removeQuantityOfProduct(Product product, double quantity) {
 		assertNotNegative(quantity);
-		double oldQuantity = getQuantityOf(product);
+		double oldQuantity = getAmountOf(product);
 		if (oldQuantity >= quantity) {
 			removeQuantityOfProductImpl(product, quantity);
 		} else {
@@ -77,7 +82,7 @@ public class Inventory {
 	
 	private void removeQuantityOfProductImpl(Product product, double quantity) {
 		addQuantityOfProductImpl(product, -quantity);
-		if (Double.compare(getQuantityOf(product), 0.0) == 0)
+		if (Double.compare(getAmountOf(product), 0.0) == 0)
 			inventory.remove(product);
 	}
 	
@@ -96,7 +101,7 @@ public class Inventory {
 		
 		Inventory RHS = (Inventory)other;
 		for (Product product : getProducts()) {
-			if (Double.compare(getQuantityOf(product), RHS.getQuantityOf(product)) != 0)
+			if (Double.compare(getAmountOf(product), RHS.getAmountOf(product)) != 0)
 				return false;
 		}
 		

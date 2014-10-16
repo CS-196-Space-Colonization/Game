@@ -15,8 +15,8 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableMap;
 
 import economics.Inventory;
-import economics.Quantity;
 import economics.products.Product;
+import economics.products.Quantity;
 
 public class InventoryTest {
 	private ImmutableMap<String, Product> validProducts;
@@ -71,7 +71,7 @@ public class InventoryTest {
 		assertFalse("Parameterized constructor results in empty inventory!", test.isEmpty());
 		assertTrue("Parameterized constructor does not match input map! ", contentsEqual(test, rawInventory));
 		rawInventory.put(iron, new Quantity(iron, 1.0));
-		assertFalse("Parameterized constructor does not copy input map! ", Double.compare(test.getQuantityOf(iron), 1.0) == 0);
+		assertFalse("Parameterized constructor does not copy input map! ", Double.compare(test.getAmountOf(iron), 1.0) == 0);
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class InventoryTest {
 	@Test
 	public void testNoLabor() {
 		Inventory inventory = new Inventory();
-		assertExpectedEqualsActual("Calling GetQuantityOf on empty inventory does not result in 0", 0.0, inventory.getQuantityOf(validProducts.get("iron")));
+		assertExpectedEqualsActual("Calling GetQuantityOf on empty inventory does not result in 0", 0.0, inventory.getAmountOf(validProducts.get("iron")));
 	}
 	
 	@Test
@@ -137,20 +137,20 @@ public class InventoryTest {
 	private void testRemoveQuantityImpl(double qty) {
 		Inventory inventory = makeInventory();
 		Product iron = validProducts.get("iron");
-		double original = inventory.getQuantityOf(iron);
+		double original = inventory.getAmountOf(iron);
 		double expected = Math.max(original - qty, 0.0);
 		inventory.removeQuantityOfProduct(iron, qty);
-		double actual = inventory.getQuantityOf(iron);
+		double actual = inventory.getAmountOf(iron);
 		assertExpectedEqualsActual("Removing quantity " + qty + " gives wrong result!", expected, actual);
 	}
 	
 	private void testAddQuantityImpl(double qty) {
 		Inventory inventory = makeInventory();
 		Product iron = validProducts.get("iron");
-		double original = inventory.getQuantityOf(iron);
+		double original = inventory.getAmountOf(iron);
 		inventory.addQuantityOfProduct(iron, qty);
 		double expected = Math.max(original + qty, 0.0);
-		double actual = inventory.getQuantityOf(iron);
+		double actual = inventory.getAmountOf(iron);
 		assertExpectedEqualsActual("Adding quantity " + qty + " gives wrong result!", expected, actual);
 	}
 
@@ -164,7 +164,7 @@ public class InventoryTest {
 	private boolean contentsEqual(Inventory test,
 			Map<Product, Quantity> rawInventory) {
 		for (Product product : rawInventory.keySet()) {
-			if (Double.compare(rawInventory.get(product).getQuantity(), test.getQuantityOf(product)) != 0) {
+			if (Double.compare(rawInventory.get(product).getQuantity(), test.getAmountOf(product)) != 0) {
 				return false;
 			}
 		}

@@ -1,6 +1,7 @@
 package economics;
 
 import economics.products.Product;
+import economics.products.Quantity;
 
 public class BasicSeller implements Seller, Observer {
 	private final Inventory inventory;
@@ -29,11 +30,11 @@ public class BasicSeller implements Seller, Observer {
 	@Override
 	public void postAdvertisements() {
 		for (Product product : inventory.getProducts()) {
-			Quantity offer = new Quantity(product, inventory.getQuantityOf(product));
+			Quantity offer = new Quantity(product, inventory.getAmountOf(product));
 			Product money = market.GOOD_PROTOTYPES.get("money");
 			Quantity price = new Quantity(money, market.getLastPrice(product));
 			Transaction marketTransaction = new GoodsTransaction(offer, price);
-			market.addAdvertisement(marketTransaction);
+			market.addOffer(marketTransaction);
 		}
 	}
 

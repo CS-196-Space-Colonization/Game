@@ -1,4 +1,5 @@
-package economics;
+package economics.products;
+
 
 public final class Quantity implements Comparable<Quantity> {
 	private final Unit unit;

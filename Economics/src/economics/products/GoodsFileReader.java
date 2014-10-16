@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import com.google.common.collect.ImmutableMap;
 
-import economics.Quantity;
 
 public class GoodsFileReader {
 	private File goodsFile;

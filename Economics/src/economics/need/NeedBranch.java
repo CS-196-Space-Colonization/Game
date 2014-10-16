@@ -1,11 +1,14 @@
-package economics;
+package economics.need;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import economics.Inventory;
 
-public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
-	private List<NeedTreeNode> children;
+
+public class NeedBranch extends AbstractNeedNode implements Need {
+	private List<Need> children;
+	
 	public NeedBranch() {
 		children = new ArrayList<>();
 	}
@@ -13,15 +16,15 @@ public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
 	@Override
 	public double portionFulfilled(Inventory inventory) {
 		double fulfilled = Double.MAX_VALUE;
-		for (NeedTreeNode need : children) {
+		for (Need need : children) {
 			fulfilled = Math.min(fulfilled, need.portionFulfilled(inventory));
 		}
 		return fulfilled;
 	}
 
 	@Override
-	public void insert(NeedTreeNode element, int index) {
-		children.add(index, (NeedTreeNode)element);
+	public void insert(Need element, int index) {
+		children.add(index, (Need)element);
 	}
 
 	@Override
@@ -30,8 +33,8 @@ public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public void remove(NeedTreeNode object) {
-		children.remove((NeedTreeNode)object);
+	public void remove(Need object) {
+		children.remove(object);
 	}
 
 	@Override
@@ -40,7 +43,7 @@ public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public NeedTreeNode getChildAt(int childIndex) {
+	public Need getChildAt(int childIndex) {
 		return children.get(childIndex);
 	}
 
@@ -50,7 +53,7 @@ public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public int getIndex(NeedTreeNode node) {
+	public int getIndex(Need node) {
 		return children.indexOf(node);
 	}
 
@@ -60,7 +63,7 @@ public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public NeedTreeNode copy() {
+	public Need copy() {
 		NeedBranch copied = new NeedBranch();
 		for (int i = 0; i < children.size(); i++) {
 			copied.insert(children.get(i), i);
@@ -69,11 +72,11 @@ public class NeedBranch extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public List<BasicNeed> toList() {
-		List<BasicNeed> result = new ArrayList<>();
-		for (NeedTreeNode child : children) {
-			result.addAll(child.toList());
+	public Inventory getNeededProducts() {
+		Inventory needed = new Inventory();
+		for (Need child : children) {
+			needed.addInventoryFrom(child.getNeededProducts());
 		}
-		return result;
+		return needed;
 	}
 }

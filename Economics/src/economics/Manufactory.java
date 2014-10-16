@@ -5,14 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import economics.need.Need;
 import economics.products.Product;
+import economics.products.Quantity;
 
 public class Manufactory implements Producer {
 	private static final double maxHealthChange = .03;
 	private Product production;
 	private Inventory inventory;
-	private NeedSet inputNeed;
-	private NeedSet maintenanceNeeds;
+	private Need inputNeed;
+	private Need maintenanceNeeds;
 	private double health;
 	private double efficiency;
 	private double throughput;

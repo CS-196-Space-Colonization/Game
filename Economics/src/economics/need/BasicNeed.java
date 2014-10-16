@@ -1,10 +1,9 @@
-package economics;
+package economics.need;
 
-import java.util.ArrayList;
-import java.util.List;
+import economics.Inventory;
 import economics.products.*;
 
-public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
+public class BasicNeed extends AbstractNeedNode implements Need {
 	private Quantity need;
 	
 	public BasicNeed(Quantity need) {
@@ -12,15 +11,11 @@ public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
 	}
 	
 	public double portionFulfilled(Inventory has) {
-		return has.getQuantityOf((Product)need.getUnit()) / need.getQuantity();
-	}
-
-	public Quantity getNeed() {
-		return need;
+		return has.getAmountOf((Product)need.getUnit()) / need.getQuantity();
 	}
 
 	@Override
-	public void insert(NeedTreeNode element, int index) {
+	public void insert(Need element, int index) {
 		unsupported();
 	}
 
@@ -30,7 +25,7 @@ public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public void remove(NeedTreeNode object) {
+	public void remove(Need object) {
 		unsupported();
 	}
 
@@ -40,7 +35,7 @@ public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public NeedTreeNode getChildAt(int childIndex) {
+	public Need getChildAt(int childIndex) {
 		unsupported();
 		return null;
 	}
@@ -51,13 +46,13 @@ public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public int getIndex(NeedTreeNode node) {
+	public int getIndex(Need node) {
 		unsupported();
 		return -1;
 	}
 	
 	private void unsupported() {
-		unsupported();
+		throw new UnsupportedOperationException("Attempt to call a child method on a leaf node.");
 	}
 
 
@@ -67,13 +62,14 @@ public class BasicNeed extends AbstractNeedNode implements NeedTreeNode {
 	}
 
 	@Override
-	public NeedTreeNode copy() {
+	public Need copy() {
 		return new BasicNeed(need);
 	}
 
 	@Override
-	public List<BasicNeed> toList() {
-		List<BasicNeed> needs = new ArrayList<>();
-		return needs;
+	public Inventory getNeededProducts() {
+		Inventory result = new Inventory();
+		result.addQuantityOfProduct((Product)need.getUnit(), need.getQuantity());
+		return result;
 	}
 }

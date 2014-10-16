@@ -4,10 +4,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import economics.need.BasicNeed;
+import economics.need.Need;
 import economics.products.Product;
+import economics.products.Quantity;
 
 public class BasicBuyer implements Buyer {
-	private List<Need> needs;
+	private Product money = Product.get("money");
+	private Need needs;
 	private Inventory inventory;
 	private Market market;
 	
@@ -32,44 +36,59 @@ public class BasicBuyer implements Buyer {
 	}
 	
 	@Override
-	public List<Need> getNeeds() {
-		List<Need> needsCopy = new LinkedList<>();
-		needsCopy.addAll(needs);
-		return needsCopy;
+	public Need getNeeds() {
+		return needs.copy();
 	}
 
 	@Override
-	public void setNeeds(List<Need> needs) {
+	public void setNeeds(Need needs) {
 		this.needs = needs;
 	}
 
 	@Override
 	public void buyGoods() {
-		for (Need need : needs) {
-			buyNeed(need);
-			if (getSpendingMoney() <= 0.0)
+		Inventory neededProducts = needs.getNeededProducts();
+		for (Product product : neededProducts.getProducts()) {
+			buyGood(neededProducts.getQuantityOf(product));
+			if (!canKeepBuying())
 				return;
 		}
 	}
 	
 	private double getSpendingMoney() {
-		return inventory.getQuantityOf(market.GOOD_PROTOTYPES.get("money"));
+		return inventory.getAmountOf(Product.get("money"));
 	}
 
-	private void buyNeed(Need need) {
-		Product productNeeded = (Product)need.getNeed().getUnit();
-		List<Transaction> offers = market.getOffers(productNeeded);
-		Quantity bought = new Quantity(productNeeded, 0.0);
-		double amtNeeded = need.getNeed().getQuantity();
+	private void buyGood(Quantity needed) {
+		List<Transaction> offers = market.getOffers((Product)needed.getUnit());
 		do {
 			Transaction bestOffer = Collections.min(offers, new BasicDealScorer());
-			bestOffer.execute(calculateBought(bought, bestOffer, amtNeeded));
-		} while(need.portionFulfilled(bought) < 1.0 && getSpendingMoney() > 0.0);
+			processTransaction(needed, bestOffer);
+			offers.remove(bestOffer);
+		} while(shouldKeepBuying(needed) && canKeepBuying());
 	}
 
-	private double calculateBought(Quantity bought, Transaction bestOffer, double amtNeeded) {
+	private boolean canKeepBuying() {
+		return getSpendingMoney() > 0.0;
+	}
+
+	private boolean shouldKeepBuying(Quantity needed) {
+		return inventory.getAmountOf((Product)needed.getUnit()) < needed.getQuantity();
+	}
+
+	private void processTransaction(Quantity needed, Transaction bestOffer) {
+		Product productNeeded = (Product)needed.getUnit();
+		double amtNeeded = needed.getQuantity();
+		Quantity bought = inventory.getQuantityOf(productNeeded);
+		double amountActuallyBought = calculateBought(bestOffer, amtNeeded - bought.getQuantity());
+		bestOffer.execute(amountActuallyBought);
+		inventory.addQuantityOfProduct(productNeeded, amountActuallyBought);
+		inventory.removeQuantityOfProduct(money, amountActuallyBought*bestOffer.getMarginalPrice());
+	}
+
+	private double calculateBought(Transaction bestOffer, double amtNeeded) {
 		return Math.min(bestOffer.getMarginalPrice()*getSpendingMoney(), 
-						Math.min(amtNeeded - bought.getQuantity(), 
+						Math.min(amtNeeded, 
 								 bestOffer.getOffer().getQuantity()));
 	}
 }

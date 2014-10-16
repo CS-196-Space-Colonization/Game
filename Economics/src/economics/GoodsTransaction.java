@@ -3,6 +3,8 @@ package economics;
 import java.util.ArrayList;
 import java.util.List;
 
+import economics.products.Quantity;
+
 public class GoodsTransaction implements Transaction, Observable {
 	private Quantity offer;
 	private Quantity price;
