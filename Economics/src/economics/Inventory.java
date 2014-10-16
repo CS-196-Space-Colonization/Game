@@ -20,9 +20,8 @@ public class Inventory {
 		this.inventory = copy;
 	}
 	
-	public void transferContentsFrom(Inventory other) {
-		addInventoryFrom(other);
-		other.clear();
+	public Inventory(Inventory other) {
+		this(other.inventory);
 	}
 	
 	public void addInventoryFrom(Inventory other) {

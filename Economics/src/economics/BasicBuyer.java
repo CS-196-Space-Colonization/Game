@@ -1,38 +1,26 @@
 package economics;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
-import economics.need.BasicNeed;
 import economics.need.Need;
 import economics.products.Product;
 import economics.products.Quantity;
 
-public class BasicBuyer implements Buyer {
-	private Product money = Product.get("money");
+public class BasicBuyer extends AbstractAgent implements Buyer {
+	private Product money;
 	private Need needs;
 	private Inventory inventory;
 	private Market market;
 	
 	public BasicBuyer(Market market) {
-		enterMarket(market);
+		setMarket(market);
 		inventory = new Inventory();
 	}
 	
 	@Override
-	public void enterMarket(Market market) {
-		this.market = market;
-	}
-
-	@Override
-	public void give(Inventory inventoryToExchange) {
-		inventory.transferContentsFrom(inventoryToExchange);
-	}
-	
-	@Override
-	public void take(Inventory inventoryToExchange) {
-		inventoryToExchange.transferContentsFrom(inventory);
+	public void setMarket(Market market) {
+		super.setMarket(market);
+		this.money = market.getMoney();
 	}
 	
 	@Override
@@ -56,16 +44,17 @@ public class BasicBuyer implements Buyer {
 	}
 	
 	private double getSpendingMoney() {
-		return inventory.getAmountOf(Product.get("money"));
+		return inventory.getAmountOf(money);
 	}
 
 	private void buyGood(Quantity needed) {
 		List<Transaction> offers = market.getOffers((Product)needed.getUnit());
-		do {
-			Transaction bestOffer = Collections.min(offers, new BasicDealScorer());
-			processTransaction(needed, bestOffer);
-			offers.remove(bestOffer);
-		} while(shouldKeepBuying(needed) && canKeepBuying());
+		offers.sort(new BasicDealScorer());
+		for (Transaction bestOffer : offers) {
+			executeTransaction(needed, bestOffer);
+			if (!(shouldKeepBuying(needed) && canKeepBuying()))
+				break;
+		} 
 	}
 
 	private boolean canKeepBuying() {
@@ -76,7 +65,7 @@ public class BasicBuyer implements Buyer {
 		return inventory.getAmountOf((Product)needed.getUnit()) < needed.getQuantity();
 	}
 
-	private void processTransaction(Quantity needed, Transaction bestOffer) {
+	private void executeTransaction(Quantity needed, Transaction bestOffer) {
 		Product productNeeded = (Product)needed.getUnit();
 		double amtNeeded = needed.getQuantity();
 		Quantity bought = inventory.getQuantityOf(productNeeded);

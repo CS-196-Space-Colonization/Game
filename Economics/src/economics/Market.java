@@ -7,4 +7,5 @@ public interface Market {
 	List<Transaction> getOffers(Product needed);
 	void addOffer(Transaction transaction);
 	double getLastPrice(Product product);
+	Product getMoney();
 }

@@ -1,7 +1,8 @@
 package economics;
 
 public interface EconomicAgent {
-	void enterMarket(Market market);
+	Market getMarket();
+	void setMarket(Market other);
 	void give(Inventory inventoryToExchange);
-	void take(Inventory inventoryToExchange);
+	Inventory take();
 }
