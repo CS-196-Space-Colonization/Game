@@ -248,8 +248,16 @@ public class ship
 		calcSpDamage(a, b);
 		calcSpDamage(b, a);
 	}
-	private static double x = 100.0;
-	private static double y = 1/5;
+	private double x = 100.0;
+	public void setX(double X)
+	{
+		x = X;
+	}
+	private double y = 1/5;
+	public void setY(double Y)
+	{
+		y = Y;
+	}
 	public void setStaionaryObject(double[] qual)
 	{
 			setStats(qual);
