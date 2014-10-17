@@ -4,15 +4,12 @@
 public class Planet extends Territory{
     private final double MASS;
     private final double RADIUS;
-    public enum PlanetType {
-        TERRESTRIAL,GASGIANT,SUPEREARTH,SUBEARTH,MININEPTUNE,ROUGE,ICE,LAVA; //TODO: Will add more
-    }
     private PlanetType type;
     //private Res res=new Res(); //this will be filled by grabbing from below
     protected Continent[] continents;
     //TODO: INSERT ATMO CONDITIONS
-    public Planet(double locationX, double locationY, PlanetType type, Star star, Continent[] continents, String name, String owner){
-        super(locationX,locationY,star,continents,name,owner);
+    public Planet(double locationX, double locationY, PlanetType type, Star star, Continent[] continents, Res res, String name, String owner){
+        super(locationX,locationY,star,continents,res,name,owner);
         this.type=type;
         MASS=1;
         RADIUS=1;

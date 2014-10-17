@@ -6,14 +6,16 @@ public abstract class Territory {
     //protected Res res=new Res();
     //Current method of getting resources doesn't necessitate a Res object, only at continent level is it necessary
     protected String name, owner;
+    protected Res res;
     protected Territory superTerr;
     protected Territory[] subTerr;
 
-    protected Territory(double locX, double locY, Territory superTerr, Territory[] terr, String name, String owner){
+    protected Territory(double locX, double locY, Territory superTerr, Territory[] terr, Res res, String name, String owner){
         this.subTerr=terr;
         this.superTerr=superTerr;
         this.locationX=locX;
         this.locationY=locY;
+        this.res=res;
         this.name=name;
         this.owner=owner;
     }
@@ -65,15 +67,16 @@ public abstract class Territory {
         this.subTerr = subTerr;
     }
 
-    public double getResource(String resourceName){
-        double sum=0;
-        for (Territory terr:subTerr) sum+=terr.getResource(resourceName);
-        /*this requires that we have a continent class that calls to the resource class
-            That would make a resource object at every level redundant.
-            Or we could have the files constantly updating up and down the chain, which would be hell.
-            I mean "recursively" call getResource takes up hella stack, but screw it.
-         */
-        return sum;
+    public final double getResource(String resourceName){
+        return res.getResource(resourceName);
+    }
+
+    public final boolean setResource(String resourceName, double value){
+        return res.setResource(resourceName,value);
+    }
+
+    public final void updateResources(){
+        //TODO:Implement. Figure out how to make sure everything is always updated.
     }
     public String toString(){
         return "("+locationX+","+locationY+") is owned by "+owner+"\n";

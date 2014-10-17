@@ -8,8 +8,8 @@ public class Star extends Territory{
     //TODO: add other space objects to system
     private double[] radii; //info about its planets
     //TODO: Add more star characteristics
-    public Star(double locationX, double locationY, StarType type, StarSystem starSystem, Planet[] planets, String name, String owner){
-        super(locationX,locationY,starSystem,planets,name,owner);
+    public Star(double locationX, double locationY, StarType type, StarSystem starSystem, Planet[] planets, Res res, String name, String owner){
+        super(locationX,locationY,starSystem,planets,res,name,owner);
         this.type=type;
 
     }
