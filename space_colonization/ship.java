@@ -16,6 +16,15 @@ public class ship
 		crew = 1;
 		setEqualStats(10.0);
 	}
+	public ship()
+	{
+		name = "ship";
+		qualities = new double[19];
+		cost = 10;
+		image = "[]";
+		crew = 1;
+		setEqualStats(10.0);
+	}
 	public ship(String nameOfShip, double[] stats, int Cost, String display, int Crew)
 	{
 		name = nameOfShip;
@@ -240,6 +249,7 @@ public class ship
 		calcSpDamage(b, a);
 	}
 	private static double x = 100.0;
+	private static double y = 1/5;
 	public void setStaionaryObject(double[] qual)
 	{
 			setStats(qual);
@@ -248,55 +258,55 @@ public class ship
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 0;
-		qualities[1] = level * 0;
+		qualities[1] = (level - y) * 0;
 		qualities[2] = level * 5 * x;
-		qualities[3] = level * 5 * x;
+		qualities[3] = (level - y) * 5 * x;
 		qualities[4] = level * 0;
-		qualities[5] = level * 0;
+		qualities[5] = (level - y) * 0;
 		qualities[6] = level * 0;
-		qualities[7] = level * 0;
+		qualities[7] = (level - y) * 0;
 		qualities[8] = level * 3 * x;
 		qualities[9] = level * 0;
-		qualities[10] = level * 0;
+		qualities[10] = (level - y) * 0;
 		qualities[11] = level * 4 * x;
 		qualities[12] = level * 5 * x;
 		qualities[13] = level * 0;
 		qualities[14] = level * 2 * x;
-		qualities[15] = level * 0;
+		qualities[15] = (level - y) * 0;
 		qualities[16] = level * 0;
-		qualities[17] = level * 0;
+		qualities[17] = (level - y) * 0;
 		qualities[18] = level * 0;
 	}
 	public void setStatsBuild(double level)
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 0;
-		qualities[1] = level * 0;
+		qualities[1] = (level - y) * 0;
 		qualities[2] = level * 5 * x;
-		qualities[3] = level * 5 * x;
+		qualities[3] = (level - y) * 5 * x;
 		qualities[4] = level * 0;
-		qualities[5] = level * 0;
+		qualities[5] = (level - y) * 0;
 		qualities[6] = level * 0;
-		qualities[7] = level * 0;
+		qualities[7] = (level - y) * 0;
 		qualities[8] = level * 3 * x;
 		qualities[9] = level * 0;
-		qualities[10] = level * 0;
+		qualities[10] = (level - y) * 0;
 		qualities[11] = level * 2 * x;
 		qualities[12] = level * x;
 		qualities[13] = level * 10 * x;
 		qualities[14] = level * 10 * x;
-		qualities[15] = level * 0;
+		qualities[15] = (level - y) * 0;
 		qualities[16] = level * 0;
-		qualities[17] = level * 0;
+		qualities[17] = (level - y) * 0;
 		qualities[18] = level * 0;
 	}
 	public void setStatsAttack(double level)
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 10 * x;
-		qualities[1] = level * 10 * x;
+		qualities[1] = (level - y) * 10 * x;
 		qualities[2] = level * 2 * x;
-		qualities[3] = level * 2 * x;
+		qualities[3] = (level - y) * 2 * x;
 		qualities[4] = 5;
 		qualities[5] = 5;
 		qualities[6] = 1;
@@ -317,9 +327,9 @@ public class ship
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 2 * x;
-		qualities[1] = level * 2 * x;
+		qualities[1] = (level - y) * 2 * x;
 		qualities[2] = level * 10 * x;
-		qualities[3] = level * 10 * x;
+		qualities[3] = (level - y) * 10 * x;
 		qualities[4] = 5;
 		qualities[5] = 5;
 		qualities[6] = 1;
@@ -340,9 +350,9 @@ public class ship
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 4 * x;
-		qualities[1] = level * 4 * x;
+		qualities[1] = (level - y) * 4 * x;
 		qualities[2] = level * 4 * x;
-		qualities[3] = level * 4 * x;
+		qualities[3] = (level - y) * 4 * x;
 		qualities[4] = 2;
 		qualities[5] = 2;
 		qualities[6] = 1;
@@ -363,9 +373,9 @@ public class ship
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 4 * x;
-		qualities[1] = level * 4 * x;
+		qualities[1] = (level - y) * 4 * x;
 		qualities[2] = level * 4 * x;
-		qualities[3] = level * 4 * x;
+		qualities[3] = (level - y) * 4 * x;
 		qualities[4] = 5;
 		qualities[5] = 5;
 		qualities[6] = 1;
@@ -386,9 +396,9 @@ public class ship
 	{
 		level = 1 + level / 5;
 		qualities[0] = level * 6 * x;
-		qualities[1] = level * 6 * x;
+		qualities[1] = (level - y) * 6 * x;
 		qualities[2] = level * 6 * x;
-		qualities[3] = level * 6 * x;
+		qualities[3] = (level - y) * 6 * x;
 		qualities[4] = 4;
 		qualities[5] = 4;
 		qualities[6] = 1;
