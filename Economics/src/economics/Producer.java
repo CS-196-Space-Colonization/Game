@@ -1,9 +1,11 @@
 package economics;
 
+import economics.need.Need;
 import economics.products.Product;
 
 public interface Producer {
 	void runProductionStep();
-	void performMaintenance();
-	Product productionGood();
+	Product getProductionGood();
+	Need getInputNeeds();
+	void calculateInputNeeds();
 }

@@ -49,4 +49,9 @@ public class BasicMarket implements Market {
 			return 0.0;
 		return product.getInitialPrice();
 	}
+
+	@Override
+	public Product getMoney() {
+		return GOOD_PROTOTYPES.get("money");
+	}
 }

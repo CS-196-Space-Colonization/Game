@@ -180,15 +180,6 @@ public class InventoryTest {
 	}
 	
 	@Test
-	public void testTransferContentsFrom() {
-		Inventory empty = new Inventory();
-		Inventory source = makeInventory();
-		empty.transferContentsFrom(source);
-		assertTrue("transferContentsFrom does not correctly copy inventory!", empty.equals(makeInventory()));
-		assertTrue("transferContentsFrom does not remove contents from other inventory!", source.isEmpty());
-	}
-	
-	@Test
 	public void testEqualsSelf() {
 		Inventory inventory = makeInventory();
 		assertTrue("Inventory does not equal self!", inventory.equals(inventory));

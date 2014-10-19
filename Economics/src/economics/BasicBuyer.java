@@ -1,5 +1,7 @@
 package economics;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import economics.need.Need;
@@ -25,7 +27,7 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	
 	@Override
 	public Need getNeeds() {
-		return needs.copy();
+		return needs == null ? null : needs.copy();
 	}
 
 	@Override
@@ -49,7 +51,8 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 
 	private void buyGood(Quantity needed) {
 		List<Transaction> offers = market.getOffers((Product)needed.getUnit());
-		offers.sort(new BasicDealScorer());
+		Comparator<Transaction> dealRater = new BasicDealScorer();
+		Collections.sort(offers, dealRater);
 		for (Transaction bestOffer : offers) {
 			executeTransaction(needed, bestOffer);
 			if (!(shouldKeepBuying(needed) && canKeepBuying()))

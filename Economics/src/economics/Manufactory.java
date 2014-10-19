@@ -1,87 +1,77 @@
 package economics;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import economics.need.Need;
+import economics.need.*;
 import economics.products.Product;
 import economics.products.Quantity;
 
 public class Manufactory implements Producer {
-	private static final double maxHealthChange = .03;
-	private Product production;
+	private final Product production;
 	private Inventory inventory;
 	private Need inputNeed;
-	private Need maintenanceNeeds;
-	private double health;
-	private double efficiency;
-	private double throughput;
+	private Machinery machines;
 
-	public Manufactory(Product productionGood, double productionQuantity) {
-		this.production = productionGood;
-		this.throughput = productionQuantity;
-		health = 1.0;
-		efficiency = 1.0;
-		setMaintenanceNeed(productionGood);
-		setInputNeed();
+	public Manufactory(Product productionGood) {
+		production = productionGood;
+		inventory = new Inventory();
+		createMachinery();
+		calculateInputNeeds();
 	}
 
-	private void setMaintenanceNeed(Product productionGood) {
-		maintenanceNeeds = new NeedSet(new LinkedList<Need>());
-	}
-
-	@Override
-	public void performMaintenance() {
-		double portionFulfilled = maintenanceNeeds.portionFulfilled(inventory);
-		health = Math.min(1.0, Math.max(0.0, calculateHealthChange(portionFulfilled)));
-	}
-
-	private double calculateHealthChange(double portionFulfilled) {
-		double healthChange = maxHealthChange * (1-portionFulfilled);
-		if (Math.abs(health) > maxHealthChange)
-			healthChange = maxHealthChange * healthChange / Math.abs(healthChange);
-		return healthChange;
+	private void createMachinery() {
+		Machinery machines = new Machinery();
+		machines.setThroughput(1.0);
+		machines.setHealth(1.0);
+		machines.setEfficiency(1.0);
 	}
 
 	@Override
 	public void runProductionStep() {
-		double quantityProduced = inputNeed.portionFulfilled(inventory) * throughput;
+		double quantityProduced = inputNeed.portionFulfilled(inventory) * machines.getMaximumDailyProduction();
 		inventory.addQuantityOfProduct(production, quantityProduced);
 	}
 
-	private void setInputNeed() {
-		List<Need> inputNeeds = new LinkedList<Need>();
-		Map<Product, Quantity> inputQuantities = production.getInputGoods();
-		Set<Product> inputGoods = inputQuantities.keySet();
-		for (Product product : inputGoods) {
-			Quantity baseQuantity = inputQuantities.get(product);
-			Quantity actualQuantity = new Quantity(product, baseQuantity.getQuantity() * throughput / efficiency);
-			inputNeeds.add(new Need(actualQuantity));
+	@Override
+	public Need getInputNeeds() {
+		Map<Product, Quantity> inputGoods = production.getInputGoods();
+		Need inputs = new NeedBranch();
+		for (Product product : inputGoods.keySet()) {
+			Quantity baseQuantity = inventory.getQuantityOf(product);
+			Quantity actualQuantity = new Quantity(product, baseQuantity.getQuantity() * machines.getInputModifier());
+			Need inputNeed = new BasicNeed(actualQuantity);
+			inputs.insert(inputNeed, inputs.getChildCount()+1);
 		}
-		inputNeed = new NeedSet(inputNeeds);
+		return inputs;
 	}
 	
-
+	@Override 
+	public void calculateInputNeeds() {
+		inputNeed = getInputNeeds();
+	}
+	
+	public void performMaintenance() {
+		machines.performMaintenance(inventory);
+	}
+	
 	@Override
-	public Product productionGood() {
+	public Product getProductionGood() {
 		return production;
 	}
 
 	public double getEfficiency() {
-		return efficiency;
+		return machines.getEfficiency();
 	}
 
 	public void setEfficiency(double efficiency) {
-		this.efficiency = efficiency;
+		machines.setEfficiency(efficiency);
 	}
 
 	public double getThroughput() {
-		return throughput;
+		return machines.getThroughput();
 	}
 
 	public void setThroughput(double throughput) {
-		this.throughput = throughput;
+		machines.setThroughput(throughput);
 	}
 }
