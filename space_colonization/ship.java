@@ -251,7 +251,7 @@ public class ship
 	private double x = 100.0;
 	public void setX(double X)
 	{
-		x = X;
+		x = X * crew;
 	}
 	private double y = 1/5;
 	public void setY(double Y)
@@ -262,9 +262,9 @@ public class ship
 	{
 			setStats(qual);
 	}
-	public void setStatsHeal(double level)
+	public void setStatsHeal(double level)//level varies directly with cost, ex if a ship is twice the level
+										  //of one ship it will cost a little less than twice as much	
 	{
-		level = 1 + level / 5;
 		qualities[0] = level * 0;
 		qualities[1] = (level - y) * 0;
 		qualities[2] = level * 5 * x;
@@ -277,7 +277,7 @@ public class ship
 		qualities[9] = level * 0;
 		qualities[10] = (level - y) * 0;
 		qualities[11] = level * 4 * x;
-		qualities[12] = level * 5 * x;
+		qualities[12] = level * 3 * x;
 		qualities[13] = level * 0;
 		qualities[14] = level * 2 * x;
 		qualities[15] = (level - y) * 0;
@@ -287,7 +287,6 @@ public class ship
 	}
 	public void setStatsBuild(double level)
 	{
-		level = 1 + level / 5;
 		qualities[0] = level * 0;
 		qualities[1] = (level - y) * 0;
 		qualities[2] = level * 5 * x;
@@ -310,7 +309,6 @@ public class ship
 	}
 	public void setStatsAttack(double level)
 	{
-		level = 1 + level / 5;
 		qualities[0] = level * 10 * x;
 		qualities[1] = (level - y) * 10 * x;
 		qualities[2] = level * 2 * x;
@@ -333,7 +331,6 @@ public class ship
 	}
 	public void setStatsDefend(double level)
 	{
-		level = 1 + level / 5;
 		qualities[0] = level * 2 * x;
 		qualities[1] = (level - y) * 2 * x;
 		qualities[2] = level * 10 * x;
@@ -356,7 +353,6 @@ public class ship
 	}
 	public void setStatsSpeed(double level)
 	{
-		level = 1 + level / 5;
 		qualities[0] = level * 4 * x;
 		qualities[1] = (level - y) * 4 * x;
 		qualities[2] = level * 4 * x;
@@ -366,8 +362,8 @@ public class ship
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 2 * x;
-		qualities[10] = level * 2 * x;
+		qualities[9] = level * 3 * x;
+		qualities[10] = level * 3 * x;
 		qualities[11] = level * 5 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
@@ -379,19 +375,18 @@ public class ship
 	}
 	public void setStatsRange(double level)
 	{
-		level = 1 + level / 5;
-		qualities[0] = level * 4 * x;
-		qualities[1] = (level - y) * 4 * x;
-		qualities[2] = level * 4 * x;
-		qualities[3] = (level - y) * 4 * x;
+		qualities[0] = level * 5 * x;
+		qualities[1] = (level - y) * 5 * x;
+		qualities[2] = level * 5 * x;
+		qualities[3] = (level - y) * 5 * x;
 		qualities[4] = 5;
 		qualities[5] = 5;
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 2 * x;
-		qualities[10] = level * 2 * x;
-		qualities[11] = level * 4 * x;
+		qualities[9] = level * 10 * x;
+		qualities[10] = level * 10 * x;
+		qualities[11] = level * 7 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
 		qualities[14] = level * x;
@@ -402,7 +397,6 @@ public class ship
 	}
 	public void setStatsBalance(double level)
 	{
-		level = 1 + level / 5;
 		qualities[0] = level * 6 * x;
 		qualities[1] = (level - y) * 6 * x;
 		qualities[2] = level * 6 * x;
@@ -411,10 +405,10 @@ public class ship
 		qualities[5] = 4;
 		qualities[6] = 1;
 		qualities[7] = 1;
-		qualities[8] = level * 6 * x;
-		qualities[9] = level * 6 * x;
-		qualities[10] = level * 6 * x;
-		qualities[11] = level * 6 * x;
+		qualities[8] = level * 5 * x;
+		qualities[9] = level * 4 * x;
+		qualities[10] = level * 4 * x;
+		qualities[11] = level * 5 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
 		qualities[14] = level * x;
@@ -457,6 +451,7 @@ public class ship
 		qualities[17] = stat[17];
 		qualities[18] = stat[18];
 	}
+	//do not intend to use this setCustom method in anything but testing
 	public void setStatsCustom(double regPower, double spPower, double regDefence, double spDefence, double regCoolDown, double spCooldown, 
 			double regWeaponsAccuracy, double spWeaponsAccuracy, double HP,	double regAttackRange, double spAttackRange, double MovementSpeed, 
 			double Repair, double build, double transport, double spArmor, double regArmor, double spWeapon, double regWeapon)
