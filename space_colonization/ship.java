@@ -4,7 +4,7 @@ public class ship
 {
 	private String name;
 	private double[] qualities;
-	private int cost;//to be replaced by an array of specific resorces later
+	private int cost;//to be replaced by an array of specific reasorces later once this is finallized
 	private String image;
 	private int crew;
 	public ship(String nameOfShip)
@@ -253,7 +253,12 @@ public class ship
 	{
 		x = X * crew;
 	}
-	private double y = 1/5;
+	private double z = 100.0;
+	public void setz(double Z)
+	{
+		x = Z + crew;
+	}
+	private double y = 1;// no longer going to change sp stat in this way.
 	public void setY(double Y)
 	{
 		y = Y;
@@ -318,8 +323,8 @@ public class ship
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 4 * x;
-		qualities[10] = level * 4 * x;
+		qualities[9] = level * 4 * z;
+		qualities[10] = level * 4 * z;
 		qualities[11] = level * 5 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
@@ -340,8 +345,8 @@ public class ship
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 4 * x;
-		qualities[10] = level * 4 * x;
+		qualities[9] = level * 4 * z;
+		qualities[10] = level * 4 * z;
 		qualities[11] = level * 5 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
@@ -362,8 +367,8 @@ public class ship
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 3 * x;
-		qualities[10] = level * 3 * x;
+		qualities[9] = level * 3 * z;
+		qualities[10] = level * 3 * z;
 		qualities[11] = level * 5 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
@@ -384,8 +389,8 @@ public class ship
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 10 * x;
-		qualities[10] = level * 10 * x;
+		qualities[9] = level * 10 * z;
+		qualities[10] = level * 10 * z;
 		qualities[11] = level * 7 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;
@@ -406,8 +411,8 @@ public class ship
 		qualities[6] = 1;
 		qualities[7] = 1;
 		qualities[8] = level * 5 * x;
-		qualities[9] = level * 4 * x;
-		qualities[10] = level * 4 * x;
+		qualities[9] = level * 4 * z;
+		qualities[10] = level * 4 * z;
 		qualities[11] = level * 5 * x;
 		qualities[12] = level * 0;
 		qualities[13] = level * 0;

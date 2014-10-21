@@ -1,19 +1,76 @@
 package space_colonization;
 
 public class Battle_AI {
-	public void targetStrongest()
+	
+	private int AILevel;
+	private int money;
+	private Fleet fleet;
+	public Battle_AI(int level, int mon, Fleet fl)
 	{
-		//does the damege to the strongest ships in the fleet first
+		AILevel = level;
+		money = mon;
+		fleet = fl;
 	}
-	public void targetWeakest()
+	public Battle_AI()
 	{
-		//does the damage to the weakest units first
+		AILevel = 2000;
+		money = 1000000000;
+		fleet = new Fleet();
+		setInvincable();
 	}
-	public void targetAll()
+	public Fleet getFleet()
 	{
-		//does the damage evenlly accross all ships
+		return fleet;
 	}
-	public void setBattleStratigy()
+	public void setFleet(Fleet fl)
+	{
+		fleet = fl;
+	}
+	public int getMoney()
+	{
+		return money;
+	}
+	public void setMoney(int mon)
+	{
+		money = mon;
+	}
+	public int getLevel()
+	{
+		return AILevel;
+	}
+	public void setLevel(int lev)
+	{
+		AILevel = lev;
+	}
+	public void arrangeShips()
+	{
+		//also arrange ship array in different formations putting different ships in different places
+	}
+	public void formFlotilla()
+	{
+		//how the AI builds its flotilla
+	}
+	public void PlanAttack()
+	{
+		//calculates attack interests based on enemy status
+	}
+	public void setInvincable()
+	{
+		//will set group invincable
+	}
+	public void surrenderTo(Fleet friend)
+	{
+		while(fleet.getFleet().length > 0)
+		{
+			friend.addFlotilla(fleet.getFlotilla(0));
+			fleet.takeOutFlotilla(0);
+		}
+	}
+	public void findNextTarget()
+	{
+		//looks at nearby civilizations
+	}
+	public void setBattleStratigy(Fleet attacking)
 	{
 		//sets AI's plans
 	}

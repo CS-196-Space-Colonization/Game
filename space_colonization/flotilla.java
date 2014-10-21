@@ -8,15 +8,51 @@ public class flotilla {
 	private int crew;
 	private ship[] Flotilla;
 	private boolean full;
+	private double xLocation;
+	private double yLocation;
 	public flotilla()
 	{
-		Flotilla = new ship[10];
+		Flotilla = new ship[126];
 		full = false;
+		xLocation = 0;
+		yLocation = 0;
+	}
+	public flotilla(double x, double y)
+	{
+		Flotilla = new ship[126];
+		full = false;
+		xLocation = x;
+		yLocation = y;
 	}
 	public flotilla(ship[] group, boolean Full)
 	{
 		Flotilla = group;
 		full = Full;
+		xLocation = 0;
+		yLocation = 0;
+	}
+	public flotilla(ship[] group, boolean Full, double x, double y)
+	{
+		Flotilla = group;
+		full = Full;
+		xLocation = x;
+		yLocation = y;
+	}
+	public double getX()
+	{
+		return xLocation;
+	}
+	public double getY()
+	{
+		return yLocation;
+	}
+	public void setX(double change)
+	{
+		xLocation = xLocation + change;
+	}
+	public void setY(double change)
+	{
+		yLocation = yLocation + change;
 	}
 	public boolean getFull()
 	{
@@ -60,29 +96,6 @@ public class flotilla {
 	public ship getShip(int a)
 	{
 		return Flotilla[a];
-	}
-	public void sortByHP()
-	{
-		ship[] temp = new ship[Flotilla.length];
-		ship[] temp2 = Flotilla;
-		for(int j = 0; j < Flotilla.length; j++)
-		{
-			int place = 0;
-			double smallest = temp2[place].getHP();
-			for(int i = 0; i < temp2.length; i++)
-			{
-				if(temp2[i].getHP() < smallest)
-					place = i;
-			}
-			temp[j] = temp2[place];
-			ship temp3 = temp2[temp2.length - 1];
-			temp2[place] = temp3;
-			ship[] temp4 = temp2;
-			temp2 = new ship[temp2.length - 1];
-			for(int a = 0; a < temp2.length; a++)
-			temp2[a] = temp4[a];
-		}
-		Flotilla = temp;
 	}
 	public void addShip(ship one)
 	{
@@ -340,5 +353,51 @@ public class flotilla {
 	public void setShipRegWeaponStat(int ship, double qual)
 	{
 		getShip(ship).setStat(18, qual);
+	}
+	public void sortByHP()
+	{
+		ship[] temp = new ship[Flotilla.length];
+		ship[] temp2 = Flotilla;
+		for(int j = 0; j < Flotilla.length; j++)
+		{
+			int place = 0;
+			double smallest = temp2[place].getHP();
+			for(int i = 0; i < temp2.length; i++)
+			{
+				if(temp2[i].getHP() < smallest)
+					place = i;
+			}
+			temp[j] = temp2[place];
+			ship temp3 = temp2[temp2.length - 1];
+			temp2[place] = temp3;
+			ship[] temp4 = temp2;
+			temp2 = new ship[temp2.length - 1];
+			for(int a = 0; a < temp2.length; a++)
+			temp2[a] = temp4[a];
+		}
+		Flotilla = temp;
+	}
+	public void sortByAttack()
+	{
+		ship[] temp = new ship[Flotilla.length];
+		ship[] temp2 = Flotilla;
+		for(int j = 0; j < Flotilla.length; j++)
+		{
+			int place = 0;
+			double smallest = temp2[place].getRegPower();
+			for(int i = 0; i < temp2.length; i++)
+			{
+				if(temp2[i].getRegPower() > smallest)
+					place = i;
+			}
+			temp[j] = temp2[place];
+			ship temp3 = temp2[temp2.length - 1];
+			temp2[place] = temp3;
+			ship[] temp4 = temp2;
+			temp2 = new ship[temp2.length - 1];
+			for(int a = 0; a < temp2.length; a++)
+			temp2[a] = temp4[a];
+		}
+		Flotilla = temp;
 	}
 }

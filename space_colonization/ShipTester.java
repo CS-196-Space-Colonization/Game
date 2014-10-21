@@ -6,9 +6,9 @@ public class ShipTester {
 		ship one = new ship("heal");
 		one.setEqualStats(5000);
 		ship two = new ship("build");
-		two.setEqualStats(500);
+		two.setEqualStats(50);
 		ship three = new ship("three");
-		three.setEqualStats(50);
+		three.setEqualStats(500);
 		System.out.println(one.getName());
 		ship[] b = new ship[3];
 		b[0] = one;
@@ -18,7 +18,7 @@ public class ShipTester {
 		System.out.println(a.getShip(0).getName());
 		System.out.println(a.getShip(1).getName());
 		System.out.println(a.getShip(2).getName());
-		a.sortByHP();
+		a.sortByAttack();
 		System.out.println(a.getShip(0).getName());
 		System.out.println(a.getShip(1).getName());
 		System.out.println(a.getShip(2).getName());

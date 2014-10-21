@@ -4,15 +4,33 @@ public class shipFactory {
 	private int money;
 	private int peoples;
 	private static int costOfFactory = 100;
+	private double xLocation;
+	private double yLocation;
 	public shipFactory()
 	{
 		money = 0;
 		peoples = 0;
 	}
-	public shipFactory(int Money, int Person)
+	public shipFactory(int Money, int Person, double x, double y)
 	{
 		money = Money;
 		peoples = Person;
+	}
+	public double getX()
+	{
+		return xLocation;
+	}
+	public double getY()
+	{
+		return yLocation;
+	}
+	public void setX(double change)
+	{
+		xLocation = xLocation + change;
+	}
+	public void setY(double change)
+	{
+		yLocation = yLocation + change;
 	}
 	public int getCost()
 	{
