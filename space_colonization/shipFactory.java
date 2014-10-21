@@ -6,15 +6,34 @@ public class shipFactory {
 	private static int costOfFactory = 100;
 	private double xLocation;
 	private double yLocation;
+	private Fleet troops;
 	public shipFactory()
 	{
 		money = 0;
 		peoples = 0;
+		troops = new Fleet();
+		xLocation = 0;
+		yLocation = 0;
+	}
+	public shipFactory(Fleet f, int Money, int Person, double x, double y)
+	{
+		troops = f;
+		money = Money;
+		peoples = Person;
+		xLocation = x;
+		yLocation = y;
 	}
 	public shipFactory(int Money, int Person, double x, double y)
 	{
+		troops = new Fleet();
 		money = Money;
 		peoples = Person;
+		xLocation = x;
+		yLocation = y;
+	}
+	public Fleet getFleet()
+	{
+		return troops;
 	}
 	public double getX()
 	{
@@ -57,12 +76,8 @@ public class shipFactory {
 			Flotilla.addShip(Ship);
 		}
 	}
-	public void produceFlotilla(ship[] floatil, flotilla Flotilla)
+	public void produceFlotilla(ship[] floatil, int Flotilla)
 	{
-		for(int i = 0; i > floatil.length; i++)
-		{
-			produceShip(floatil[i], Flotilla);
-		}
+		
 	}
-	//make production of specific flotillas
 }

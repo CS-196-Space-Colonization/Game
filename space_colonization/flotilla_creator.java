@@ -6,15 +6,17 @@ public class flotilla_creator {
 	private int people;
 	private double baseX;
 	private double baseY;
+	private Fleet fleet;
 	public flotilla_creator()
 	{
 		money = 10000000;
 		people = 1000000;
-		first = new shipFactory(money, people, baseX, baseY);
+		first = new shipFactory(fleet, money, people, baseX, baseY);
 	}
-	public flotilla_creator(int Money, int People, double x, double y)
+	public flotilla_creator(Fleet f, int Money, int People, double x, double y)
 	{
-		first = new shipFactory(Money, People, x, y);
+		first = new shipFactory(f, Money, People, x, y);
+		fleet = f;
 		money = Money;
 		people = People;
 		baseX = x;
