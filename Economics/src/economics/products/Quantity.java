@@ -35,8 +35,10 @@ public final class Quantity implements Comparable<Quantity> {
 	
 	@Override
 	public boolean equals(Object other) {
+		if (!(other instanceof Quantity))
+			return false;
 		Quantity RHS = (Quantity)other;
-		assertUnitMatches(RHS.unit);
+		
 		return RHS.unit.equals(this.unit) && RHS.quantity.equals(this.quantity);
 	}
 

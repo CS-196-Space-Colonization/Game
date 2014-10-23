@@ -79,4 +79,14 @@ public class NeedBranch implements Need {
 		}
 		return needed;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof NeedBranch))
+			return false;
+		
+		NeedBranch other = (NeedBranch)o;
+		return children.equals(other.children);
+		
+	}
 }

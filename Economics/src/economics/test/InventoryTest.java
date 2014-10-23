@@ -102,6 +102,13 @@ public class InventoryTest {
 	}
 	
 	@Test
+	public void testGetQuantityAgainstGetAmount() {
+		Inventory inventory = makeInventory();
+		Product iron = ProductsService.get("iron");
+		assertTrue("GetQuantity does not match GetAmount!", inventory.getAmountOf(iron) == inventory.getQuantityOf(iron).getQuantity());
+	}
+	
+	@Test
 	public void testRemoveQuantityNegative() {
 		try {
 			testRemoveQuantityImpl(-1);
@@ -166,6 +173,27 @@ public class InventoryTest {
 	public void testDoesNotEqualEmpty() {
 		Inventory inventory = makeInventory();
 		assertFalse("Equals does not correctly compare inventories!", inventory.equals(new Inventory()));
+	}
+	
+	@Test
+	public void emptyEqualsEmpty() {
+		Inventory inventory = makeInventory();
+		Inventory empty = new Inventory();
+		inventory.clear();
+		assertTrue("Two empty inventories should equal each other!", inventory.equals(empty));
+	}
+	
+	@Test
+	public void testDoesNotEqualNull() {
+		Inventory inventory = makeInventory();
+		assertFalse("An inventory should not equal null!", inventory.equals(null));
+	}
+	
+	@Test
+	public void testEqualsCopy() {
+		Inventory one = makeInventory();
+		Inventory copy = new Inventory(one);
+		assertTrue("An inventory should equal its copy!", one.equals(copy));
 	}
 	
 	@Test

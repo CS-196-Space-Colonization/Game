@@ -72,4 +72,13 @@ public class BasicNeed  implements Need {
 		result.addQuantityOfProduct((Product)need.getUnit(), need.getQuantity());
 		return result;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof BasicNeed))
+			return false;
+		
+		BasicNeed other = (BasicNeed)o;
+		return need.equals(other.need);
+	}
 }
