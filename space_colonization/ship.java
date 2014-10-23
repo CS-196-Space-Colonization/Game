@@ -1,6 +1,6 @@
 package space_colonization;
 
-public class ship 
+public class ship extends Battle_Object
 {
 	private String name;
 	private double[] qualities;
@@ -9,15 +9,18 @@ public class ship
 	private int crew;
 	public ship(String nameOfShip)
 	{
+		super();
 		name = nameOfShip;
 		qualities = new double[19];
 		cost = 10;
 		image = "[]";
 		crew = 1;
 		setEqualStats(10.0);
+		
 	}
 	public ship()
 	{
+		super();
 		name = "ship";
 		qualities = new double[19];
 		cost = 10;
@@ -27,6 +30,7 @@ public class ship
 	}
 	public ship(String nameOfShip, double[] stats, int Cost, String display, int Crew)
 	{
+		super(stats[8]);
 		name = nameOfShip;
 		qualities = stats;
 		cost = Cost;
@@ -121,14 +125,6 @@ public class ship
 	public void setSpAccuracy(double qual)
 	{
 		qualities[7] = qual;
-	}
-	public double getHP()
-	{
-		return qualities[8];
-	}
-	public void setHP(double damage)
-	{
-		qualities[8] = qualities[8] - damage;
 	}
 	public double getRegRange()
 	{

@@ -1,35 +1,42 @@
 package space_colonization;
 
-public class shipFactory {
+public class shipFactory extends Battle_Object{
 	private int money;
 	private int peoples;
 	private static int costOfFactory = 100;
 	private double xLocation;
 	private double yLocation;
 	private Fleet troops;
+	private double hp;
 	public shipFactory()
 	{
+		super();
 		money = 0;
 		peoples = 0;
 		troops = new Fleet();
 		xLocation = 0;
 		yLocation = 0;
+		hp = 10;
 	}
-	public shipFactory(Fleet f, int Money, int Person, double x, double y)
+	public shipFactory(Fleet f, int Money, int Person, double x, double y, double HP)
 	{
+		super(HP);
 		troops = f;
 		money = Money;
 		peoples = Person;
 		xLocation = x;
 		yLocation = y;
+		hp = HP;
 	}
-	public shipFactory(int Money, int Person, double x, double y)
+	public shipFactory(int Money, int Person, double x, double y, double HP)
 	{
+		super(HP);
 		troops = new Fleet();
 		money = Money;
 		peoples = Person;
 		xLocation = x;
 		yLocation = y;
+		hp = HP;
 	}
 	public Fleet getFleet()
 	{
