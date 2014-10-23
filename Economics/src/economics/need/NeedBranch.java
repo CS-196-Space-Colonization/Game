@@ -6,7 +6,7 @@ import java.util.List;
 import economics.Inventory;
 
 
-public class NeedBranch extends AbstractNeedNode implements Need {
+public class NeedBranch implements Need {
 	private List<Need> children;
 	
 	public NeedBranch() {
@@ -24,7 +24,7 @@ public class NeedBranch extends AbstractNeedNode implements Need {
 
 	@Override
 	public void insert(Need element, int index) {
-		children.add(index, (Need)element);
+		children.add(index, element);
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package economics.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,13 +12,12 @@ import economics.products.Product;
 import economics.products.Quantity;
 
 public class BasicBuyerTest {
-	Market testMarket = new Market() {
-		private Product money = new Product("money", 1.0, Collections.EMPTY_MAP);
+	private Market testMarket = new Market() {
 		@Override
 		public List<Transaction> getOffers(Product needed) {
 			ArrayList<Transaction> transactions = new ArrayList<>();
 			transactions.add(new GoodsTransaction(new Quantity(needed, 10.0), 
-												  new Quantity(Product.get("money"), 100.0)));
+												  new Quantity(ProductsService.get("money"), 100.0)));
 			return transactions;
 		}
 
@@ -33,7 +31,7 @@ public class BasicBuyerTest {
 		
 		@Override
 		public Product getMoney() {
-			return money;
+			return ProductsService.get("money");
 		}
 	};
 	

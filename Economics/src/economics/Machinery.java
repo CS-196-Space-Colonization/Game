@@ -3,7 +3,8 @@ package economics;
 import economics.need.Need;
 
 public class Machinery {
-	private static final double maxHealthChange = .03;
+	private static final double maxHealthIncrease = .03;
+	private static final double maxHealthDecrease = .05;
 	private Need maintenanceNeeds;
 	private double health;
 	private double efficiency;
@@ -55,9 +56,10 @@ public class Machinery {
 	}
 	
 	private double calculateHealthChange(double portionFulfilled) {
-		double healthChange = maxHealthChange * (1-portionFulfilled);
-		if (Math.abs(getHealth()) > maxHealthChange)
-			healthChange = maxHealthChange * healthChange / Math.abs(healthChange);
+		double healthChange = -maxHealthDecrease * (1 - portionFulfilled);
+		if (healthChange > maxHealthIncrease)
+			healthChange = maxHealthIncrease;
+		
 		return healthChange;
 	}
 }

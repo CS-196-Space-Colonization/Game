@@ -3,7 +3,7 @@ package economics.need;
 import economics.Inventory;
 import economics.products.*;
 
-public class BasicNeed extends AbstractNeedNode implements Need {
+public class BasicNeed  implements Need {
 	private Quantity need;
 	
 	public BasicNeed(Quantity need) {
