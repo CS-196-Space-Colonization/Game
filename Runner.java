@@ -27,5 +27,6 @@ public class Runner {
         System.out.println("iron="+a1a1a1.getResource("iron"));
         System.out.println("Changed resource? "+a1a1a1.setResource("iron",4.0));
         System.out.println("iron="+a1a1a1.getResource("iron"));
+        a1a1a1.updateResources();
     }
 }

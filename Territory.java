@@ -77,6 +77,7 @@ public abstract class Territory {
 
     public final void updateResources(){
         //TODO:Implement. Figure out how to make sure everything is always updated.
+
     }
     public String toString(){
         return "("+locationX+","+locationY+") is owned by "+owner+"\n";

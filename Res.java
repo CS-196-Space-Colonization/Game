@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -30,15 +31,6 @@ public class Res {
      * @param resFile file name for this resource
      */
     public Res(String resFile){
-        /*path=dir+resFile;
-        file=new File(path);
-        try{
-            reader=new Scanner(file);
-        }
-        catch (Exception e){
-            System.out.print(e);}
-        This was erroneous Scanner attempt
-        */
         pathName=dir+resFile;
         path= Paths.get(pathName);
         if (!Files.exists(path)){
@@ -51,21 +43,7 @@ public class Res {
      * Empty constructor will create new file for this
      */
     public Res(){
-        /*path=dir+"resFile"; //TODO: Think of names for new files. Or just be unoriginal
-        file=new File(path);
-        int i=1;
-        while(file.exists()){
-            path=dir+"resFile"+i;
-            file=new File(path);
-        }
-        try {
-            file.createNewFile();
-            reader = new Scanner(file);
-            return;
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }*/
+        //TODO: Think of names for new files. Or just be unoriginal
         pathName=dir+"resFile";
         path=Paths.get(pathName);
         int i=1;
@@ -75,22 +53,28 @@ public class Res {
             path=Paths.get(pathName);
         }
     }
+
+    /**
+     * Get the value of a particular resource
+     * @param name Name of resource
+     * @return Value of resource. If DNE, return 0
+     */
     public double getResource(String name){
         //Insert database query
         //Or for now, just do a search in the textfile
         String line="";
-        try{reader=Files.newBufferedReader(path, StandardCharsets.UTF_8);}
-        catch (Exception e){}
-        while(line!=null){
-            try {
-                line = reader.readLine();
+        try{
+            reader=Files.newBufferedReader(path, StandardCharsets.UTF_8);
+            line = reader.readLine();
+            while(line!=null){
                 if (line.indexOf(name + "=") == 0) {
                     reader.close();
                     return Double.parseDouble(line.substring(name.length() + 1));
                 }
+                line = reader.readLine();
             }
-            catch (Exception e){}
         }
+        catch (Exception e){}
         return 0.0;
     }
 
@@ -106,28 +90,21 @@ public class Res {
         boolean written=false;
         Path dir= Paths.get("resources/"),tmp = null;
         try {
-            tmp=Files.createTempFile(dir,null,null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try{
-            writer=Files.newBufferedWriter(tmp,StandardCharsets.UTF_8);
-            reader=Files.newBufferedReader(path, StandardCharsets.UTF_8);
-        }
-        catch (Exception e) {}
-        if(value<0) return false;
-        while(line!=null){
-            try {
-                line = reader.readLine();
+            tmp = Files.createTempFile(dir, null, null);
+            writer = Files.newBufferedWriter(tmp, StandardCharsets.UTF_8);
+            reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+            if (value < 0) return false;
+            line = reader.readLine();
+            while (line != null) {
                 if (line.indexOf(resource + "=") == 0) {
                     writer.write(newLine);
-                    written=true;
-                }
-                else writer.write(line);
+                    written = true;
+                } else writer.write(line);
                 writer.newLine();
+                line = reader.readLine();
             }
-            catch (Exception e){}
         }
+        catch (Exception e) {e.printStackTrace();}
         if(!written) {
             try {
                 writer.write(newLine);
@@ -152,5 +129,25 @@ public class Res {
                 e.printStackTrace();
                 return false;}
         }
+    }
+    public String[] listResource(){
+        ArrayList<String> strs=new ArrayList<String>();
+        String line="";
+        try{
+            reader=Files.newBufferedReader(path,StandardCharsets.UTF_8);
+            line=reader.readLine();
+            while(line!=null){
+                if(line.length()>0)strs.add(line.substring(0,line.indexOf("=")));
+                line=reader.readLine();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        String[]str=new String[strs.size()];
+        for(int i=0;i<str.length;i++){
+            str[i]=strs.get(i);
+        }
+        return str;
     }
 }
