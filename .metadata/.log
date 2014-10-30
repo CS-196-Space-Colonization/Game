@@ -1,0 +1,10 @@
+!SESSION 2014-10-30 17:37:29.955 -----------------------------------------------
+eclipse.buildId=v21.0.1-543035
+java.version=1.7.0_67
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product -product com.android.ide.eclipse.adt.package.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product com.android.ide.eclipse.adt.package.product -data C:\Users\Mark\Documents\GitHub\Game -product com.android.ide.eclipse.adt.package.product
+
+!ENTRY com.android.ide.eclipse.ddms 4 0 2014-10-30 17:37:35.783
+!MESSAGE DDMS files not found: C:\Users\Mark\Desktop\cs 125\CS125-v001-windows-64bit\eclipse\platform-tools\adb.exe C:\Users\Mark\Desktop\cs 125\CS125-v001-windows-64bit\eclipse\tools\hprof-conv.exe C:\Users\Mark\Desktop\cs 125\CS125-v001-windows-64bit\eclipse\tools\traceview.bat 
