@@ -2,7 +2,7 @@
  * @author Arturo Guerrero
  */
 
-package AI;
+package Arturo;
 
 import java.util.ArrayList;
 import java.util.Comparator;

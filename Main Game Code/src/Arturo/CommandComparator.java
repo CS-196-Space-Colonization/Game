@@ -1,4 +1,4 @@
-package AI;
+package Arturo;
 import java.util.Comparator;
 
 public class CommandComparator implements Comparator<Command>

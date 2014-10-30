@@ -1,4 +1,4 @@
-package AI;
+package Arturo;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;

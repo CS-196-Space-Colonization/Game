@@ -4,7 +4,7 @@
  * @author Arturo Guerrero
  * @version v0.01 2014-10-28
  */
-package AI;
+package Arturo;
 
 public class Rep {
 	//tendency to fight

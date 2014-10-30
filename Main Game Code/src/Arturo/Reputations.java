@@ -1,4 +1,4 @@
-package AI;
+package Arturo;
 /**
  * Holds the reputation for ever player throughout the game
  * @author Arturo Guerrero
