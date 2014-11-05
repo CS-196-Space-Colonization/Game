@@ -47,11 +47,15 @@ public class Res {
         pathName=dir+"resFile";
         path=Paths.get(pathName);
         int i=1;
-        while(Files.exists(path)){
-            pathName=dir+"resFile"+i;
-            i++;
-            path=Paths.get(pathName);
+        try {
+                while (Files.exists(path)) {
+                pathName = dir + "resFile" + i;
+                i++;
+                path = Paths.get(pathName);
+                path.toFile().createNewFile();
+            }
         }
+        catch (Exception e){e.printStackTrace();}
     }
 
     /**

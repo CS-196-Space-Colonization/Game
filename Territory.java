@@ -76,8 +76,14 @@ public abstract class Territory {
     }
 
     public final void updateResources(){
-        //TODO:Implement. Figure out how to make sure everything is always updated.
-
+        for (Territory terr:this.subTerr){
+            for (String str:terr.listResources()){
+                this.res.setResource(str,this.res.getResource(str)+terr.getResource(str));
+            }
+        }
+    }
+    protected final String[] listResources(){
+        return this.res.listResource();
     }
     public String toString(){
         return "("+locationX+","+locationY+") is owned by "+owner+"\n";
