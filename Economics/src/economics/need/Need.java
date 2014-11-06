@@ -1,20 +1,18 @@
 package economics.need;
 
+import java.util.List;
+
+import tree.mutable.MutableTreeNode;
+
 import economics.Inventory;
 
 public interface Need {
 	Inventory getNeededProducts();
 	double portionFulfilled(Inventory has);
-	void insert(Need element, int index);
-	void remove(int index);
-	void remove(Need object);
-	void removeFromParent();
-	void setParent(Need parent);
-	boolean getAllowsChildren();
-	Need getChildAt(int childIndex);
-	int getChildCount();
-	int getIndex(Need node);
+	void add(Need child);
 	Need getParent();
-	boolean isLeaf();
-	Need copy();
+	List<Need> getChildren();
+	int getChildCount();
+	void removeFromParent();
+	void setParent(Need newParent);
 }

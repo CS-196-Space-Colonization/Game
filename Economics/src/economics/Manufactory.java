@@ -40,7 +40,7 @@ public class Manufactory implements Producer {
 			Quantity baseQuantity = inventory.getQuantityOf(product);
 			Quantity actualQuantity = new Quantity(product, baseQuantity.getQuantity() * machines.getInputModifier());
 			Need inputNeed = new BasicNeed(actualQuantity);
-			inputs.insert(inputNeed, inputs.getChildCount()+1);
+			inputs.add(inputNeed);
 		}
 		return inputs;
 	}

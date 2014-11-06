@@ -57,6 +57,10 @@ public class MutableTreeNodeImpl<T> implements MutableTreeNode<T> {
 		this(nullTree, Collections.EMPTY_LIST);
 	}
 	
+	public MutableTreeNodeImpl(T data) {
+		this.data = data;
+	}
+	
 	public MutableTreeNodeImpl(MutableTreeNode<T> parent) {
 		this(parent, Collections.EMPTY_LIST);
 	}
