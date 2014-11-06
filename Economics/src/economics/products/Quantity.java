@@ -2,6 +2,7 @@ package economics.products;
 
 
 public final class Quantity implements Comparable<Quantity> {
+	public static final Quantity NullQuantity = new Quantity(new Unit(){}, 0.0);
 	private final Unit unit;
 	private final Double quantity;
 	

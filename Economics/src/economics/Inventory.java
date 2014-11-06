@@ -43,7 +43,8 @@ public class Inventory {
 	}
 	
 	public Quantity getQuantityOf(Product product) {
-		return inventory.get(product);
+		Quantity stored = inventory.get(product);
+		return stored == null ? Quantity.NullQuantity : stored;
 	}
 	
 	public double getAmountOf(Product product) {

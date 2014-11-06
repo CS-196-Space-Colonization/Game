@@ -13,7 +13,6 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	private Product money;
 	private Need needs;
 	private Inventory inventory;
-	private Market market;
 	
 	public BasicBuyer(Market market) {
 		setMarket(market);
@@ -54,7 +53,7 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	}
 
 	private void buyGood(Quantity needed) {
-		List<Transaction> offers = market.getOffers((Product)needed.getUnit());
+		List<Transaction> offers = getMarket().getOffers((Product)needed.getUnit());
 		Comparator<Transaction> dealRater = new BasicDealScorer();
 		Collections.sort(offers, dealRater);
 		for (Transaction bestOffer : offers) {
