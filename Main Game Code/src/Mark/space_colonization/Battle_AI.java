@@ -50,9 +50,9 @@ public class Battle_AI {
 	{
 		//how the AI builds its flotilla
 	}
-	public void PlanAttack()
+	public double PlanAttack(Fleet attacking)
 	{
-		//calculates attack interests based on enemy status
+		return fleet.winProbabilityBasic(attacking);
 	}
 	public void setInvincable()
 	{
