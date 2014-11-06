@@ -48,12 +48,12 @@ public class Res {
         path=Paths.get(pathName);
         int i=1;
         try {
-                while (Files.exists(path)) {
+            while (Files.exists(path)) {
                 pathName = dir + "resFile" + i;
                 i++;
                 path = Paths.get(pathName);
-                path.toFile().createNewFile();
             }
+            path.toFile().createNewFile();
         }
         catch (Exception e){e.printStackTrace();}
     }
