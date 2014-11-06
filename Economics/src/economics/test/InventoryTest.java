@@ -19,35 +19,12 @@ import economics.products.Product;
 import economics.products.Quantity;
 
 public class InventoryTest {
-	private ImmutableMap<String, Product> validProducts;
-	private Map<String, Product> products = new HashMap<>();
-	private Map<Product, Quantity> rawInventory;
-	
-	@Before
-	public void setup() {
-		validProducts = ImmutableMap.copyOf(makeValidProducts());
-		rawInventory = makeRawSampleInventory();
-	}
-
-	private Map<String, Product> makeValidProducts() {
-		Product labor = new Product("labor", 1.0, Collections.EMPTY_MAP);
-		products.put("labor", labor);
-		Map<Product, Quantity> ironInputs = new HashMap<>();
-		ironInputs.put(labor, new Quantity(labor, 3.0));
-		Product iron = new Product("iron", 5.0, ironInputs);
-		products.put("iron", iron);
-		Map<Product, Quantity> steelInputs = new HashMap<>();
-		steelInputs.put(labor, new Quantity(labor, 1.0));
-		steelInputs.put(iron, new Quantity(iron, 1.0));
-		Product steel = new Product("steel", 10.0, steelInputs);
-		products.put("steel", steel);
-		return products;
-	}
+	private Map<Product, Quantity> rawInventory = makeRawSampleInventory();
 	
 	private Map<Product, Quantity> makeRawSampleInventory() {
 		Map<Product, Quantity> rawInventory = new HashMap<Product, Quantity>();
-		Product iron = validProducts.get("iron");
-		Product steel = validProducts.get("steel");
+		Product iron = ProductsService.get("iron");
+		Product steel = ProductsService.get("steel");
 		rawInventory.put(iron, new Quantity(iron, 9.0));
 		rawInventory.put(steel, new Quantity(steel, 18.0));
 		return rawInventory;
@@ -67,7 +44,7 @@ public class InventoryTest {
 	@Test
 	public void testParameterizedConstructor() {
 		Inventory test = makeInventory();
-		Product iron = validProducts.get("iron");
+		Product iron = ProductsService.get("iron");
 		assertFalse("Parameterized constructor results in empty inventory!", test.isEmpty());
 		assertTrue("Parameterized constructor does not match input map! ", contentsEqual(test, rawInventory));
 		rawInventory.put(iron, new Quantity(iron, 1.0));
@@ -78,15 +55,15 @@ public class InventoryTest {
 	public void testGetProducts() {
 		Inventory inventory = makeInventory();
 		Set<Product> products = inventory.getProducts();
-		assertTrue("Inventory constructed with iron does not contain it", products.contains(validProducts.get("iron")));
-		assertTrue("Inventory constructed with steel does not contain it", products.contains(validProducts.get("steel")));
-		assertFalse("Inventory constructed without labor contains it", products.contains(validProducts.get("labor")));
+		assertTrue("Inventory constructed with iron does not contain it", products.contains(ProductsService.get("iron")));
+		assertTrue("Inventory constructed with steel does not contain it", products.contains(ProductsService.get("steel")));
+		assertFalse("Inventory constructed without labor contains it", products.contains(ProductsService.get("labor")));
 	}
 	
 	@Test
 	public void testNoLabor() {
 		Inventory inventory = new Inventory();
-		assertExpectedEqualsActual("Calling GetQuantityOf on empty inventory does not result in 0", 0.0, inventory.getAmountOf(validProducts.get("iron")));
+		assertExpectedEqualsActual("Calling GetQuantityOf on empty inventory does not result in 0", 0.0, inventory.getAmountOf(ProductsService.get("iron")));
 	}
 	
 	@Test
@@ -125,6 +102,13 @@ public class InventoryTest {
 	}
 	
 	@Test
+	public void testGetQuantityAgainstGetAmount() {
+		Inventory inventory = makeInventory();
+		Product iron = ProductsService.get("iron");
+		assertTrue("GetQuantity does not match GetAmount!", inventory.getAmountOf(iron) == inventory.getQuantityOf(iron).getQuantity());
+	}
+	
+	@Test
 	public void testRemoveQuantityNegative() {
 		try {
 			testRemoveQuantityImpl(-1);
@@ -136,7 +120,7 @@ public class InventoryTest {
 	
 	private void testRemoveQuantityImpl(double qty) {
 		Inventory inventory = makeInventory();
-		Product iron = validProducts.get("iron");
+		Product iron = ProductsService.get("iron");
 		double original = inventory.getAmountOf(iron);
 		double expected = Math.max(original - qty, 0.0);
 		inventory.removeQuantityOfProduct(iron, qty);
@@ -146,7 +130,7 @@ public class InventoryTest {
 	
 	private void testAddQuantityImpl(double qty) {
 		Inventory inventory = makeInventory();
-		Product iron = validProducts.get("iron");
+		Product iron = ProductsService.get("iron");
 		double original = inventory.getAmountOf(iron);
 		inventory.addQuantityOfProduct(iron, qty);
 		double expected = Math.max(original + qty, 0.0);
@@ -192,10 +176,31 @@ public class InventoryTest {
 	}
 	
 	@Test
+	public void emptyEqualsEmpty() {
+		Inventory inventory = makeInventory();
+		Inventory empty = new Inventory();
+		inventory.clear();
+		assertTrue("Two empty inventories should equal each other!", inventory.equals(empty));
+	}
+	
+	@Test
+	public void testDoesNotEqualNull() {
+		Inventory inventory = makeInventory();
+		assertFalse("An inventory should not equal null!", inventory.equals(null));
+	}
+	
+	@Test
+	public void testEqualsCopy() {
+		Inventory one = makeInventory();
+		Inventory copy = new Inventory(one);
+		assertTrue("An inventory should equal its copy!", one.equals(copy));
+	}
+	
+	@Test
 	public void testDoesNotEqualNonempty() {
 		Inventory inventory = makeInventory();
 		Inventory other = new Inventory();
-		other.addQuantityOfProduct(validProducts.get("iron"), 5.0);
+		other.addQuantityOfProduct(ProductsService.get("iron"), 5.0);
 		assertFalse("Equals does not correctly compare inventories!", inventory.equals(other));
 	}
 	
@@ -203,8 +208,8 @@ public class InventoryTest {
 	public void testDoesEqualIdentical() {
 		Inventory inventory = makeInventory();
 		Inventory other = new Inventory();
-		other.addQuantityOfProduct(validProducts.get("iron"), 5.0);
-		other.addQuantityOfProduct(validProducts.get("steel"), 10.0);
+		other.addQuantityOfProduct(ProductsService.get("iron"), 5.0);
+		other.addQuantityOfProduct(ProductsService.get("steel"), 10.0);
 		assertFalse("Equals does not correctly compare inventories!", inventory.equals(other));
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import economics.need.Need;
+import economics.need.NeedBranch;
 import economics.products.Product;
 import economics.products.Quantity;
 
@@ -12,10 +13,10 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	private Product money;
 	private Need needs;
 	private Inventory inventory;
-	private Market market;
 	
 	public BasicBuyer(Market market) {
 		setMarket(market);
+		setNeeds(null);
 		inventory = new Inventory();
 	}
 	
@@ -27,11 +28,13 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	
 	@Override
 	public Need getNeeds() {
-		return needs == null ? null : needs.copy();
+		return needs.copy();
 	}
 
 	@Override
 	public void setNeeds(Need needs) {
+		if (needs == null)
+			needs = new NeedBranch();
 		this.needs = needs;
 	}
 
@@ -50,7 +53,7 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	}
 
 	private void buyGood(Quantity needed) {
-		List<Transaction> offers = market.getOffers((Product)needed.getUnit());
+		List<Transaction> offers = getMarket().getOffers((Product)needed.getUnit());
 		Comparator<Transaction> dealRater = new BasicDealScorer();
 		Collections.sort(offers, dealRater);
 		for (Transaction bestOffer : offers) {

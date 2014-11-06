@@ -1,7 +1,7 @@
 package economics;
 
 public abstract class AbstractAgent implements EconomicAgent {
-	private Inventory inventory;
+	private Inventory inventory = new Inventory();
 	private Market market;
 	
 	public void give(Inventory other) {
