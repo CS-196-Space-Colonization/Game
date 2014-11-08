@@ -12,17 +12,19 @@ public class flotilla {
 	private double yLocation;
 	public flotilla()
 	{
-		Flotilla = new ship[126];
+		Flotilla = new ship[0];
 		full = false;
 		xLocation = 0;
 		yLocation = 0;
+		names = new String[Flotilla.length];
 	}
 	public flotilla(double x, double y)
 	{
-		Flotilla = new ship[126];
+		Flotilla = new ship[0];
 		full = false;
 		xLocation = x;
 		yLocation = y;
+		names = new String[Flotilla.length];
 	}
 	public flotilla(ship[] group, boolean Full)
 	{
@@ -30,6 +32,7 @@ public class flotilla {
 		full = Full;
 		xLocation = 0;
 		yLocation = 0;
+		names = new String[Flotilla.length];
 	}
 	public flotilla(ship[] group)
 	{
@@ -37,6 +40,7 @@ public class flotilla {
 		full = false;
 		xLocation = 0;
 		yLocation = 0;
+		names = new String[Flotilla.length];
 	}
 	public flotilla(ship[] group, boolean Full, double x, double y)
 	{
@@ -44,6 +48,15 @@ public class flotilla {
 		full = Full;
 		xLocation = x;
 		yLocation = y;
+		names = new String[Flotilla.length];
+	}
+	public String getName(int place)
+	{
+		return Flotilla[place].getName();
+	}
+	public ship[] getFlotilla()
+	{
+		return Flotilla;
 	}
 	public double getX()
 	{
@@ -84,23 +97,29 @@ public class flotilla {
 	}
 	public void setFlotillaStats()
 	{
-		checkRemoveShip();
+		if(Flotilla.length > 0)
+		{
 		names = new String[Flotilla.length];
 		worth = 0;
 		crew = 0;
+		for(int i = 0; i < 19; i++)
+		{
+			qualities[i] = 0;
+		}
 		for(int i = 0; i < Flotilla.length; i++)
 		{
-			names[i] = getShip(i).getName();
+			names[i] = getName(i);
 			for(int j = 0; j < 19; j++)
 			{
-				qualities[j] = qualities[j] + getShip(i).getQuality(j);
+				qualities[j] = qualities[j] + Flotilla[i].getQuality(j);
 			}
-			worth = worth + getShip(i).getCost();
-			crew = crew + getShip(i).getCrew();	
+			worth = worth + Flotilla[i].getCost();
+			crew = crew + Flotilla[i].getCrew();	
 			setImage();
 		}
 		qualities[4] = qualities[4] / Flotilla.length;
 		qualities[5] = qualities[5] / Flotilla.length;
+		}
 	}
 	public double getFlotillaStats()
 	{
@@ -115,9 +134,12 @@ public class flotilla {
 	}
 	public void addShip(ship one)
 	{
-		ship[] temp = new ship[Flotilla.length];
-		temp[Flotilla.length - 1] = one;
-		Flotilla = temp;
+			ship[] temp = new ship[Flotilla.length + 1];
+			for(int i = 0; i < Flotilla.length; i++){
+				temp[i] = Flotilla[i];
+			}
+			temp[Flotilla.length] = one;
+			Flotilla = temp;
 	}
 	public void checkRemoveShip()
 	{
@@ -207,16 +229,17 @@ public class flotilla {
 	}
 	public static void battle(flotilla a, flotilla d)
 	{
-		a.setFlotillaStats();
-		d.setFlotillaStats();
-		calcRegDamage(a, d);
-		calcRegDamage(d, a);
-		calcSpDamage(a, d);
-		calcSpDamage(d, a);
-		a.checkRemoveShip();
-		d.checkRemoveShip();
-		a.setFlotillaStats();
-		d.setFlotillaStats();
+		if(a.getFlotilla().length > 0 && d.getFlotilla().length > 0)
+		{
+			a.setFlotillaStats();
+			d.setFlotillaStats();
+			calcRegDamage(a, d);
+			calcRegDamage(d, a);
+			calcSpDamage(a, d);
+			calcSpDamage(d, a);
+			a.checkRemoveShip();
+			d.checkRemoveShip();
+		}
 	}
 	public double getRegPower()
 	{

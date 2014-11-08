@@ -8,7 +8,7 @@ public class Fleet {
 	}
 	public Fleet(String type, int size)
 	{
-		fleet = flotilla_creator.createFleet(type, size);
+		fleet = shipFactory.createFleet(type, size);
 	}
 	public flotilla getFlotilla(int flow)
 	{
@@ -23,6 +23,10 @@ public class Fleet {
 		}
 		temp[fleet.length] = newerish;
 		fleet = temp;
+	}
+	public int getFleetLength()
+	{
+		return fleet.length;
 	}
 	public void takeOutFlotilla(int pointless)
 	{
@@ -41,13 +45,29 @@ public class Fleet {
 	{
 		return fleet;
 	}
-	public void battle(flotilla two)
+	public static void battle(Fleet fleet, Fleet flee, int FlotillaOfFleet, int FlotillaOfFlee)
 	{
-		
+		if(fleet.getFlotilla(FlotillaOfFleet).getFlotilla().length > 0 && flee.getFlotilla(FlotillaOfFlee).getFlotilla().length > 0)
+		flotilla.battle(fleet.getFlotilla(FlotillaOfFleet), flee.getFlotilla(FlotillaOfFlee));
+		if(fleet.getFlotilla(FlotillaOfFleet).getFlotilla().length == 0)
+			fleet.takeOutFlotilla(FlotillaOfFleet);
+		if(flee.getFlotilla(FlotillaOfFlee).getFlotilla().length == 0)
+			flee.takeOutFlotilla(FlotillaOfFlee);
 	}
-	public void warSim(Fleet two)
+	public static String warSim(Fleet one, Fleet two)
 	{
-		
+		String result = "error with fleet warsim method";
+		while(one.getFleetLength() > 0 || two.getFleetLength() > 0)
+		{
+			battle(one, two, 0, 0);
+		if(one.getFleetLength() == 0 && two.getFleetLength() == 0)
+			return "tie";
+		else if(one.getFleetLength() == 0)
+			return "lose";
+		else
+			return "win";
+		}
+		return result;
 	}
 	public double winProbabilityBasic(Fleet two)
 	{

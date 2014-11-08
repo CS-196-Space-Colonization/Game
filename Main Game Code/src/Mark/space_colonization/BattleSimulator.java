@@ -1,3 +1,4 @@
+
 package space_colonization;
 
 public class BattleSimulator {
@@ -50,10 +51,10 @@ public class BattleSimulator {
 	}
 	public static void main(String[] args)
 	{
-		ship one = new ship("strong");
-		one.setEqualStats(179);
-		ship two = new ship("weak");
-		two.setEqualStats(180);
-		singleBattleSim(one, two);
+		flotilla one = new flotilla();
+		one.addShip(new ship());
+		flotilla two = new flotilla();
+		two.addShip(new ship());
+		singleBattleSim(one.getShip(0), two.getShip(0));
 	}
 }

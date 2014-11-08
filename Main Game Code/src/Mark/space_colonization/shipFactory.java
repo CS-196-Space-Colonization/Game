@@ -38,6 +38,24 @@ public class shipFactory extends Battle_Object{
 		yLocation = y;
 		hp = HP;
 	}
+	public shipFactory(int Money, int Person)
+	{
+		super(100);
+		troops = new Fleet();
+		money = Money;
+		peoples = Person;
+		xLocation = 0;
+		yLocation = 0;
+		hp = 100;
+	}
+	public void setHp(double newhp)
+	{
+		hp = newhp;
+	}
+	public double getHp()
+	{
+		return hp;
+	}
 	public Fleet getFleet()
 	{
 		return troops;
@@ -74,14 +92,9 @@ public class shipFactory extends Battle_Object{
 	{
 		peoples = peoples + worker;
 	}
-	public void produceShip(ship Ship, flotilla Flotilla)
+	public static void produceShip(ship Ship, flotilla Flotilla)
 	{
-		if(money > Ship.getCost() && peoples > Ship.getCrew())
-		{
-			money = money - Ship.getCost();
-			peoples = peoples - Ship.getCrew();
 			Flotilla.addShip(Ship);
-		}
 	}
 	public void produceFlotilla(ship[] floatil, Fleet f)
 	{
@@ -91,5 +104,39 @@ public class shipFactory extends Battle_Object{
 	public void produceFlotilla(flotilla floatil, Fleet f)
 	{
 		f.addFlotilla(floatil);
+	}
+	public static flotilla createBaseFlotilla(boolean capital, int fighters, int frigate, int cruiser, 
+			 String Type, int level)//consists of one capital ship and an amount of fighters
+	{
+		flotilla one = new flotilla();
+		ship bigest = new Specific_Ship("Capital", Type, level);
+		ship small = new Specific_Ship("Fighter", Type, level);
+		ship big = new Specific_Ship("Frigate", Type, level);
+		ship biger = new Specific_Ship("Cruiser", Type, level);
+		if(capital)
+			produceShip(bigest, one);
+		for(int i = 0; i < fighters; i++)
+		{
+			produceShip(small, one);
+		}
+		for(int i = 0; i < frigate; i++)
+		{
+			produceShip(big, one);
+		}
+		for(int i = 0; i < cruiser; i++)
+		{
+			produceShip(biger, one);
+		}
+		return one;
+	}
+	public static flotilla[] createFleet(String type, int flotillas)
+	{
+		flotilla[] one = new flotilla[flotillas + 1];
+		flotilla two = createBaseFlotilla(true, 100, 20, 5, type, 1);
+		for(int i = 0; i < flotillas; i++)
+		{
+			one[i] = two;
+		}
+		return one;
 	}
 }

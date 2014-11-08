@@ -149,6 +149,8 @@ public class Battle_Object {
 	public void setHP(double HP)
 	{
 		qualities[8] = qualities[8] - HP;
+		if(qualities[8] < 0)
+			qualities[8] = 0;
 	}
 	public double getRegRange()
 	{
@@ -450,8 +452,8 @@ public class Battle_Object {
 		{
 			temp[i] = stat;
 		}
-		temp[6] = 0.5;
-		temp[7] = 0.5;
+		temp[6] = 1;
+		temp[7] = 1;
 		qualities = temp;
 	}
 	public void setStats(double[] stat)
