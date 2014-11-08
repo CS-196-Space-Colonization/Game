@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-.metadata/*
-=======
-.metadata/*
->>>>>>> origin/AI---Arturo
-3D_Movement/nbproject/private/private.properties
-*.class
+*
+!/src/
