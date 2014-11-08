@@ -11,7 +11,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        final boolean fullscreen = true;
+        final boolean fullscreen = false;
         
         Game game = new Game();
         

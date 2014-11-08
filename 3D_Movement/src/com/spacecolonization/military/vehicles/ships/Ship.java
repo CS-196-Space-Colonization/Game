@@ -68,11 +68,11 @@ public abstract class Ship extends MoveableObject
                 q.fromAngleAxis(FastMath.PI / -2.0f, Vector3f.UNIT_Y);
                 super.moveAlongDirectionalVector(q.mult(mDirection), deltaTime);
                 
-                Vector3f v = getPosition().subtract(mTargetMovementPoint);
-                if ((mDirection.x >= 0 && v.x >= 0) || (mDirection.x < 0 && v.x < 0))
+                Vector3f v = mTargetMovementPoint.subtract(getPosition());
+                if ((mDirection.x >= 0 && v.x <= 0) || (mDirection.x <= 0 && v.x >= 0))
                 {
-                    
-                    if ((mDirection.z >= 0 && v.z >= 0) || (mDirection.z < 0 && v.z < 0))
+                    System.out.println("H");
+                    if ((mDirection.z >= 0 && v.z <= 0) || (mDirection.z <= 0 && v.z >= 0))
                     {
                         mModel.setLocalTranslation(mTargetMovementPoint);
                         mInMovement = false;
@@ -87,6 +87,5 @@ public abstract class Ship extends MoveableObject
         mTargetMovementPoint = targetPoint;
         mInMovement = true;
         mTargetRotationAngleIsPositive = (mDirection.dot(mTargetMovementPoint.subtract(getPosition())) > 0) ? true : false;
-        System.out.println(mTargetRotationAngleIsPositive);
     }
 }
