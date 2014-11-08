@@ -53,7 +53,7 @@ public abstract class NPC extends Player
 		{
 			case Command.ATTACK:
 				// attack *see mark
-				//get target
+				// get target
 				break;
 			case Command.CREATE:
 				// make things
@@ -69,11 +69,19 @@ public abstract class NPC extends Player
 				break;
 		}
 	}
+
 	/**
 	 * @Precondition NPC is still in the game
 	 */
 	public abstract void act();
 
+	/**
+	 * Add each command to the priority queue. Commands of the same priority
+	 * will be added in a random order.
+	 * 
+	 * @param command
+	 * @param priority
+	 */
 	public void addCommand(int command, int priority)
 	{
 		commands.add(new Command(command, priority));
