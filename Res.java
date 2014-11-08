@@ -114,11 +114,11 @@ public class Res {
                 writer.write(newLine);
                 writer.close();
                 reader.close();
-                Files.copy(tmp,path);
+                Files.copy(tmp,path,StandardCopyOption.REPLACE_EXISTING);
                 Files.delete(tmp);
                 return true;
             }
-            catch (Exception e){}
+            catch (Exception e){e.printStackTrace();}
             return false;
         }
         else{

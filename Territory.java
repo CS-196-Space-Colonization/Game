@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by chthonic7 on 10/15/14.
  */
-public abstract class Territory {
+public abstract class Territory implements Serializable {
     protected double locationX,locationY; //Or any sort of spatial positioning...
     //protected Res res=new Res();
     //Current method of getting resources doesn't necessitate a Res object, only at continent level is it necessary
@@ -76,9 +78,11 @@ public abstract class Territory {
     }
 
     public final void updateResources(){
-        for (Territory terr:this.subTerr){
-            for (String str:terr.listResources()){
-                this.res.setResource(str,this.res.getResource(str)+terr.getResource(str));
+        if (subTerr!=null) {
+            for (Territory terr : this.subTerr) {
+                for (String str : terr.listResources()) {
+                    this.res.setResource(str, this.res.getResource(str) + terr.getResource(str));
+                }
             }
         }
     }

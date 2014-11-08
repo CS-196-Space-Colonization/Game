@@ -19,9 +19,9 @@ public class Runner {
         a1a.setSubTerr(new Star[]{a1a1});
         a1.setSubTerr(new StarSystem[]{a1a});
         a.setSubTerr(new Cluster[]{a1});
-        Territory[] terrs = new Territory[]{a, a1, a1a, a1a1, a1a1a, a1a1a1};
+        Territory[] terrs = new Territory[]{a1a1a1, a1a1a, a1a1, a1a, a1, a};
         for (Territory terr:terrs){
-            terr.updateResources();
+            //terr.updateResources();
             System.out.println(terr);
         }
         System.out.println("iron="+a1a1a1.getResource("iron"));
