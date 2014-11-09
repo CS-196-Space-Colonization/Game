@@ -11,9 +11,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Plane;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -23,9 +21,7 @@ import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 import com.spacecolonization.graphics.GameModels;
-import com.spacecolonization.graphics.MoveableObject;
 import com.spacecolonization.military.vehicles.ships.Fighter;
-import com.spacecolonization.military.vehicles.ships.Ship;
 
 /**
  * @author Joe Pagliuco
@@ -84,7 +80,7 @@ public class Game extends SimpleApplication
     
     private void adjustCameraSettings()
     {
-        cam.setLocation(new Vector3f(0.0f, 50.0f, 70.0f));
+        cam.setLocation(new Vector3f(0.0f, 50.0f, -30.0f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         cam.setFrustumFar(2000.0f);
         

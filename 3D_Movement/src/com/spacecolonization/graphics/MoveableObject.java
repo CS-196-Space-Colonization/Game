@@ -16,7 +16,8 @@ public class MoveableObject extends DrawableObject3d
     protected float mMovementSpeed;
     protected float mRotationSpeed;
     
-    protected boolean mInMovement;
+    protected boolean mIsMoving;
+    protected boolean mIsRotating;
     
     public MoveableObject(Vector3f position, Spatial model, String name)
     {
@@ -25,7 +26,8 @@ public class MoveableObject extends DrawableObject3d
         mDirection = new Vector3f();
         mMovementSpeed = 0;
         
-        mInMovement = false;
+        mIsMoving = false;
+        mIsRotating = false;
         
         M_ID_COUNT++;
         mID = M_ID_COUNT;
@@ -39,7 +41,8 @@ public class MoveableObject extends DrawableObject3d
         mMovementSpeed = movementSpeed;
         mRotationSpeed = rotationSpeed;
         
-        mInMovement = false;
+        mIsMoving = false;
+        mIsRotating = false;
         
         M_ID_COUNT++;
         mID = M_ID_COUNT;
@@ -95,13 +98,13 @@ public class MoveableObject extends DrawableObject3d
     {
         mModel.move(mDirection.mult(mMovementSpeed * deltaTime));
     }
-    public void moveAlongDirectionalVector(Vector3f direction, float deltaTime)
-    {
-        mModel.move(direction.mult(mMovementSpeed * deltaTime));
-    }
     
-    public boolean isInMovement()
+    public boolean isMoving()
     {
-        return mInMovement;
+        return mIsMoving;
+    }
+    public boolean isRotating()
+    {
+        return mIsRotating;
     }
 }

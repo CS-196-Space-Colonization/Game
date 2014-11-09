@@ -1,7 +1,6 @@
 package com.spacecolonization.military.vehicles.ships;
 
 import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.spacecolonization.graphics.MoveableObject;
@@ -25,7 +24,7 @@ public abstract class Ship extends MoveableObject
     
     protected Vector3f mTargetMovementPoint;
     
-    private boolean mTargetRotationAngleIsPositive;
+    private float mPrevAngle;
     
     public Ship(int maxHealth, int armour, int maxShields, float speed, int electroSpeed, int kinecticSpeed, Vector3f position, Spatial model, String name)
     {
@@ -39,6 +38,8 @@ public abstract class Ship extends MoveableObject
         this.mKineticDamage = kinecticSpeed;
         
         this.mTargetMovementPoint = position;
+        
+        mPrevAngle = FastMath.PI;
         
         M_ID_COUNT++;
     }
@@ -54,29 +55,40 @@ public abstract class Ship extends MoveableObject
     
     public void update(float deltaTime)
     {
-        if (mInMovement)
-        {
-            // Rotate...           
-            float angle = mDirection.dot(mTargetMovementPoint.subtract(getPosition()));
-            if (mTargetRotationAngleIsPositive && angle >= 0)
-                rotateDirection(Vector3f.UNIT_Y, deltaTime);
-            else if (!mTargetRotationAngleIsPositive && angle <= 0)
-                rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
-            else
+        if (mIsRotating)
+        {            
+            Vector3f v = mTargetMovementPoint.subtract(getPosition()).normalizeLocal();
+            
+            float angle = (float)Math.acos(v.dot(mDirection));         
+            
+            // If the cross product points up, the ship needs to rotate to the right.
+            Vector3f cross = mDirection.cross(v);
+            if (cross.y > 0)
             {
-                Quaternion q = new Quaternion();
-                q.fromAngleAxis(FastMath.PI / -2.0f, Vector3f.UNIT_Y);
-                super.moveAlongDirectionalVector(q.mult(mDirection), deltaTime);
-                
-                Vector3f v = mTargetMovementPoint.subtract(getPosition());
-                if ((mDirection.x >= 0 && v.x <= 0) || (mDirection.x <= 0 && v.x >= 0))
+                super.rotateDirection(Vector3f.UNIT_Y, deltaTime);
+            }
+            else if (cross.y < 0)                
+            {
+                super.rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
+            }
+            
+            if (angle > mPrevAngle)
+                mIsRotating = false;
+            
+            mPrevAngle = angle;
+        }
+        
+        if (mIsMoving && !mIsRotating)
+        {
+            super.moveAlongDirectionalVector(deltaTime);
+            
+            Vector3f v = mTargetMovementPoint.subtract(getPosition()).normalizeLocal();
+            if ((mDirection.x <= 0 && v.x >= 0) || (mDirection.x >= 0 && v.x <= 0))
+            {
+                if ((mDirection.z <= 0 && v.z >= 0) || (mDirection.z >= 0 && v.z <= 0))
                 {
-                    System.out.println("H");
-                    if ((mDirection.z >= 0 && v.z <= 0) || (mDirection.z <= 0 && v.z >= 0))
-                    {
-                        mModel.setLocalTranslation(mTargetMovementPoint);
-                        mInMovement = false;
-                    }
+                    mModel.setLocalTranslation(mTargetMovementPoint);
+                    mIsMoving = false;
                 }
             }
         }
@@ -85,7 +97,8 @@ public abstract class Ship extends MoveableObject
     public void setTarget(Vector3f targetPoint)
     {
         mTargetMovementPoint = targetPoint;
-        mInMovement = true;
-        mTargetRotationAngleIsPositive = (mDirection.dot(mTargetMovementPoint.subtract(getPosition())) > 0) ? true : false;
+        mIsMoving = true;
+        mIsRotating = true;
+        mPrevAngle = FastMath.PI;
     }
 }
