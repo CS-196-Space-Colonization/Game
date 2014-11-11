@@ -27,6 +27,7 @@ public class Ship extends MoveableObject
     protected Vector3f mTargetMovementPoint;
     
     private float mPrevAngle;
+    private float mPrevDistance;
     
     public Ship(SHIP_TYPE shipType, Vector3f position, String name)
     {
@@ -134,15 +135,25 @@ public class Ship extends MoveableObject
         {
             super.moveAlongDirectionalVector(deltaTime);
             
-            Vector3f v = mTargetMovementPoint.subtract(getPosition()).normalizeLocal();
-            if ((mDirection.x <= 0 && v.x >= 0) || (mDirection.x >= 0 && v.x <= 0))
+            float distance = mTargetMovementPoint.distance(getPosition());
+            
+            if (distance > mPrevDistance)
             {
-                if ((mDirection.z <= 0 && v.z >= 0) || (mDirection.z >= 0 && v.z <= 0))
-                {
-                    mModel.setLocalTranslation(mTargetMovementPoint);
-                    mIsMoving = false;
-                }
+                mModel.setLocalTranslation(mTargetMovementPoint);
+                mIsMoving = false;
             }
+            
+            mPrevDistance = distance;
+            
+//            Vector3f v = mTargetMovementPoint.subtract(getPosition()).normalizeLocal();
+//            if ((mDirection.x <= 0 && v.x >= 0) || (mDirection.x >= 0 && v.x <= 0))
+//            {
+//                if ((mDirection.z <= 0 && v.z >= 0) || (mDirection.z >= 0 && v.z <= 0))
+//                {
+//                    mModel.setLocalTranslation(mTargetMovementPoint);
+//                    mIsMoving = false;
+//                }
+//            }
         }
     }
     
@@ -152,6 +163,7 @@ public class Ship extends MoveableObject
         mIsMoving = moveTo;
         mIsRotating = true;
         mPrevAngle = FastMath.PI;
+        mPrevDistance = Float.POSITIVE_INFINITY;
     }
     
     public boolean isSelected()

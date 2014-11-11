@@ -13,6 +13,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -100,7 +101,7 @@ public class Game extends SimpleApplication
     {
         cam.setLocation(new Vector3f(50.0f, 50.0f, -30.0f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
-        cam.setFrustumFar(2000.0f);
+        cam.setFrustumPerspective((float)Math.toDegrees(FastMath.PI / 4.0f), (float)M_WIDTH / (float)M_HEIGHT, 0.1f, 2000.0f);
         
         flyCam.setDragToRotate(true);
         flyCam.setMoveSpeed(50.0f);
@@ -159,7 +160,7 @@ public class Game extends SimpleApplication
     
     private void loadShips()
     {
-        mFighters = new Ship[6];
+        mFighters = new Ship[30];
         mFightersNode = new Node("Fighters Node");
         
         for (int i = 0; i < mFighters.length; i++)
@@ -226,22 +227,13 @@ public class Game extends SimpleApplication
             {
                 // Check collision with ships
                 int closestCollisionIndex = getClosestCollisionWithMouseIndex(mFightersNode);
-                if (closestCollisionIndex != -1)
+                if (closestCollisionIndex != -1) // A ship has been selected
                 {
-                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
-                        ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
-                    
-                    mSelectedObjectModels.detachAllChildren();
-                    mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getModel(), closestCollisionIndex));
-                    mFighters[closestCollisionIndex].setIsSelected(true);
+                    clearSelectedObjects();                    
+                    addSelectedObject(mFighters[closestCollisionIndex], closestCollisionIndex);
                 }
-                else
-                {
-                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
-                        ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
-                    
-                    mSelectedObjectModels.detachAllChildren();
-                }
+                else // Nothing selected, deselect all
+                    clearSelectedObjects();
             }
             
             if (name.equals("Right Click") && mIsShiftPressed && isPressed)
@@ -301,7 +293,6 @@ public class Game extends SimpleApplication
                     Vector3f max = Vector3f.ZERO;
                     Ray r = createRayFromPoint((Vector2f)mPictureBoxSelect.getUserData("Initial Position"));
                     r.intersectsWherePlane(mMovementPlane, max);
-                    System.out.println(min + ", " + max);
                     Box bigAssSelectorCube = new Box(min, max);
 
                     // Loop through ships to see if they're in the selected area...
@@ -404,6 +395,11 @@ public class Game extends SimpleApplication
         }
     }
     
+    /**
+     * Finds closest collision with node from cursor ray.
+     * @param node The node to check collisions with.
+     * @return The geometry of the closest collision.
+     */
     private Geometry getClosestCollisionWithMouseGeometry(Node node)
     {
         CollisionResults results = new CollisionResults();
@@ -417,6 +413,12 @@ public class Game extends SimpleApplication
             return results.getClosestCollision().getGeometry();
     }
     
+    /**
+     * Finds closest collision with node from cursor ray.
+     * @param node The node to check collisions with.
+     * @return The index (ID minus one) of the closest collision 
+     * from the cursor ray.
+     */
     private int getClosestCollisionWithMouseIndex(Node node)
     {
         Geometry g = getClosestCollisionWithMouseGeometry(node);
@@ -429,6 +431,11 @@ public class Game extends SimpleApplication
         return id - 1;
     }
     
+    /**
+     * Creates a ray based off the 2d coordinate.
+     * @param point The screen coordinates that make the base of the ray.
+     * @return The created ray.
+     */
     private Ray createRayFromPoint(Vector2f point)
     {
         Vector2f point2d = point;
@@ -437,11 +444,17 @@ public class Game extends SimpleApplication
         return new Ray(point3d, dir);
     }
     
+    /**
+     * @return A ray from the current cursor position.
+     */
     private Ray getMouseRay()
     {
         return createRayFromPoint(inputManager.getCursorPosition());
     }
     
+    /**
+     * @return The spot where the mouse intersects the plane at y = 0.
+     */
     private Vector3f getMouseRayIntersectionPoint()
     {
         Ray r = getMouseRay();
@@ -450,6 +463,23 @@ public class Game extends SimpleApplication
         return v;
     }
     
+    /**
+     * Adds an object to the selected object node.
+     * @param ship The reference to the ship that has been selected.
+     * @param index The index of this ship in it's own array.
+     */
+    private void addSelectedObject(Ship ship, int index)
+    {
+         mSelectedObjectModels.attachChild(addSelectedObjectModel(ship.getModel(), index));
+         ship.setIsSelected(true);
+    }
+    
+    /**
+     * Creates a model to hover the selected object.
+     * @param selectedObject The selected object.
+     * @param index The index of the ship in it's own array.
+     * @return 
+     */
     private Spatial addSelectedObjectModel(Spatial selectedObject, int index)
     {
         Spatial s = GameModels.getSelectedObjectModel();
@@ -459,6 +489,17 @@ public class Game extends SimpleApplication
         s.setUserData("Selected Object", selectedObject);
         s.setUserData("Array Index", index);
         return s;
+    }
+    
+    /**
+     * Clears all of the data in the selected objects node.
+     */
+    private void clearSelectedObjects()
+    {
+        for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+            ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
+                    
+        mSelectedObjectModels.detachAllChildren();
     }
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
