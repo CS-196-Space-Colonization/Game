@@ -30,7 +30,7 @@ public class Star extends SpatialEntity
         
         initialize();
         
-        mModel.setName("Star " + Long.toString(mID));
+        super.setUserData("Star");
     }
     
     // Temporary
@@ -46,7 +46,7 @@ public class Star extends SpatialEntity
         
         initialize();
         
-        mModel.setName("Star " + Long.toString(mID));
+        super.setUserData("Star");
     }
     
     // Temporary
@@ -91,7 +91,7 @@ public class Star extends SpatialEntity
      * @return Returns the number of Star objects that have been
      * created since the application started.
      */
-    public static long getIDCount()
+    public static int getIDCount()
     {
         return M_ID_COUNT;
     }
@@ -103,7 +103,7 @@ public class Star extends SpatialEntity
     @Override
     public String toString()
     {
-        return "Star ID: " + Long.toString(mID) + ", Name: " + mName;
+        return "Star ID: " + mID + ", Name: " + mName;
     }
     
     /**

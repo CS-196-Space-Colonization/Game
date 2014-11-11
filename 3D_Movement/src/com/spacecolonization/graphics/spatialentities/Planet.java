@@ -25,7 +25,7 @@ public class Planet extends SpatialEntity
         
         initialize();
         
-        mModel.setName("Planet " + Long.toString(mID));
+        super.setUserData("Planet");
     }
     
     // Temporary
@@ -38,7 +38,7 @@ public class Planet extends SpatialEntity
         
         mModel = loadModel(contentMan, radius, color);
         mModel.setLocalTranslation(position);
-        mModel.setName("Planet " + Long.toString(mID));
+        super.setUserData("Planet");
         
         initialize();
     }
@@ -54,7 +54,7 @@ public class Planet extends SpatialEntity
         m.setColor("Diffuse", color);
         g.setMaterial(m);
         
-        return g;
+        return (Spatial)g;
     }
     
     private void initialize()
@@ -66,7 +66,7 @@ public class Planet extends SpatialEntity
      * @return Returns the number of Planet objects that have been
      * created since the application started.
      */
-    public static long getIDCount()
+    public static int getIDCount()
     {
         return M_ID_COUNT;
     }
@@ -78,7 +78,7 @@ public class Planet extends SpatialEntity
     @Override
     public String toString()
     {
-        return "Planet ID: " + Long.toString(mID) + ", Name: " + mName;
+        return "Planet ID: " + mID + ", Name: " + mName;
     }
     
     /**

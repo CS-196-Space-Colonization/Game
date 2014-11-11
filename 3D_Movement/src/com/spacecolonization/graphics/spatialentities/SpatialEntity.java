@@ -24,7 +24,7 @@ public abstract class SpatialEntity extends DrawableObject3d
      * @return Returns the number of SpatialEntity objects that have been
      * created since the application started.
      */
-    public static long getIDCount()
+    public static int getIDCount()
     {
         return M_ID_COUNT;
     }
@@ -36,7 +36,7 @@ public abstract class SpatialEntity extends DrawableObject3d
     @Override
     public String toString()
     {
-        return "SpatialEntity ID: " + Long.toString(mID) + ", Name: " + mName;
+        return "SpatialEntity ID: " + mID + ", Name: " + mName;
     }
     
     /**

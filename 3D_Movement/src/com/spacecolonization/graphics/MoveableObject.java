@@ -10,7 +10,7 @@ import com.jme3.scene.Spatial;
  */
 public class MoveableObject extends DrawableObject3d
 {
-    private static long M_ID_COUNT = 0;
+    private static int M_ID_COUNT = 0;
     
     protected Vector3f mDirection;
     protected float mMovementSpeed;
@@ -31,6 +31,8 @@ public class MoveableObject extends DrawableObject3d
         
         M_ID_COUNT++;
         mID = M_ID_COUNT;
+        
+        super.setUserData("MoveableObject");
     }
     
     public MoveableObject(Vector3f position, Spatial model, String name, Vector3f direction, float movementSpeed, float rotationSpeed)
@@ -46,13 +48,15 @@ public class MoveableObject extends DrawableObject3d
         
         M_ID_COUNT++;
         mID = M_ID_COUNT;
+        
+        super.setUserData("MoveableObject");
     }
     
     /**
      * @return Returns the number of MoveableObject objects that have been
      * created since the application started.
      */
-    public static long getIDCount()
+    public static int getIDCount()
     {
         return M_ID_COUNT;
     }
@@ -106,5 +110,32 @@ public class MoveableObject extends DrawableObject3d
     public boolean isRotating()
     {
         return mIsRotating;
+    }
+    
+    /**
+     * Makes a String representation of this.
+     * @return Returns the ID, followed by the object's name.
+     */
+    @Override
+    public String toString()
+    {
+        return "MoveableObject ID: " + mID + ", Name: " + mName;
+    }
+    
+    /**
+     * Compares Object o to this.
+     * @param o An Object to compare this to.
+     * @return Returns true if the id of this object equals the id of o,
+     * false if either o is not a MoveableObject, or the equals check fails.
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        MoveableObject m;
+        if (o instanceof MoveableObject)
+            m = (MoveableObject)o;
+        else
+            return false;
+        return mID == m.getID();
     }
 }

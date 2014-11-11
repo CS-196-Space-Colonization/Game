@@ -10,8 +10,8 @@ import com.jme3.scene.Spatial;
  */
 public class DrawableObject3d 
 {
-    private static long M_ID_COUNT = 0;
-    protected long mID;
+    private static int M_ID_COUNT = 0;
+    protected int mID;
     
     protected Spatial mModel;
     /**
@@ -29,9 +29,16 @@ public class DrawableObject3d
         {
             mModel = model;
             mModel.setLocalTranslation(position);
-            mModel.setName("DrawableObject3d " + Long.toString(mID));
+            mModel.setUserData("Type", "DrawableObject3d");
+            mModel.setUserData("ID", mID);
         }
         mName = name;
+    }
+    
+    protected void setUserData(String classType)
+    {
+        mModel.setUserData("ID", mID);
+        mModel.setUserData("Class Type", classType);
     }
     
     /**
@@ -61,7 +68,7 @@ public class DrawableObject3d
     /**
      * @return Returns the id of this object.
      */
-    public long getID()
+    public int getID()
     {
         return mID;
     }
@@ -70,7 +77,7 @@ public class DrawableObject3d
      * @return Returns the number of DrawableObject3d objects that have been
      * created since the application started.
      */
-    public static long getIDCount()
+    public static int getIDCount()
     {
         return M_ID_COUNT;
     }

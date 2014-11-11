@@ -3,7 +3,9 @@ package com.spacecolonization.game;
 import com.spacecolonization.graphics.spatialentities.Planet;
 import com.spacecolonization.graphics.spatialentities.Star;
 import com.jme3.app.SimpleApplication;
+import com.jme3.bounding.BoundingVolume;
 import com.jme3.collision.CollisionResults;
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
@@ -17,11 +19,13 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 import com.spacecolonization.graphics.GameModels;
-import com.spacecolonization.military.vehicles.ships.Fighter;
+import com.spacecolonization.military.ships.Ship;
 
 /**
  * @author Joe Pagliuco
@@ -35,11 +39,21 @@ public class Game extends SimpleApplication
     
     private Star mSun;
     
-    private Fighter[] mFighters;
+    private Ship[] mFighters;
+    private Node mFightersNode;
+    
+    private Node mSelectedObjectModels;
         
     private Plane mMovementPlane;
     
-    private boolean mIsControlPressed;
+    private boolean mIsShiftPressed;
+    private boolean mIsMPressed;
+    private boolean mIsRPressed;
+    private boolean mIsBPressed;
+    
+    private JmeCursor mCursorSmiley;
+    
+    private Picture mPictureBoxSelect;
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -51,6 +65,9 @@ public class Game extends SimpleApplication
         M_WIDTH = settings.getWidth();
         M_HEIGHT = settings.getHeight();
         
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_HIDE_STATS);
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_MEMORY);
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_CAMERA_POS);
         setDisplayFps(true);
         setDisplayStatView(false);
         
@@ -68,19 +85,20 @@ public class Game extends SimpleApplication
         
         loadMovementPlane();
         
-        initializeKeys();
+        initializeListeners();
         
-        Picture p = new Picture("P");
-        p.setImage(assetManager, "Textures/box_select.png", true);
-        p.setLocalTranslation(0, 0, 0);
-        p.setWidth(200);
-        p.setHeight(200);
-        guiNode.attachChild(p);
+        mSelectedObjectModels = new Node("Selected Object Models");
+        
+        loadPictures();
+        
+        addNodes();
+        
+        loadCursors();
     }
     
     private void adjustCameraSettings()
     {
-        cam.setLocation(new Vector3f(0.0f, 50.0f, -30.0f));
+        cam.setLocation(new Vector3f(50.0f, 50.0f, -30.0f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         cam.setFrustumFar(2000.0f);
         
@@ -103,7 +121,8 @@ public class Game extends SimpleApplication
     private void loadSkybox()
     {
         Texture skybox_tex = assetManager.loadTexture("Textures/space_skybox.png");
-        rootNode.attachChild(SkyFactory.createSky(assetManager, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex));
+        Texture skybox_tex2 = assetManager.loadTexture("Textures/space_skybox_2.png");
+        rootNode.attachChild(SkyFactory.createSky(assetManager, skybox_tex, skybox_tex, skybox_tex2, skybox_tex, skybox_tex, skybox_tex));
     }
     
     private void loadAmbientLight()
@@ -115,13 +134,12 @@ public class Game extends SimpleApplication
     
     private void loadPlanets()
     {
-        mPlanetsNode = new Node();       
+        mPlanetsNode = new Node("Planets Node");
         mPlanets = new Planet[10];
         
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i] = generatePlanet(i);
-            rootNode.attachChild(mPlanets[i].getModel());
             mPlanetsNode.attachChild(mPlanets[i].getModel());
         }
         rootNode.attachChild(mPlanetsNode);
@@ -129,7 +147,7 @@ public class Game extends SimpleApplication
     
     private void loadSun()
     {
-        mSun = new Star(Vector3f.ZERO, "StarX", assetManager, 4.0f);
+        mSun = new Star(Vector3f.ZERO, "StarX", assetManager, 10.0f);
         rootNode.attachChild(mSun.getModel());
         rootNode.addLight(mSun.getPointLight());
     }
@@ -141,28 +159,61 @@ public class Game extends SimpleApplication
     
     private void loadShips()
     {
-        mFighters = new Fighter[5];
+        mFighters = new Ship[6];
+        mFightersNode = new Node("Fighters Node");
         
         for (int i = 0; i < mFighters.length; i++)
         {
-            mFighters[i] = new Fighter(new Vector3f(0.0f, 0.0f, -(10 + i * 5)), "Ship " + i);
-            rootNode.attachChild(mFighters[i].getModel());
+            mFighters[i] = new Ship(Ship.SHIP_TYPE.Fighter, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), "Fighter " + i);
+            mFightersNode.attachChild(mFighters[i].getModel());
         }
     }
     
-    private void initializeKeys()
+    private void initializeListeners()
     {
-        mIsControlPressed = false;
+        mIsShiftPressed = false;
+        mIsMPressed = false;
+        mIsRPressed = false;
+        mIsBPressed = false;
         
-        inputManager.addMapping("Control", new KeyTrigger(KeyInput.KEY_LCONTROL));
+        inputManager.addMapping("Right Click", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addMapping("Left Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(mMouseActionListener, new String[] { "Control", "Left Click" } );
+        inputManager.addListener(mMouseActionListener, new String[] { "Right Click", "Left Click" } );
+        
+        inputManager.addMapping("Shift", new KeyTrigger(KeyInput.KEY_LSHIFT), new KeyTrigger(KeyInput.KEY_RSHIFT));
+        inputManager.addMapping("M", new KeyTrigger(KeyInput.KEY_M));
+        inputManager.addMapping("R", new KeyTrigger(KeyInput.KEY_R));
+        inputManager.addMapping("B", new KeyTrigger(KeyInput.KEY_B));
+        inputManager.addListener(mKeyboardActionListener, new String[] { "Shift", "M", "R", "B" } );
+    }
+    
+    private void addNodes()
+    {
+        rootNode.attachChild(mSelectedObjectModels);
+        rootNode.attachChild(mPlanetsNode);
+        rootNode.attachChild(mFightersNode);
+    }
+    
+    private void loadCursors()
+    {
+        mCursorSmiley = (JmeCursor)assetManager.loadAsset("Textures/cursor_smiley.cur");
+        mCursorSmiley.setxHotSpot(mCursorSmiley.getWidth() >> 1);
+        mCursorSmiley.setyHotSpot(mCursorSmiley.getHeight() >> 1);
+        inputManager.setMouseCursor(null);
+    }
+    
+    private void loadPictures()
+    {
+        mPictureBoxSelect = new Picture("Box Select Picture");
+        mPictureBoxSelect.setImage(assetManager, "Textures/box_select.png", true);     
+        mPictureBoxSelect.setUserData("Initial Position", Vector2f.ZERO);
     }
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
+    
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START LISTENERS //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,17 +221,139 @@ public class Game extends SimpleApplication
     private ActionListener mMouseActionListener = new ActionListener()
     {
         public void onAction(String name, boolean isPressed, float tpf)
-        {
-            if (name.equals("Control"))
-                mIsControlPressed = isPressed;
-            
-            if (name.equals("Left Click") && mIsControlPressed && isPressed)
+        {            
+            if (name.equals("Right Click") && !mIsShiftPressed && isPressed)
             {
-                Ray r = getMouseRay();
-                Vector3f newPos = new Vector3f();
-                r.intersectsWherePlane(mMovementPlane, newPos);
-                mFighters[0].setTarget(newPos);
+                // Check collision with ships
+                int closestCollisionIndex = getClosestCollisionWithMouseIndex(mFightersNode);
+                if (closestCollisionIndex != -1)
+                {
+                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+                        ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
+                    
+                    mSelectedObjectModels.detachAllChildren();
+                    mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getModel(), closestCollisionIndex));
+                    mFighters[closestCollisionIndex].setIsSelected(true);
+                }
+                else
+                {
+                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+                        ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
+                    
+                    mSelectedObjectModels.detachAllChildren();
+                }
             }
+            
+            if (name.equals("Right Click") && mIsShiftPressed && isPressed)
+            {
+                int closestCollisionIndex = getClosestCollisionWithMouseIndex(mFightersNode);
+                if (closestCollisionIndex != -1)
+                {
+                    // Check to see if object is already selected...
+                    if (mFighters[closestCollisionIndex].isSelected())
+                    {
+                        // Deselect it...
+                        mSelectedObjectModels.detachChildNamed(
+                                (String)mFighters[closestCollisionIndex].getModel().getUserData("Type") + 
+                                Integer.toString((Integer)mFighters[closestCollisionIndex].getModel().getUserData("ID")));
+                        mFighters[closestCollisionIndex].setIsSelected(false);
+                    }
+                    else
+                    {
+                        // Select it...
+                        mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getModel(), closestCollisionIndex));
+                        mFighters[closestCollisionIndex].setIsSelected(true);
+                    }
+                }
+            }
+            
+            if (name.equals("Left Click") && isPressed)
+            {
+                if (mIsMPressed || mIsRPressed)
+                {
+                    Vector3f targetPoint = getMouseRayIntersectionPoint();
+                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+                    {
+                        int index = mSelectedObjectModels.getChild(i).getUserData("Array Index");
+                        mFighters[index].setTarget(targetPoint, mIsMPressed);
+                    }
+                    mIsMPressed = mIsRPressed = false;
+                    inputManager.setMouseCursor(null);
+                }
+                else if (mIsBPressed)
+                {
+                    Vector2f cursorPos = inputManager.getCursorPosition();
+                    mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
+                    guiNode.attachChild(mPictureBoxSelect);
+                }
+            }
+            if (name.equals("Left Click") && !isPressed)
+            {
+                if (mIsBPressed)
+                {
+                    // Deselect all
+                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+                           ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
+                    mSelectedObjectModels.detachAllChildren();
+
+                    // Create big ass selector cube...
+                    Vector3f min = getMouseRayIntersectionPoint();
+                    Vector3f max = Vector3f.ZERO;
+                    Ray r = createRayFromPoint((Vector2f)mPictureBoxSelect.getUserData("Initial Position"));
+                    r.intersectsWherePlane(mMovementPlane, max);
+                    System.out.println(min + ", " + max);
+                    Box bigAssSelectorCube = new Box(min, max);
+
+                    // Loop through ships to see if they're in the selected area...
+                    for (int i = 0; i < mFighters.length; i++)
+                    {
+                        BoundingVolume shipVolume = mFighters[i].getModel().getWorldBound();
+                        if (bigAssSelectorCube.getBound().intersects(shipVolume) || bigAssSelectorCube.getBound().contains(shipVolume.getCenter()))
+                        {
+                            mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[i].getModel(), i));
+                            mFighters[i].setIsSelected(true);
+                        }
+                    }
+
+                    guiNode.detachChild(mPictureBoxSelect);
+                    mIsBPressed = false;
+                    inputManager.setMouseCursor(null);
+                    flyCam.setEnabled(true);
+                }
+            }
+        }
+    };
+    
+    private ActionListener mKeyboardActionListener = new ActionListener()
+    {
+        public void onAction(String name, boolean isPressed, float tpf)
+        {
+            if (name.equals("Shift"))
+                mIsShiftPressed = isPressed;
+            else if (name.equals("M") && isPressed)
+            {
+                mIsMPressed = !mIsMPressed;
+                mIsRPressed = false;
+                mIsBPressed = false;
+            }
+            else if (name.equals("R") && isPressed)
+            {
+                mIsMPressed = false;
+                mIsRPressed = !mIsRPressed;
+                mIsBPressed = false;
+            }
+            else if (name.equals("B") && isPressed)
+            {
+                mIsMPressed = false;
+                mIsRPressed = false;
+                mIsBPressed = !mIsBPressed;
+                flyCam.setEnabled(!flyCam.isEnabled());
+            }
+            
+            if (mIsMPressed || mIsRPressed || mIsBPressed)
+                inputManager.setMouseCursor(mCursorSmiley);
+            else
+                inputManager.setMouseCursor(null);
         }
     };
     
@@ -188,46 +361,107 @@ public class Game extends SimpleApplication
 // END LISTENERS ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// START UPDATE METHODS /////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void simpleUpdate(float tpf)
     {
-// Check collision's with planets...
-        Geometry closestCollision = checkClosestCollisionWithMouse(mPlanetsNode);
-        if (closestCollision != null)
+// Update box select picture as needed...
+        if (mIsBPressed)
         {
-            String name = closestCollision.getName();
-            for (int i = 0; i < mPlanetsNode.getQuantity(); i++)
-            {
-                if (name.equals(mPlanetsNode.getChild(i).getName()))
-                    System.out.println(mPlanets[i].toString());
-            }
+            Vector2f initPos = mPictureBoxSelect.getUserData("Initial Position");
+            Vector2f cursorPos = inputManager.getCursorPosition();
+            if (initPos.x < cursorPos.x && initPos.y > cursorPos.y)
+                mPictureBoxSelect.setPosition(initPos.x, cursorPos.y);
+            else if (initPos.x > cursorPos.x && initPos.y < cursorPos.y)
+                mPictureBoxSelect.setPosition(cursorPos.x, initPos.y);
+            else if (initPos.x > cursorPos.x && initPos.y > cursorPos.y)
+                mPictureBoxSelect.setPosition(cursorPos.x, cursorPos.y);
+            else
+                mPictureBoxSelect.setPosition(initPos.x, initPos.y);
+            
+            mPictureBoxSelect.setWidth(Math.abs(cursorPos.x - initPos.x));
+            mPictureBoxSelect.setHeight(Math.abs(initPos.y - cursorPos.y));
         }
+        
+// Rotate selected object models
+        for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+            mSelectedObjectModels.getChild(i).rotate(0, tpf*2, 0);
         
 // Update ships...
         for (int i = 0; i < mFighters.length; i++)
             mFighters[i].update(tpf);
+        
+// Update selected object models...
+        for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+        {
+            Spatial s = mSelectedObjectModels.getChild(i);
+            float sY = s.getLocalTranslation().getY();
+            Spatial o = (Spatial)s.getUserData("Selected Object");
+            s.setLocalTranslation(o.getLocalTranslation().x, sY, o.getLocalTranslation().z);
+        }
     }
     
-    private Geometry checkClosestCollisionWithMouse(Node node)
+    private Geometry getClosestCollisionWithMouseGeometry(Node node)
     {
         CollisionResults results = new CollisionResults();
         
         Ray ray = getMouseRay();
         
-        mPlanetsNode.collideWith(ray, results);
+        node.collideWith(ray, results);
         if (results.getClosestCollision() == null)
             return null;
         else
             return results.getClosestCollision().getGeometry();
     }
     
+    private int getClosestCollisionWithMouseIndex(Node node)
+    {
+        Geometry g = getClosestCollisionWithMouseGeometry(node);
+        
+        if (g == null)
+            return -1;
+        
+        int id = g.getParent().getUserData("ID");
+        
+        return id - 1;
+    }
+    
+    private Ray createRayFromPoint(Vector2f point)
+    {
+        Vector2f point2d = point;
+        Vector3f point3d = cam.getWorldCoordinates(new Vector2f(point2d.x, point2d.y), 0f).clone();
+        Vector3f dir = cam.getWorldCoordinates(new Vector2f(point2d.x, point2d.y), 1f).subtractLocal(point3d).normalizeLocal();
+        return new Ray(point3d, dir);
+    }
+    
     private Ray getMouseRay()
     {
-        Vector2f click2d = inputManager.getCursorPosition();
-        Vector3f click3d = cam.getWorldCoordinates(
-            new Vector2f(click2d.x, click2d.y), 0f).clone();
-        Vector3f dir = cam.getWorldCoordinates(
-            new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
-        return new Ray(click3d, dir);
+        return createRayFromPoint(inputManager.getCursorPosition());
     }
+    
+    private Vector3f getMouseRayIntersectionPoint()
+    {
+        Ray r = getMouseRay();
+        Vector3f v = new Vector3f();
+        r.intersectsWherePlane(mMovementPlane, v);
+        return v;
+    }
+    
+    private Spatial addSelectedObjectModel(Spatial selectedObject, int index)
+    {
+        Spatial s = GameModels.getSelectedObjectModel();
+        float yScale = selectedObject.getLocalScale().y;
+        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, yScale + 2.0f, 0.0f)));
+        s.setName((String)selectedObject.getUserData("Type") + Integer.toString((Integer)selectedObject.getUserData("ID")));
+        s.setUserData("Selected Object", selectedObject);
+        s.setUserData("Array Index", index);
+        return s;
+    }
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+// END UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

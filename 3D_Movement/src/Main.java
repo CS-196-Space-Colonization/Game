@@ -3,6 +3,7 @@ import com.jme3.system.AppSettings;
 import com.spacecolonization.game.Game;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  * @author Joe Pagliuco
@@ -11,19 +12,27 @@ public class Main
 {
     public static void main(String[] args)
     {
-        final boolean fullscreen = false;
-        
+        boolean fullscreen = false;
+        int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
+        if (input == JOptionPane.YES_OPTION)
+            fullscreen = true;
+        else if (input == JOptionPane.CANCEL_OPTION)
+            System.exit(0);
+            
         Game game = new Game();
         
         game.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
         
-        settings.setTitle("Space Colonization");
+        settings.setTitle("Tractus");
         settings.setFrameRate(60);
         settings.setVSync(true);
         settings.setFrequency(60);
         
-        settings.setFullscreen(fullscreen);
+        try {
+            settings.setFullscreen(fullscreen);
+        } catch (Exception e) { settings.setFullscreen(false); }
+        
         if (fullscreen)
         {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
