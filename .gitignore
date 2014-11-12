@@ -7,3 +7,5 @@
 *.class
 /Menus/nbproject/private/
 /Menus/build/
+/CameraMovement/nbproject/private/
+/CameraMovement/build/
