@@ -7,9 +7,6 @@ import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import java.awt.AWTException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class used to represent the camera used in Tractus.
@@ -83,9 +80,7 @@ public class TractusCamera
     }
     
     public void update(float deltaTime)
-    {
-        System.out.println(mInputManager.getCursorPosition().x + ", " + mInputManager.getCursorPosition().y);
-        
+    {        
         if (mInputManager.getCursorPosition().x < M_MOVEMENT_PIXEL_DISPLACEMENT)
             moveCamera(M_MOVE_LEFT, deltaTime);
         else if (mInputManager.getCursorPosition().x > mScreenWidth - M_MOVEMENT_PIXEL_DISPLACEMENT)
