@@ -1,0 +1,32 @@
+TerrClass > generation subroutines > Player files > Graphics Engine
+                              supplyEcon v            NewData ^v
+                                      econ      >     Player interactions
+                                            v        ^
+                                               Unit
+
+So resource is going to be changed from holding the actual resources in the region to holding the rate of output from that region.
+Thus it is Ok to have resFiles up and down the chain
+
+Continents:
+    2d pict zoom in
+        Risk ripoff for map.
+    3d view of planet
+
+Stars:
+    PointLight: how far away the star can be seen
+
+Star and Planet:
+    Extends DrawableObject3d
+    But the others don't
+
+Territory
+    loc=>vector3f (y=0)
+    name chg
+
+Territiry lvls
+    continent
+    planet
+    star
+    starSys
+    cluster
+    sector
