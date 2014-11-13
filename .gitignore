@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+.metadata/*
+=======
+.metadata/*
+>>>>>>> origin/AI---Arturo
+3D_Movement/nbproject/private/
+*.class
+/Menus/nbproject/private/
+/Menus/build/
+/CameraMovement/nbproject/private/
+/CameraMovement/build/
+/FlotillaControl/nbproject/private/
