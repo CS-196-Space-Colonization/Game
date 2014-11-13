@@ -1,5 +1,4 @@
-package SpatialEntities;
-
+import SpatialEntities.*;
 import resources.Res;
 
 /**
