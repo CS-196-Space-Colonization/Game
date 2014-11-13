@@ -1,7 +1,11 @@
+package SpatialEntities;
+
+import resources.Res;
+
 /**
  * Created by chthonic7 on 10/8/14.
  */
-public class Star extends Territory{
+public class Star extends Territory {
     public enum StarType {RED_GIANT}
     private StarType type;
     //private Planet[] planets;

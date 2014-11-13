@@ -1,12 +1,15 @@
+package SpatialEntities;
+
 import java.io.Serializable;
+import resources.Res;
 
 /**
  * Created by chthonic7 on 10/15/14.
  */
 public abstract class Territory implements Serializable {
     protected double locationX,locationY; //Or any sort of spatial positioning...
-    //protected Res res=new Res();
-    //Current method of getting resources doesn't necessitate a Res object, only at continent level is it necessary
+    //protected resources.Res res=new resources.Res();
+    //Current method of getting resources doesn't necessitate a resources.Res object, only at continent level is it necessary
     protected String name, owner;
     protected Res res;
     protected Territory superTerr;

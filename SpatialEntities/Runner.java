@@ -1,7 +1,6 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+package SpatialEntities;
+
+import resources.Res;
 
 /**
  * Created by chthonic7 on 10/15/14.

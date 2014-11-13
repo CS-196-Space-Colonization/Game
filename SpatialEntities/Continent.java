@@ -1,7 +1,11 @@
+package SpatialEntities;
+
+import resources.Res;
+
 /**
  * Created by chthonic7 on 10/8/14.
  */
-public class Continent extends Territory{
+public class Continent extends Territory {
     protected double size; //Placeholder for area of the continent
     protected int population;
     //Tech=techtree

@@ -1,3 +1,5 @@
+package SpatialEntities;
+
 /**
  * Created by chthonic7 on 10/11/14.
  */

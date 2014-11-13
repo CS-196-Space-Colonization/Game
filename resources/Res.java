@@ -1,3 +1,5 @@
+package resources;
+
 import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
 import java.io.BufferedReader;
