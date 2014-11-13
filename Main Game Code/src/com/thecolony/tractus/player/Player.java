@@ -41,6 +41,16 @@ public class Player
 		this.setMap(map);
 		setUnits(new ArrayList<Unit>());
 	}
+	
+	public void sendMessage()
+	{
+		
+	}
+	
+	public void updatePlayer()
+	{
+		
+	}
 
 	// setters and getters for all instance variables, nothing special, will
 	// probably altered later
