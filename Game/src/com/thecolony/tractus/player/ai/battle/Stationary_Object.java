@@ -1,0 +1,17 @@
+package space_colonization;
+//this class will be extended to make more specific objects
+public class Stationary_Object extends Battle_Object {
+	public Stationary_Object()
+	{
+		super();
+	}
+	public Stationary_Object(double HP)
+	{
+		super(HP);
+	}
+	public Stationary_Object(String nameOfShip, double[] stats, int Cost, String display, int Crew, int ammo)
+	{
+		super(nameOfShip, stats, Cost, display, Crew, ammo);
+	}
+	
+}
