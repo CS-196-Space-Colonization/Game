@@ -1,4 +1,4 @@
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 
 public class shipFactory extends Battle_Object{
 	private int money;

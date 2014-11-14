@@ -1,4 +1,4 @@
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 
 public class Time {
 	private static int time;

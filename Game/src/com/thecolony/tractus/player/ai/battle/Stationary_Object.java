@@ -1,4 +1,4 @@
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 //this class will be extended to make more specific objects
 public class Stationary_Object extends Battle_Object {
 	public Stationary_Object()

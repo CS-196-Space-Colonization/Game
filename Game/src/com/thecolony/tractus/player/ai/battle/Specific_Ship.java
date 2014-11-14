@@ -1,5 +1,5 @@
 
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 
 
 public class Specific_Ship extends ship {
@@ -26,7 +26,7 @@ public class Specific_Ship extends ship {
 	public void setToFighter()
 	{
 		crew = 1;
-		//Fighter		Can’t exist in space without a mother capital ship. 1 pilot, only 100 per flotilla
+		//Fighter		Canï¿½t exist in space without a mother capital ship. 1 pilot, only 100 per flotilla
 		if(Qual.equals("Heal"))
 		{
 			setCrew(crew);

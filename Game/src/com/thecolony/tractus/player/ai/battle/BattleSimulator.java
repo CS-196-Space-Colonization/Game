@@ -1,5 +1,5 @@
 
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 
 public class BattleSimulator {
 	public static void singleBattleSim(ship a, ship b )

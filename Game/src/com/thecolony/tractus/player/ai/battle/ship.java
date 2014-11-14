@@ -1,4 +1,4 @@
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 
 public class ship extends Battle_Object
 {

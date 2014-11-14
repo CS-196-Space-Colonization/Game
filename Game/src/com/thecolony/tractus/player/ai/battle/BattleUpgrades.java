@@ -1,4 +1,4 @@
-package space_colonization;
+package com.thecolony.tractus.player.ai.battle;
 //will be used to add changes to specific stats of ships
 public class BattleUpgrades {
 private String stat;
