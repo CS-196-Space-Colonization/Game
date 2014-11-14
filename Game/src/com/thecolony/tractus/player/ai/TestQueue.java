@@ -8,7 +8,7 @@ public class TestQueue
 	public static void main(String[] args)
 	{
 		Comparator<Command> comparator = new CommandComparator();
-		PriorityQueue<Command> queue = new PriorityQueue<>(comparator);
+		PriorityQueue<Command> queue = new PriorityQueue<Command>(0,comparator);
 		
 		for(int i = 0; i < 5; i++)
 			queue.add(new Command(i, i));

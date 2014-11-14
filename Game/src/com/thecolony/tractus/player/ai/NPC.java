@@ -26,7 +26,7 @@ public abstract class NPC extends Player
 	public NPC(Map map, int playerNumber)
 	{
 		super(map, playerNumber);
-		commands = new PriorityQueue<>(comparator);
+		commands = new PriorityQueue<Command>(0,comparator);
 		setType(TYPE_NONE);
 		setInGame(true);
 	}
