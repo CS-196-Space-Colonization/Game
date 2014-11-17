@@ -1,6 +1,6 @@
-package SpatialEntities;
+package com.thecolony.tractus.worldgen.SpatialEntities;
 
-import resources.Res;
+import com.thecolony.tractus.worldgen.resources.Res;
 
 /**
  * Created by chthonic7 on 10/8/14.
@@ -11,7 +11,7 @@ public class Continent extends Territory {
     //Tech=techtree
 
     public Continent(Planet planet, Res res, int population, double size, String name, String owner){
-        super(-1.0,-1.0,planet,null,res,name,owner);
+        super(-1.0f,-1.0f,planet,null,res,name,owner);
         //This Continents don't have a spatial position, nor do they have subterritories
         this.population=population;
         this.size=size;

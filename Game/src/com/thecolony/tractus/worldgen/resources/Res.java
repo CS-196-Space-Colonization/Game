@@ -1,18 +1,14 @@
-package resources;
+package com.thecolony.tractus.worldgen.resources;
 
-import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * This accesses resource information from permanent storage and returns values to owners.
@@ -24,7 +20,7 @@ import java.util.Scanner;
 public class Res {
     //Initial assumption is a text file that has all the resource information
     private String pathName;
-    private final String dir="resources/";
+    private final String dir="Game/src/com/thecolony/tractus/worldgen/resources/";
     private Path path;
     private BufferedReader reader;
     private BufferedWriter writer;
@@ -57,7 +53,7 @@ public class Res {
             }
             path.toFile().createNewFile();
         }
-        catch (Exception e){e.printStackTrace();}
+        catch (Exception e){ e.printStackTrace();}
     }
 
     /**
@@ -94,7 +90,7 @@ public class Res {
         //Insert database instruction. Or for now, write to file If successful, then return true, if not, return false
         String line="", newLine=resource+"="+value;
         boolean written=false;
-        Path dir= Paths.get("resources/"),tmp = null;
+        Path dir= Paths.get(this.dir),tmp = null;
         try {
             tmp = Files.createTempFile(dir, null, null);
             writer = Files.newBufferedWriter(tmp, StandardCharsets.UTF_8);
@@ -110,7 +106,7 @@ public class Res {
                 line = reader.readLine();
             }
         }
-        catch (Exception e) {e.printStackTrace();}
+        catch (Exception e) {  e.printStackTrace();}
         if(!written) {
             try {
                 writer.write(newLine);

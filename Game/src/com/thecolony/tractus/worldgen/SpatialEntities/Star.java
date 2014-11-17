@@ -1,6 +1,6 @@
-package SpatialEntities;
+package com.thecolony.tractus.worldgen.SpatialEntities;
 
-import resources.Res;
+import com.thecolony.tractus.worldgen.resources.Res;
 
 /**
  * Created by chthonic7 on 10/8/14.
@@ -12,8 +12,8 @@ public class Star extends Territory {
     //TODO: add other space objects to system
     private double[] radii; //info about its planets
     //TODO: Add more star characteristics
-    public Star(double locationX, double locationY, StarType type, StarSystem starSystem, Planet[] planets, Res res, String name, String owner){
-        super(locationX,locationY,starSystem,planets,res,name,owner);
+    public Star(float locationX, float locationZ, StarType type, StarSystem starSystem, Planet[] planets, Res res, String name, String owner){
+        super(locationX,locationZ,starSystem,planets,res,name,owner);
         this.type=type;
 
     }

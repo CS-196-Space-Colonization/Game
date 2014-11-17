@@ -1,43 +1,59 @@
-package SpatialEntities;
+package com.thecolony.tractus.worldgen.SpatialEntities;
 
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
+import com.thecolony.tractus.worldgen.resources.Res;
 import java.io.Serializable;
-import resources.Res;
+import java.util.Objects;
 
 /**
  * Created by chthonic7 on 10/15/14.
  */
 public abstract class Territory implements Serializable {
-    protected double locationX,locationY; //Or any sort of spatial positioning...
-    //protected resources.Res res=new resources.Res();
-    //Current method of getting resources doesn't necessitate a resources.Res object, only at continent level is it necessary
+    protected Vector3f location; //Or any sort of spatial positioning...
     protected String name, owner;
     protected Res res;
-    protected Territory superTerr;
-    protected Territory[] subTerr;
+    protected Territory superTerr, subTerr[];
+    protected static int ID_COUNT=0;
+    protected int ID;
 
-    protected Territory(double locX, double locY, Territory superTerr, Territory[] terr, Res res, String name, String owner){
+    protected Territory(float locX, float locZ, Territory superTerr, Territory[] terr, Res res, String name, String owner){
         this.subTerr=terr;
         this.superTerr=superTerr;
-        this.locationX=locX;
-        this.locationY=locY;
+        this.location=new Vector3f(locX,0,locZ);
         this.res=res;
         this.name=name;
         this.owner=owner;
+        this.ID_COUNT++;
+        this.ID=ID_COUNT;
     }
-    public final double getLocationX() {
-        return locationX;
-    }
-
-    public final void setLocationX(double locationX) {
-        this.locationX = locationX;
-    }
-
-    public final double getLocationY() {
-        return locationY;
+    //These next few getters/setters are for convenience. One can also just get the vector directly.
+    public final float getLocationX() {
+        return location.getX();
     }
 
-    public final void setLocationY(double locationY) {
-        this.locationY = locationY;
+    public final void setLocationX(float locationX) {
+        this.location.setX(locationX);
+    }
+
+    public final float getlocationZ() {
+        return location.getZ();
+    }
+
+    public final void setlocationZ(float locationZ) {
+        this.location.setZ(locationZ);
+    }
+
+    public Vector3f getLocation() {
+        return location;
+    }
+
+    public void setLocation(Vector3f location) {
+        this.location = location;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public final String getName() {
@@ -89,10 +105,16 @@ public abstract class Territory implements Serializable {
             }
         }
     }
+
     protected final String[] listResources(){
         return this.res.listResource();
     }
+
     public String toString(){
-        return "("+locationX+","+locationY+") is owned by "+owner+"\n";
+        return "("+location.getX()+","+location.getZ()+") is owned by "+owner+"\n";
+    }
+
+    public final boolean equals(Object o){
+        return (o.getClass().equals(this.getClass())) && ((Territory)o).getID()==this.ID;
     }
 }

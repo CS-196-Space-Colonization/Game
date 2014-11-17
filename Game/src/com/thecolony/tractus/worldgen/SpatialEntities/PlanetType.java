@@ -1,4 +1,4 @@
-package SpatialEntities;
+package com.thecolony.tractus.worldgen.SpatialEntities;
 
 /**
  * Created by chthonic7 on 10/11/14.
