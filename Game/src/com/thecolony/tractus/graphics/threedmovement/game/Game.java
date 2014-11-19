@@ -1,6 +1,7 @@
 package com.thecolony.tractus.graphics.threedmovement.game;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.collision.CollisionResults;
 import com.jme3.cursors.plugins.JmeCursor;
@@ -141,7 +142,7 @@ public class Game extends SimpleApplication
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i] = generatePlanet(i);
-            mPlanetsNode.attachChild(mPlanets[i].getModel());
+//            mPlanetsNode.attachChild(mPlanets[i].getModel());
         }
         rootNode.attachChild(mPlanetsNode);
     }
@@ -482,9 +483,17 @@ public class Game extends SimpleApplication
      */
     private Spatial addSelectedObjectModel(Spatial selectedObject, int index)
     {
-        Spatial s = GameModels.getSelectedObjectModel();
-        float yScale = selectedObject.getLocalScale().y;
-        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, yScale + 2.0f, 0.0f)));
+        Spatial s = GameModels.getSelectedObjectModel2();
+        
+        BoundingBox selectedObjectBound = (BoundingBox)selectedObject.getWorldBound();
+        BoundingBox selectedModelBound = (BoundingBox)s.getWorldBound();
+        float xScale = selectedObjectBound.getXExtent() / selectedModelBound.getXExtent();
+        float zScale = selectedObjectBound.getZExtent() / selectedModelBound.getZExtent();
+        float scale = Math.max(xScale, zScale);
+        
+        s.scale(scale, 1.0f, scale);
+        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, -selectedModelBound.getYExtent(), 0.0f)));
+        
         s.setName((String)selectedObject.getUserData("Type") + Integer.toString((Integer)selectedObject.getUserData("ID")));
         s.setUserData("Selected Object", selectedObject);
         s.setUserData("Array Index", index);

@@ -30,9 +30,8 @@ public class MoveableObject extends DrawableObject3d
         mIsRotating = false;
         
         M_ID_COUNT++;
-        mID = M_ID_COUNT;
         
-        super.setUserData("MoveableObject");
+        super.setUserDataInfo("MoveableObject", M_ID_COUNT);
     }
     
     public MoveableObject(Vector3f position, Spatial model, String name, Vector3f direction, float movementSpeed, float rotationSpeed)
@@ -47,9 +46,8 @@ public class MoveableObject extends DrawableObject3d
         mIsRotating = false;
         
         M_ID_COUNT++;
-        mID = M_ID_COUNT;
         
-        super.setUserData("MoveableObject");
+        super.setUserDataInfo("MoveableObject", M_ID_COUNT);
     }
     
     /**
@@ -119,7 +117,7 @@ public class MoveableObject extends DrawableObject3d
     @Override
     public String toString()
     {
-        return "MoveableObject ID: " + mID + ", Name: " + mName;
+        return "MoveableObject ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -136,6 +134,6 @@ public class MoveableObject extends DrawableObject3d
             m = (MoveableObject)o;
         else
             return false;
-        return mID == m.getID();
+        return getID() == m.getID();
     }
 }

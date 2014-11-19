@@ -9,12 +9,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
 
 /**
  * A class used to represent a star.
  * @author Joe Pagliuco
  */
-public class Star extends SpatialEntity
+public class Star extends DrawableObject3d
 {
     private static int M_ID_COUNT = 0;
     protected static final float M_POINT_LIGHT_RADIUS = 1000.0f;
@@ -26,11 +27,9 @@ public class Star extends SpatialEntity
         super(position, model, name);
         
         M_ID_COUNT++;
-        mID = M_ID_COUNT;
+        super.setUserDataInfo("Star", M_ID_COUNT);
         
         initialize();
-        
-        super.setUserData("Star");
     }
     
     // Temporary
@@ -38,15 +37,13 @@ public class Star extends SpatialEntity
     {
         super(position, null, name);
         
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
-        
         mModel = loadModel(contentMan, radius);
         mModel.setLocalTranslation(position);
         
-        initialize();
+        M_ID_COUNT++;
+        super.setUserDataInfo("Star", M_ID_COUNT);
         
-        super.setUserData("Star");
+        initialize();
     }
     
     // Temporary
@@ -103,7 +100,7 @@ public class Star extends SpatialEntity
     @Override
     public String toString()
     {
-        return "Star ID: " + mID + ", Name: " + mName;
+        return "Star ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -120,6 +117,6 @@ public class Star extends SpatialEntity
             s = (Star)o;
         else
             return false;
-        return mID == s.mID;
+        return getID() == s.getID();
     }
 }

@@ -7,12 +7,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
 
 /**
  * A class used to represent a planet.
  * @author Joe Pagliuco
  */
-public class Planet extends SpatialEntity
+public class Planet extends DrawableObject3d
 {
     private static int M_ID_COUNT = 0;
     
@@ -21,11 +22,10 @@ public class Planet extends SpatialEntity
         super(position, model, name);
         
         M_ID_COUNT++;
-        mID = M_ID_COUNT;
         
         initialize();
         
-        super.setUserData("Planet");
+        super.setUserDataInfo("Planet", M_ID_COUNT);
     }
     
     // Temporary
@@ -34,11 +34,10 @@ public class Planet extends SpatialEntity
         super(position, null, name);
         
         M_ID_COUNT++;
-        mID = M_ID_COUNT;
         
         mModel = loadModel(contentMan, radius, color);
         mModel.setLocalTranslation(position);
-        super.setUserData("Planet");
+        super.setUserDataInfo("Planet", M_ID_COUNT);
         
         initialize();
     }
@@ -78,7 +77,7 @@ public class Planet extends SpatialEntity
     @Override
     public String toString()
     {
-        return "Planet ID: " + mID + ", Name: " + mName;
+        return "Planet ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -95,6 +94,6 @@ public class Planet extends SpatialEntity
             p = (Planet)o;
         else
             return false;
-        return mID == p.mID;
+        return getID() == p.getID();
     }
 }

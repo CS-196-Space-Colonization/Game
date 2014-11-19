@@ -35,7 +35,6 @@ public class Ship extends MoveableObject
         super(position, GameModels.getShipFighterModel(), name, Vector3f.UNIT_X, 0.0f, M_ROTATION_SPEED);
         
         M_ID_COUNT++;
-        mID = M_ID_COUNT;
         
         if (shipType == SHIP_TYPE.Fighter)
         {
@@ -48,7 +47,7 @@ public class Ship extends MoveableObject
             
             mModel = GameModels.getShipFighterModel();
             mModel.setLocalTranslation(position);
-            super.setUserData("Fighter");
+            super.setUserDataInfo("Fighter", M_ID_COUNT);
             mDirection = Vector3f.UNIT_X;
         }
         else if (shipType == SHIP_TYPE.Frigate)
@@ -62,7 +61,7 @@ public class Ship extends MoveableObject
             
             mModel = GameModels.getShipFrigateModel();
             mModel.setLocalTranslation(position);
-            super.setUserData("Frigate");
+            super.setUserDataInfo("Frigate", M_ID_COUNT);
             mDirection = Vector3f.UNIT_X;
         }
         else if (shipType == SHIP_TYPE.Cruiser)
@@ -76,7 +75,7 @@ public class Ship extends MoveableObject
             
             mModel = GameModels.getShipCruiserModel();
             mModel.setLocalTranslation(position);
-            super.setUserData("Cruiser");
+            super.setUserDataInfo("Cruiser", M_ID_COUNT);
             mDirection = Vector3f.UNIT_X;
         }
         else if (shipType == SHIP_TYPE.CapitalShip)
@@ -90,7 +89,7 @@ public class Ship extends MoveableObject
             
             mModel = GameModels.getShipCaptialShipModel();
             mModel.setLocalTranslation(position);
-            super.setUserData("Captial Ship");
+            super.setUserDataInfo("Captial Ship", M_ID_COUNT);
             mDirection = Vector3f.UNIT_X;
         }
         
@@ -144,16 +143,6 @@ public class Ship extends MoveableObject
             }
             
             mPrevDistance = distance;
-            
-//            Vector3f v = mTargetMovementPoint.subtract(getPosition()).normalizeLocal();
-//            if ((mDirection.x <= 0 && v.x >= 0) || (mDirection.x >= 0 && v.x <= 0))
-//            {
-//                if ((mDirection.z <= 0 && v.z >= 0) || (mDirection.z >= 0 && v.z <= 0))
-//                {
-//                    mModel.setLocalTranslation(mTargetMovementPoint);
-//                    mIsMoving = false;
-//                }
-//            }
         }
     }
     
@@ -183,7 +172,7 @@ public class Ship extends MoveableObject
     @Override
     public String toString()
     {
-        return "Ship ID: " + mID + ", Name: " + mName;
+        return "Ship ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -200,6 +189,6 @@ public class Ship extends MoveableObject
             s = (Ship)o;
         else
             return false;
-        return mID == s.getID();
+        return getID() == s.getID();
     }
 }

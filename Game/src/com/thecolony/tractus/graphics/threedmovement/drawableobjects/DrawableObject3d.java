@@ -11,7 +11,7 @@ import com.jme3.scene.Spatial;
 public class DrawableObject3d 
 {
     private static int M_ID_COUNT = 0;
-    protected int mID;
+    private int mID;
     
     protected Spatial mModel;
     /**
@@ -35,8 +35,9 @@ public class DrawableObject3d
         mName = name;
     }
     
-    protected void setUserData(String classType)
+    protected void setUserDataInfo(String classType, int idCount)
     {
+        mID = idCount;
         mModel.setUserData("ID", mID);
         mModel.setUserData("Class Type", classType);
     }

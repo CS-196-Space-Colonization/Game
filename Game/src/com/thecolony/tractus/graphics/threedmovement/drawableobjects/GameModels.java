@@ -17,6 +17,7 @@ public abstract class GameModels
     private static Spatial M_SHIP_CAPITAL_SHIP;
     
     private static Spatial M_OBJECT_SELECTED;
+    private static Spatial M_OBJECT_SELECTED_2;
     
     public static void loadModels(AssetManager contentMan)
     {        
@@ -33,6 +34,11 @@ public abstract class GameModels
         M_OBJECT_SELECTED = contentMan.loadModel("Models/selected.obj");
         M_OBJECT_SELECTED.setMaterial(mat.clone());
         M_OBJECT_SELECTED.scale(0.25f);
+        
+        mat.setColor("Ambient", ColorRGBA.Gray);
+        mat.setColor("Diffuse", ColorRGBA.Gray);
+        M_OBJECT_SELECTED_2 = contentMan.loadModel("Models/selected2.obj");
+        M_OBJECT_SELECTED_2.setMaterial(mat.clone());
     }
     
     public static Spatial getShipFighterModel()
@@ -55,5 +61,9 @@ public abstract class GameModels
     public static Spatial getSelectedObjectModel()
     {
         return M_OBJECT_SELECTED.clone();
+    }
+    public static Spatial getSelectedObjectModel2()
+    {
+        return M_OBJECT_SELECTED_2.clone();
     }
 }
