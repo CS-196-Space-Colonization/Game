@@ -2,30 +2,32 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
+
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.system.JmeContext;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import java.io.IOException;
-import java.net.InetAddress;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
- * This package contains an example that shows how you enqueue changes to the
- * scene graph correctly from the network thread -- see ClientListener.
- */
+
 public class ServerMain extends SimpleApplication implements ConnectionListener {
 
     Server myServer;
     int connections = 0;
     int connectionsOld = -1;
+    private static Planet [] mPlanets; 
 
     private static final Logger logger = Logger.getLogger(ServerMain.class.getName());
 
@@ -45,13 +47,8 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         }
         Serializer.registerClass(GreetingMessage.class);
         myServer.addMessageListener(new ServerListener(), GreetingMessage.class);
-        Serializer.registerClass(InetAddressMessage.class);
-        Serializer.registerClass(InetAddress.class, new InetAddressSerializer());
         
-        myServer.addMessageListener(new ServerListener(), InetAddressMessage.class);
-        myServer.addConnectionListener(this);
-        Serializer.registerClass(TextMessage.class);
-        myServer.addMessageListener(new ServerListener(), TextMessage.class);
+        
         
         /*
         Serializer.registerClass(CubeMessage.class);
@@ -69,6 +66,35 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         }
 
     }
+    /*
+    private void generatePlanet(int index)
+    {
+        mPlanets = new Planet[10];
+        for (int i = 0; i < mPlanets.length; i++) {
+            float radius = (float)(Math.random() * 2);
+        int posNeg = (Math.random() < 0.5) ? -1 : 1;
+        int orbitRadius = 15 + (10 * (index+1));
+        float xPos = posNeg * (int)(Math.random() * orbitRadius);
+        posNeg = (Math.random() < 0.5) ? -1 : 1;
+        float zPos =  posNeg * (float)Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
+        
+        
+            mPlanets[i] = new Planet(new Vector3f(xPos, 0.0f, zPos), "Planet " + Integer.toString(index), assetManager, radius, ColorRGBA.randomColor());
+        }
+    }
+    * /*
+    * 
+    */
+    
+    public static Planet[] getPlanets(){
+        return mPlanets; 
+    }
+    
+
+    
+    
+    
+  
 
     @Override
     public void destroy() {
@@ -91,3 +117,4 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
     public void connectionRemoved(Server server, HostedConnection client) {
     }
 }
+
