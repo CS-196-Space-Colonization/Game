@@ -8,14 +8,14 @@ import com.jme3.scene.Spatial;
  * space.
  * @author Joe Pagliuco
  */
-public class DrawableObject3d 
+public class DrawableObject3d implements java.io.Serializable
 {
     private static int M_ID_COUNT = 0;
     private int mID;
     
     private String mClassType;
     
-    protected Spatial mModel;
+    protected transient Spatial mModel;
     protected String mName;
     
     /**

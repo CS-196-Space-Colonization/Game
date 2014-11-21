@@ -70,7 +70,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
          */
         
         update = new UpdateClientMessage("Im updating");
-        update.setInfo(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
+        update.setInfo(new Vector3f(20.0f, 0.0f, 20.0f).toString(), ColorRGBA.Blue.toString());
     }
     
     @Override

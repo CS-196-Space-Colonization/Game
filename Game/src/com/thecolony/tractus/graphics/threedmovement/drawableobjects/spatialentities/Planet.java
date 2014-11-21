@@ -13,7 +13,7 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
  * A class used to represent a planet.
  * @author Joe Pagliuco
  */
-public class Planet extends DrawableObject3d
+public class Planet extends DrawableObject3d implements java.io.Serializable
 {
     ColorRGBA color;
     
