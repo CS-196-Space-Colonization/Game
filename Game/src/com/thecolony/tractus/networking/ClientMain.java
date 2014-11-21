@@ -117,7 +117,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
     public void simpleInitApp() {
 
         try {
-            myClient = Network.connectToServer("My Cool Game", 1, "localhost", 6143);
+            myClient = Network.connectToServer(Globals.NAME,Globals.VERSION, Globals.DEFAULT_SERVER, Globals.DEFAULT_PORT);
             myClient.start();
         } catch (IOException ex) {
         }
