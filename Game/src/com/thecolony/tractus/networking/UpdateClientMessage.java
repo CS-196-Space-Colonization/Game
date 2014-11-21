@@ -12,11 +12,11 @@ import com.jme3.network.serializing.Serializable;
  *
  * @author Arturo
  */
-@Serializable(id = 0)
+@Serializable
 public class UpdateClientMessage extends AbstractMessage
-{    
-     private Vector3f position;
-     private ColorRGBA color;
+{
+     private float posX, posY, posZ;
+     private float colR, colG, colB, colA;
     
      private String greeting = "Hello SpiderMonkey!"; // your message data
      public UpdateClientMessage() { }                  // empty default constructor
@@ -35,16 +35,22 @@ public class UpdateClientMessage extends AbstractMessage
      
      public void setInfo(Vector3f position, ColorRGBA color)
      {
-         this.position = position;
-         this.color = color;
+         posX = position.x;
+         posY = position.y;
+         posZ = position.z;
+         
+         colR = color.r;
+         colG = color.g;
+         colB = color.b;
+         colA = color.a;
      }
      
      public Vector3f getPlanetPosition()
      {
-         return position;
+         return new Vector3f(posX, posY, posZ);
      }
      public ColorRGBA getPlanetColor()
      {
-         return color;
+         return new ColorRGBA(colR, colG, colB, colA);
      }
 }

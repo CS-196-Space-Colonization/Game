@@ -16,17 +16,17 @@ public class ClientListener implements MessageListener<Client> {
     
     public void messageReceived(Client source, Message message) {
         
-        if (message instanceof GreetingMessage) {
-            GreetingMessage helloMessage = (GreetingMessage) message;
-            System.out.println("Client #" + source.getId()
-                    + " received the message: '"
-                    + helloMessage.getGreeting() + "'");
-            
-            if(helloMessage.getMap()!=null){
-                for(int i = 0; i<helloMessage.getMap().length; i++){   
-                }
-            }
-        }  
+//        if (message instanceof GreetingMessage) {
+//            GreetingMessage helloMessage = (GreetingMessage) message;
+//            System.out.println("Client #" + source.getId()
+//                    + " received the message: '"
+//                    + helloMessage.getGreeting() + "'");
+//            
+//            if(helloMessage.getMap()!=null){
+//                for(int i = 0; i<helloMessage.getMap().length; i++){   
+//                }
+//            }
+//        }  
         
         if(message instanceof UpdateClientMessage)
         {

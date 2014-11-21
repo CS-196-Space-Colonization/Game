@@ -155,8 +155,8 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 
         loadCursors();
         
-        Serializer.registerClass(GreetingMessage.class);
-        Serializer.registerClass(UpdateClientMessage.class);
+        Serializer.registerClasses(GreetingMessage.class, UpdateClientMessage.class);
+        //Serializer.registerClass(UpdateClientMessage.class);
         myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
         myClient.addClientStateListener(this);
 
