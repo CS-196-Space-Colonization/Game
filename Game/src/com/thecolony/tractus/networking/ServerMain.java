@@ -13,6 +13,7 @@ import com.jme3.network.Message;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
+import com.jme3.scene.Spatial;
 import com.jme3.system.JmeContext;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import java.io.IOException;
@@ -25,21 +26,24 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
     Server myServer;
     int connections = 0;
     int connectionsOld = -1;
-    private static Planet[] mPlanets;
+    
+    UpdateClientMessage update;
+    
     static Planet[] myPlanets;
     private static final Logger logger = Logger.getLogger(ServerMain.class.getName());
-
+    
     public static void main(String[] args) {
         logger.setLevel(Level.SEVERE);
         ServerMain app = new ServerMain();
         app.start(JmeContext.Type.Headless);
         
         //GreetingMessage hm =  new GreetingMessage("Hi server, do you hear me?", myPlanets);
-        
     }
 
     @Override
     public void simpleInitApp() {
+        
+        
         try {
 
             myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);
@@ -51,13 +55,13 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         Serializer.registerClass(UpdateClientMessage.class);
         // Serializer.registerClass(PlanetMessage.class);
         myServer.addMessageListener(new ServerListener(), GreetingMessage.class);
-        generatePlanet(20); 
+        
         //Message gm = new GreetingMessage("Generating map", myPlanets);
         //myServer.broadcast(gm);
         
         // myServer.addMessageListener(new ServerListener(), PlanetMessage.class);
 
-        // loadPlanets();
+        
 
 
         /*
@@ -65,8 +69,12 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
          myServer.addMessageListener(new ServerListener(this, myServer),
          CubeMessage.class);
          */
+        
+        update = new UpdateClientMessage("Im updating");
+        update.setInfo(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
+        
     }
-
+    
     @Override
     public void simpleUpdate(float deltaTime) {
         connections = myServer.getConnections().size();
@@ -76,8 +84,8 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         }
         
         
-        UpdateClientMessage update = new UpdateClientMessage("Im updating");
         myServer.broadcast(update);
+        
         try
         {
 	  Thread.sleep(500);
@@ -86,23 +94,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
 	  Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }
-
-    private void generatePlanet(int index) {
-
-        myPlanets = new Planet[10];
-        for (int i = 0; i < myPlanets.length; i++) {
-            float radius = (float) (Math.random() * 2);
-            int posNeg = (Math.random() < 0.5) ? -1 : 1;
-            int orbitRadius = 15 + (10 * (index + 1));
-            float xPos = posNeg * (int) (Math.random() * orbitRadius);
-            posNeg = (Math.random() < 0.5) ? -1 : 1;
-            float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
-            myPlanets[i] = new Planet(new Vector3f(xPos, 0.0f, zPos), "Planet " + Integer.toString(index), assetManager, radius, ColorRGBA.randomColor());
-        }
-    }
-
-    
+    }    
 
     @Override
     public void destroy() {

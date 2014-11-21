@@ -14,7 +14,9 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
  * @author Joe Pagliuco
  */
 public class Planet extends DrawableObject3d
-{    
+{
+    ColorRGBA color;
+    
     public Planet(Vector3f position, Spatial model, String name)
     {
         super(position, model, name, "Planet");
@@ -29,6 +31,8 @@ public class Planet extends DrawableObject3d
         
         mModel = loadModel(contentMan, radius, color);
         mModel.setLocalTranslation(position);
+        
+        this.color = color;
         
         initialize();
     }

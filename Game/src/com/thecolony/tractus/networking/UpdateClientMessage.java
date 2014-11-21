@@ -4,6 +4,8 @@
  */
 package com.thecolony.tractus.networking;
 
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
 /**
@@ -12,9 +14,12 @@ import com.jme3.network.serializing.Serializable;
  */
 @Serializable(id = 0)
 public class UpdateClientMessage extends AbstractMessage
-{
-   private String greeting = "Hello SpiderMonkey!"; // your message data
-     public UpdateClientMessage() {}                  // empty default constructor
+{    
+     private Vector3f position;
+     private ColorRGBA color;
+    
+     private String greeting = "Hello SpiderMonkey!"; // your message data
+     public UpdateClientMessage() { }                  // empty default constructor
      public UpdateClientMessage(String s) 
      {           // custom constructor
        greeting = s;
@@ -28,8 +33,18 @@ public class UpdateClientMessage extends AbstractMessage
          return greeting;
      }
      
-     public void generateWorld()
+     public void setInfo(Vector3f position, ColorRGBA color)
      {
-         Game game = new Game();
+         this.position = position;
+         this.color = color;
+     }
+     
+     public Vector3f getPlanetPosition()
+     {
+         return position;
+     }
+     public ColorRGBA getPlanetColor()
+     {
+         return color;
      }
 }

@@ -157,14 +157,13 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         
         Serializer.registerClass(GreetingMessage.class);
         Serializer.registerClass(UpdateClientMessage.class);
-        myClient.addMessageListener(new ClientListener(), UpdateClientMessage.class);
+        myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
         myClient.addClientStateListener(this);
 
         //Message m = new GreetingMessage("Hi server, do you hear me?");
         //myClient.send(m);
         
         mPlayer = new Player(mMap, myClient.getId());
-        
     }
 
     private void adjustCameraSettings() {
@@ -571,6 +570,13 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public void addPlanet(Vector3f pos, ColorRGBA col)
+    {
+        Planet p = new Planet(pos, "Fuck", assetManager, 2, col);
+        rootNode.attachChild(p.getModel());
+    }
+    
     public void destroy() {
         try {
             myClient.close();
