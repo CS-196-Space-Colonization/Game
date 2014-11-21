@@ -16,17 +16,34 @@ public class ClientListener implements MessageListener<Client> {
             System.out.println("Client #" + source.getId()
                     + " received the message: '"
                     + helloMessage.getGreeting() + "'");
-        } else if (message instanceof InetAddressMessage) {
-            InetAddressMessage addrMessage = (InetAddressMessage) message;
-            // unused
-        }
-        else if (message instanceof TextMessage) {
-            TextMessage textm = (TextMessage) message;
-            System.out.println("Client #" + source.getId()
-                    + " received the message: '"
-                    + textm.getText() + "'");
-        }
+            
+            if(helloMessage.getMap()!=null){
+                for(int i = 0; i<helloMessage.getMap().length; i++){   
+                }
+            }
+        }  
+        
+        /*
+        else if (message instanceof PlanetMessage) {
+            final PlanetMessage planetMessage = (PlanetMessage) message;
+            app.enqueue(new Callable() {
+                public Void call() {
+                    int 
+                    change something in the scene graph from here 
+                    
+                    app.getRootNode().getChild(0).setPosition();
+                    return null;
+                }
+            });
+        } 
+        */
+        
+       
+        
+        
     }
 
 }
+
+
 
