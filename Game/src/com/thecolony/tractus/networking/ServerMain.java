@@ -34,7 +34,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         ServerMain app = new ServerMain();
         app.start(JmeContext.Type.Headless);
         
-        GreetingMessage hm =  new GreetingMessage("Hi server, do you hear me?", myPlanets);
+        //GreetingMessage hm =  new GreetingMessage("Hi server, do you hear me?", myPlanets);
         
     }
 
@@ -48,11 +48,12 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
             logger.log(Level.SEVERE, "Could not create network connection.");
         }
         Serializer.registerClass(GreetingMessage.class);
+        Serializer.registerClass(UpdateClientMessage.class);
         // Serializer.registerClass(PlanetMessage.class);
         myServer.addMessageListener(new ServerListener(), GreetingMessage.class);
-        generatePlanet(); 
-        GreetingMessage gm = new GreetingMessage("Generating map", myPlanets);
-        myServer.send(gm);
+        generatePlanet(20); 
+        //Message gm = new GreetingMessage("Generating map", myPlanets);
+        //myServer.broadcast(gm);
         
         // myServer.addMessageListener(new ServerListener(), PlanetMessage.class);
 
@@ -73,7 +74,18 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
             System.out.println("Server connections: " + connections);
             connectionsOld = connections;
         }
-
+        
+        
+        UpdateClientMessage update = new UpdateClientMessage("Im updating");
+        myServer.broadcast(update);
+        try
+        {
+	  Thread.sleep(500);
+        } catch (InterruptedException ex)
+        {
+	  Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     private void generatePlanet(int index) {

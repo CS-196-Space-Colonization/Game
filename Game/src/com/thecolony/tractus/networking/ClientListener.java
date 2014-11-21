@@ -23,6 +23,12 @@ public class ClientListener implements MessageListener<Client> {
             }
         }  
         
+        if(message instanceof UpdateClientMessage)
+        {
+	  UpdateClientMessage msg = (UpdateClientMessage) message;
+	  System.out.println("Msg: " + msg.getGreeting());
+        }
+        
         /*
         else if (message instanceof PlanetMessage) {
             final PlanetMessage planetMessage = (PlanetMessage) message;
