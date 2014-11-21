@@ -12,19 +12,10 @@ public class MutableTreeNodeImpl<T> implements MutableTreeNode<T> {
 		public void add(MutableTreeNode child) {}
 		
 		@Override
-		public MutableTreeNode getParent() {
-			return this;
-		}
-		@Override
 		public List getChildren() {
 			return Collections.EMPTY_LIST;
 		}
 
-		@Override
-		public void removeFromParent() {}
-
-		@Override
-		public void setParent(MutableTreeNode newParent) {}
 
 		@Override
 		public void removeChild(MutableTreeNode child) {}
@@ -72,11 +63,6 @@ public class MutableTreeNodeImpl<T> implements MutableTreeNode<T> {
 	}
 	
 	@Override
-	public MutableTreeNode<T> getParent() {
-		return parent;
-	}
-	
-	@Override
 	public List<MutableTreeNode<T>> getChildren() {
 		return new ArrayList<>(children);
 	}
@@ -84,28 +70,11 @@ public class MutableTreeNodeImpl<T> implements MutableTreeNode<T> {
 	@Override
 	public void add(MutableTreeNode<T> child) {
 		children.add(child);
-		child.setParent(this);
-	}
-	
-	@Override
-	public void setParent(MutableTreeNode<T> newParent) {
-		if (parent == newParent)
-			return;
-		MutableTreeNode<T> oldParent = parent;
-		parent = newParent;
-		parent.add(this);
-		oldParent.removeChild(this);
-	}
-	
-	@Override
-	public void removeFromParent() {
-		setParent(nullTree);
 	}
 	
 	@Override
 	public void removeChild(MutableTreeNode<T> child) {
 		children.remove(child);
-		child.removeFromParent();
 	}
 	
 	@Override

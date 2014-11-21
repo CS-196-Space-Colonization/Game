@@ -6,13 +6,14 @@ import economics.need.*;
 import economics.products.Product;
 import economics.products.Quantity;
 
-public class Manufactory implements Producer {
+public class Manufactory extends AbstractAgent implements Producer {
 	private final Product production;
 	private Inventory inventory;
 	private Need inputNeed;
 	private Machinery machines;
 
 	public Manufactory(Product productionGood) {
+		super(null);
 		production = productionGood;
 		inventory = new Inventory();
 		createMachinery();
@@ -73,5 +74,9 @@ public class Manufactory implements Producer {
 
 	public void setThroughput(double throughput) {
 		machines.setThroughput(throughput);
+	}
+	
+	public Machinery getMachinery() {
+		return machines;
 	}
 }

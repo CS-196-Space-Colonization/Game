@@ -10,9 +10,10 @@ public interface Need {
 	Inventory getNeededProducts();
 	double portionFulfilled(Inventory has);
 	void add(Need child);
-	Need getParent();
 	List<Need> getChildren();
 	int getChildCount();
-	void removeFromParent();
-	void setParent(Need newParent);
+	int indexOf(MutableTreeNode<Need> child);
+	boolean contains(MutableTreeNode<Need> child);
+	void removeChild(MutableTreeNode<Need> child);
+	Need copy();
 }

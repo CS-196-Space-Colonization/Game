@@ -4,6 +4,10 @@ public abstract class AbstractAgent implements EconomicAgent {
 	private Inventory inventory = new Inventory();
 	private Market market;
 	
+	public AbstractAgent(Market m) {
+		this.market = m;
+	}
+	
 	public void give(Inventory other) {
 		inventory.addInventoryFrom(other);
 	}

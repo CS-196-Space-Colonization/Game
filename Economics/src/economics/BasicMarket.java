@@ -10,8 +10,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import economics.products.Product;
+import economics.products.Quantity;
 
-public class BasicMarket implements Market {
+public class BasicMarket implements Market, Observer {
 	public final ImmutableMap<String, Product> GOOD_PROTOTYPES;
 	private Map<Product, LinkedList<Transaction>> market;
 	private Map<Product, Double> lastPrices;
@@ -40,6 +41,10 @@ public class BasicMarket implements Market {
 	
 	@Override
 	public void addOffer(Transaction transaction) {
+		Quantity offer = transaction.getOffer();
+		Product onOffer = (Product)offer.getUnit();
+		transaction.acceptObserver(this);
+		market.get(onOffer).add(transaction);
 	}
 
 	@Override
@@ -53,5 +58,13 @@ public class BasicMarket implements Market {
 	@Override
 	public Product getMoney() {
 		return GOOD_PROTOTYPES.get("money");
+	}
+
+	@Override
+	public void update(Observable other) {
+		Transaction transaction = (Transaction)other;
+		Quantity offer = transaction.getOffer();
+		if (Double.compare(0.0, offer.getQuantity()) == 0)
+			market.remove(transaction);
 	}
 }

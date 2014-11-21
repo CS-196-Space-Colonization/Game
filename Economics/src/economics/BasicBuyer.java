@@ -15,8 +15,8 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	private Inventory inventory;
 	
 	public BasicBuyer(Market market) {
-		setMarket(market);
-		setNeeds(null);
+		super(market);
+		setNeeds(new NeedBranch());
 		inventory = new Inventory();
 	}
 	

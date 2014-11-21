@@ -6,7 +6,7 @@ import economics.products.Quantity;
 public class BasicSeller extends AbstractAgent implements Seller, Observer {
 
 	public BasicSeller(Market market) {
-		setMarket(market);
+		super(market);
 	}
 	
 	@Override
@@ -26,6 +26,9 @@ public class BasicSeller extends AbstractAgent implements Seller, Observer {
 		Transaction completed = (Transaction)other;
 		Quantity asset = completed.getOffer();
 		Quantity money = completed.getRevenue();
-		//TODO REIMPLEMENT
+		Inventory inv = take();
+		inv.addQuantityOfProduct(money);
+		inv.removeQuantityOfProduct(asset);
+		give(inv);
 	}
 }

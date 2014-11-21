@@ -73,10 +73,10 @@ public class BasicBuyerTest {
 	private Need makeNeeds() {
 		Need rootNeed = new NeedBranch();
 		Need metalNeed = new NeedBranch();
-		rootNeed.insert(metalNeed, 0);
-		metalNeed.insert(new BasicNeed(new Quantity(ProductsService.get("iron"), 1.0)), 0);
-		metalNeed.insert(new BasicNeed(new Quantity(ProductsService.get("steel"), 10.0)), 1);
-		rootNeed.insert(new BasicNeed(new Quantity(ProductsService.get("labor"), 100.0)), 1);
+		rootNeed.add(metalNeed);
+		metalNeed.add(new BasicNeed(new Quantity(ProductsService.get("iron"), 1.0)));
+		metalNeed.add(new BasicNeed(new Quantity(ProductsService.get("steel"), 10.0)));
+		rootNeed.add(new BasicNeed(new Quantity(ProductsService.get("labor"), 100.0)));
 		return rootNeed;
 	}
 

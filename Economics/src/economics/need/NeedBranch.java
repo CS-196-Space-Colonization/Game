@@ -11,25 +11,23 @@ public class NeedBranch implements Need {
 
 	@Override
 	public Inventory getNeededProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		Inventory inv = new Inventory();
+		for (MutableTreeNode<Need> needNode: needs.getChildren())
+			inv.addInventoryFrom(needNode.getData().getNeededProducts());
+		return inv;
 	}
 
 	@Override
 	public double portionFulfilled(Inventory has) {
-		// TODO Auto-generated method stub
-		return 0;
+		double max = 1.0;
+		for (MutableTreeNode<Need> needNode: needs.getChildren())
+			max = Math.min(max, needNode.getData().portionFulfilled(has));
+		return max;
 	}
 
 	@Override
 	public void add(Need child) {
 		needs.add(new MutableTreeNodeImpl<Need>(child));
-	}
-
-	@Override
-	public Need getParent() {
-		MutableTreeNode<Need> par = needs.getParent();
-		return par != null ? par.getData() : null;
 	}
 
 	@Override
@@ -41,17 +39,7 @@ public class NeedBranch implements Need {
 	}
 
 	@Override
-	public void removeFromParent() {
-		needs.removeFromParent();
-	}
-
-	@Override
-	public void setParent(Need newParent) {
-		needs.setParent(newParent);
-	}
-
-	@Override
-	public void removeChild(Need child) {
+	public void removeChild(MutableTreeNode<Need> child) {
 		needs.removeChild(child);
 	}
 
@@ -63,5 +51,18 @@ public class NeedBranch implements Need {
 	@Override
 	public int indexOf(MutableTreeNode<Need> child) {
 		return needs.indexOf(child);
+	}
+
+	@Override
+	public int getChildCount() {
+		return needs.getChildren().size();
+	}
+
+	@Override
+	public Need copy() {
+		Need newCopy = new NeedBranch();
+		for (MutableTreeNode<Need> need : needs.getChildren())
+			newCopy.add(need.getData());
+		return newCopy;
 	}
 }

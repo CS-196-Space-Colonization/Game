@@ -5,7 +5,7 @@ import java.util.List;
 
 import economics.products.Quantity;
 
-public class GoodsTransaction implements Transaction, Observable {
+public class GoodsTransaction implements Transaction {
 	private Quantity offer;
 	private Quantity price;
 	private Quantity revenue;

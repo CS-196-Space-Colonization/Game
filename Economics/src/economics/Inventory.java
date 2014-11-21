@@ -42,6 +42,10 @@ public class Inventory {
 		inventory.put(product, new Quantity(product, Math.max(0.0, quantity)));
 	}
 	
+	public void setQuantityOf(Quantity quantity) {
+		setQuantityOf((Product)quantity.getUnit(), quantity.getQuantity());
+	}
+	
 	public Quantity getQuantityOf(Product product) {
 		Quantity stored = inventory.get(product);
 		return stored == null ? Quantity.NullQuantity : stored;
@@ -56,6 +60,10 @@ public class Inventory {
 	public void addQuantityOfProduct(Product product, double quantity) {
 		assertNotNegative(quantity);
 		addQuantityOfProductImpl(product, quantity);
+	}
+	
+	public void addQuantityOfProduct(Quantity quantity) {
+		addQuantityOfProduct((Product)quantity.getUnit(), quantity.getQuantity());
 	}
 
 	private void assertNotNegative(double quantity) {
@@ -78,6 +86,10 @@ public class Inventory {
 		} else {
 			removeQuantityOfProductImpl(product, oldQuantity);
 		}
+	}
+	
+	public void removeQuantityOfProduct(Quantity quantity) {
+		removeQuantityOfProduct((Product)quantity.getUnit(), quantity.getQuantity());
 	}
 	
 	private void removeQuantityOfProductImpl(Product product, double quantity) {
