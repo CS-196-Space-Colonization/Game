@@ -39,7 +39,7 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialenti
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Star;
 import static com.thecolony.tractus.graphics.threedmovement.game.Game.M_HEIGHT;
 import static com.thecolony.tractus.graphics.threedmovement.game.Game.M_WIDTH;
-import com.thecolony.tractus.graphics.threedmovement.military.ships.Ship;
+import com.thecolony.tractus.player.ai.battle.Ship;
 import com.thecolony.tractus.player.Player;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -234,13 +234,16 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         mMovementPlane = new Plane(Vector3f.UNIT_Y, 0.0f);
     }
 
-    private void loadShips() {
+    private void loadShips()
+    {
         mFighters = new Ship[30];
         mFightersNode = new Node("Fighters Node");
-
-        for (int i = 0; i < mFighters.length; i++) {
-            mFighters[i] = new Ship(Ship.SHIP_TYPE.Fighter, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), "Fighter " + i);
-            mFightersNode.attachChild(mFighters[i].getModel());
+        
+        for (int i = 0; i < mFighters.length; i++)
+        {
+            mFighters[i] = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), 
+                    new double[19], 0, "H", 0, 0, 0);
+            mFightersNode.attachChild(mFighters[i].getDrawableObject3d().getModel());
         }
     }
 
@@ -285,74 +288,90 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START LISTENERS //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private ActionListener mMouseActionListener = new ActionListener() {
-        public void onAction(String name, boolean isPressed, float tpf) {
-            if (name.equals("Right Click") && !mIsShiftPressed && isPressed) {
+    
+    private ActionListener mMouseActionListener = new ActionListener()
+    {
+        public void onAction(String name, boolean isPressed, float tpf)
+        {            
+            if (name.equals("Right Click") && !mIsShiftPressed && isPressed)
+            {
                 // Check collision with ships
                 int closestCollisionIndex = getClosestCollisionWithMouseIndex(mFightersNode);
                 if (closestCollisionIndex != -1) // A ship has been selected
                 {
-                    clearSelectedObjects();
+                    clearSelectedObjects();                    
                     addSelectedObject(mFighters[closestCollisionIndex], closestCollisionIndex);
-                } else // Nothing selected, deselect all
-                {
-                    clearSelectedObjects();
                 }
+                else // Nothing selected, deselect all
+                    clearSelectedObjects();
             }
-
-            if (name.equals("Right Click") && mIsShiftPressed && isPressed) {
+            
+            if (name.equals("Right Click") && mIsShiftPressed && isPressed)
+            {
                 int closestCollisionIndex = getClosestCollisionWithMouseIndex(mFightersNode);
-                if (closestCollisionIndex != -1) {
+                if (closestCollisionIndex != -1)
+                {
                     // Check to see if object is already selected...
-                    if (mFighters[closestCollisionIndex].isSelected()) {
+                    if (mFighters[closestCollisionIndex].isSelected())
+                    {
                         // Deselect it...
                         mSelectedObjectModels.detachChildNamed(
-                                (String) mFighters[closestCollisionIndex].getModel().getUserData("Type")
-                                + Integer.toString((Integer) mFighters[closestCollisionIndex].getModel().getUserData("ID")));
+                                (String)mFighters[closestCollisionIndex].getDrawableObject3d().getModel().getUserData("Type") + 
+                                Integer.toString((Integer)mFighters[closestCollisionIndex].getDrawableObject3d().getModel().getUserData("ID")));
                         mFighters[closestCollisionIndex].setIsSelected(false);
-                    } else {
+                    }
+                    else
+                    {
                         // Select it...
-                        mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getModel(), closestCollisionIndex));
+                        mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getDrawableObject3d().getModel(), closestCollisionIndex));
                         mFighters[closestCollisionIndex].setIsSelected(true);
                     }
                 }
             }
-
-            if (name.equals("Left Click") && isPressed) {
-                if (mIsMPressed || mIsRPressed) {
+            
+            if (name.equals("Left Click") && isPressed)
+            {
+                if (mIsMPressed || mIsRPressed)
+                {
                     Vector3f targetPoint = getMouseRayIntersectionPoint();
-                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++) {
+                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+                    {
                         int index = mSelectedObjectModels.getChild(i).getUserData("Array Index");
                         mFighters[index].setTarget(targetPoint, mIsMPressed);
                     }
                     mIsMPressed = mIsRPressed = false;
                     inputManager.setMouseCursor(null);
-                } else if (mIsBPressed) {
+                }
+                else if (mIsBPressed)
+                {
                     Vector2f cursorPos = inputManager.getCursorPosition();
                     mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
                     guiNode.attachChild(mPictureBoxSelect);
                 }
             }
-            if (name.equals("Left Click") && !isPressed) {
-                if (mIsBPressed) {
+            if (name.equals("Left Click") && !isPressed)
+            {
+                if (mIsBPressed)
+                {
                     // Deselect all
-                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++) {
-                        ((Spatial) (mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
-                    }
+                    for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
+                           ((Spatial)(mSelectedObjectModels.getChild(i).getUserData("Selected Object"))).setUserData("Selected", false);
                     mSelectedObjectModels.detachAllChildren();
 
                     // Create big ass selector cube...
                     Vector3f min = getMouseRayIntersectionPoint();
                     Vector3f max = Vector3f.ZERO;
-                    Ray r = createRayFromPoint((Vector2f) mPictureBoxSelect.getUserData("Initial Position"));
+                    Ray r = createRayFromPoint((Vector2f)mPictureBoxSelect.getUserData("Initial Position"));
                     r.intersectsWherePlane(mMovementPlane, max);
                     Box bigAssSelectorCube = new Box(min, max);
 
                     // Loop through ships to see if they're in the selected area...
-                    for (int i = 0; i < mFighters.length; i++) {
-                        BoundingVolume shipVolume = mFighters[i].getModel().getWorldBound();
-                        if (bigAssSelectorCube.getBound().intersects(shipVolume) || bigAssSelectorCube.getBound().contains(shipVolume.getCenter())) {
-                            mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[i].getModel(), i));
+                    for (int i = 0; i < mFighters.length; i++)
+                    {
+                        BoundingVolume shipVolume = mFighters[i].getDrawableObject3d().getModel().getWorldBound();
+                        if (bigAssSelectorCube.getBound().intersects(shipVolume) || bigAssSelectorCube.getBound().contains(shipVolume.getCenter()))
+                        {
+                            mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[i].getDrawableObject3d().getModel(), i));
                             mFighters[i].setIsSelected(true);
                         }
                     }
@@ -365,36 +384,44 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
             }
         }
     };
-    private ActionListener mKeyboardActionListener = new ActionListener() {
-        public void onAction(String name, boolean isPressed, float tpf) {
-            if (name.equals("Shift")) {
+    
+    private ActionListener mKeyboardActionListener = new ActionListener()
+    {
+        public void onAction(String name, boolean isPressed, float tpf)
+        {
+            if (name.equals("Shift"))
                 mIsShiftPressed = isPressed;
-            } else if (name.equals("M") && isPressed) {
+            else if (name.equals("M") && isPressed)
+            {
                 mIsMPressed = !mIsMPressed;
                 mIsRPressed = false;
                 mIsBPressed = false;
-            } else if (name.equals("R") && isPressed) {
+            }
+            else if (name.equals("R") && isPressed)
+            {
                 mIsMPressed = false;
                 mIsRPressed = !mIsRPressed;
                 mIsBPressed = false;
-            } else if (name.equals("B") && isPressed) {
+            }
+            else if (name.equals("B") && isPressed)
+            {
                 mIsMPressed = false;
                 mIsRPressed = false;
                 mIsBPressed = !mIsBPressed;
                 flyCam.setEnabled(!flyCam.isEnabled());
             }
-
-            if (mIsMPressed || mIsRPressed || mIsBPressed) {
+            
+            if (mIsMPressed || mIsRPressed || mIsBPressed)
                 inputManager.setMouseCursor(mCursorSmiley);
-            } else {
+            else
                 inputManager.setMouseCursor(null);
-            }
         }
     };
-
+    
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END LISTENERS ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START UPDATE METHODS /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -511,9 +538,10 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
      * @param ship The reference to the ship that has been selected.
      * @param index The index of this ship in it's own array.
      */
-    private void addSelectedObject(Ship ship, int index) {
-        mSelectedObjectModels.attachChild(addSelectedObjectModel(ship.getModel(), index));
-        ship.setIsSelected(true);
+    private void addSelectedObject(Ship ship, int index)
+    {
+         mSelectedObjectModels.attachChild(addSelectedObjectModel(ship.getDrawableObject3d().getModel(), index));
+         ship.setIsSelected(true);
     }
 
     /**

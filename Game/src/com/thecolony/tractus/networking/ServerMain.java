@@ -40,7 +40,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
     @Override
     public void simpleInitApp() {
         try {
-            myServer = Network.createServer("My Cool Game", 1, 6143, 6143);
+            myServer = Network.createServer(Globals.NAME, Globals.VERSION, Globals.DEFAULT_PORT, Globals.DEFAULT_PORT);
             myServer.start();
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Could not create network connection.");
