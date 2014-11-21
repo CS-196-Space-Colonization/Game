@@ -1,6 +1,6 @@
 package com.thecolony.tractus.player.ai.battle;
 
-public class shipFactory extends Battle_Object{
+public class shipFactory extends BattleObject{
 	private int money;
 	private int peoples;
 	private static int costOfFactory = 100;
@@ -92,11 +92,11 @@ public class shipFactory extends Battle_Object{
 	{
 		peoples = peoples + worker;
 	}
-	public static void produceShip(ship Ship, flotilla Flotilla)
+	public static void produceShip(Ship Ship, flotilla Flotilla)
 	{
 			Flotilla.addShip(Ship);
 	}
-	public void produceFlotilla(ship[] floatil, Fleet f)
+	public void produceFlotilla(Ship[] floatil, Fleet f)
 	{
 		flotilla one = new flotilla(floatil);
 		f.addFlotilla(one);
@@ -109,10 +109,10 @@ public class shipFactory extends Battle_Object{
 			 String Type, int level)//consists of one capital ship and an amount of fighters
 	{
 		flotilla one = new flotilla();
-		ship bigest = new Specific_Ship("Capital", Type, level);
-		ship small = new Specific_Ship("Fighter", Type, level);
-		ship big = new Specific_Ship("Frigate", Type, level);
-		ship biger = new Specific_Ship("Cruiser", Type, level);
+		Ship bigest = new Specific_Ship("Capital", Type, level);
+		Ship small = new Specific_Ship("Fighter", Type, level);
+		Ship big = new Specific_Ship("Frigate", Type, level);
+		Ship biger = new Specific_Ship("Cruiser", Type, level);
 		if(capital)
 			produceShip(bigest, one);
 		for(int i = 0; i < fighters; i++)

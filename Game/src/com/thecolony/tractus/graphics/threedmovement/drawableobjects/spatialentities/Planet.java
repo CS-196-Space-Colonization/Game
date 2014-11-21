@@ -14,30 +14,21 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
  * @author Joe Pagliuco
  */
 public class Planet extends DrawableObject3d
-{
-    private static int M_ID_COUNT = 0;
-    
+{    
     public Planet(Vector3f position, Spatial model, String name)
     {
-        super(position, model, name);
-        
-        M_ID_COUNT++;
+        super(position, model, name, "Planet");
         
         initialize();
-        
-        super.setUserDataInfo("Planet", M_ID_COUNT);
     }
     
     // Temporary
     public Planet(Vector3f position, String name, AssetManager contentMan, float radius, ColorRGBA color)
     {
-        super(position, null, name);
-        
-        M_ID_COUNT++;
+        super(position, null, name, "Planet");
         
         mModel = loadModel(contentMan, radius, color);
         mModel.setLocalTranslation(position);
-        super.setUserDataInfo("Planet", M_ID_COUNT);
         
         initialize();
     }
@@ -59,15 +50,6 @@ public class Planet extends DrawableObject3d
     private void initialize()
     {
         
-    }
-    
-    /**
-     * @return Returns the number of Planet objects that have been
-     * created since the application started.
-     */
-    public static int getIDCount()
-    {
-        return M_ID_COUNT;
     }
     
     /**

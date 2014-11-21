@@ -2,7 +2,7 @@
 package com.thecolony.tractus.player.ai.battle;
 
 public class BattleSimulator {
-	public static void singleBattleSim(ship a, ship b )
+	public static void singleBattleSim(Ship a, Ship b )
 	{
 		boolean done = false;
 		while(!done)
@@ -19,7 +19,7 @@ public class BattleSimulator {
 				System.out.println("a wins");
 				done = true;
 			}
-			ship.battle(a, b);
+			Ship.battle(a, b);
 		}
 		
 	}
@@ -52,9 +52,9 @@ public class BattleSimulator {
 	public static void main(String[] args)
 	{
 		flotilla one = new flotilla();
-		one.addShip(new ship());
+		one.addShip(new Ship());
 		flotilla two = new flotilla();
-		two.addShip(new ship());
+		two.addShip(new Ship());
 		singleBattleSim(one.getShip(0), two.getShip(0));
 	}
 }

@@ -2,7 +2,7 @@
 package com.thecolony.tractus.player.ai.battle;
 
 
-public class Specific_Ship extends ship {
+public class Specific_Ship extends Ship {
 	private String Type;
 	private String Qual;
 	private double level;

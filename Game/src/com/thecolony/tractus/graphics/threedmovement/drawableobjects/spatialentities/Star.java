@@ -17,17 +17,13 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
  */
 public class Star extends DrawableObject3d
 {
-    private static int M_ID_COUNT = 0;
     protected static final float M_POINT_LIGHT_RADIUS = 1000.0f;
     
     protected PointLight mPointLight;
     
     public Star(Vector3f position, Spatial model, String name)
     {
-        super(position, model, name);
-        
-        M_ID_COUNT++;
-        super.setUserDataInfo("Star", M_ID_COUNT);
+        super(position, model, name, "Star");
         
         initialize();
     }
@@ -35,13 +31,10 @@ public class Star extends DrawableObject3d
     // Temporary
     public Star(Vector3f position, String name, AssetManager contentMan, float radius)
     {
-        super(position, null, name);
+        super(position, null, name, "Star");
         
         mModel = loadModel(contentMan, radius);
         mModel.setLocalTranslation(position);
-        
-        M_ID_COUNT++;
-        super.setUserDataInfo("Star", M_ID_COUNT);
         
         initialize();
     }
@@ -82,15 +75,6 @@ public class Star extends DrawableObject3d
     public PointLight getPointLight()
     {
         return mPointLight;
-    }
-    
-    /**
-     * @return Returns the number of Star objects that have been
-     * created since the application started.
-     */
-    public static int getIDCount()
-    {
-        return M_ID_COUNT;
     }
     
     /**

@@ -13,35 +13,45 @@ public class DrawableObject3d
     private static int M_ID_COUNT = 0;
     private int mID;
     
+    private String mClassType;
+    
     protected Spatial mModel;
-    /**
-     * Represents the name of the object used for HUD and UI display, not
-     * for comparing two objects.
-     */
     protected String mName;
     
-    public DrawableObject3d(Vector3f position, Spatial model, String name)
+    /**
+     * Used to create a DrawableObject3d.
+     * @param position Position of object.
+     * @param model Model used to graphically represent the object.
+     * @param name Name of object (used for display purposes).
+     * @param classType The type of DrawableObject (ie Fighter, Capital Ship, etc).
+     */
+    public DrawableObject3d(Vector3f position, Spatial model, String name, String classType)
     {
         M_ID_COUNT++;
         mID = M_ID_COUNT;
+        
+        mClassType = classType;
         
         if (model != null)
         {
             mModel = model;
             mModel.setLocalTranslation(position);
-            mModel.setUserData("Type", "DrawableObject3d");
+            mModel.setUserData("Type", classType);
             mModel.setUserData("ID", mID);
         }
         mName = name;
     }
     
-    protected void setUserDataInfo(String classType, int idCount)
+    /**
+     * Sets the model representation of this object.
+     * @param model A Spatial used to represent this object graphically.
+     */
+    public void setModel(Spatial model)
     {
-        mID = idCount;
-        mModel.setUserData("ID", mID);
-        mModel.setUserData("Class Type", classType);
-    }
-    
+        this.mModel = model;
+        mModel.setUserData("Type", mClassType);
+        mModel.setUserData("ID", mID);        
+    }    
     /**
      * @return Returns the model representation of this object.
      */
