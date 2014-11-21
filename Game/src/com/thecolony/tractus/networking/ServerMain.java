@@ -51,8 +51,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Could not create network connection.");
         }
-        Serializer.registerClass(GreetingMessage.class);
-        Serializer.registerClass(UpdateClientMessage.class);
+        Serializer.registerClasses(GreetingMessage.class, UpdateClientMessage.class);
         // Serializer.registerClass(PlanetMessage.class);
         myServer.addMessageListener(new ServerListener(), GreetingMessage.class);
         
@@ -80,10 +79,11 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         if (connectionsOld != connections) {
             System.out.println("Server connections: " + connections);
             connectionsOld = connections;
+	  myServer.broadcast(update);
         }
         
         
-        myServer.broadcast(update);
+        //myServer.broadcast(update);
         
         try
         {
