@@ -67,7 +67,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
     }
 
     @Override
-    public void update() {
+    public void simpleUpdate(float deltaTime) {
         connections = myServer.getConnections().size();
         if (connectionsOld != connections) {
             System.out.println("Server connections: " + connections);
