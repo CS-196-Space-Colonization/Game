@@ -1,5 +1,5 @@
 
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.network.AbstractMessage;

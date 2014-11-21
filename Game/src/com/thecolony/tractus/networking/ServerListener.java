@@ -1,4 +1,4 @@
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
 
 import com.jme3.network.MessageListener;
 import com.jme3.network.HostedConnection;

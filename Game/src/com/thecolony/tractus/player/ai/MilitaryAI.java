@@ -17,6 +17,7 @@ public class MilitaryAI extends NPC
 	public void act()
 	{
 		//do things
+            //i
 	}
 
 }
