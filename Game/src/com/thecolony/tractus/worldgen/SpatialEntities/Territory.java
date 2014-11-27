@@ -1,7 +1,7 @@
-package SpatialEntities;
+package com.thecolony.tractus.worldgen.SpatialEntities;
 
+import com.thecolony.tractus.worldgen.resources.Res;
 import java.io.Serializable;
-import resources.Res;
 
 /**
  * Created by chthonic7 on 10/15/14.

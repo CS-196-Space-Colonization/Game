@@ -1,4 +1,4 @@
-package resources;
+package com.thecolony.tractus.worldgen.resources;
 
 import com.sun.org.apache.xerces.internal.impl.io.UTF8Reader;
 
