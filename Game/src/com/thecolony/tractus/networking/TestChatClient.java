@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
 
 import com.jme3.network.Client;
 import com.jme3.network.Message;
@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
-import com.spacecolonization.networking.TestChatServer.ChatMessage;
+import com.thecolony.tractus.networking.TestChatServer.ChatMessage;
 
 
 public class TestChatClient extends JFrame {
@@ -122,5 +122,6 @@ public class TestChatClient extends JFrame {
         }
     }
 }
+
 
 

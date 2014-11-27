@@ -9,44 +9,34 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
 
 /**
  * A class used to represent a star.
  * @author Joe Pagliuco
  */
-public class Star extends SpatialEntity
+public class Star extends DrawableObject3d
 {
-    private static int M_ID_COUNT = 0;
     protected static final float M_POINT_LIGHT_RADIUS = 1000.0f;
     
     protected PointLight mPointLight;
     
     public Star(Vector3f position, Spatial model, String name)
     {
-        super(position, model, name);
-        
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
+        super(position, model, name, "Star");
         
         initialize();
-        
-        super.setUserData("Star");
     }
     
     // Temporary
     public Star(Vector3f position, String name, AssetManager contentMan, float radius)
     {
-        super(position, null, name);
-        
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
+        super(position, null, name, "Star");
         
         mModel = loadModel(contentMan, radius);
         mModel.setLocalTranslation(position);
         
         initialize();
-        
-        super.setUserData("Star");
     }
     
     // Temporary
@@ -88,22 +78,13 @@ public class Star extends SpatialEntity
     }
     
     /**
-     * @return Returns the number of Star objects that have been
-     * created since the application started.
-     */
-    public static int getIDCount()
-    {
-        return M_ID_COUNT;
-    }
-    
-    /**
      * Makes a String representation of this.
      * @return Returns the ID, followed by the object's name.
      */
     @Override
     public String toString()
     {
-        return "Star ID: " + mID + ", Name: " + mName;
+        return "Star ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -120,6 +101,6 @@ public class Star extends SpatialEntity
             s = (Star)o;
         else
             return false;
-        return mID == s.mID;
+        return getID() == s.getID();
     }
 }

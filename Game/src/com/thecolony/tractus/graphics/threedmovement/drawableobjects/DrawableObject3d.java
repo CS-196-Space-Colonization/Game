@@ -8,39 +8,50 @@ import com.jme3.scene.Spatial;
  * space.
  * @author Joe Pagliuco
  */
-public class DrawableObject3d 
+public class DrawableObject3d implements java.io.Serializable
 {
     private static int M_ID_COUNT = 0;
-    protected int mID;
+    private int mID;
     
-    protected Spatial mModel;
-    /**
-     * Represents the name of the object used for HUD and UI display, not
-     * for comparing two objects.
-     */
+    private String mClassType;
+    
+    protected transient Spatial mModel;
     protected String mName;
     
-    public DrawableObject3d(Vector3f position, Spatial model, String name)
+    /**
+     * Used to create a DrawableObject3d.
+     * @param position Position of object.
+     * @param model Model used to graphically represent the object.
+     * @param name Name of object (used for display purposes).
+     * @param classType The type of DrawableObject (ie Fighter, Capital Ship, etc).
+     */
+    public DrawableObject3d(Vector3f position, Spatial model, String name, String classType)
     {
         M_ID_COUNT++;
         mID = M_ID_COUNT;
+        
+        mClassType = classType;
         
         if (model != null)
         {
             mModel = model;
             mModel.setLocalTranslation(position);
-            mModel.setUserData("Type", "DrawableObject3d");
+            mModel.setUserData("Type", classType);
             mModel.setUserData("ID", mID);
         }
         mName = name;
     }
     
-    protected void setUserData(String classType)
+    /**
+     * Sets the model representation of this object.
+     * @param model A Spatial used to represent this object graphically.
+     */
+    public void setModel(Spatial model)
     {
-        mModel.setUserData("ID", mID);
-        mModel.setUserData("Class Type", classType);
-    }
-    
+        this.mModel = model;
+        mModel.setUserData("Type", mClassType);
+        mModel.setUserData("ID", mID);        
+    }    
     /**
      * @return Returns the model representation of this object.
      */

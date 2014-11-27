@@ -3,14 +3,14 @@ package com.thecolony.tractus.player.ai.battle;
 public class ShipTester {
 	public static void main(String[] args)
 	{
-		ship one = new ship("heal");
+		Ship one = new Ship("heal");
 		one.setEqualStats(5000);
-		ship two = new ship("build");
+		Ship two = new Ship("build");
 		two.setEqualStats(50);
-		ship three = new ship("three");
+		Ship three = new Ship("three");
 		three.setEqualStats(500);
 		System.out.println(one.getName());
-		ship[] b = new ship[3];
+		Ship[] b = new Ship[3];
 		b[0] = one;
 		b[1] = two;
 		b[2] = three;

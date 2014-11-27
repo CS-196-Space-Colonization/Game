@@ -1,6 +1,6 @@
 package com.thecolony.tractus.player.ai.battle;
 //this class will be extended to make more specific objects
-public class Stationary_Object extends Battle_Object {
+public class Stationary_Object extends BattleObject {
 	public Stationary_Object()
 	{
 		super();

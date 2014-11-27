@@ -1,4 +1,4 @@
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
 
 import com.jme3.network.MessageListener;
 import com.jme3.network.HostedConnection;
@@ -17,19 +17,10 @@ public class ServerListener implements MessageListener<HostedConnection> {
                     + "' from client #" + source.getId());
             // prepare and send an answer
             helloMessage.setGreeting("Welcome client #" + source.getId() + "!");
+            // helloMessage.setMap();
+            helloMessage.setMap(ServerMain.myPlanets);
             source.send(helloMessage);
-        } else if (message instanceof InetAddressMessage) {
-            InetAddressMessage addrMessage = (InetAddressMessage) message;
-            System.out.println("The server received the IP address " 
-                + addrMessage.getAddress() + "from client #" + source.getId());
-        }
-        else if (message instanceof TextMessage) {
-            TextMessage textm = (TextMessage) message;
-            System.out.println("Server received '"
-                    + textm.getText()
-                    + "' from client #" + source.getId());
-            textm.setText("You, client #" + source.getId() + " said " + textm.getText());
-            source.send(textm);
-        }
+        } 
+        
     }
 }

@@ -36,10 +36,10 @@ public class flotilla_creator {
 			 String Type, int level)//consists of one capital ship and an amount of fighters
 	{
 		flotilla one = new flotilla();
-		ship bigest = new Specific_Ship("Capital", Type, level);
-		ship small = new Specific_Ship("Fighter", Type, level);
-		ship big = new Specific_Ship("Frigate", Type, level);
-		ship biger = new Specific_Ship("Cruiser", Type, level);
+		Ship bigest = new Specific_Ship("Capital", Type, level);
+		Ship small = new Specific_Ship("Fighter", Type, level);
+		Ship big = new Specific_Ship("Frigate", Type, level);
+		Ship biger = new Specific_Ship("Cruiser", Type, level);
 		first.produceShip(bigest, one);
 		for(int i = 0; i < fighters; i++)
 		{

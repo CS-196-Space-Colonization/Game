@@ -6,13 +6,13 @@ public class flotilla {
 	private int worth;
 	private String[] image;
 	private int crew;
-	private ship[] Flotilla;
+	private Ship[] Flotilla;
 	private boolean full;
 	private double xLocation;
 	private double yLocation;
 	public flotilla()
 	{
-		Flotilla = new ship[0];
+		Flotilla = new Ship[0];
 		full = false;
 		xLocation = 0;
 		yLocation = 0;
@@ -20,13 +20,13 @@ public class flotilla {
 	}
 	public flotilla(double x, double y)
 	{
-		Flotilla = new ship[0];
+		Flotilla = new Ship[0];
 		full = false;
 		xLocation = x;
 		yLocation = y;
 		names = new String[Flotilla.length];
 	}
-	public flotilla(ship[] group, boolean Full)
+	public flotilla(Ship[] group, boolean Full)
 	{
 		Flotilla = group;
 		full = Full;
@@ -34,7 +34,7 @@ public class flotilla {
 		yLocation = 0;
 		names = new String[Flotilla.length];
 	}
-	public flotilla(ship[] group)
+	public flotilla(Ship[] group)
 	{
 		Flotilla = group;
 		full = false;
@@ -42,7 +42,7 @@ public class flotilla {
 		yLocation = 0;
 		names = new String[Flotilla.length];
 	}
-	public flotilla(ship[] group, boolean Full, double x, double y)
+	public flotilla(Ship[] group, boolean Full, double x, double y)
 	{
 		Flotilla = group;
 		full = Full;
@@ -54,7 +54,7 @@ public class flotilla {
 	{
 		return Flotilla[place].getName();
 	}
-	public ship[] getFlotilla()
+	public Ship[] getFlotilla()
 	{
 		return Flotilla;
 	}
@@ -128,13 +128,13 @@ public class flotilla {
 			total = total + qualities[i];
 		return total;
 	}
-	public ship getShip(int a)
+	public Ship getShip(int a)
 	{
 		return Flotilla[a];
 	}
-	public void addShip(ship one)
+	public void addShip(Ship one)
 	{
-			ship[] temp = new ship[Flotilla.length + 1];
+			Ship[] temp = new Ship[Flotilla.length + 1];
 			for(int i = 0; i < Flotilla.length; i++){
 				temp[i] = Flotilla[i];
 			}
@@ -143,13 +143,13 @@ public class flotilla {
 	}
 	public void checkRemoveShip()
 	{
-		ship[] temp = Flotilla;
+		Ship[] temp = Flotilla;
 		for(int i = 0; i < temp.length; i++)
 		{
 			if(temp[i].getHP() == 0)
 			{
 				boolean passed = false;
-				ship[] temp2 = new ship[temp.length - 1];
+				Ship[] temp2 = new Ship[temp.length - 1];
 				for(int j = 0; j < temp.length; j++)
 				{
 					if( j == i)
@@ -174,7 +174,7 @@ public class flotilla {
 	public void removeShip(int place)
 	{
 		boolean passed = false;
-		ship[] temp = new ship[Flotilla.length - 1];
+		Ship[] temp = new Ship[Flotilla.length - 1];
 		for(int j = 0; j < temp.length; j++)
 		{
 			if( j == place)
@@ -415,8 +415,8 @@ public class flotilla {
 	}
 	public void sortByHP()
 	{
-		ship[] temp = new ship[Flotilla.length];
-		ship[] temp2 = Flotilla;
+		Ship[] temp = new Ship[Flotilla.length];
+		Ship[] temp2 = Flotilla;
 		for(int j = 0; j < Flotilla.length; j++)
 		{
 			int place = 0;
@@ -427,10 +427,10 @@ public class flotilla {
 					place = i;
 			}
 			temp[j] = temp2[place];
-			ship temp3 = temp2[temp2.length - 1];
+			Ship temp3 = temp2[temp2.length - 1];
 			temp2[place] = temp3;
-			ship[] temp4 = temp2;
-			temp2 = new ship[temp2.length - 1];
+			Ship[] temp4 = temp2;
+			temp2 = new Ship[temp2.length - 1];
 			for(int a = 0; a < temp2.length; a++)
 			temp2[a] = temp4[a];
 		}
@@ -438,8 +438,8 @@ public class flotilla {
 	}
 	public void sortByAttack()
 	{
-		ship[] temp = new ship[Flotilla.length];
-		ship[] temp2 = Flotilla;
+		Ship[] temp = new Ship[Flotilla.length];
+		Ship[] temp2 = Flotilla;
 		for(int j = 0; j < Flotilla.length; j++)
 		{
 			int place = 0;
@@ -450,10 +450,10 @@ public class flotilla {
 					place = i;
 			}
 			temp[j] = temp2[place];
-			ship temp3 = temp2[temp2.length - 1];
+			Ship temp3 = temp2[temp2.length - 1];
 			temp2[place] = temp3;
-			ship[] temp4 = temp2;
-			temp2 = new ship[temp2.length - 1];
+			Ship[] temp4 = temp2;
+			temp2 = new Ship[temp2.length - 1];
 			for(int a = 0; a < temp2.length; a++)
 			temp2[a] = temp4[a];
 		}

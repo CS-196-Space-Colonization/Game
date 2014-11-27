@@ -7,38 +7,32 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
 
 /**
  * A class used to represent a planet.
  * @author Joe Pagliuco
  */
-public class Planet extends SpatialEntity
+public class Planet extends DrawableObject3d implements java.io.Serializable
 {
-    private static int M_ID_COUNT = 0;
+    ColorRGBA color;
     
     public Planet(Vector3f position, Spatial model, String name)
     {
-        super(position, model, name);
-        
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
+        super(position, model, name, "Planet");
         
         initialize();
-        
-        super.setUserData("Planet");
     }
     
     // Temporary
     public Planet(Vector3f position, String name, AssetManager contentMan, float radius, ColorRGBA color)
     {
-        super(position, null, name);
-        
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
+        super(position, null, name, "Planet");
         
         mModel = loadModel(contentMan, radius, color);
         mModel.setLocalTranslation(position);
-        super.setUserData("Planet");
+        
+        this.color = color;
         
         initialize();
     }
@@ -63,22 +57,13 @@ public class Planet extends SpatialEntity
     }
     
     /**
-     * @return Returns the number of Planet objects that have been
-     * created since the application started.
-     */
-    public static int getIDCount()
-    {
-        return M_ID_COUNT;
-    }
-    
-    /**
      * Makes a String representation of this.
      * @return Returns the ID, followed by the object's name.
      */
     @Override
     public String toString()
     {
-        return "Planet ID: " + mID + ", Name: " + mName;
+        return "Planet ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -95,6 +80,6 @@ public class Planet extends SpatialEntity
             p = (Planet)o;
         else
             return false;
-        return mID == p.mID;
+        return getID() == p.getID();
     }
 }

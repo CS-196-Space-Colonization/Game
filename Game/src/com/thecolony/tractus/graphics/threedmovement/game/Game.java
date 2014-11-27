@@ -1,6 +1,7 @@
 package com.thecolony.tractus.graphics.threedmovement.game;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.collision.CollisionResults;
 import com.jme3.cursors.plugins.JmeCursor;
@@ -26,7 +27,7 @@ import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameModels;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Star;
-import com.thecolony.tractus.graphics.threedmovement.military.ships.Ship;
+import com.thecolony.tractus.player.ai.battle.Ship;
 
 /**
  * @author Joe Pagliuco
@@ -141,7 +142,7 @@ public class Game extends SimpleApplication
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i] = generatePlanet(i);
-            mPlanetsNode.attachChild(mPlanets[i].getModel());
+//            mPlanetsNode.attachChild(mPlanets[i].getModel());
         }
         rootNode.attachChild(mPlanetsNode);
     }
@@ -165,8 +166,9 @@ public class Game extends SimpleApplication
         
         for (int i = 0; i < mFighters.length; i++)
         {
-            mFighters[i] = new Ship(Ship.SHIP_TYPE.Fighter, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), "Fighter " + i);
-            mFightersNode.attachChild(mFighters[i].getModel());
+            mFighters[i] = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), 
+                    new double[19], 0, "H", 0, 0, 0);
+            mFightersNode.attachChild(mFighters[i].getDrawableObject3d().getModel());
         }
     }
     
@@ -246,14 +248,14 @@ public class Game extends SimpleApplication
                     {
                         // Deselect it...
                         mSelectedObjectModels.detachChildNamed(
-                                (String)mFighters[closestCollisionIndex].getModel().getUserData("Type") + 
-                                Integer.toString((Integer)mFighters[closestCollisionIndex].getModel().getUserData("ID")));
+                                (String)mFighters[closestCollisionIndex].getDrawableObject3d().getModel().getUserData("Type") + 
+                                Integer.toString((Integer)mFighters[closestCollisionIndex].getDrawableObject3d().getModel().getUserData("ID")));
                         mFighters[closestCollisionIndex].setIsSelected(false);
                     }
                     else
                     {
                         // Select it...
-                        mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getModel(), closestCollisionIndex));
+                        mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[closestCollisionIndex].getDrawableObject3d().getModel(), closestCollisionIndex));
                         mFighters[closestCollisionIndex].setIsSelected(true);
                     }
                 }
@@ -298,10 +300,10 @@ public class Game extends SimpleApplication
                     // Loop through ships to see if they're in the selected area...
                     for (int i = 0; i < mFighters.length; i++)
                     {
-                        BoundingVolume shipVolume = mFighters[i].getModel().getWorldBound();
+                        BoundingVolume shipVolume = mFighters[i].getDrawableObject3d().getModel().getWorldBound();
                         if (bigAssSelectorCube.getBound().intersects(shipVolume) || bigAssSelectorCube.getBound().contains(shipVolume.getCenter()))
                         {
-                            mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[i].getModel(), i));
+                            mSelectedObjectModels.attachChild(addSelectedObjectModel(mFighters[i].getDrawableObject3d().getModel(), i));
                             mFighters[i].setIsSelected(true);
                         }
                     }
@@ -470,7 +472,7 @@ public class Game extends SimpleApplication
      */
     private void addSelectedObject(Ship ship, int index)
     {
-         mSelectedObjectModels.attachChild(addSelectedObjectModel(ship.getModel(), index));
+         mSelectedObjectModels.attachChild(addSelectedObjectModel(ship.getDrawableObject3d().getModel(), index));
          ship.setIsSelected(true);
     }
     
@@ -482,9 +484,17 @@ public class Game extends SimpleApplication
      */
     private Spatial addSelectedObjectModel(Spatial selectedObject, int index)
     {
-        Spatial s = GameModels.getSelectedObjectModel();
-        float yScale = selectedObject.getLocalScale().y;
-        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, yScale + 2.0f, 0.0f)));
+        Spatial s = GameModels.getSelectedObjectModel2();
+        
+        BoundingBox selectedObjectBound = (BoundingBox)selectedObject.getWorldBound();
+        BoundingBox selectedModelBound = (BoundingBox)s.getWorldBound();
+        float xScale = selectedObjectBound.getXExtent() / selectedModelBound.getXExtent();
+        float zScale = selectedObjectBound.getZExtent() / selectedModelBound.getZExtent();
+        float scale = Math.max(xScale, zScale);
+        
+        s.scale(scale, 1.0f, scale);
+        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, -selectedModelBound.getYExtent(), 0.0f)));
+        
         s.setName((String)selectedObject.getUserData("Type") + Integer.toString((Integer)selectedObject.getUserData("ID")));
         s.setUserData("Selected Object", selectedObject);
         s.setUserData("Array Index", index);

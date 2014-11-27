@@ -2,73 +2,98 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
+import com.jme3.network.Message;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
+import com.jme3.scene.Spatial;
 import com.jme3.system.JmeContext;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import java.io.IOException;
-import java.net.InetAddress;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-/**
- * This package contains an example that shows how you enqueue changes to the
- * scene graph correctly from the network thread -- see ClientListener.
- */
 public class ServerMain extends SimpleApplication implements ConnectionListener {
 
     Server myServer;
     int connections = 0;
     int connectionsOld = -1;
-
+    
+    UpdateClientMessage update;
+    
+    static Planet[] myPlanets;
     private static final Logger logger = Logger.getLogger(ServerMain.class.getName());
-
+    
     public static void main(String[] args) {
         logger.setLevel(Level.SEVERE);
         ServerMain app = new ServerMain();
         app.start(JmeContext.Type.Headless);
+        
+        //GreetingMessage hm =  new GreetingMessage("Hi server, do you hear me?", myPlanets);
     }
 
     @Override
     public void simpleInitApp() {
+        
+        
         try {
-            myServer = Network.createServer("My Cool Game", 1, 6143, 6143);
+
+            myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);
             myServer.start();
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Could not create network connection.");
         }
-        Serializer.registerClass(GreetingMessage.class);
+        Serializer.registerClasses(GreetingMessage.class, UpdateClientMessage.class);
+        // Serializer.registerClass(PlanetMessage.class);
         myServer.addMessageListener(new ServerListener(), GreetingMessage.class);
-        Serializer.registerClass(InetAddressMessage.class);
-        Serializer.registerClass(InetAddress.class, new InetAddressSerializer());
         
-        myServer.addMessageListener(new ServerListener(), InetAddressMessage.class);
-        myServer.addConnectionListener(this);
-        Serializer.registerClass(TextMessage.class);
-        myServer.addMessageListener(new ServerListener(), TextMessage.class);
+        //Message gm = new GreetingMessage("Generating map", myPlanets);
+        //myServer.broadcast(gm);
         
-        /*
-        Serializer.registerClass(CubeMessage.class);
-        myServer.addMessageListener(new ServerListener(this, myServer),
-                CubeMessage.class);
-        */
-    }
+        // myServer.addMessageListener(new ServerListener(), PlanetMessage.class);
 
+        
+
+
+        /*
+         Serializer.registerClass(CubeMessage.class);
+         myServer.addMessageListener(new ServerListener(this, myServer),
+         CubeMessage.class);
+         */
+        
+        update = new UpdateClientMessage("Im updating");
+        update.setInfo(new Vector3f(20.0f, 0.0f, 20.0f).toString(), ColorRGBA.Blue.toString());
+    }
+    
     @Override
-    public void update() {
+    public void simpleUpdate(float deltaTime) {
         connections = myServer.getConnections().size();
         if (connectionsOld != connections) {
             System.out.println("Server connections: " + connections);
             connectionsOld = connections;
+	  myServer.broadcast(update);
         }
-
-    }
+        
+        
+        //myServer.broadcast(update);
+        
+        try
+        {
+	  Thread.sleep(500);
+        } catch (InterruptedException ex)
+        {
+	  Logger.getLogger(ServerMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }    
 
     @Override
     public void destroy() {
@@ -83,6 +108,8 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
      * Specify what happens when a client connects to this server
      */
     public void connectionAdded(Server server, HostedConnection client) {
+        
+    
     }
 
     /**

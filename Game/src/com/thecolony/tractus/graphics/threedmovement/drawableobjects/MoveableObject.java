@@ -10,7 +10,6 @@ import com.jme3.scene.Spatial;
  */
 public class MoveableObject extends DrawableObject3d
 {
-    private static int M_ID_COUNT = 0;
     
     protected Vector3f mDirection;
     protected float mMovementSpeed;
@@ -19,25 +18,9 @@ public class MoveableObject extends DrawableObject3d
     protected boolean mIsMoving;
     protected boolean mIsRotating;
     
-    public MoveableObject(Vector3f position, Spatial model, String name)
+    public MoveableObject(Vector3f position, Spatial model, String name, Vector3f direction, float movementSpeed, float rotationSpeed, String classType)
     {
-        super(position, model, name);
-        
-        mDirection = new Vector3f();
-        mMovementSpeed = 0;
-        
-        mIsMoving = false;
-        mIsRotating = false;
-        
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
-        
-        super.setUserData("MoveableObject");
-    }
-    
-    public MoveableObject(Vector3f position, Spatial model, String name, Vector3f direction, float movementSpeed, float rotationSpeed)
-    {
-        super(position, model, name);
+        super(position, model, name, classType);
         
         mDirection = direction;
         mMovementSpeed = movementSpeed;
@@ -45,20 +28,6 @@ public class MoveableObject extends DrawableObject3d
         
         mIsMoving = false;
         mIsRotating = false;
-        
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
-        
-        super.setUserData("MoveableObject");
-    }
-    
-    /**
-     * @return Returns the number of MoveableObject objects that have been
-     * created since the application started.
-     */
-    public static int getIDCount()
-    {
-        return M_ID_COUNT;
     }
     
     public Vector3f getDirection()
@@ -103,9 +72,18 @@ public class MoveableObject extends DrawableObject3d
         mModel.move(mDirection.mult(mMovementSpeed * deltaTime));
     }
     
+    public void setIsMoving(boolean moving)
+    {
+        mIsMoving = moving;
+    }
     public boolean isMoving()
     {
         return mIsMoving;
+    }
+    
+    public void setIsRotating(boolean rotating)
+    {
+        mIsRotating = rotating;
     }
     public boolean isRotating()
     {
@@ -119,7 +97,7 @@ public class MoveableObject extends DrawableObject3d
     @Override
     public String toString()
     {
-        return "MoveableObject ID: " + mID + ", Name: " + mName;
+        return "MoveableObject ID: " + getID() + ", Name: " + mName;
     }
     
     /**
@@ -136,6 +114,6 @@ public class MoveableObject extends DrawableObject3d
             m = (MoveableObject)o;
         else
             return false;
-        return mID == m.getID();
+        return getID() == m.getID();
     }
 }

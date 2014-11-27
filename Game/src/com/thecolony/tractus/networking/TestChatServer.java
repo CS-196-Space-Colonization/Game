@@ -1,4 +1,4 @@
-package com.spacecolonization.networking;
+package com.thecolony.tractus.networking;
 
 import com.jme3.network.*;
 import com.jme3.network.serializing.Serializable;
