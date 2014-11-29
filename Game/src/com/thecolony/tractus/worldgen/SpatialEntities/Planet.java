@@ -1,13 +1,13 @@
 package com.thecolony.tractus.worldgen.SpatialEntities;
 
+import com.thecolony.tractus.worldgen.resources.Res;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
-import com.thecolony.tractus.worldgen.resources.Res;
 
 /**
  * Created by chthonic7 on 10/8/14.
  */
-public class Planet extends Territory {
+public class Planet extends VisualEntity {
     private int ID;
     private static int ID_COUNT=0;
     private final double MASS;
@@ -25,7 +25,6 @@ public class Planet extends Territory {
         this.model=model;
         this.ID_COUNT++;
         this.ID=ID_COUNT;
-        //TODO: previous two are determined by planet type
     }
 
     public PlanetType getType() {
@@ -49,7 +48,4 @@ public class Planet extends Territory {
         return ID;
     }
 
-    public String toString(){
-        return superTerr.toString()+" Planet="+name+super.toString();
-    }
 }

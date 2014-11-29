@@ -1,8 +1,7 @@
 package com.thecolony.tractus.worldgen;
 
+import com.thecolony.tractus.worldgen.resources.*;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
-import com.thecolony.tractus.worldgen.resources.Res;
-
 /**
  * Created by chthonic7 on 10/15/14.
  */

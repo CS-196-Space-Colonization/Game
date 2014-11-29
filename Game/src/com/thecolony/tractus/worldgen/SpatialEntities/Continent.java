@@ -34,7 +34,4 @@ public class Continent extends Territory {
 
     //Something higher up will implement the game mechanics of the
 
-    public String toString(){
-        return superTerr.toString()+" Continent="+name+" Pop="+population+" Size="+size+super.toString(); //Just gives the hierarchical info of teh territory
-    }
 }

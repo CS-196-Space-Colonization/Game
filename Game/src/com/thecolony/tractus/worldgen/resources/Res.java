@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class Res {
     //Initial assumption is a text file that has all the resource information
     private String pathName;
-    private final String dir="Game/src/com/thecolony/tractus/worldgen/resources/";
+    //private final String dir="Game/src/com/thecolony/tractus/worldgen/resources/";
+    private final String dir="resources/";
     private Path path;
     private BufferedReader reader;
     private BufferedWriter writer;

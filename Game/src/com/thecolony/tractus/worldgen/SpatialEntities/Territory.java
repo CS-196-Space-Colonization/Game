@@ -110,8 +110,9 @@ public abstract class Territory implements Serializable {
         return this.res.listResource();
     }
 
-    public String toString(){
-        return "("+location.getX()+","+location.getZ()+") is owned by "+owner+"\n";
+    public final String toString(){
+        String str=this.getClass().toString(); str=str.substring(str.lastIndexOf('.')+1);
+        return (superTerr==null)?"":superTerr.toString()+" "+str+" "+name+((str.equals("Continent"))?"":(" at ("+location.getX()+","+location.getZ()+")"))+" is owned by "+owner+"\n";
     }
 
     public final boolean equals(Object o){

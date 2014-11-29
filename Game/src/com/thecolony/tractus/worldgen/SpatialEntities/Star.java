@@ -25,7 +25,4 @@ public class Star extends Territory {
     public void setType(StarType type) {
         this.type = type;
     }
-    public String toString(){
-        return superTerr.toString()+" Star="+name+super.toString();
-    }
 }
