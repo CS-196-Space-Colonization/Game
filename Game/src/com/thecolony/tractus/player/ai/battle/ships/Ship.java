@@ -1,9 +1,20 @@
-package com.thecolony.tractus.player.ai.battle;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.thecolony.tractus.player.ai.battle.ships;
 
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameModels;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.MoveableObject;
+import com.thecolony.tractus.player.ai.battle.BattleObject;
+
+/**
+ *
+ * @author Joe Pagliuco
+ */
 
 public class Ship extends BattleObject
 {

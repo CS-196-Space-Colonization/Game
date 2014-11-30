@@ -1,5 +1,16 @@
-package com.thecolony.tractus.player.ai.battle;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
+package com.thecolony.tractus.player.ai.battle.ships;
+
+import com.thecolony.tractus.player.ai.battle.BattleObject;
+
+/**
+ *
+ * @author Joe Pagliuco
+ */
 public class ShipFactory extends BattleObject {
 	private int money;
 	private int peoples;

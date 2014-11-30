@@ -1,5 +1,7 @@
 package com.thecolony.tractus.player.ai.battle;
 
+import com.thecolony.tractus.player.ai.battle.ships.Fleet;
+
 public class Battle_AI {
 	
 	private int AILevel;

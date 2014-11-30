@@ -1,6 +1,9 @@
 
 package com.thecolony.tractus.player.ai.battle;
 
+import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
+
 public class BattleSimulator {
 	public static void singleBattleSim(Ship a, Ship b )
 	{

@@ -1,6 +1,7 @@
 package com.thecolony.tractus.player.ai.battle;
 
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
 public abstract class BattleObject
 {

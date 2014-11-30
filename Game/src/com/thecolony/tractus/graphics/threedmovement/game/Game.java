@@ -27,7 +27,7 @@ import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameModels;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Star;
-import com.thecolony.tractus.player.ai.battle.Ship;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
 /**
  * @author Joe Pagliuco

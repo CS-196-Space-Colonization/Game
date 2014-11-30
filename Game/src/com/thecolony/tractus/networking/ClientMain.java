@@ -39,7 +39,7 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialenti
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Star;
 import static com.thecolony.tractus.graphics.threedmovement.game.Game.M_HEIGHT;
 import static com.thecolony.tractus.graphics.threedmovement.game.Game.M_WIDTH;
-import com.thecolony.tractus.player.ai.battle.Ship;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import com.thecolony.tractus.player.Player;
 import java.awt.Dimension;
 import java.awt.Toolkit;
