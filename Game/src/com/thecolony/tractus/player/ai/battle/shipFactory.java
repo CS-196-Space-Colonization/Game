@@ -1,6 +1,6 @@
 package com.thecolony.tractus.player.ai.battle;
 
-public class ShipFactory extends BattleObject{
+public class ShipFactory extends BattleObject {
 	private int money;
 	private int peoples;
 	private static int costOfFactory = 100;

@@ -96,6 +96,9 @@ public class Game extends SimpleApplication
         addNodes();
         
         loadCursors();
+        
+        Ship s = new Ship(Ship.SHIP_TYPE.CapitalShip, "Captial Ship", new Vector3f(10.0f, 10.0f, 10.0f), new double[19], 0, "Capital Ship", 0, 0, 0.0);
+        rootNode.attachChild(s.getDrawableObject3d().getModel());
     }
     
     private void adjustCameraSettings()

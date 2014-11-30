@@ -1,0 +1,105 @@
+<scene previous_export_time="1417303886.227642" export_time="1417303988.548596" exported_by="jbpagliuco" formatVersion="1.0.1" >
+  <nodes >
+    <node name="Point.001" >
+      <position z="1.700859" y="-5.670644" x="6.646552" />
+      <rotation qw="1.000000" qx="0.000000" qy="0.000000" qz="-0.000000" />
+      <scale z="1.000000" y="1.000000" x="1.000000" />
+      <game >
+        <sensors />
+        <actuators />
+      </game>
+      <light name="Point.001" type="point" powerScale="1.0" >
+        <position z="1.700859" y="-5.670644" x="6.646552" />
+        <lightAttenuation range="5000" quadratic="0.0" linear="0.04" constant="1.0" />
+        <colourDiffuse g="1.0" b="1.0" r="1.0" />
+        <colourSpecular g="1.0" b="1.0" r="1.0" />
+      </light>
+    </node>
+    <node name="Point" >
+      <position z="3.942664" y="5.319250" x="-4.617785" />
+      <rotation qw="1.000000" qx="0.000000" qy="0.000000" qz="-0.000000" />
+      <scale z="1.000000" y="1.000000" x="1.000000" />
+      <game >
+        <sensors />
+        <actuators />
+      </game>
+      <light name="Point" type="point" powerScale="1.0" >
+        <position z="3.942664" y="5.319250" x="-4.617785" />
+        <lightAttenuation range="5000" quadratic="0.0" linear="0.04" constant="1.0" />
+        <colourDiffuse g="1.0" b="1.0" r="1.0" />
+        <colourSpecular g="1.0" b="1.0" r="1.0" />
+      </light>
+    </node>
+    <node name="Shark" >
+      <position z="-0.026433" y="0.083306" x="-0.721463" />
+      <rotation qw="1.000000" qx="0.000000" qy="0.000000" qz="-0.000000" />
+      <scale z="1.000000" y="1.000000" x="0.500000" />
+      <game >
+        <sensors />
+        <actuators />
+      </game>
+      <entity lock_rot_z="False" friction_x="1.0" friction_z="1.0" actor="False" velocity_max="0.0" ghost="False" lock_trans_y="False" inertia_tensor="0.4000000059604645" meshFile="Cube.001.mesh" friction_y="1.0" damping_rot="0.10000000149011612" lock_trans_x="False" mass="1.0" name="Cube.001" mass_radius="1.0" lock_trans_z="False" damping_trans="0.03999999910593033" velocity_min="0.0" anisotropic_friction="False" lock_rot_y="False" lock_rot_x="False" physics_type="STATIC" />
+      <node name="Left Eye" >
+        <position z="-0.382266" y="0.334962" x="8.155521" />
+        <rotation qw="1.000000" qx="0.000000" qy="0.000000" qz="-0.000000" />
+        <scale z="0.108695" y="0.108695" x="0.217391" />
+        <game >
+          <sensors />
+          <actuators />
+        </game>
+        <entity lock_rot_z="False" friction_x="1.0" friction_z="1.0" actor="False" velocity_max="0.0" ghost="False" lock_trans_y="False" inertia_tensor="0.4000000059604645" meshFile="Sphere.001.mesh" friction_y="1.0" damping_rot="0.10000000149011612" lock_trans_x="False" mass="1.0" name="Sphere.001" mass_radius="1.0" lock_trans_z="False" damping_trans="0.03999999910593033" velocity_min="0.0" anisotropic_friction="False" lock_rot_y="False" lock_rot_x="False" physics_type="STATIC" />
+      </node>
+      <node name="Right Eye" >
+        <position z="0.456230" y="0.334962" x="8.155521" />
+        <rotation qw="1.000000" qx="0.000000" qy="0.000000" qz="-0.000000" />
+        <scale z="0.108695" y="0.108695" x="0.217391" />
+        <game >
+          <sensors />
+          <actuators />
+        </game>
+        <entity lock_rot_z="False" friction_x="1.0" friction_z="1.0" actor="False" velocity_max="0.0" ghost="False" lock_trans_y="False" inertia_tensor="0.4000000059604645" meshFile="Sphere.mesh" friction_y="1.0" damping_rot="0.10000000149011612" lock_trans_x="False" mass="1.0" name="Sphere" mass_radius="1.0" lock_trans_z="False" damping_trans="0.03999999910593033" velocity_min="0.0" anisotropic_friction="False" lock_rot_y="False" lock_rot_x="False" physics_type="STATIC" />
+      </node>
+    </node>
+    <node name="Lamp" >
+      <position z="-1.005454" y="5.903862" x="4.076245" />
+      <rotation qw="0.570947" qx="0.169076" qy="0.755880" qz="-0.272171" />
+      <scale z="1.000000" y="1.000000" x="1.000000" />
+      <game >
+        <sensors />
+        <actuators />
+      </game>
+      <light name="Lamp" type="point" powerScale="1.0" shadow="true" >
+        <position z="-1.005454" y="5.903862" x="4.076245" />
+        <lightAttenuation range="5000" quadratic="0.0" linear="0.03333335240683057" constant="1.0" />
+        <colourDiffuse g="1.0" b="1.0" r="1.0" />
+        <colourSpecular g="1.0" b="1.0" r="1.0" />
+        <colourShadow g="1.0" b="1.0" r="1.0" />
+      </light>
+    </node>
+    <node name="Camera" >
+      <position z="6.038340" y="2.860549" x="8.885685" />
+      <rotation qw="0.728865" qx="0.548813" qy="0.327007" qz="-0.246226" />
+      <scale z="1.000000" y="1.000000" x="1.000000" />
+      <game >
+        <sensors />
+        <actuators />
+      </game>
+      <camera name="Camera" fov="0.5033799435163735" projectionType="perspective" >
+        <clipping farPlaneDist="100.0" nearPlaneDist="0.10000000149011612" near="0.10000000149011612" far="100.0" />
+      </camera>
+    </node>
+  </nodes>
+  <externals >
+    <item type="material" >
+      <file name="C:\Files\Github\Space_Rape\Game\Game\assets\Models\Shark_Top.material" />
+    </item>
+    <item type="material" >
+      <file name="C:\Files\Github\Space_Rape\Game\Game\assets\Models\Shark_Bottom.material" />
+    </item>
+  </externals>
+  <environment >
+    <colourBackground g="0.05087608844041824" b="0.05087608844041824" r="0.05087608844041824" />
+    <colourAmbient g="0.0" b="0.0" r="0.0" />
+    <colourDiffuse g="0.05087608844041824" b="0.05087608844041824" r="0.05087608844041824" />
+  </environment>
+</scene>
