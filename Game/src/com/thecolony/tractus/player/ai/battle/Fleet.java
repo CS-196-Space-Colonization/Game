@@ -1,22 +1,22 @@
 package com.thecolony.tractus.player.ai.battle;
 
 public class Fleet {
-	private Flotilla[] fleet;
+	private flotilla[] fleet;
 	public Fleet ()
 	{
-		fleet = new Flotilla[0];
+		fleet = new flotilla[0];
 	}
 	public Fleet(String type, int size)
 	{
-		fleet = ShipFactory.createFleet(type, size);
+		fleet = shipFactory.createFleet(type, size);
 	}
-	public Flotilla getFlotilla(int flow)
+	public flotilla getFlotilla(int flow)
 	{
 		return fleet[flow];
 	}
-	public void addFlotilla(Flotilla newerish)
+	public void addFlotilla(flotilla newerish)
 	{
-		Flotilla[] temp = new Flotilla[fleet.length + 1];
+		flotilla[] temp = new flotilla[fleet.length + 1];
 		for(int i = 0; i < fleet.length; i++)
 		{
 			temp[i] = fleet[i];
@@ -30,7 +30,7 @@ public class Fleet {
 	}
 	public void takeOutFlotilla(int pointless)
 	{
-		Flotilla[] temp = new Flotilla[fleet.length - 1];
+		flotilla[] temp = new flotilla[fleet.length - 1];
 		int j = 0;
 		for(int i = 0; i < fleet.length; i++)
 		{
@@ -41,14 +41,14 @@ public class Fleet {
 		}
 		fleet = temp;
 	}
-	public Flotilla[] getFleet()
+	public flotilla[] getFleet()
 	{
 		return fleet;
 	}
 	public static void battle(Fleet fleet, Fleet flee, int FlotillaOfFleet, int FlotillaOfFlee)
 	{
 		if(fleet.getFlotilla(FlotillaOfFleet).getFlotilla().length > 0 && flee.getFlotilla(FlotillaOfFlee).getFlotilla().length > 0)
-		Flotilla.battle(fleet.getFlotilla(FlotillaOfFleet), flee.getFlotilla(FlotillaOfFlee));
+		flotilla.battle(fleet.getFlotilla(FlotillaOfFleet), flee.getFlotilla(FlotillaOfFlee));
 		if(fleet.getFlotilla(FlotillaOfFleet).getFlotilla().length == 0)
 			fleet.takeOutFlotilla(FlotillaOfFleet);
 		if(flee.getFlotilla(FlotillaOfFlee).getFlotilla().length == 0)
