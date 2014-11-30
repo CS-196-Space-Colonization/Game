@@ -1,6 +1,6 @@
 package com.thecolony.tractus.player.ai.battle;
 
-public class shipFactory extends BattleObject{
+public class ShipFactory extends BattleObject{
 	private int money;
 	private int peoples;
 	private static int costOfFactory = 100;
@@ -8,7 +8,7 @@ public class shipFactory extends BattleObject{
 	private double yLocation;
 	private Fleet troops;
 	private double hp;
-	public shipFactory()
+	public ShipFactory()
 	{
 		super();
 		money = 0;
@@ -18,7 +18,7 @@ public class shipFactory extends BattleObject{
 		yLocation = 0;
 		hp = 10;
 	}
-	public shipFactory(Fleet f, int Money, int Person, double x, double y, double HP)
+	public ShipFactory(Fleet f, int Money, int Person, double x, double y, double HP)
 	{
 		super(HP);
 		troops = f;
@@ -28,7 +28,7 @@ public class shipFactory extends BattleObject{
 		yLocation = y;
 		hp = HP;
 	}
-	public shipFactory(int Money, int Person, double x, double y, double HP)
+	public ShipFactory(int Money, int Person, double x, double y, double HP)
 	{
 		super(HP);
 		troops = new Fleet();
@@ -38,7 +38,7 @@ public class shipFactory extends BattleObject{
 		yLocation = y;
 		hp = HP;
 	}
-	public shipFactory(int Money, int Person)
+	public ShipFactory(int Money, int Person)
 	{
 		super(100);
 		troops = new Fleet();
@@ -92,23 +92,23 @@ public class shipFactory extends BattleObject{
 	{
 		peoples = peoples + worker;
 	}
-	public static void produceShip(Ship Ship, flotilla Flotilla)
+	public static void produceShip(Ship Ship, Flotilla Flotilla)
 	{
 			Flotilla.addShip(Ship);
 	}
 	public void produceFlotilla(Ship[] floatil, Fleet f)
 	{
-		flotilla one = new flotilla(floatil);
+		Flotilla one = new Flotilla(floatil);
 		f.addFlotilla(one);
 	}
-	public void produceFlotilla(flotilla floatil, Fleet f)
+	public void produceFlotilla(Flotilla floatil, Fleet f)
 	{
 		f.addFlotilla(floatil);
 	}
-	public static flotilla createBaseFlotilla(boolean capital, int fighters, int frigate, int cruiser, 
+	public static Flotilla createBaseFlotilla(boolean capital, int fighters, int frigate, int cruiser, 
 			 String Type, int level)//consists of one capital ship and an amount of fighters
 	{
-		flotilla one = new flotilla();
+		Flotilla one = new Flotilla();
 		Ship bigest = new Specific_Ship("Capital", Type, level);
 		Ship small = new Specific_Ship("Fighter", Type, level);
 		Ship big = new Specific_Ship("Frigate", Type, level);
@@ -129,10 +129,10 @@ public class shipFactory extends BattleObject{
 		}
 		return one;
 	}
-	public static flotilla[] createFleet(String type, int flotillas)
+	public static Flotilla[] createFleet(String type, int flotillas)
 	{
-		flotilla[] one = new flotilla[flotillas + 1];
-		flotilla two = createBaseFlotilla(true, 100, 20, 5, type, 1);
+		Flotilla[] one = new Flotilla[flotillas + 1];
+		Flotilla two = createBaseFlotilla(true, 100, 20, 5, type, 1);
 		for(int i = 0; i < flotillas; i++)
 		{
 			one[i] = two;
