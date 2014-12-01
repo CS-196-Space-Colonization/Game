@@ -5,6 +5,13 @@
 
 package com.thecolony.tractus.player.ai.battle.ships;
 
+import com.jme3.bounding.BoundingBox;
+import com.jme3.material.Material;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.debug.WireBox;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameGraphics;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.MoveableObject;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
@@ -19,82 +26,146 @@ public class Flotilla
     private String[] image;
     private int crew;
     private Ship[] flotilla;
-    private boolean full;
-    private double xLocation;
-    private double yLocation;
+    private boolean isFull;
+    
+    private Vector3f centerPosition;
+    private Geometry wireBoxGeometry;
+    private Vector3f targetPoint;
+    
+    private boolean isSelected;
+    
+    private String name;
     
     public Flotilla()
     {
-        flotilla = new Ship[0];
-        full = false;
-        xLocation = 0;
-        yLocation = 0;
-        names = new String[flotilla.length];
+        initialize(new Ship[0], Vector3f.ZERO, false, "Empty Name");
     }
-    public Flotilla(double x, double y)
+    public Flotilla(Vector3f centerPosition, String name)
     {
-        flotilla = new Ship[0];
-        full = false;
-        xLocation = x;
-        yLocation = y;
-        names = new String[flotilla.length];
+        initialize(new Ship[0], centerPosition, false, name);
     }
-    public Flotilla(Ship[] group, boolean Full)
+    public Flotilla(Ship[] group, boolean isFull, String name)
     {
-        flotilla = group;
-        full = Full;
-        xLocation = 0;
-        yLocation = 0;
-        names = new String[flotilla.length];
+        initialize(group, Vector3f.ZERO, isFull, name);
     }
-    public Flotilla(Ship[] group)
+    public Flotilla(Ship[] group, String name)
+    {
+        initialize(group, Vector3f.ZERO, false, name);
+    }
+    public Flotilla(Ship[] group, boolean isFull, Vector3f centerPosition, String name)
+    {
+        initialize(group, centerPosition, isFull, name);
+    }
+    
+    private void initialize(Ship[] group, Vector3f centerPosition, boolean isFull, String name)
     {
         flotilla = group;
-        full = false;
-        xLocation = 0;
-        yLocation = 0;
+        this.centerPosition = centerPosition;
+        this.isFull = isFull;
         names = new String[flotilla.length];
+        
+        if (flotilla.length != 0)
+            setShipPositions();
+        
+        isSelected = false;
+        
+        this.name = name;
     }
-    public Flotilla(Ship[] group, boolean Full, double x, double y)
+    
+    private void setShipPositions()
     {
-        flotilla = group;
-        full = Full;
-        xLocation = x;
-        yLocation = y;
-        names = new String[flotilla.length];
+        // Temporary way to do it...
+        int sideLength = (int)Math.sqrt(flotilla.length);
+        if (sideLength * sideLength != flotilla.length)
+            sideLength++;
+        
+        float maxExtent = 0;
+        for (int i = 0; i < flotilla.length; i++)
+        {
+            BoundingBox b = (BoundingBox)flotilla[i].getDrawableObject3d().getModel().getWorldBound();
+            maxExtent = Math.max(maxExtent, b.getXExtent());
+            maxExtent = Math.max(maxExtent, b.getZExtent());
+        }
+        maxExtent *= 2.0f * 1.5f;
+        
+        int halfSideLength = sideLength >> 1;
+        int offset = (sideLength % 2 == 0) ? 0 : 1;
+        int index = 0;
+        for (int i = -halfSideLength; i < halfSideLength + offset; i++)
+        {
+            boolean stop = false;
+            for (int j = -halfSideLength; j < halfSideLength + offset; j++)
+            {
+                flotilla[index++].getDrawableObject3d().getModel().setLocalTranslation(centerPosition.add(new Vector3f(maxExtent, 0.0f, maxExtent).mult(new Vector3f(i, 1, j))));
+                stop = index == flotilla.length;
+                if (stop)
+                    break;
+            }
+            if (stop)
+                break;
+        }
+        
+        float height = 0.0f;
+        for (int i = 0; i < flotilla.length; i++)
+            height = Math.max(height, ((BoundingBox)flotilla[i].getDrawableObject3d().getModel().getWorldBound()).getYExtent());
+        height *= 2.0f;
+        
+        BoundingBox boundingBox = new BoundingBox(centerPosition, maxExtent * halfSideLength, height, maxExtent * halfSideLength);
+        WireBox wireBox = new WireBox();
+        wireBox.fromBoundingBox(boundingBox);
+        wireBoxGeometry = new Geometry("Flotilla WireBox Geometry", wireBox);
+        wireBoxGeometry.setMaterial(GameGraphics.getDefaultWhiteMaterial());
+        wireBoxGeometry.setLocalTranslation(centerPosition);
+        wireBoxGeometry.scale(1.5f);
     }
+    
+    public String getName()
+    {
+        return name;
+    }    
     public String getName(int place)
     {
         return flotilla[place].getName();
     }
+    
     public Ship[] getFlotilla()
     {
         return flotilla;
     }
-    public double getX()
+    
+    public Vector3f getCenterPosition()
     {
-        return xLocation;
+        return centerPosition;
     }
-    public double getY()
+    
+    public BoundingBox getBoundingBox()
     {
-        return yLocation;
+        return (BoundingBox) wireBoxGeometry.getWorldBound();
     }
-    public void setX(double change)
+    
+    public Geometry getWireBoxGeometry()
     {
-        xLocation = xLocation + change;
+        return wireBoxGeometry;
     }
-    public void setY(double change)
+    
+    public void setIsSelected(boolean isSelected)
     {
-        yLocation = yLocation + change;
+        this.isSelected = isSelected;
     }
+    public boolean isSelected()
+    {
+        return isSelected;
+    }
+    
     public boolean getFull()
     {
-        return full;
+        return isFull;
     }
     public void changeFull()
     {
-        full = !full;
+        isFull = !isFull;
     }
+    
     public String[] getImage()
     {
         return image;
@@ -108,6 +179,7 @@ public class Flotilla
         }
         image = temp;
     }
+    
     public void setFlotillaStats()
     {
         if(flotilla.length > 0)
@@ -141,6 +213,7 @@ public class Flotilla
             total = total + qualities[i];
         return total;
     }
+    
     public Ship getShip(int a)
     {
         return flotilla[a];
@@ -153,7 +226,10 @@ public class Flotilla
         }
         temp[flotilla.length] = one;
         flotilla = temp;
+        
+        // TODO: Place position and recalculate center position
     }
+    
     public void checkRemoveShip()
     {
         Ship[] temp = flotilla;
@@ -180,6 +256,7 @@ public class Flotilla
         }
         flotilla = temp;
     }
+    
     public void damageShip(int ship, double damage)
     {
         flotilla[ship].setBattleStat(BattleObject.BATTLE_STAT_HP, damage);
@@ -202,6 +279,7 @@ public class Flotilla
         }
         flotilla = temp;
     }
+    
     public double getHP()
     {
         double total = 0;
@@ -245,6 +323,7 @@ public class Flotilla
             }
         }
     }
+    
     public static void battle(Flotilla a, Flotilla d)
     {
         if(a.getFlotilla().length > 0 && d.getFlotilla().length > 0)
@@ -317,5 +396,80 @@ public class Flotilla
                temp2[a] = temp4[a];
         }
         flotilla = temp;
+    }
+    
+    /**
+     * Update the flotilla.
+     * @param deltaTime The time elapsed between each frame.
+     */
+    public void update(float deltaTime)
+    {        
+        for (int i = 0; i < flotilla.length; i++)
+            flotilla[i].update(deltaTime);
+        
+        if (isMoving() && !isRotating())
+        {
+            Vector3f direction = targetPoint.subtract(centerPosition).normalize();
+            float movementSpeed = ((MoveableObject)flotilla[0].getDrawableObject3d()).getMovementSpeed();
+            wireBoxGeometry.move(direction.mult(movementSpeed * deltaTime));
+            centerPosition.addLocal(direction.mult(movementSpeed * deltaTime));
+        }
+    }
+    
+    /**
+     * Sets the target transformation point for the flotilla.
+     * @param targetPoint The point to transform to.
+     * @param moveTo Whether or not the flotilla should move to the target
+     * point in addition to rotating to it.
+     */
+    public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
+    {
+        this.targetPoint = targetPoint;
+        Vector3f movementVector = targetPoint.subtract(centerPosition);
+        System.out.println(movementVector);
+        for (int i = 0; i < flotilla.length; i++)
+            flotilla[i].setTargetPoint(flotilla[i].getPosition().add(movementVector), moveTo);
+    }
+    
+    /**
+     * @return true if any ship in the flotilla is transforming, false otherwise.
+     */
+    public boolean isTransforming()
+    {        
+        boolean isTransforming = false;
+        for (int i = 0; i < flotilla.length; i++)
+        {
+            isTransforming = flotilla[i].isTransforming();
+            if (isTransforming)
+                break;
+        }
+        
+        return isTransforming;
+    }
+    
+    public boolean isMoving()
+    {
+        boolean isMoving = false;
+        for (int i = 0; i < flotilla.length; i++)
+        {
+            isMoving = flotilla[i].isTransforming();
+            if (isMoving)
+                break;
+        }
+        
+        return isMoving;
+    }
+    
+    public boolean isRotating()
+    {
+        boolean isRotating = false;
+        for (int i = 0; i < flotilla.length; i++)
+        {
+            isRotating = flotilla[i].isRotating();
+            if (isRotating)
+                break;
+        }
+        
+        return isRotating;
     }
 }

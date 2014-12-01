@@ -34,7 +34,7 @@ import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.Map;
-import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameModels;
+import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameGraphics;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Star;
 import static com.thecolony.tractus.graphics.threedmovement.game.Game.M_HEIGHT;
@@ -131,7 +131,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         setDisplayFps(true);
         setDisplayStatView(false);
 
-        GameModels.loadModels(assetManager);
+        GameGraphics.loadGraphics(assetManager);
 
         adjustCameraSettings();
 
@@ -332,7 +332,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
                     for (int i = 0; i < mSelectedObjectModels.getQuantity(); i++)
                     {
                         int index = mSelectedObjectModels.getChild(i).getUserData("Array Index");
-                        mFighters[index].setTarget(targetPoint, mIsMPressed);
+                        mFighters[index].setTargetPoint(targetPoint, mIsMPressed);
                     }
                     mIsMPressed = mIsRPressed = false;
                     inputManager.setMouseCursor(null);
@@ -547,13 +547,14 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
      * @return
      */
     private Spatial addSelectedObjectModel(Spatial selectedObject, int index) {
-        Spatial s = GameModels.getSelectedObjectModel();
-        float yScale = selectedObject.getLocalScale().y;
-        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, yScale + 2.0f, 0.0f)));
-        s.setName((String) selectedObject.getUserData("Type") + Integer.toString((Integer) selectedObject.getUserData("ID")));
-        s.setUserData("Selected Object", selectedObject);
-        s.setUserData("Array Index", index);
-        return s;
+//        Spatial s = GameGraphics.getSelectedObjectModel();
+//        float yScale = selectedObject.getLocalScale().y;
+//        s.setLocalTranslation(selectedObject.getLocalTranslation().add(new Vector3f(0.0f, yScale + 2.0f, 0.0f)));
+//        s.setName((String) selectedObject.getUserData("Type") + Integer.toString((Integer) selectedObject.getUserData("ID")));
+//        s.setUserData("Selected Object", selectedObject);
+//        s.setUserData("Array Index", index);
+//        return s;
+        return null;
     }
 
     /**

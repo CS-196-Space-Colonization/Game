@@ -19,7 +19,7 @@ public class ShipTester {
             b[0] = one;
             b[1] = two;
             b[2] = three;
-            Flotilla a = new Flotilla(b, true);
+            Flotilla a = new Flotilla(b, true, "name");
             System.out.println(a.getShip(0).getName());
             System.out.println(a.getShip(1).getName());
             System.out.println(a.getShip(2).getName());
