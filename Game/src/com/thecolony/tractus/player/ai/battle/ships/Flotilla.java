@@ -6,7 +6,6 @@
 package com.thecolony.tractus.player.ai.battle.ships;
 
 import com.jme3.bounding.BoundingBox;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.debug.WireBox;
@@ -472,4 +471,35 @@ public class Flotilla
         
         return isRotating;
     }
+    
+    public static void flotillaBattle(Flotilla a, Flotilla b, int framsBetweenAttacks)
+	{
+		int move = 0;
+		boolean done = false;
+		while(!done)
+		{
+                        if(move == framsBetweenAttacks)
+                        {
+                        move = 0;
+			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 && b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+                        {
+				done = true;
+                        }
+                        else if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+			{
+				done = true;
+			}
+                        else if(b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+			{
+				done = true;
+			}
+			Flotilla.battle(a, b);
+                        }
+                        else
+                        {
+                            move ++;
+                        }
+		}
+		
+	}
 }
