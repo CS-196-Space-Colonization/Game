@@ -318,4 +318,34 @@ public class Flotilla
         }
         flotilla = temp;
     }
+    public static void flotillaBattle(Flotilla a, Flotilla b, int framsBetweenAttacks)
+	{
+		int move = 0;
+		boolean done = false;
+		while(!done)
+		{
+                        if(move == framsBetweenAttacks)
+                        {
+                        move = 0;
+			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 && b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+                        {
+				done = true;
+                        }
+                        else if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+			{
+				done = true;
+			}
+                        else if(b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+			{
+				done = true;
+			}
+			Flotilla.battle(a, b);
+                        }
+                        else
+                        {
+                            move ++;
+                        }
+		}
+		
+	}
 }
