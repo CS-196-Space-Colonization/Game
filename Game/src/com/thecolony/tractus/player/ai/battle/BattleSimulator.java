@@ -12,12 +12,17 @@ public class BattleSimulator {
 		{
 			System.out.println("ship a's HP remaining = " +a.getBattleStat(Ship.BATTLE_STAT_HP));
 			System.out.println("ship b's HP remaining = " + b.getBattleStat(Ship.BATTLE_STAT_HP));
-			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 && b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+                        {
+                            System.out.println("tie");
+				done = true;
+                        }
+                        else if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
 			{
 				System.out.println("b wins");
 				done = true;
 			}
-			if(b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+                        else if(b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
 			{
 				System.out.println("a wins");
 				done = true;
