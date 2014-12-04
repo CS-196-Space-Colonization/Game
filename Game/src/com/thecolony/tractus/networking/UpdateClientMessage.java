@@ -25,6 +25,11 @@ public class UpdateClientMessage extends AbstractMessage
      {           // custom constructor
        greeting = s;
      }                  
+     
+     public UpdateClientMessage(String pos, String col)
+     {
+         setInfo(pos, col);
+     }   
      public void setGreeting(String s)
      {
          greeting = s;
