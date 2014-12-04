@@ -490,36 +490,48 @@ public class Flotilla
         return isRotating;
     }
     
-    public static void flotillaBattle(Flotilla a, Flotilla b, int framsBetweenAttacks)
+     public static void flotillaBattle(Flotilla a, Flotilla b, double time)
 	{
-		int move = 0;
+		double rt1 = 0;
+                double rt2 = 0;
+                double st1 = 0;
+                double st2 = 0;
+                
 		boolean done = false;
 		while(!done)
 		{
-                        if(move == framsBetweenAttacks)
-                        {
-                        move = 0;
-			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 && b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+                    a.setFlotillaStats();
+                    b.setFlotillaStats();
+                    rt1 = rt1 + time;
+                    rt2 = rt2 + time;
+                    st1 = st1 + time;
+                    st2 = st2 + time;
+			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 || b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
                         {
 				done = true;
                         }
-                        else if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
-			{
-				done = true;
-			}
-                        else if(b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
-			{
-				done = true;
-			}
-			Flotilla.battle(a, b);
-                        }
-                        else
+                        else if(rt1 >= a.getBattleStat(4))
                         {
-                            move ++;
+                            rt1 = rt1 - a.getBattleStat(4);
+                            calcRegDamage(a, b);
+                        }
+                        else if(rt2 >= b.getBattleStat(4))
+                        {
+                            rt2 = rt2 - b.getBattleStat(4);
+                            calcRegDamage(b, a);
+                        }
+                        else if(st1 >= a.getBattleStat(5))
+                        {
+                            st1 = st1 - a.getBattleStat(5);
+                            calcSpDamage(a, b);
+                        }
+                        else if(st2 >= b.getBattleStat(5))
+                        {
+                            st2 = st2 - b.getBattleStat(5);
+                            calcSpDamage(b, a);
                         }
 		}
-		
-	}
+        }
     
     public String getDisplayInfo()
     {
