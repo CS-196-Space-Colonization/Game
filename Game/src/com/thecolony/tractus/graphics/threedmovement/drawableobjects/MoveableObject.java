@@ -2,6 +2,7 @@ package com.thecolony.tractus.graphics.threedmovement.drawableobjects;
 
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 /**
@@ -18,9 +19,9 @@ public class MoveableObject extends DrawableObject3d
     protected boolean mIsMoving;
     protected boolean mIsRotating;
     
-    public MoveableObject(Vector3f position, Spatial model, String name, Vector3f direction, float movementSpeed, float rotationSpeed, String classType)
+    public MoveableObject(String name, Node node, Spatial model, Vector3f position, Vector3f direction, float movementSpeed, float rotationSpeed, String classType)
     {
-        super(position, model, name, classType);
+        super(name, node, model, position, classType);
         
         mDirection = direction;
         mMovementSpeed = movementSpeed;
@@ -90,30 +91,8 @@ public class MoveableObject extends DrawableObject3d
         return mIsRotating;
     }
     
-    /**
-     * Makes a String representation of this.
-     * @return Returns the ID, followed by the object's name.
-     */
-    @Override
-    public String toString()
+    public boolean isTransforming()
     {
-        return "MoveableObject ID: " + getID() + ", Name: " + mName;
-    }
-    
-    /**
-     * Compares Object o to this.
-     * @param o An Object to compare this to.
-     * @return Returns true if the id of this object equals the id of o,
-     * false if either o is not a MoveableObject, or the equals check fails.
-     */
-    @Override
-    public boolean equals(Object o)
-    {
-        MoveableObject m;
-        if (o instanceof MoveableObject)
-            m = (MoveableObject)o;
-        else
-            return false;
-        return getID() == m.getID();
+        return isMoving() || isRotating();
     }
 }
