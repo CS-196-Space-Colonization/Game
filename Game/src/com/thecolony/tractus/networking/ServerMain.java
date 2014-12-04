@@ -40,8 +40,6 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
 
     @Override
     public void simpleInitApp() {
-        
-        
         try {
 
             myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);

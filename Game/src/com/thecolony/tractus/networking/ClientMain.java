@@ -11,6 +11,7 @@ import com.jme3.network.Network;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.system.AppSettings;
 import com.thecolony.tractus.Map;
+import com.thecolony.tractus.graphics.threedmovement.game.Game;
 import com.thecolony.tractus.player.Player;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,40 +32,37 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
 
-        java.util.logging.Logger.getLogger("").setLevel(Level.SEVERE);
-
         boolean fullscreen = false;
         int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
-        if (input == JOptionPane.YES_OPTION) {
+        if (input == JOptionPane.YES_OPTION)
             fullscreen = true;
-        } else if (input == JOptionPane.CANCEL_OPTION) {
+        else if (input == JOptionPane.CANCEL_OPTION)
             System.exit(0);
-        }
-
-        // Game game = new Game();
-        ClientMain game = new ClientMain();
-
+            
+        Game game = new Game();
+        
         game.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
-
+        
         settings.setTitle("Tractus");
         settings.setFrameRate(60);
         settings.setVSync(true);
         settings.setFrequency(60);
-
+        
         try {
             settings.setFullscreen(fullscreen);
-        } catch (Exception e) {
-            settings.setFullscreen(false);
-        }
-
-        if (fullscreen) {
+        } catch (Exception e) { settings.setFullscreen(false); }
+        
+        if (fullscreen)
+        {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             settings.setResolution(screenSize.width, screenSize.height);
-        } else {
+        }
+        else
+        {
             settings.setResolution(800, 600);
         }
-
+        
         game.setSettings(settings);
         game.start();
     }
