@@ -26,6 +26,7 @@ public class Flotilla
     private int crew;
     private Ship[] flotilla;
     private boolean isFull;
+    private float movementSpeed; // Slowest ship's movement ship
     
     private Vector3f centerPosition;
     private Geometry wireBoxGeometry;
@@ -69,6 +70,8 @@ public class Flotilla
         isSelected = false;
         
         this.name = name;
+        
+        setMovementSpeed();
     }
     
     private void setShipPositions()
@@ -116,6 +119,14 @@ public class Flotilla
         wireBoxGeometry.setMaterial(GameGraphics.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(centerPosition);
         wireBoxGeometry.scale(1.5f);
+    }
+    
+    private void setMovementSpeed()
+    {
+        if (flotilla.length > 0)
+            movementSpeed = (float)flotilla[0].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED);
+        for (int i = 1; i < flotilla.length; i++)
+            movementSpeed = (float)Math.min(movementSpeed, flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
     }
     
     public String getName()
@@ -213,6 +224,15 @@ public class Flotilla
         return total;
     }
     
+    public double getFlotillaStat(int BATTLE_STAT)
+    {
+        double total = 0.0;
+        for (int i = 0; i < flotilla.length; i++)
+            total += flotilla[i].getBattleStat(BATTLE_STAT);
+        
+        return total;
+    }
+    
     public Ship getShip(int a)
     {
         return flotilla[a];
@@ -226,7 +246,14 @@ public class Flotilla
         temp[flotilla.length] = one;
         flotilla = temp;
         
-        // TODO: Place position and recalculate center position
+        setMovementSpeed();
+        
+        setShipPositions();
+    }
+    
+    public void addFlotilla(Flotilla f)
+    {
+        
     }
     
     public void checkRemoveShip()
@@ -277,6 +304,8 @@ public class Flotilla
                 temp[j] = flotilla[j];
         }
         flotilla = temp;
+        
+        setMovementSpeed();
     }
     
     public double getHP()
@@ -409,7 +438,6 @@ public class Flotilla
         if (isMoving() && !isRotating())
         {
             Vector3f direction = targetPoint.subtract(centerPosition).normalize();
-            float movementSpeed = ((MoveableObject)flotilla[0].getDrawableObject3d()).getMovementSpeed();
             wireBoxGeometry.move(direction.mult(movementSpeed * deltaTime));
             centerPosition.addLocal(direction.mult(movementSpeed * deltaTime));
         }
@@ -425,7 +453,7 @@ public class Flotilla
     {
         this.targetPoint = targetPoint;
         Vector3f movementVector = targetPoint.subtract(centerPosition);
-        System.out.println(movementVector);
+        System.out.println(flotilla.length);
         for (int i = 0; i < flotilla.length; i++)
             flotilla[i].setTargetPoint(flotilla[i].getPosition().add(movementVector), moveTo);
     }
@@ -502,4 +530,37 @@ public class Flotilla
 		}
 		
 	}
+    
+    public String getDisplayInfo()
+    {
+        return "Flotilla:\n" + " Name: " + name + "\n "
+                + "Battle Stats:\n"
+                + "  HP: " + getFlotillaStat(BattleObject.BATTLE_STAT_HP) + "\n"
+                + "  Reg Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_POWER) + "\n"
+                + "  Sp Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_POWER) + "\n"
+                + "  Reg Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_DEFENSE) + "\n"
+                + "  Sp Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_DEFENSE) + "\n"
+                + "  Reg Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ATTACK_COOLDOWN) + "\n"
+                + "  Sp Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ATTACK_COOLDOWN) + "\n"
+                + "  Reg Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ACCURACY) + "\n"
+                + "  Sp Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ACCURACY) + "\n"
+                + "  Reg Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_RANGE) + "\n"
+                + "  Sp Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_RANGE) + "\n"
+                + "  Reg Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT) + "\n"
+                + "  Sp Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT) + "\n"
+                + "  Reg Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT) + "\n"
+                + "  Sp Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT) + "\n"
+                + "  Repair Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_REPAIR_ABILITY) + "\n"
+                + "  Transport Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_TRANSPORT_ABILITY) + "\n"
+                + "  Build Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_BUILD_ABILITY) + "\n"
+                + "  Movement Speed: " + movementSpeed;
+    }
+    
+    public void move(Vector3f offset)
+    {
+        for (int i = 0; i < flotilla.length; i++)
+            flotilla[i].move(offset);
+        centerPosition.addLocal(offset);
+        wireBoxGeometry.move(offset);
+    }
 }

@@ -22,7 +22,16 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 public class Ship extends BattleObject
 {
-    public static enum SHIP_TYPE { Fighter, Frigate, Cruiser, CapitalShip };
+    public static enum SHIP_TYPE { 
+        Fighter("Fighter"), Frigate("Frigate"), Cruiser("Cruiser"), CapitalShip("Capital Ship");
+    
+        String type;
+        SHIP_TYPE(String s) { type = s; }
+        
+        @Override
+        public String toString() { return type; }
+    };
+    private SHIP_TYPE shipType;
     
     private static final float M_ROTATION_SPEED = FastMath.PI / 2.0f;
     
@@ -56,6 +65,8 @@ public class Ship extends BattleObject
     
     private void initialize(SHIP_TYPE shipType, Vector3f position)
     {
+        this.shipType = shipType;
+        
         if (shipType == SHIP_TYPE.Fighter)
         {
             model = new MoveableObject(Vector3f.ZERO, GameGraphics.getShipFighterModel(), name, Vector3f.UNIT_X, (float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
@@ -147,6 +158,12 @@ public class Ship extends BattleObject
         }
     }
     
+    public void move(Vector3f offset)
+    {
+        model.getModel().move(offset);
+        wireBoxGeometry.move(offset);
+    }
+    
     public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
     {
         targetMovementPoint = targetPoint;
@@ -205,5 +222,11 @@ public class Ship extends BattleObject
     public Geometry getWireBoxGeometry()
     {
         return wireBoxGeometry;
+    }
+    
+    @Override
+    public String getDisplayInfo()
+    {
+        return this.shipType.toString() + ":\n " + super.getDisplayInfo();
     }
 }

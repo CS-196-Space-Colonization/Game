@@ -29,7 +29,7 @@ public abstract class GameGraphics
         M_SHIP_FIGHTER.scale(0.25f);
         
         M_SHIP_CAPITAL_SHIP = contentMan.loadModel("Models/Cube.001.mesh.xml");
-        M_SHIP_CAPITAL_SHIP.setMaterial(new Material(contentMan, "Common/MatDefs/Misc/Unshaded.j3md"));
+//        M_SHIP_CAPITAL_SHIP.setMaterial(new Material(contentMan, "Common/MatDefs/Misc/Unshaded.j3md"));
         M_SHIP_CAPITAL_SHIP.scale(0.5f);
         
         M_DEFAULT_WHITE_MATERIAL = new Material(contentMan, "Common/MatDefs/Misc/Unshaded.j3md");

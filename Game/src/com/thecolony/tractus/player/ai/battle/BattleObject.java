@@ -46,11 +46,11 @@ public abstract class BattleObject
 
     protected String name;
     
-    private double[] qualities;
-    private int cost;
-    private String image;
-    private int crew;
-    private int ammo;
+    protected double[] qualities;
+    protected int cost;
+    protected String image;
+    protected int crew;
+    protected int ammo;
 
     private double x = 100.0;
     private double y = 1;// no longer going to change sp stat in this way.
@@ -403,5 +403,30 @@ public abstract class BattleObject
     public DrawableObject3d getDrawableObject3d()
     {
         return model;
+    }
+    
+    public String getDisplayInfo()
+    {
+        return "Name: " + name + "\n "
+                + "Battle Stats:\n"
+                + "  HP: " + qualities[BATTLE_STAT_HP] + "\n"
+                + "  Reg Power: " + qualities[BATTLE_STAT_REG_POWER] + "\n"
+                + "  Sp Power: " + qualities[BATTLE_STAT_SP_POWER] + "\n"
+                + "  Reg Defense: " + qualities[BATTLE_STAT_REG_DEFENSE] + "\n"
+                + "  Sp Defense: " + qualities[BATTLE_STAT_SP_DEFENSE] + "\n"
+                + "  Reg Attack Cooldown: " + qualities[BATTLE_STAT_REG_ATTACK_COOLDOWN] + "\n"
+                + "  Sp Attack Cooldown: " + qualities[BATTLE_STAT_SP_ATTACK_COOLDOWN] + "\n"
+                + "  Reg Accuracy: " + qualities[BATTLE_STAT_REG_ACCURACY] + "\n"
+                + "  Sp Accuracy: " + qualities[BATTLE_STAT_SP_ACCURACY] + "\n"
+                + "  Reg Range: " + qualities[BATTLE_STAT_REG_RANGE] + "\n"
+                + "  Sp Range: " + qualities[BATTLE_STAT_SP_RANGE] + "\n"
+                + "  Reg Armor Stat: " + qualities[BATTLE_STAT_REG_ARMOR_STAT] + "\n"
+                + "  Sp Armor Stat: " + qualities[BATTLE_STAT_SP_ARMOR_STAT] + "\n"
+                + "  Reg Weapon Stat: " + qualities[BATTLE_STAT_REG_WEAPON_STAT] + "\n"
+                + "  Sp Weapon Stat: " + qualities[BATTLE_STAT_SP_WEAPON_STAT] + "\n"
+                + "  Repair Ability: " + qualities[BATTLE_STAT_REPAIR_ABILITY] + "\n"
+                + "  Transport Ability: " + qualities[BATTLE_STAT_TRANSPORT_ABILITY] + "\n"
+                + "  Build Ability: " + qualities[BATTLE_STAT_BUILD_ABILITY] + "\n"
+                + "  Movement Speed: " + qualities[BATTLE_STAT_MOVEMENT_SPEED];
     }
 }
