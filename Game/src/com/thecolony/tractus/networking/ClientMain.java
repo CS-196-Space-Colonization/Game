@@ -119,7 +119,9 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         try {
             myClient = Network.connectToServer(Globals.NAME, Globals.VERSION, Globals.DEFAULT_SERVER, Globals.DEFAULT_PORT);
             myClient.start();
+	  System.out.println("client started");
         } catch (IOException ex) {
+	  System.out.println("Failed to connect to server");
         }
 
         M_WIDTH = settings.getWidth();
@@ -130,33 +132,37 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_CAMERA_POS);
         setDisplayFps(true);
         setDisplayStatView(false);
-
-        GameGraphics.loadGraphics(assetManager);
-
-        adjustCameraSettings();
-
-        loadPlanets();
-        loadSun();
-        loadShips();
-
-        loadAmbientLight();
-
-        loadSkybox();
-
-        loadMovementPlane();
-
-        initializeListeners();
-
-        mSelectedObjectModels = new Node("Selected Object Models");
-
-        loadPictures();
-
-        addNodes();
-
-        loadCursors();
         
-        Serializer.registerClasses(GreetingMessage.class, UpdateClientMessage.class);
-        //Serializer.registerClass(UpdateClientMessage.class);
+        System.out.println("pre");
+//        GameGraphics.loadGraphics(assetManager);
+        System.out.println("pre");
+        
+        adjustCameraSettings();
+        System.out.println("pre");
+        loadPlanets();
+        System.out.println("pre");
+        loadSun();
+        System.out.println("pre");
+        loadShips();
+System.out.println("pre");
+        loadAmbientLight();
+System.out.println("pre");
+        loadSkybox();
+System.out.println("pre");
+        loadMovementPlane();
+System.out.println("pre");
+        initializeListeners();
+System.out.println("pre");
+        mSelectedObjectModels = new Node("Selected Object Models");
+System.out.println("pre");
+        loadPictures();
+System.out.println("pre");
+        addNodes();
+        System.out.println("pre");
+        loadCursors();
+        System.out.println("pre-registered classes");
+        Serializer.registerClasses(UpdateClientMessage.class);
+        System.out.println("registered classes");
         myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
         myClient.addClientStateListener(this);
 
@@ -178,7 +184,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 
     private void loadSkybox() {
         Texture skybox_tex = assetManager.loadTexture("Textures/space_skybox.png");
-        Texture skybox_tex2 = assetManager.loadTexture("Textures/space_skybox_2.png");
+        Texture skybox_tex2 = assetManager.loadTexture("Textures/space_skybox.png");
         rootNode.attachChild(SkyFactory.createSky(assetManager, skybox_tex, skybox_tex, skybox_tex2, skybox_tex, skybox_tex, skybox_tex));
     }
 
