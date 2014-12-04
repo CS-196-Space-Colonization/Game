@@ -10,7 +10,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameGraphics;
-import com.thecolony.tractus.graphics.threedmovement.drawableobjects.MoveableObject;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
@@ -245,15 +244,6 @@ public class Flotilla
         }
         temp[flotilla.length] = one;
         flotilla = temp;
-        
-        setMovementSpeed();
-        
-        setShipPositions();
-    }
-    
-    public void addFlotilla(Flotilla f)
-    {
-        
     }
     
     public void checkRemoveShip()

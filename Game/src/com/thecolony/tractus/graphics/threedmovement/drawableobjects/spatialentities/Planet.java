@@ -1,10 +1,14 @@
 package com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.bounding.BoundingSphere;
+import com.jme3.bounding.BoundingVolume;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
@@ -13,35 +17,33 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
  * A class used to represent a planet.
  * @author Joe Pagliuco
  */
-public class Planet extends DrawableObject3d implements java.io.Serializable
+public class Planet
 {
-    ColorRGBA color;
+    protected DrawableObject3d drawableObject;
     
-    public Planet(Vector3f position, Spatial model, String name)
+    private String name;
+    private ColorRGBA color;
+    
+    private BoundingSphere boundingSphere;
+    
+    public Planet(String name, Node node, Spatial model, Vector3f position)
     {
-        super(position, model, name, "Planet");
-        
-        initialize();
+        initialize(name, node, model, position);
     }
     
     // Temporary
-    public Planet(Vector3f position, String name, AssetManager contentMan, float radius, ColorRGBA color)
-    {
-        super(position, null, name, "Planet");
-        
-        mModel = loadModel(contentMan, radius, color);
-        mModel.setLocalTranslation(position);
-        
+    public Planet(String name, Node node, Vector3f position, AssetManager contentMan, float radius, ColorRGBA color)
+    {        
         this.color = color;
         
-        initialize();
+        initialize(name, node, loadModel(contentMan, radius, color), position);
     }
     
     // Temporary
     private Spatial loadModel(AssetManager contentMan, float radius, ColorRGBA color)
     {
         Sphere s = new Sphere(32, 32, radius);
-        Geometry g = new Geometry(mName, s);
+        Geometry g = new Geometry("Planet", s);
         Material m = new Material(contentMan, "Common/MatDefs/Light/Lighting.j3md");
         m.setBoolean("UseMaterialColors", true);
         m.setColor("Ambient", color);
@@ -51,35 +53,47 @@ public class Planet extends DrawableObject3d implements java.io.Serializable
         return (Spatial)g;
     }
     
-    private void initialize()
+    private void initialize(String name, Node node, Spatial model, Vector3f position)
     {
+        drawableObject = new DrawableObject3d(name, node, model, position, "Planet");
         
+        this.name = name;
+        
+        BoundingVolume b = drawableObject.getModel().getWorldBound();
+        if (b.getType() == BoundingVolume.Type.AABB)
+        {
+            BoundingBox bb = (BoundingBox)b;
+            boundingSphere = new BoundingSphere(Math.max(Math.max(bb.getXExtent(), bb.getYExtent()), bb.getZExtent()), drawableObject.getPosition());
+        }
+        else if (b.getType() == BoundingVolume.Type.Sphere)
+            boundingSphere = (BoundingSphere)b;
     }
     
-    /**
-     * Makes a String representation of this.
-     * @return Returns the ID, followed by the object's name.
-     */
-    @Override
-    public String toString()
+    public String getDisplayInfo()
     {
-        return "Planet ID: " + getID() + ", Name: " + mName;
+        return "Planet:\n"
+                + " Name: " + name + "\n"
+                + " Other Info...";
     }
     
-    /**
-     * Compares Object o to this.
-     * @param o An Object to compare this to.
-     * @return Returns true if the id of this object equals the id of o,
-     * false if either o is not a Planet, or the equals check fails.
-     */
-    @Override
-    public boolean equals(Object o)
+    public DrawableObject3d getDrawableObject3d()
     {
-        Planet p;
-        if (o instanceof Planet)
-            p = (Planet)o;
-        else
-            return false;
-        return getID() == p.getID();
+        return drawableObject;
+    }
+    
+    public BoundingSphere getBoundingSphere()
+    {
+        return boundingSphere;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
+    
+    // Temporary...
+    public ColorRGBA getColor()
+    {
+        return color;
     }
 }

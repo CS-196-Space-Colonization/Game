@@ -1,6 +1,7 @@
 package com.thecolony.tractus.graphics.threedmovement.drawableobjects;
 
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 /**
@@ -8,38 +9,37 @@ import com.jme3.scene.Spatial;
  * space.
  * @author Joe Pagliuco
  */
-public class DrawableObject3d implements java.io.Serializable
-{
-    private static int M_ID_COUNT = 0;
-    private int mID;
-    
+public class DrawableObject3d
+{    
     private String mClassType;
     
-    protected transient Spatial mModel;
+    protected Spatial mModel;
     protected String mName;
+    
+    protected Node node;
     
     /**
      * Used to create a DrawableObject3d.
-     * @param position Position of object.
-     * @param model Model used to graphically represent the object.
      * @param name Name of object (used for display purposes).
-     * @param classType The type of DrawableObject (ie Fighter, Capital Ship, etc).
+     * @param node A reference to the Node this object needs to be attached to.
+     * @param model Model used to graphically represent the object.
+     * @param position Position of object.
+     * @param classType The type of DrawableObject (ie Planet, Fighter, etc).
      */
-    public DrawableObject3d(Vector3f position, Spatial model, String name, String classType)
-    {
-        M_ID_COUNT++;
-        mID = M_ID_COUNT;
-        
-        mClassType = classType;
-        
+    public DrawableObject3d(String name, Node node, Spatial model, Vector3f position, String classType)
+    {        
         if (model != null)
         {
             mModel = model;
             mModel.setLocalTranslation(position);
             mModel.setUserData("Type", classType);
-            mModel.setUserData("ID", mID);
         }
         mName = name;
+        
+        this.node = node;
+        node.attachChild(model);
+        
+        mClassType = classType;
     }
     
     /**
@@ -50,8 +50,7 @@ public class DrawableObject3d implements java.io.Serializable
     {
         this.mModel = model;
         mModel.setUserData("Type", mClassType);
-        mModel.setUserData("ID", mID);        
-    }    
+    }
     /**
      * @return Returns the model representation of this object.
      */
@@ -61,7 +60,8 @@ public class DrawableObject3d implements java.io.Serializable
     }
     
     /**
-     * @return Returns the position of the model that represents this object.
+     * Convenience method to get Spatial position.
+     * @return Returns getModel().getLocalTranslation().
      */
     public Vector3f getPosition()
     {
@@ -77,46 +77,19 @@ public class DrawableObject3d implements java.io.Serializable
     }
     
     /**
-     * @return Returns the id of this object.
+     * Attach/Detaches this model from it's node.
+     * @param attach true to attach to node, false to detach.
      */
-    public int getID()
+    public void changeNodeState(boolean attach)
     {
-        return mID;
-    }
-    
-    /**
-     * @return Returns the number of DrawableObject3d objects that have been
-     * created since the application started.
-     */
-    public static int getIDCount()
-    {
-        return M_ID_COUNT;
-    }
-    
-    /**
-     * Makes a String representation of this.
-     * @return Returns the ID, followed by the object's name.
-     */
-    @Override
-    public String toString()
-    {
-        return "DrawableObject3d ID: " + mID + ", Name: " + mName;
-    }
-    
-    /**
-     * Compares Object o to this.
-     * @param o An Object to compare this to.
-     * @return Returns true if the id of this object equals the id of o,
-     * false if either o is not a DrawableObject3d, or the equals check fails.
-     */
-    @Override
-    public boolean equals(Object o)
-    {
-        DrawableObject3d d;
-        if (o instanceof DrawableObject3d)
-            d = (DrawableObject3d)o;
+        if (attach)
+            node.attachChild(mModel);
         else
-            return false;
-        return mID == d.getID();
+            node.detachChild(mModel);
+    }
+    
+    public Node getNode()
+    {
+        return node;
     }
 }

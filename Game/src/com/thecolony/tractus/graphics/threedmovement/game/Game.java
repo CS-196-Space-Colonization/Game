@@ -2,7 +2,6 @@ package com.thecolony.tractus.graphics.threedmovement.game;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.StatsAppState;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
@@ -20,6 +19,7 @@ import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
@@ -47,14 +47,17 @@ public class Game extends SimpleApplication
     public static enum Selection_Mode { Ship_Selection, Flotilla_Selection };
     private Selection_Mode selectionMode;
     
-    private Planet[] mPlanets;
-    private Node mPlanetsNode;
-    
-    private Star mSun;
+    private Planet[] mPlanets;    
+    private Star[] mSuns;
     
     private ArrayList<Ship> loneShips;
     
     private ArrayList<Flotilla> flotillas;
+    
+    private Node planetsNode;
+    private Node starsNode;
+    private Node loneShipsNode;
+    private Node flotillasNode;
     
     private Node mSelectedShipsNode;
     private Node mSelectedFlotillasNode;
@@ -124,7 +127,7 @@ public class Game extends SimpleApplication
     
     private void adjustCameraSettings()
     {
-        cam.setLocation(new Vector3f(50.0f, 50.0f, -30.0f));
+        cam.setLocation(new Vector3f(75.0f, 75.0f, -75.0f));
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         cam.setFrustumPerspective((float)Math.toDegrees(FastMath.PI / 4.0f), (float)M_WIDTH / (float)M_HEIGHT, 0.1f, 2000.0f);
         
@@ -134,14 +137,14 @@ public class Game extends SimpleApplication
     
     private Planet generatePlanet(int index)
     {
-        float radius = (float)(Math.random() * 2);
+        float radius = (float)(Math.random() * 5);
         int posNeg = (Math.random() < 0.5) ? -1 : 1;
-        int orbitRadius = 15 + (10 * (index+1));
+        int orbitRadius = 15 + (25 * (index+1));
         float xPos = posNeg * (int)(Math.random() * orbitRadius);
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos =  posNeg * (float)Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
         
-        return new Planet(new Vector3f(xPos, 0.0f, zPos), "Planet " + Integer.toString(index), assetManager, radius, ColorRGBA.randomColor());
+        return new Planet("Planet " + Integer.toString(index), planetsNode, new Vector3f(xPos, 0.0f, zPos), assetManager, radius, ColorRGBA.randomColor());
     }
     
     private void loadSkybox()
@@ -159,22 +162,25 @@ public class Game extends SimpleApplication
     
     private void loadPlanets()
     {
-        mPlanetsNode = new Node("Planets Node");
+        planetsNode = new Node("Planets Node");
         mPlanets = new Planet[10];
         
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i] = generatePlanet(i);
-//            mPlanetsNode.attachChild(mPlanets[i].getModel());
         }
-        rootNode.attachChild(mPlanetsNode);
+        rootNode.attachChild(planetsNode);
     }
     
     private void loadSun()
     {
-        mSun = new Star(Vector3f.ZERO, "StarX", assetManager, 10.0f);
-        rootNode.attachChild(mSun.getModel());
-        rootNode.addLight(mSun.getPointLight());
+        starsNode = new Node("Stars Node");
+        
+        mSuns = new Star[1];
+        mSuns[0] = new Star("StarX", starsNode, Vector3f.ZERO, assetManager, 20.0f);
+        rootNode.addLight(mSuns[0].getPointLight());
+        
+        rootNode.attachChild(starsNode);
     }
     
     private void loadMovementPlane()
@@ -190,48 +196,43 @@ public class Game extends SimpleApplication
         rootNode.attachChild(mSelectedShipsNode);
         mSelectedNodeCenterPos = new Vector3f();
         
+        loneShipsNode = new Node("Lone Ships");
+        
         double[] stats = new double[19];
         stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
         
         loneShips = new ArrayList<Ship>();
         
         for (int i = 0; i < 5; i++)
-        {
-            loneShips.add(new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), 
+            loneShips.add(new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + i * 3)), 
                     stats, 0, "Fighter " + i, 0, 0, 0.0));
-            
-            rootNode.attachChild(loneShips.get(i).getDrawableObject3d().getModel());
-        }
+        
+        rootNode.attachChild(loneShipsNode);
         
         ///////////////////////////////
         // Not Related /\ \/ //////////
         ///////////////////////////////
 
+        flotillasNode = new Node("Flotillas Node");
+        
         Ship[] ships1 = new Ship[10];
         for (int i = 0; i < ships1.length; i++)
-        {
-            ships1[i] = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-            rootNode.attachChild(ships1[i].getDrawableObject3d().getModel());
-        }
+            ships1[i] = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
         
         Ship[] ships2 = new Ship[9];
         for (int i = 0; i < ships2.length; i++)
-        {
-            ships2[i] = new Ship(Ship.SHIP_TYPE.CapitalShip, "Capital Ship " + i, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-            rootNode.attachChild(ships2[i].getDrawableObject3d().getModel());
-        }
+            ships2[i] = new Ship(Ship.SHIP_TYPE.CapitalShip, "Capital Ship " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
         
         Ship[] ships3 = new Ship[25];
         for (int i = 0; i < ships3.length; i++)
-        {
-            ships3[i] = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-            rootNode.attachChild(ships3[i].getDrawableObject3d().getModel());
-        }
+            ships3[i] = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
         
         flotillas = new ArrayList<Flotilla>();
         flotillas.add(new Flotilla(ships1, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 1"));
         flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 50.0f), "Flotilla 2"));
         flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
+        
+        rootNode.attachChild(flotillasNode);
     }
     
     private void initializeListeners()
@@ -262,7 +263,10 @@ public class Game extends SimpleApplication
     private void addNodes()
     {       
         rootNode.attachChild(mSelectedShipsNode);
-        rootNode.attachChild(mPlanetsNode);
+        rootNode.attachChild(planetsNode);
+        rootNode.attachChild(starsNode);
+        rootNode.attachChild(loneShipsNode);
+        rootNode.attachChild(flotillasNode);
     }
     
     private void loadCursors()
@@ -443,12 +447,7 @@ public class Game extends SimpleApplication
         public void onAction(String name, boolean isPressed, float tpf)
         {
             if (name.equals("Shift"))
-            {
                 mIsShiftPressed = isPressed;
-                Ship s = new Ship(Ship.SHIP_TYPE.Fighter, "Eh", Vector3f.ZERO, new double[19], 0, name, 0, 0, 0);
-                rootNode.attachChild(s.getDrawableObject3d().getModel());
-                flotillas.get(0).addShip(s);
-            }
             
             
             if (name.equals("Move") && isPressed)
@@ -655,6 +654,33 @@ public class Game extends SimpleApplication
                 {
                     mInfoHubText.setText(flotillas.get(i).getDisplayInfo());
                     break;
+                }
+            }
+        }
+        if (!somethingSelected) // Check Planets and Stars...
+        {
+            for (int i = 0; i < mPlanets.length; i++)
+            {
+                Planet p = mPlanets[i];
+                somethingSelected = p.getBoundingSphere().intersects(r);
+                if (somethingSelected)
+                {
+                    mInfoHubText.setText(p.getDisplayInfo());
+                    break;
+                }
+            }
+            
+            if (!somethingSelected)
+            {
+                for (int i = 0; i < mSuns.length; i++)
+                {
+                    Star s = mSuns[i];
+                    somethingSelected = s.getBoundingSphere().intersects(r);
+                    if (somethingSelected)
+                    {
+                        mInfoHubText.setText(s.getDisplayInfo());
+                        break;
+                    }
                 }
             }
         }
