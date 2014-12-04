@@ -79,6 +79,8 @@ public class Game extends SimpleApplication
     private BitmapText mInfoHubText;
     private BitmapText mSelectionModeText;
     
+    private boolean isRunning;
+    
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,11 +96,10 @@ public class Game extends SimpleApplication
         M_WIDTH = settings.getWidth();
         M_HEIGHT = settings.getHeight();
         
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_HIDE_STATS);
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_CAMERA_POS);
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_MEMORY);
+        inputManager.deleteMapping(INPUT_MAPPING_EXIT);
         setDisplayFps(false);
         setDisplayStatView(false);
+        isRunning = true;
         
         GameGraphics.loadGraphics(assetManager);
         
@@ -255,8 +256,11 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Compress", new KeyTrigger(KeyInput.KEY_C));
         inputManager.addMapping("Decompress", new KeyTrigger(KeyInput.KEY_X));
         inputManager.addMapping("Switch Selection Mode", new KeyTrigger(KeyInput.KEY_TAB));
+        inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_ESCAPE));
+        inputManager.addMapping("Exit", new KeyTrigger(KeyInput.KEY_BACK));
         inputManager.addListener(mKeyboardActionListener, new String[] { "Shift", "Move", "Rotate", "Box Select", 
-                                                                        "Attack", "Switch Selection Mode" } );
+                                                                        "Attack", "Switch Selection Mode", "Pause",
+                                                                        "Exit"} );
         inputManager.addListener(mKeyboardAnalogListener, new String[] { "Compress", "Decompress" } );
     }
     
@@ -446,76 +450,89 @@ public class Game extends SimpleApplication
     {
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("Shift"))
-                mIsShiftPressed = isPressed;
-            
-            
-            if (name.equals("Move") && isPressed)
+            if (name.equals("Pause") && isPressed)
             {
-                isMoveToggleOn = !isMoveToggleOn;
-                isRotateToggleOn = false;
-                isBoxSelectToggleOn = false;
-                isAttackToggleOn = false;
-            }
-            else if (name.equals("Rotate") && isPressed)
-            {
-                isMoveToggleOn = false;
-                isRotateToggleOn = !isRotateToggleOn;
-                isBoxSelectToggleOn = false;
-                isAttackToggleOn = false;
-            }
-            else if (name.equals("Box Select") && isPressed)
-            {
-                isMoveToggleOn = false;
-                isRotateToggleOn = false;
-                isBoxSelectToggleOn = !isBoxSelectToggleOn;
-                isAttackToggleOn = false;
+                isRunning = !isRunning;
                 
-                flyCam.setEnabled(!flyCam.isEnabled());
-            }
-            else if (name.equals("Attack") && isPressed)
-            {
-                isMoveToggleOn = false;
-                isRotateToggleOn = false;
-                isBoxSelectToggleOn = false;
-                isAttackToggleOn = !isAttackToggleOn;
+                flyCam.setEnabled(isRunning);
             }
             
-            
-            if (isMoveToggleOn || isRotateToggleOn || isBoxSelectToggleOn || isAttackToggleOn)
-                inputManager.setMouseCursor(mCursorSmiley);
-            else
-                inputManager.setMouseCursor(null);
-            
-            
-            if (name.equals("Switch Selection Mode") && isPressed)
-            {                
-                if (selectionMode == Selection_Mode.Ship_Selection)
+            if (isRunning)
+            {            
+                if (name.equals("Shift"))
+                    mIsShiftPressed = isPressed;
+
+
+                if (name.equals("Move") && isPressed)
                 {
-                    selectionMode = Selection_Mode.Flotilla_Selection;
-                    rootNode.detachChild(mSelectedShipsNode);
-                    rootNode.attachChild(mSelectedFlotillasNode);
-                    mSelectionModeText.setText("Selection Mode: Flotilla (Press 'Tab' to switch)");
+                    isMoveToggleOn = !isMoveToggleOn;
+                    isRotateToggleOn = false;
+                    isBoxSelectToggleOn = false;
+                    isAttackToggleOn = false;
                 }
-                else if (selectionMode == Selection_Mode.Flotilla_Selection)
+                else if (name.equals("Rotate") && isPressed)
                 {
-                    selectionMode = Selection_Mode.Ship_Selection;
-                    rootNode.detachChild(mSelectedFlotillasNode);
-                    rootNode.attachChild(mSelectedShipsNode);
-                    mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
+                    isMoveToggleOn = false;
+                    isRotateToggleOn = !isRotateToggleOn;
+                    isBoxSelectToggleOn = false;
+                    isAttackToggleOn = false;
                 }
-                
-                mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
-                
-                calculateCenterPoint();
-                
-                mIsShiftPressed = false;
-                isMoveToggleOn = false;
-                isRotateToggleOn = false;
-                isBoxSelectToggleOn = false;
-                isAttackToggleOn = false;
-                inputManager.setMouseCursor(null);
+                else if (name.equals("Box Select") && isPressed)
+                {
+                    isMoveToggleOn = false;
+                    isRotateToggleOn = false;
+                    isBoxSelectToggleOn = !isBoxSelectToggleOn;
+                    isAttackToggleOn = false;
+
+                    flyCam.setEnabled(!flyCam.isEnabled());
+                }
+                else if (name.equals("Attack") && isPressed)
+                {
+                    isMoveToggleOn = false;
+                    isRotateToggleOn = false;
+                    isBoxSelectToggleOn = false;
+                    isAttackToggleOn = !isAttackToggleOn;
+                }
+
+
+                if (isMoveToggleOn || isRotateToggleOn || isBoxSelectToggleOn || isAttackToggleOn)
+                    inputManager.setMouseCursor(mCursorSmiley);
+                else
+                    inputManager.setMouseCursor(null);
+
+
+                if (name.equals("Switch Selection Mode") && isPressed)
+                {                
+                    if (selectionMode == Selection_Mode.Ship_Selection)
+                    {
+                        selectionMode = Selection_Mode.Flotilla_Selection;
+                        rootNode.detachChild(mSelectedShipsNode);
+                        rootNode.attachChild(mSelectedFlotillasNode);
+                        mSelectionModeText.setText("Selection Mode: Flotilla (Press 'Tab' to switch)");
+                    }
+                    else if (selectionMode == Selection_Mode.Flotilla_Selection)
+                    {
+                        selectionMode = Selection_Mode.Ship_Selection;
+                        rootNode.detachChild(mSelectedFlotillasNode);
+                        rootNode.attachChild(mSelectedShipsNode);
+                        mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
+                    }
+
+                    mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
+
+                    calculateCenterPoint();
+
+                    mIsShiftPressed = false;
+                    isMoveToggleOn = false;
+                    isRotateToggleOn = false;
+                    isBoxSelectToggleOn = false;
+                    isAttackToggleOn = false;
+                    inputManager.setMouseCursor(null);
+                }          
             }
+            
+            if (name.equals("Exit"))
+                stop();  
         }
     };
     
@@ -580,112 +597,115 @@ public class Game extends SimpleApplication
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void simpleUpdate(float tpf)
-    {
-// Update box select picture as needed...
-        if (isBoxSelectToggleOn)
+    {        
+        if (isRunning)
         {
-            Vector2f initPos = mPictureBoxSelect.getUserData("Initial Position");
-            Vector2f cursorPos = inputManager.getCursorPosition();
-            if (initPos.x < cursorPos.x && initPos.y > cursorPos.y)
-                mPictureBoxSelect.setPosition(initPos.x, cursorPos.y);
-            else if (initPos.x > cursorPos.x && initPos.y < cursorPos.y)
-                mPictureBoxSelect.setPosition(cursorPos.x, initPos.y);
-            else if (initPos.x > cursorPos.x && initPos.y > cursorPos.y)
-                mPictureBoxSelect.setPosition(cursorPos.x, cursorPos.y);
-            else
-                mPictureBoxSelect.setPosition(initPos.x, initPos.y);
-            
-            mPictureBoxSelect.setWidth(Math.abs(cursorPos.x - initPos.x));
-            mPictureBoxSelect.setHeight(Math.abs(initPos.y - cursorPos.y));
-        }
-        
-        // Update ships...
-        for (int i = 0; i < loneShips.size(); i++)
-            loneShips.get(i).update(tpf);
-        // Update flotillas...
-        for (int i = 0; i < flotillas.size(); i++)
-            flotillas.get(i).update(tpf);
-        
-        // Update center position of selected ships...
-        calculateCenterPoint();
-        
-        
-        
-        Ray r = getMouseRay();
-        boolean somethingSelected = false;
-        if (selectionMode == Selection_Mode.Ship_Selection)
-        {
-        // Check if mouse hovering over anything to update info hub...
-            for (int i = 0; i < loneShips.size(); i++)
+            // Update box select picture as needed...
+            if (isBoxSelectToggleOn)
             {
-                somethingSelected = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound().intersects(r);
-                if (somethingSelected)
+                Vector2f initPos = mPictureBoxSelect.getUserData("Initial Position");
+                Vector2f cursorPos = inputManager.getCursorPosition();
+                if (initPos.x < cursorPos.x && initPos.y > cursorPos.y)
+                    mPictureBoxSelect.setPosition(initPos.x, cursorPos.y);
+                else if (initPos.x > cursorPos.x && initPos.y < cursorPos.y)
+                    mPictureBoxSelect.setPosition(cursorPos.x, initPos.y);
+                else if (initPos.x > cursorPos.x && initPos.y > cursorPos.y)
+                    mPictureBoxSelect.setPosition(cursorPos.x, cursorPos.y);
+                else
+                    mPictureBoxSelect.setPosition(initPos.x, initPos.y);
+
+                mPictureBoxSelect.setWidth(Math.abs(cursorPos.x - initPos.x));
+                mPictureBoxSelect.setHeight(Math.abs(initPos.y - cursorPos.y));
+            }
+
+            // Update ships...
+            for (int i = 0; i < loneShips.size(); i++)
+                loneShips.get(i).update(tpf);
+            // Update flotillas...
+            for (int i = 0; i < flotillas.size(); i++)
+                flotillas.get(i).update(tpf);
+
+            // Update center position of selected ships...
+            calculateCenterPoint();
+
+
+
+            Ray r = getMouseRay();
+            boolean somethingSelected = false;
+            if (selectionMode == Selection_Mode.Ship_Selection)
+            {
+            // Check if mouse hovering over anything to update info hub...
+                for (int i = 0; i < loneShips.size(); i++)
                 {
-                    mInfoHubText.setText(loneShips.get(i).getDisplayInfo());
-                    break;
+                    somethingSelected = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound().intersects(r);
+                    if (somethingSelected)
+                    {
+                        mInfoHubText.setText(loneShips.get(i).getDisplayInfo());
+                        break;
+                    }
+                }
+                if (!somethingSelected)
+                {
+                    for (int i = 0; i < flotillas.size(); i++)
+                    {
+                        Flotilla f = flotillas.get(i);
+                        for (int j = 0; j < f.getFlotilla().length; j++)
+                        {
+                            somethingSelected = f.getFlotilla()[j].getDrawableObject3d().getModel().getWorldBound().intersects(r);
+                            if (somethingSelected)
+                            {
+                                mInfoHubText.setText(f.getFlotilla()[j].getDisplayInfo());
+                                break;
+                            }
+                        }
+                        if (somethingSelected)
+                            break;
+                    }
                 }
             }
-            if (!somethingSelected)
+            else if (selectionMode == Selection_Mode.Flotilla_Selection)
             {
+            // Check if mouse hovering over anything to update info hub...
                 for (int i = 0; i < flotillas.size(); i++)
                 {
-                    Flotilla f = flotillas.get(i);
-                    for (int j = 0; j < f.getFlotilla().length; j++)
+                    somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
+                    if (somethingSelected)
                     {
-                        somethingSelected = f.getFlotilla()[j].getDrawableObject3d().getModel().getWorldBound().intersects(r);
+                        mInfoHubText.setText(flotillas.get(i).getDisplayInfo());
+                        break;
+                    }
+                }
+            }
+            if (!somethingSelected) // Check Planets and Stars...
+            {
+                for (int i = 0; i < mPlanets.length; i++)
+                {
+                    Planet p = mPlanets[i];
+                    somethingSelected = p.getBoundingSphere().intersects(r);
+                    if (somethingSelected)
+                    {
+                        mInfoHubText.setText(p.getDisplayInfo());
+                        break;
+                    }
+                }
+
+                if (!somethingSelected)
+                {
+                    for (int i = 0; i < mSuns.length; i++)
+                    {
+                        Star s = mSuns[i];
+                        somethingSelected = s.getBoundingSphere().intersects(r);
                         if (somethingSelected)
                         {
-                            mInfoHubText.setText(f.getFlotilla()[j].getDisplayInfo());
+                            mInfoHubText.setText(s.getDisplayInfo());
                             break;
                         }
                     }
-                    if (somethingSelected)
-                        break;
                 }
             }
-        }
-        else if (selectionMode == Selection_Mode.Flotilla_Selection)
-        {
-        // Check if mouse hovering over anything to update info hub...
-            for (int i = 0; i < flotillas.size(); i++)
-            {
-                somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
-                if (somethingSelected)
-                {
-                    mInfoHubText.setText(flotillas.get(i).getDisplayInfo());
-                    break;
-                }
-            }
-        }
-        if (!somethingSelected) // Check Planets and Stars...
-        {
-            for (int i = 0; i < mPlanets.length; i++)
-            {
-                Planet p = mPlanets[i];
-                somethingSelected = p.getBoundingSphere().intersects(r);
-                if (somethingSelected)
-                {
-                    mInfoHubText.setText(p.getDisplayInfo());
-                    break;
-                }
-            }
-            
             if (!somethingSelected)
-            {
-                for (int i = 0; i < mSuns.length; i++)
-                {
-                    Star s = mSuns[i];
-                    somethingSelected = s.getBoundingSphere().intersects(r);
-                    if (somethingSelected)
-                    {
-                        mInfoHubText.setText(s.getDisplayInfo());
-                        break;
-                    }
-                }
-            }
+                mInfoHubText.setText("");
         }
-        if (!somethingSelected)
-            mInfoHubText.setText("");
     }
     
     /**

@@ -19,7 +19,7 @@ public class Main
             fullscreen = true;
         else if (input == JOptionPane.CANCEL_OPTION)
             System.exit(0);
-            
+        
         Game game = new Game();
         
         game.setShowSettings(false);
