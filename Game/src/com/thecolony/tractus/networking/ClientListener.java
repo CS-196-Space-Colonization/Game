@@ -37,7 +37,7 @@ public class ClientListener implements MessageListener<Client> {
 	  UpdateClientMessage msg = (UpdateClientMessage) message;
 	  System.out.println("Msg: " + msg.getGreeting());
           
-	  app.addPlanet(getPosition(msg.getPosition()), getColor(msg.getColor()));
+	  app.addPlanet(msg.getPosition(), msg.getColor());
 	  
         }
     }
