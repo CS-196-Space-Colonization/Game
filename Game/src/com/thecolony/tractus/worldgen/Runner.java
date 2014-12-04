@@ -1,6 +1,6 @@
 package com.thecolony.tractus.worldgen;
 
-import com.thecolony.tractus.worldgen.resources.*;
+import resources.*;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 /**
  * Created by chthonic7 on 10/15/14.
@@ -26,6 +26,5 @@ public class Runner {
         System.out.println("Changed resource? "+a1a1a1.setResource("iron", 4.0));
         System.out.println("iron=" + a1a1a1.getResource("iron"));
         a1a1a1.updateResources();
-        System.out.print(a.getClass());
     }
 }

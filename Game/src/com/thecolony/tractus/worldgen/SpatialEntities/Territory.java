@@ -1,10 +1,8 @@
 package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
-import com.thecolony.tractus.worldgen.resources.Res;
+import resources.Res;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Created by chthonic7 on 10/15/14.
@@ -112,7 +110,7 @@ public abstract class Territory implements Serializable {
 
     public final String toString(){
         String str=this.getClass().toString(); str=str.substring(str.lastIndexOf('.')+1);
-        return (superTerr==null)?"":superTerr.toString()+" "+str+" "+name+((str.equals("Continent"))?"":(" at ("+location.getX()+","+location.getZ()+")"))+" is owned by "+owner+"\n";
+        return ((superTerr==null)?"":superTerr.toString())+" "+str+" "+name+((str.equals("Continent"))?"":(" at ("+location.getX()+","+location.getZ()+")"))+" is owned by "+owner+"\n";
     }
 
     public final boolean equals(Object o){

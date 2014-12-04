@@ -1,6 +1,6 @@
 package com.thecolony.tractus.worldgen.SpatialEntities;
 
-import com.thecolony.tractus.worldgen.resources.Res;
+import resources.Res;
 
 /**
  * Created by chthonic7 on 10/8/14.
@@ -8,13 +8,15 @@ import com.thecolony.tractus.worldgen.resources.Res;
 public class Continent extends Territory {
     protected double size; //Placeholder for area of the continent
     protected int population;
-    //Tech=techtree
-
+    private int ID;
+    private static int ID_COUNT=0;
     public Continent(Planet planet, Res res, int population, double size, String name, String owner){
         super(-1.0f,-1.0f,planet,null,res,name,owner);
         //This Continents don't have a spatial position, nor do they have subterritories
         this.population=population;
         this.size=size;
+        this.ID_COUNT++;
+        this.ID=ID_COUNT;
     }
 
     public double getSize() {
@@ -30,8 +32,9 @@ public class Continent extends Territory {
     }
 
     public void setPopulation(int population) { this.population = population; }
-    //population dynamics will be just implement logic using get/set pop/res
 
-    //Something higher up will implement the game mechanics of the
-
+    @Override
+    public int getID() {
+        return this.ID;
+    }
 }

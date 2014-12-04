@@ -1,3 +1,6 @@
+/**
+ * CLASS MARKED FOR DELETION WITH THIS NOTE. BUILD WILL LIKELY BREAK UNTIL A FEW COMMITS LATER. SORRY!
+ */
 package com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities;
 
 import com.jme3.asset.AssetManager;
@@ -8,6 +11,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
+import org.lwjgl.opengl.Drawable;
 
 /**
  * A class used to represent a planet.
@@ -16,11 +20,14 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
 public class Planet extends DrawableObject3d implements java.io.Serializable
 {
     ColorRGBA color;
-    
+
+    protected DrawableObject3d model;
+
     public Planet(Vector3f position, Spatial model, String name)
     {
-        super(position, model, name, "Planet");
-        
+        super(position, null, name, "Planet");
+
+        this.model = new DrawableObject3d(position, model,name,"Planet");
         initialize();
     }
     
@@ -47,7 +54,6 @@ public class Planet extends DrawableObject3d implements java.io.Serializable
         m.setColor("Ambient", color);
         m.setColor("Diffuse", color);
         g.setMaterial(m);
-        
         return (Spatial)g;
     }
     
