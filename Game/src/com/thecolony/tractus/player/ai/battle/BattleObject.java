@@ -1,27 +1,47 @@
 package com.thecolony.tractus.player.ai.battle;
 
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
 public abstract class BattleObject
 {
+    /** 0x00 ---- First Battle Stat */
     public static final int BATTLE_STAT_REG_POWER   		= 0x00;
+    /** 0x01 */
     public static final int BATTLE_STAT_SP_POWER    		= 0x01;
+    /** 0x02 */
     public static final int BATTLE_STAT_REG_DEFENSE 		= 0x02;
+    /** 0x03 */
     public static final int BATTLE_STAT_SP_DEFENSE  		= 0x03;
-    public static final int BATTLE_STAT_REG_ATTACK_COOLDOWN = 0x04;
-    public static final int BATTLE_STAT_SP_ATTACK_COOLDOWN  = 0x05;
+    /** 0x04 */
+    public static final int BATTLE_STAT_REG_ATTACK_COOLDOWN     = 0x04;
+    /** 0x05 */
+    public static final int BATTLE_STAT_SP_ATTACK_COOLDOWN      = 0x05;
+    /** 0x06 */
     public static final int BATTLE_STAT_REG_ACCURACY		= 0x06;
-    public static final int BATTLE_STAT_SP_ACCURACY			= 0x07;
-    public static final int BATTLE_STAT_HP 					= 0x08;
-    public static final int BATTLE_STAT_REG_RANGE 			= 0x09;
-    public static final int BATTLE_STAT_SP_RANGE 			= 0x0A;
+    /** 0x07 */
+    public static final int BATTLE_STAT_SP_ACCURACY		= 0x07;
+    /** 0x08 */
+    public static final int BATTLE_STAT_HP 			= 0x08;
+    /** 0x09 */
+    public static final int BATTLE_STAT_REG_RANGE 		= 0x09;
+    /** 0x0A */
+    public static final int BATTLE_STAT_SP_RANGE 		= 0x0A;
+    /** 0x0B */
     public static final int BATTLE_STAT_MOVEMENT_SPEED		= 0x0B;
+    /** 0x0C */
     public static final int BATTLE_STAT_REPAIR_ABILITY 		= 0x0C;
+    /** 0x0D */
     public static final int BATTLE_STAT_BUILD_ABILITY		= 0x0D;
+    /** 0x0E */
     public static final int BATTLE_STAT_TRANSPORT_ABILITY	= 0x0E;
+    /** 0x0F */
     public static final int BATTLE_STAT_SP_ARMOR_STAT	 	= 0x0F;
+    /** 0x10 */
     public static final int BATTLE_STAT_REG_ARMOR_STAT 		= 0x10;
+    /** 0x11 */
     public static final int BATTLE_STAT_SP_WEAPON_STAT	 	= 0x11;
+    /** 0x12 */
     public static final int BATTLE_STAT_REG_WEAPON_STAT 	= 0x12;
 
     protected String name;
