@@ -10,7 +10,7 @@ import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
-import com.thecolony.tractus.graphics.threedmovement.game.Game;
+import com.thecolony.tractus.graphics.game.Game;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;

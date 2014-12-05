@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.thecolony.tractus;
 
 import com.jme3.system.AppSettings;
@@ -17,10 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 /**
- * Main menu for the game. That we will use forever. FOREVER.
+ *
  * @author Arturo
  */
-public class MainMenu extends JFrame
+public class MultiplayerMenu extends JFrame
 {
     private JPanel window;
     private JButton singlePlayer, multiplayer, quit;
@@ -37,7 +41,7 @@ public class MainMenu extends JFrame
     private Font buttonFont = new Font("Comic Sans MS", 0, 25);
     private Font titleFont = new Font("Comic Sans MS", 0, 50);
     
-    public MainMenu()
+    public MultiplayerMenu()
     {
         window = new JPanel();
         try

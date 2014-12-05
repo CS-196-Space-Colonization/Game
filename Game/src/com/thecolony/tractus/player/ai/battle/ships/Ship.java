@@ -16,8 +16,8 @@ import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
-import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameGraphics;
-import com.thecolony.tractus.graphics.threedmovement.drawableobjects.MoveableObject;
+import com.thecolony.tractus.drawableobjects.GameGraphics;
+import com.thecolony.tractus.drawableobjects.MoveableObject;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 import java.io.IOException;
 
