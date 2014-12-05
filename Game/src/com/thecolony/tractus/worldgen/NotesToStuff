@@ -18,6 +18,9 @@ Stars:
 Star and Planet:
     Extends DrawableObject3d
     But the others don't
+    Solve:Give each a model
+        Assetma=>get model stuff
+        Copy loadModel()
 
 Territory
     loc=>vector3f (y=0)
