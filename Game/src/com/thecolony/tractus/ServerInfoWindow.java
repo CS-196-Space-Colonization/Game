@@ -25,24 +25,21 @@ import javax.swing.UIManager;
  */
 public class ServerInfoWindow extends JFrame
 {
+
     public static final int SERVER = 0;
     public static final int CLIENT = 1;
-    
     private JPanel window;
     private JButton ok, back;
     private Rectangle rOk, rBack;
     private JLabel title;
-    
     private int width = 500;
     private int height = 300;
     private int buttonWidth = 100;
     private int buttonHeight = 40;
     private int titleWidth = 175;
-    
     private Font buttonFont = new Font("Comic Sans MS", 0, 20);
     private Font titleFont = new Font("Comic Sans MS", 0, 30);
     private Font textFont = new Font("Comic Sans MS", 0, 20);
-    
     private String name, version, ip, port;
     private JTextField tName, tVersion, tIp, tPort;
     private int type;
@@ -101,8 +98,7 @@ public class ServerInfoWindow extends JFrame
 	      if (type == CLIENT)
 	      {
 		new ClientMain();
-	      } 
-	      else
+	      } else
 	      {
 		new ServerMain();
 	      }
@@ -135,20 +131,22 @@ public class ServerInfoWindow extends JFrame
         tName.setBounds((width / 2) - (titleWidth / 2), 50, titleWidth, buttonHeight);
         tName.setFont(textFont);
         window.add(tName);
+        if (type == CLIENT)
+        {
+	  tVersion = new JTextField("Version");
+	  tVersion.setBounds((width / 2) - (titleWidth / 2), 100, titleWidth, buttonHeight);
+	  tVersion.setFont(textFont);
+	  window.add(tVersion);
 
-        tVersion = new JTextField("Version");
-        tVersion.setBounds((width / 2) - (titleWidth / 2), 100, titleWidth, buttonHeight);
-        tVersion.setFont(textFont);
-        window.add(tVersion);
+	  tIp = new JTextField("IP Address");
+	  tIp.setBounds((width / 2) - (titleWidth / 2), 150, titleWidth, buttonHeight);
+	  tIp.setFont(textFont);
+	  window.add(tIp);
 
-        tIp = new JTextField("IP Address");
-        tIp.setBounds((width / 2) - (titleWidth / 2), 150, titleWidth, buttonHeight);
-        tIp.setFont(textFont);
-        window.add(tIp);
-
-        tPort = new JTextField("Port Number");
-        tPort.setBounds((width / 2) - (titleWidth / 2), 200, titleWidth, buttonHeight);
-        tPort.setFont(textFont);
-        window.add(tPort);
+	  tPort = new JTextField("Port Number");
+	  tPort.setBounds((width / 2) - (titleWidth / 2), 200, titleWidth, buttonHeight);
+	  tPort.setFont(textFont);
+	  window.add(tPort);
+        }
     }
 }
