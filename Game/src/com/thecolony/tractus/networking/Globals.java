@@ -9,10 +9,10 @@ import com.jme3.network.serializing.Serializer;
 public class Globals
 {
 
-    public static final String NAME = "My Server";
-    public static final String DEFAULT_SERVER = "localhost";
-    public static final int VERSION = 1;
-    public static final int DEFAULT_PORT = 6143;
+    public static String NAME = "My Server";
+    public static String DEFAULT_SERVER = "localhost";//172.17.218.92
+    public static int VERSION = 1;
+    public static int DEFAULT_PORT = 6143;
 
     public static void registerClasses()
     {
@@ -20,6 +20,12 @@ public class Globals
         Serializer.registerClass(TestClass.class);
         Serializer.registerClass(TestSub.class);
     }
-}
-//172.17.159.108 ananaa
 
+    public static void setInfo(String n, String v, String i, String p)
+    {
+        NAME = n;
+        DEFAULT_SERVER = i;
+        VERSION = Integer.parseInt(v);
+        DEFAULT_PORT = Integer.parseInt(p);
+    }
+}

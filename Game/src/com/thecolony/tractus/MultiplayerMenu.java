@@ -5,6 +5,7 @@
 package com.thecolony.tractus;
 
 import com.thecolony.tractus.networking.ClientMain;
+import com.thecolony.tractus.networking.Globals;
 import com.thecolony.tractus.networking.ServerMain;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +17,7 @@ import java.awt.event.ItemListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
@@ -90,7 +92,7 @@ public class MultiplayerMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      new ServerMain();
+	      new ServerInfoWindow(ServerInfoWindow.SERVER);
 	      dispose();
 	  }
         });
@@ -99,7 +101,7 @@ public class MultiplayerMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      new ClientMain();
+	      new ServerInfoWindow(ServerInfoWindow.CLIENT);
 	      dispose();
 	  }
         });
