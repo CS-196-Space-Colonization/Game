@@ -1,4 +1,4 @@
-package resources;
+package com.thecolony.tractus.resources;
 
 
 import java.io.BufferedReader;

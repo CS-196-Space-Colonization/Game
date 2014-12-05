@@ -5,7 +5,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import resources.Res;
+import com.thecolony.tractus.resources.Res;
 
 /**
  * Created by chthonic7 on 10/8/14.

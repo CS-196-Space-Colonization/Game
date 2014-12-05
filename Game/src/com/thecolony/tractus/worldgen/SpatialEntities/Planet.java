@@ -2,7 +2,7 @@ package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import resources.Res;
+import com.thecolony.tractus.resources.Res;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Node;

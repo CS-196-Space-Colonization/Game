@@ -11,7 +11,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
-import resources.Res;
+import com.thecolony.tractus.resources.Res;
 
 import com.jme3.scene.Spatial;
 
