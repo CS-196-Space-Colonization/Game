@@ -17,16 +17,18 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
  *
+ * @author Mark Haynie
  * @author Joe Pagliuco
  */
 @Serializable
 public class Ship extends BattleObject
 {
-    // Variables...
-    // Constructors...
-    // Initialization Methods...
-    // Update Methods...
-    // Getters/Setters...    
+    /** Class Structure **/
+        // Variables...
+        // Constructors...
+        // Initialization Methods...
+        // Update Methods...
+        // Getters/Setters...    
     
     
     public static enum SHIP_TYPE
@@ -86,7 +88,9 @@ public class Ship extends BattleObject
         Qual = "Attack";
         level = 1;
         type = shipType.toString();
-        setShip(type);
+        //setShip(type);
+        if (shipType == SHIP_TYPE.CapitalShip)
+            setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, 15.0f);
     }
 
     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
@@ -201,9 +205,7 @@ public class Ship extends BattleObject
         }
 
         if (isMoving() && !isRotating())
-        {
-            System.out.println(position);
-            
+        {            
             MoveableObject m = (MoveableObject) model;
             wireBoxGeometry.move(m.getDirection().mult(m.getMovementSpeed() * deltaTime));
         }

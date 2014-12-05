@@ -48,7 +48,6 @@ public class Game extends SimpleApplication
 
     public static enum Selection_Mode
     {
-
         Ship_Selection, Flotilla_Selection
     };
     private Selection_Mode selectionMode;

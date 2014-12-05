@@ -3,6 +3,7 @@ package com.thecolony.tractus.player.ai.battle;
 import com.jme3.math.Vector3f;
 import com.jme3.network.serializing.Serializable;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.graphics.drawableobjects.MoveableObject;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
 @Serializable
@@ -159,6 +160,11 @@ public abstract class BattleObject
             qualities[BATTLE_STAT_HP] = qualities[BATTLE_STAT_HP] - value;
             if (qualities[BATTLE_STAT_HP] < 0)
                     qualities[BATTLE_STAT_HP] = 0;
+        }
+        else if (BATTLE_STAT == BATTLE_STAT_MOVEMENT_SPEED)
+        {
+            qualities[BATTLE_STAT] = value;
+            ((MoveableObject)model).setMovementSpeed((float)value);
         }
         else
             qualities[BATTLE_STAT] = value;

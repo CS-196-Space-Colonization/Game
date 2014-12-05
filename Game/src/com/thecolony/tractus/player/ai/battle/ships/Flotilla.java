@@ -14,6 +14,7 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
  *
+ * @author Mark Haynie
  * @author Joe Pagliuco
  */
 public class Flotilla
@@ -35,6 +36,10 @@ public class Flotilla
     
     private String name;
     
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START CONSTRUCTORS /////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     public Flotilla()
     {
         initialize(new Ship[0], Vector3f.ZERO, false, "Empty Name");
@@ -55,6 +60,15 @@ public class Flotilla
     {
         initialize(group, centerPosition, isFull, name);
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END CONSTRUCTORS ///////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     private void initialize(Ship[] group, Vector3f centerPosition, boolean isFull, String name)
     {
@@ -127,6 +141,232 @@ public class Flotilla
         for (int i = 1; i < flotilla.length; i++)
             movementSpeed = (float)Math.min(movementSpeed, flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Update the flotilla.
+     * @param deltaTime The time elapsed between each frame.
+     */
+    public void update(float deltaTime)
+    {        
+        for (int i = 0; i < flotilla.length; i++)
+            flotilla[i].update(deltaTime);
+        
+        if (isMoving() && !isRotating())
+        {
+            Vector3f direction = targetPoint.subtract(centerPosition).normalize();
+            wireBoxGeometry.move(direction.mult(movementSpeed * deltaTime));
+            centerPosition.addLocal(direction.mult(movementSpeed * deltaTime));
+        }
+    }
+    
+    public void move(Vector3f offset)
+    {
+        for (int i = 0; i < flotilla.length; i++)
+            flotilla[i].move(offset);
+        centerPosition.addLocal(offset);
+        wireBoxGeometry.move(offset);
+    }
+    
+    public void sortByHP()
+    {
+        Ship[] temp = new Ship[flotilla.length];
+        Ship[] temp2 = flotilla;
+        for(int j = 0; j < flotilla.length; j++)
+        {
+            int place = 0;
+            double smallest = temp2[place].getBattleStat(BattleObject.BATTLE_STAT_HP);
+            for(int i = 0; i < temp2.length; i++)
+            {
+                if(temp2[i].getBattleStat(BattleObject.BATTLE_STAT_HP) < smallest)
+                        place = i;
+            }
+            temp[j] = temp2[place];
+            Ship temp3 = temp2[temp2.length - 1];
+            temp2[place] = temp3;
+            Ship[] temp4 = temp2;
+            temp2 = new Ship[temp2.length - 1];
+            for(int a = 0; a < temp2.length; a++)
+                temp2[a] = temp4[a];
+        }
+        flotilla = temp;
+    }
+    public void sortByAttack()
+    {
+        Ship[] temp = new Ship[flotilla.length];
+        Ship[] temp2 = flotilla;
+        for(int j = 0; j < flotilla.length; j++)
+        {
+            int place = 0;
+            double smallest = temp2[place].getBattleStat(BattleObject.BATTLE_STAT_REG_POWER);
+            for(int i = 0; i < temp2.length; i++)
+            {
+                if(temp2[i].getBattleStat(BattleObject.BATTLE_STAT_REG_POWER) > smallest)
+                    place = i;
+            }
+            temp[j] = temp2[place];
+            Ship temp3 = temp2[temp2.length - 1];
+            temp2[place] = temp3;
+            Ship[] temp4 = temp2;
+            temp2 = new Ship[temp2.length - 1];
+            for(int a = 0; a < temp2.length; a++)
+               temp2[a] = temp4[a];
+        }
+        flotilla = temp;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START BATTLE METHODS ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public void checkRemoveShip()
+    {
+        Ship[] temp = flotilla;
+        for(int i = 0; i < temp.length; i++)
+        {
+            if(temp[i].getBattleStat(BattleObject.BATTLE_STAT_HP) == 0)
+            {
+                boolean passed = false;
+                Ship[] temp2 = new Ship[temp.length - 1];
+                for(int j = 0; j < temp.length; j++)
+                {
+                    if( j == i)
+                    {
+                        j++;
+                        passed = true;
+                    }
+                    if (passed)
+                        temp2[j - 1] = temp[j];
+                    else
+                        temp2[j] = temp[j];
+                }
+                temp = temp2;
+            }
+        }
+        flotilla = temp;
+    }
+    
+    public void damageShip(int ship, double damage)
+    {
+        flotilla[ship].setBattleStat(BattleObject.BATTLE_STAT_HP, damage);
+    }
+    public void removeShip(int place)
+    {
+        boolean passed = false;
+        Ship[] temp = new Ship[flotilla.length - 1];
+        for(int j = 0; j < temp.length; j++)
+        {
+            if( j == place)
+            {
+                j++;
+                passed = true;
+            }
+            if (passed)
+                temp[j - 1] = flotilla[j];
+            else
+                temp[j] = flotilla[j];
+        }
+        flotilla = temp;
+        
+        setMovementSpeed();
+    }
+    
+    static double HPfactor = 10;
+    public static void calcSpDamage(Flotilla attack, Flotilla defend)
+    {
+        double damage = ((attack.getBattleStat(BattleObject.BATTLE_STAT_SP_POWER) + attack.getBattleStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT))) /
+                (defend.getBattleStat(BattleObject.BATTLE_STAT_SP_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT)) * HPfactor;
+        //double damage = ((attack.getSpPower() + attack.getSpWeaponStat())) / (defend.getSpDefence() + defend.getSpArmorStat()) * HPfactor;
+        defend.setHP(damage);
+    }
+    public static void calcRegDamage(Flotilla attack, Flotilla defend)
+    {
+        double damage = ((attack.getBattleStat(BattleObject.BATTLE_STAT_REG_POWER) + attack.getBattleStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT))) /
+                (defend.getBattleStat(BattleObject.BATTLE_STAT_REG_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT)) * HPfactor;
+        //double damage = ((attack.getRegPower() + attack.getRegWeaponStat())) / (defend.getRegDefence() + defend.getRegArmorStat()) * HPfactor;
+        defend.setHP(damage);
+    }
+    
+    public static void battle(Flotilla a, Flotilla d)
+    {
+        if(a.getFlotilla().length > 0 && d.getFlotilla().length > 0)
+        {
+            a.setFlotillaStats();
+            d.setFlotillaStats();
+            calcRegDamage(a, d);
+            calcRegDamage(d, a);
+            calcSpDamage(a, d);
+            calcSpDamage(d, a);
+            a.checkRemoveShip();
+            d.checkRemoveShip();
+        }
+    }
+    
+    public static void flotillaBattle(Flotilla a, Flotilla b, double time)
+    {
+		double rt1 = 0;
+                double rt2 = 0;
+                double st1 = 0;
+                double st2 = 0;
+                
+		boolean done = false;
+		while(!done)
+		{
+                    a.setFlotillaStats();
+                    b.setFlotillaStats();
+                    rt1 = rt1 + time;
+                    rt2 = rt2 + time;
+                    st1 = st1 + time;
+                    st2 = st2 + time;
+			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 || b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+                        {
+				done = true;
+                        }
+                        else if(rt1 >= a.getBattleStat(4))
+                        {
+                            rt1 = rt1 - a.getBattleStat(4);
+                            calcRegDamage(a, b);
+                        }
+                        else if(rt2 >= b.getBattleStat(4))
+                        {
+                            rt2 = rt2 - b.getBattleStat(4);
+                            calcRegDamage(b, a);
+                        }
+                        else if(st1 >= a.getBattleStat(5))
+                        {
+                            st1 = st1 - a.getBattleStat(5);
+                            calcSpDamage(a, b);
+                        }
+                        else if(st2 >= b.getBattleStat(5))
+                        {
+                            st2 = st2 - b.getBattleStat(5);
+                            calcSpDamage(b, a);
+                        }
+		}
+        }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END BATTLE METHODS /////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END UPDATE METHODS /////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START GETTERS/SETTERS //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public String getName()
     {
@@ -246,80 +486,12 @@ public class Flotilla
         flotilla = temp;
     }
     
-    public void checkRemoveShip()
-    {
-        Ship[] temp = flotilla;
-        for(int i = 0; i < temp.length; i++)
-        {
-            if(temp[i].getBattleStat(BattleObject.BATTLE_STAT_HP) == 0)
-            {
-                boolean passed = false;
-                Ship[] temp2 = new Ship[temp.length - 1];
-                for(int j = 0; j < temp.length; j++)
-                {
-                    if( j == i)
-                    {
-                        j++;
-                        passed = true;
-                    }
-                    if (passed)
-                        temp2[j - 1] = temp[j];
-                    else
-                        temp2[j] = temp[j];
-                }
-                temp = temp2;
-            }
-        }
-        flotilla = temp;
-    }
-    
-    public void damageShip(int ship, double damage)
-    {
-        flotilla[ship].setBattleStat(BattleObject.BATTLE_STAT_HP, damage);
-    }
-    public void removeShip(int place)
-    {
-        boolean passed = false;
-        Ship[] temp = new Ship[flotilla.length - 1];
-        for(int j = 0; j < temp.length; j++)
-        {
-            if( j == place)
-            {
-                j++;
-                passed = true;
-            }
-            if (passed)
-                temp[j - 1] = flotilla[j];
-            else
-                temp[j] = flotilla[j];
-        }
-        flotilla = temp;
-        
-        setMovementSpeed();
-    }
-    
     public double getHP()
     {
         double total = 0;
         for(int i = 0; i < flotilla.length; i++)
             total = total + flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_HP);
         return total;
-    }
-    
-    static double HPfactor = 10;
-    public static void calcSpDamage(Flotilla attack, Flotilla defend)
-    {
-        double damage = ((attack.getBattleStat(BattleObject.BATTLE_STAT_SP_POWER) + attack.getBattleStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT))) /
-                (defend.getBattleStat(BattleObject.BATTLE_STAT_SP_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT)) * HPfactor;
-        //double damage = ((attack.getSpPower() + attack.getSpWeaponStat())) / (defend.getSpDefence() + defend.getSpArmorStat()) * HPfactor;
-        defend.setHP(damage);
-    }
-    public static void calcRegDamage(Flotilla attack, Flotilla defend)
-    {
-        double damage = ((attack.getBattleStat(BattleObject.BATTLE_STAT_REG_POWER) + attack.getBattleStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT))) /
-                (defend.getBattleStat(BattleObject.BATTLE_STAT_REG_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT)) * HPfactor;
-        //double damage = ((attack.getRegPower() + attack.getRegWeaponStat())) / (defend.getRegDefence() + defend.getRegArmorStat()) * HPfactor;
-        defend.setHP(damage);
     }
     public void setHP(double damage)
     {
@@ -342,109 +514,14 @@ public class Flotilla
         }
     }
     
-    public static void battle(Flotilla a, Flotilla d)
-    {
-        if(a.getFlotilla().length > 0 && d.getFlotilla().length > 0)
-        {
-            a.setFlotillaStats();
-            d.setFlotillaStats();
-            calcRegDamage(a, d);
-            calcRegDamage(d, a);
-            calcSpDamage(a, d);
-            calcSpDamage(d, a);
-            a.checkRemoveShip();
-            d.checkRemoveShip();
-        }
-    }
-        
     public void setShipsBattleStat(int shipIndex, int BATTLE_STAT, double quality)
     {
-        if (BATTLE_STAT == BattleObject.BATTLE_STAT_REG_ACCURACY)
-            setFlotillaStats(); // Not sure if this should be here - Joe
         getShip(shipIndex).setBattleStat(BATTLE_STAT, quality);
     }
     public double getBattleStat(int BATTLE_STAT)
     {
         setFlotillaStats();
         return qualities[BATTLE_STAT];
-    }
-    
-    public void sortByHP()
-    {
-        Ship[] temp = new Ship[flotilla.length];
-        Ship[] temp2 = flotilla;
-        for(int j = 0; j < flotilla.length; j++)
-        {
-            int place = 0;
-            double smallest = temp2[place].getBattleStat(BattleObject.BATTLE_STAT_HP);
-            for(int i = 0; i < temp2.length; i++)
-            {
-                if(temp2[i].getBattleStat(BattleObject.BATTLE_STAT_HP) < smallest)
-                        place = i;
-            }
-            temp[j] = temp2[place];
-            Ship temp3 = temp2[temp2.length - 1];
-            temp2[place] = temp3;
-            Ship[] temp4 = temp2;
-            temp2 = new Ship[temp2.length - 1];
-            for(int a = 0; a < temp2.length; a++)
-                temp2[a] = temp4[a];
-        }
-        flotilla = temp;
-    }
-    public void sortByAttack()
-    {
-        Ship[] temp = new Ship[flotilla.length];
-        Ship[] temp2 = flotilla;
-        for(int j = 0; j < flotilla.length; j++)
-        {
-            int place = 0;
-            double smallest = temp2[place].getBattleStat(BattleObject.BATTLE_STAT_REG_POWER);
-            for(int i = 0; i < temp2.length; i++)
-            {
-                if(temp2[i].getBattleStat(BattleObject.BATTLE_STAT_REG_POWER) > smallest)
-                    place = i;
-            }
-            temp[j] = temp2[place];
-            Ship temp3 = temp2[temp2.length - 1];
-            temp2[place] = temp3;
-            Ship[] temp4 = temp2;
-            temp2 = new Ship[temp2.length - 1];
-            for(int a = 0; a < temp2.length; a++)
-               temp2[a] = temp4[a];
-        }
-        flotilla = temp;
-    }
-    
-    /**
-     * Update the flotilla.
-     * @param deltaTime The time elapsed between each frame.
-     */
-    public void update(float deltaTime)
-    {        
-        for (int i = 0; i < flotilla.length; i++)
-            flotilla[i].update(deltaTime);
-        
-        if (isMoving() && !isRotating())
-        {
-            Vector3f direction = targetPoint.subtract(centerPosition).normalize();
-            wireBoxGeometry.move(direction.mult(movementSpeed * deltaTime));
-            centerPosition.addLocal(direction.mult(movementSpeed * deltaTime));
-        }
-    }
-    
-    /**
-     * Sets the target transformation point for the flotilla.
-     * @param targetPoint The point to transform to.
-     * @param moveTo Whether or not the flotilla should move to the target
-     * point in addition to rotating to it.
-     */
-    public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
-    {
-        this.targetPoint = targetPoint;
-        Vector3f movementVector = targetPoint.subtract(centerPosition);
-        for (int i = 0; i < flotilla.length; i++)
-            flotilla[i].setTargetPoint(flotilla[i].getPosition().add(movementVector), moveTo);
     }
     
     /**
@@ -489,49 +566,6 @@ public class Flotilla
         return isRotating;
     }
     
-     public static void flotillaBattle(Flotilla a, Flotilla b, double time)
-	{
-		double rt1 = 0;
-                double rt2 = 0;
-                double st1 = 0;
-                double st2 = 0;
-                
-		boolean done = false;
-		while(!done)
-		{
-                    a.setFlotillaStats();
-                    b.setFlotillaStats();
-                    rt1 = rt1 + time;
-                    rt2 = rt2 + time;
-                    st1 = st1 + time;
-                    st2 = st2 + time;
-			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 || b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
-                        {
-				done = true;
-                        }
-                        else if(rt1 >= a.getBattleStat(4))
-                        {
-                            rt1 = rt1 - a.getBattleStat(4);
-                            calcRegDamage(a, b);
-                        }
-                        else if(rt2 >= b.getBattleStat(4))
-                        {
-                            rt2 = rt2 - b.getBattleStat(4);
-                            calcRegDamage(b, a);
-                        }
-                        else if(st1 >= a.getBattleStat(5))
-                        {
-                            st1 = st1 - a.getBattleStat(5);
-                            calcSpDamage(a, b);
-                        }
-                        else if(st2 >= b.getBattleStat(5))
-                        {
-                            st2 = st2 - b.getBattleStat(5);
-                            calcSpDamage(b, a);
-                        }
-		}
-        }
-    
     public String getDisplayInfo()
     {
         return "Flotilla:\n" + " Name: " + name + "\n "
@@ -557,11 +591,21 @@ public class Flotilla
                 + "  Movement Speed: " + movementSpeed;
     }
     
-    public void move(Vector3f offset)
+    /**
+     * Sets the target transformation point for the flotilla.
+     * @param targetPoint The point to transform to.
+     * @param moveTo Whether or not the flotilla should move to the target
+     * point in addition to rotating to it.
+     */
+    public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
     {
+        this.targetPoint = targetPoint;
+        Vector3f movementVector = targetPoint.subtract(centerPosition);
         for (int i = 0; i < flotilla.length; i++)
-            flotilla[i].move(offset);
-        centerPosition.addLocal(offset);
-        wireBoxGeometry.move(offset);
+            flotilla[i].setTargetPoint(flotilla[i].getPosition().add(movementVector), moveTo);
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END GETTERS/SETTERS ////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
