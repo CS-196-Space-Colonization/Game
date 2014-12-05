@@ -443,7 +443,6 @@ public class Flotilla
     {
         this.targetPoint = targetPoint;
         Vector3f movementVector = targetPoint.subtract(centerPosition);
-        System.out.println(flotilla.length);
         for (int i = 0; i < flotilla.length; i++)
             flotilla[i].setTargetPoint(flotilla[i].getPosition().add(movementVector), moveTo);
     }
