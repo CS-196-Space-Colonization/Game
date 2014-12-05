@@ -1,5 +1,6 @@
 package com.thecolony.tractus.worldgen;
 
+import com.jme3.math.Vector3f;
 import resources.*;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 /**
@@ -10,8 +11,8 @@ public class Runner {
         Sector a = new Sector(1.0f, 1.0f, null, new Res(), "a", "no-one");
         Cluster a1 = new Cluster(1.0f, 2.0f, a, null, new Res(), "a1", "no-one");
         StarSystem a1a = new StarSystem(1.0f, 2.0f, a1, null, new Res(), "a1a", "no-one");
-        Star a1a1 = new Star(1.0f, 2.0f, Star.StarType.RED_GIANT, a1a, null, new Res(), "a1a1", "no-one");
-        Planet a1a1a = new Planet(1.0f, 2.0f, PlanetType.GASGIANT, null, a1a1, null, new Res(), "a1a1a", "no-one");
+        Star a1a1 = new Star(new Vector3f(1.0f, 0, 2.0f), a1a, null, new Res(), "a1a1", "no-one",null,null,null, VisualType.DWARF_STAR);
+        Planet a1a1a = new Planet(new Vector3f(1.0f,0, 2.0f), a1a1, null, new Res(), "a1a1a", "no-one", null, null, null, VisualType.GASGIANT_PLANET);
         Continent a1a1a1 = new Continent(a1a1a, new Res("resFile"), 5, 2, "a1a1a1", "no-one");
         a1a1a.setSubTerr(new Continent[]{a1a1a1});
         a1a1.setSubTerr(new Planet[]{a1a1a});

@@ -7,6 +7,7 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
@@ -15,26 +16,33 @@ import resources.Res;
 
 import com.jme3.scene.Spatial;
 
+
 /**
  * Created by wesley on 11/28/14.
  */
-public class VisualEntity extends  Territory{
+@Serializable
+public class VisualEntity extends Territory implements java.io.Serializable {
     protected int ID;
     protected static int ID_COUNT=0;
-    protected final double MASS, RADIUS;
+    protected float RADIUS;
+    protected VisualType type;
     protected DrawableObject3d drawableObject;
     protected ColorRGBA color;
     protected BoundingSphere boundingSphere;
     protected String className;
-    protected VisualEntity(String name, Node node, Spatial model, Vector3f pos){
-        this(pos.getX(),pos.getZ(),null,null,new Res(),name,"no-one");
+    protected VisualEntity(Vector3f pos, String name, Node node, Spatial model, VisualType type){
+        super(pos.getX(), pos.getZ(), null, null, new Res(), name, "no-one");
+        initialize(name, node, model, pos);
+        this.type=type;
+        this.RADIUS=type.getRADIUS();
+        this.ID_COUNT++;
+        this.ID=ID_COUNT;
     }
-    protected VisualEntity(float locX, float locZ, Territory superTerr, Territory[] terr, Res res, String name, String owner, Node node, AssetManager contentMan, ColorRGBA color){
-        super(locX,locZ,superTerr,terr,res,name,owner);
+    protected VisualEntity(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner, Node node, AssetManager contentMan, ColorRGBA color, VisualType type){
+        super(pos.getX(),pos.getZ(),superTerr,terr,res,name,owner);
         className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
-        initialize(name, node, model, position);
-        MASS=0;
-        RADIUS=0;
+        this.RADIUS=type.getRADIUS();
+        initialize(name, node, loadModel(contentMan,RADIUS,color), pos);
         this.ID_COUNT++;
         this.ID=ID_COUNT;
     }
@@ -76,8 +84,24 @@ public class VisualEntity extends  Territory{
         return boundingSphere;
     }
 
+    public VisualType getType() {
+        return type;
+    }
+
+    public void setType(VisualType type) {
+        this.type=type;
+    }
+
+    public double getRadius() {
+        return RADIUS;
+    }
+
     @Override
     public int getID() {
         return this.ID;
+    }
+
+    public String getDisplayInfo(){
+        return this.toString();
     }
 }
