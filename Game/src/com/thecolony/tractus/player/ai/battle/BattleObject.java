@@ -52,9 +52,9 @@ public abstract class BattleObject
     protected int crew;
     protected int ammo;
 
-    private double x = 100.0;
+    private double x = 1;
     private double y = 0;// no longer going to change sp stat in this way.
-    private double z = 100.0;
+    private double z = 1;
 
     static double HPfactor = 10;
     
