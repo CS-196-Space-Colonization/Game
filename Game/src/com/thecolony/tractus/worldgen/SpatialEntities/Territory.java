@@ -13,9 +13,6 @@ public abstract class Territory implements Serializable {
     protected String name, owner;
     protected Res res;
     protected Territory superTerr, subTerr[];
-    protected static int ID_COUNT=0;
-    protected int ID;
-
     protected Territory(float locX, float locZ, Territory superTerr, Territory[] terr, Res res, String name, String owner){
         this.subTerr=terr;
         this.superTerr=superTerr;
@@ -23,8 +20,6 @@ public abstract class Territory implements Serializable {
         this.res=res;
         this.name=name;
         this.owner=owner;
-        this.ID_COUNT++;
-        this.ID=ID_COUNT;
     }
     //These next few getters/setters are for convenience. One can also just get the vector directly.
     public final float getLocationX() {
@@ -49,10 +44,6 @@ public abstract class Territory implements Serializable {
 
     public void setLocation(Vector3f location) {
         this.location = location;
-    }
-
-    public int getID() {
-        return ID;
     }
 
     public final String getName() {
@@ -87,6 +78,8 @@ public abstract class Territory implements Serializable {
         this.subTerr = subTerr;
     }
 
+    public final String getResName() {return res.toString();}
+
     public final double getResource(String resourceName){
         return res.getResource(resourceName);
     }
@@ -115,6 +108,6 @@ public abstract class Territory implements Serializable {
     }
 
     public final boolean equals(Object o){
-        return (o.getClass().equals(this.getClass())) && ((Territory)o).getID()==this.ID;
+        return (o.getClass().equals(this.getClass())) && this.getResName().equals(((Territory)o).getResName());
     }
 }

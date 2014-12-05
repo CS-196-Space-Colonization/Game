@@ -20,8 +20,6 @@ import com.jme3.scene.Spatial;
  * Created by wesley on 11/28/14.
  */
 public class VisualEntity extends Territory{
-    protected int ID;
-    protected static int ID_COUNT=0;
     protected float RADIUS;
     protected VisualType type;
     protected DrawableObject3d drawableObject;
@@ -33,16 +31,12 @@ public class VisualEntity extends Territory{
         initialize(name, node, model, pos);
         this.type=type;
         this.RADIUS=type.getRADIUS();
-        this.ID_COUNT++;
-        this.ID=ID_COUNT;
     }
     protected VisualEntity(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner, Node node, AssetManager contentMan, ColorRGBA color, VisualType type){
         super(pos.getX(),pos.getZ(),superTerr,terr,res,name,owner);
         className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
         this.RADIUS=type.getRADIUS();
         initialize(name, node, loadModel(contentMan,RADIUS,color), pos);
-        this.ID_COUNT++;
-        this.ID=ID_COUNT;
     }
     protected void initialize(String name, Node node, Spatial model, Vector3f position)
     {
@@ -92,11 +86,6 @@ public class VisualEntity extends Territory{
 
     public double getRadius() {
         return RADIUS;
-    }
-
-    @Override
-    public int getID() {
-        return this.ID;
     }
 
     public String getDisplayInfo(){

@@ -155,4 +155,5 @@ public class Res implements Serializable {
         }
         return str;
     }
+    public String toString(){ return pathName; }
 }
