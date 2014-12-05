@@ -9,7 +9,7 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.debug.WireBox;
-import com.thecolony.tractus.drawableobjects.GameGraphics;
+import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**

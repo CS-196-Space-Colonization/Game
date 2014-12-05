@@ -2,7 +2,7 @@ package com.thecolony.tractus.player.ai.battle;
 
 import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
-import com.thecolony.tractus.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
 public abstract class BattleObject implements Savable
