@@ -95,7 +95,12 @@ public abstract class BattleObject
         for(int i = 0; i < 19; i++)
         {
             if(stats[i] == 0)
+            {
+                if(i == 4 || i == 5)
+                    fullStats[i] = 5;
+                else
                 fullStats[i] = 10;
+            }
             else
                 fullStats[i] = stats[i];
         }
