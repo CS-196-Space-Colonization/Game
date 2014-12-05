@@ -5,8 +5,6 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 
 /**
  * A class that holds all the common objects used for graphics.
@@ -23,11 +21,6 @@ public abstract class GameGraphics
     
     public static void loadGraphics(AssetManager contentMan)
     {
-        ClassLoader cl=ClassLoader.getSystemClassLoader();
-        URL[] urls = ((URLClassLoader)cl).getURLs();
-        for(URL url: urls){
-            System.out.println(url.getFile());
-        }
         Material mat = new Material(contentMan, "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Ambient", ColorRGBA.Red);

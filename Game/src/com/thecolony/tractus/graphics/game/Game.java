@@ -107,7 +107,7 @@ public class Game extends SimpleApplication
         GameGraphics.loadGraphics(assetManager);
         
         adjustCameraSettings();
-        
+        //TODO:Switch to using GameLoader instead of this mess.
         loadPlanets();
         loadSun();
         loadShips();

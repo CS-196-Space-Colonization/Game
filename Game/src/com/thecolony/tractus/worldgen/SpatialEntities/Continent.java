@@ -1,5 +1,6 @@
 package com.thecolony.tractus.worldgen.SpatialEntities;
 
+import com.jme3.math.Vector3f;
 import com.thecolony.tractus.resources.Res;
 
 /**
@@ -9,7 +10,7 @@ public class Continent extends Territory {
     protected double size; //Placeholder for area of the continent
     protected int population;
     public Continent(Planet planet, Res res, int population, double size, String name, String owner){
-        super(-1.0f,-1.0f,planet,null,res,name,owner);
+        super(new Vector3f(-1,-1,-1),planet,null,res,name,owner);
         //This Continents don't have a spatial position, nor do they have subterritories
         this.population=population;
         this.size=size;

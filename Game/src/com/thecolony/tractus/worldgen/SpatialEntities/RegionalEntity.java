@@ -11,7 +11,7 @@ import com.thecolony.tractus.resources.Res;
 public class RegionalEntity extends Territory{
     protected BoundingBox box;
     public RegionalEntity(Vector3f centre, float xExt, float yExt, float zExt, Territory superTerr, Territory[] terr, Res res, String name, String owner){
-        super(centre.getX(),centre.getZ(),superTerr,terr,res,name,owner);
+        super(centre,superTerr,terr,res,name,owner);
         box=new BoundingBox(centre, xExt,yExt,zExt);
     }
     public boolean isInside(BattleObject o){

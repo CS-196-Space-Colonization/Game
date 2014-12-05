@@ -27,13 +27,13 @@ public class VisualEntity extends Territory{
     protected BoundingSphere boundingSphere;
     protected String className;
     protected VisualEntity(Vector3f pos, String name, Node node, Spatial model, VisualType type){
-        super(pos.getX(), pos.getZ(), null, null, new Res(), name, "no-one");
+        super(pos, null, null, new Res(), name, "no-one");
         initialize(name, node, model, pos);
         this.type=type;
         this.RADIUS=type.getRADIUS();
     }
     protected VisualEntity(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner, Node node, AssetManager contentMan, ColorRGBA color, VisualType type){
-        super(pos.getX(),pos.getZ(),superTerr,terr,res,name,owner);
+        super(pos,superTerr,terr,res,name,owner);
         className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
         this.RADIUS=type.getRADIUS();
         initialize(name, node, loadModel(contentMan,RADIUS,color), pos);
@@ -52,7 +52,7 @@ public class VisualEntity extends Territory{
             boundingSphere = (BoundingSphere)b;
     }
     // Temporary
-    private Spatial loadModel(AssetManager contentMan, float radius, ColorRGBA color)
+    protected Spatial loadModel(AssetManager contentMan, float radius, ColorRGBA color)
     {
         Sphere s = new Sphere(32, 32, radius);
         Geometry g = new Geometry("Planet", s);
