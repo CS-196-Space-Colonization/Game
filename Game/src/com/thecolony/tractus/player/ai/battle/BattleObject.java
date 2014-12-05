@@ -1,11 +1,12 @@
 package com.thecolony.tractus.player.ai.battle;
 
-import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
-public abstract class BattleObject implements Savable
+@Serializable
+public abstract class BattleObject
 {
     /** 0x00 ---- First Battle Stat */
     public static final int BATTLE_STAT_REG_POWER   		= 0x00;
@@ -60,17 +61,17 @@ public abstract class BattleObject implements Savable
 
     static double HPfactor = 10;
     
-    protected DrawableObject3d model;
+    protected transient DrawableObject3d model;
 
     public BattleObject(double hp)
-    {	
+    {
         name = "object";
         qualities = new double[BATTLE_STAT_REG_WEAPON_STAT + 1]; // BATTLE_STAT_REG_WEAPON_STAT is the largest value
         cost = 10;
         image = "[]";
         crew = 1;
         setEqualStats(10.0);
-        qualities[BATTLE_STAT_HP] = hp;		
+        qualities[BATTLE_STAT_HP] = hp;
     }
     public BattleObject(String name)
     {

@@ -1,19 +1,15 @@
 package com.thecolony.tractus.graphics.drawableobjects;
 
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import java.io.IOException;
 
 /**
  * A class used to represent a game object that needs to be drawn in 3D
  * space.
  * @author Joe Pagliuco
  */
-public class DrawableObject3d implements Savable, java.io.Serializable
+public class DrawableObject3d
 {    
     private String mClassType;
     
@@ -95,15 +91,5 @@ public class DrawableObject3d implements Savable, java.io.Serializable
     public Node getNode()
     {
         return node;
-    }
-
-    public void write(JmeExporter ex) throws IOException
-    {
-        
-    }
-
-    public void read(JmeImporter im) throws IOException
-    {
-        
     }
 }

@@ -2,14 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.thecolony.tractus.player.ai.battle.ships;
 
 import com.jme3.bounding.BoundingBox;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.network.serializing.Serializable;
@@ -19,7 +14,6 @@ import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
-import java.io.IOException;
 
 /**
  *
@@ -28,42 +22,61 @@ import java.io.IOException;
 @Serializable
 public class Ship extends BattleObject
 {
-    public static enum SHIP_TYPE { 
-        Fighter("Fighter"), Frigate("Frigate"), Cruiser("Cruiser"), CapitalShip("Capital Ship");
+    // Variables...
+    // Constructors...
+    // Initialization Methods...
+    // Update Methods...
+    // Getters/Setters...    
     
+    
+    public static enum SHIP_TYPE
+    {
+        Fighter("Fighter"), Frigate("Frigate"), Cruiser("Cruiser"), CapitalShip("Capital Ship");
         String type;
-        SHIP_TYPE(String s) { type = s; }
-        
+
+        SHIP_TYPE(String s)
+        {
+            type = s;
+        }
+
         @Override
-        public String toString() { return type; }
+        public String toString()
+        {
+            return type;
+        }
     };
     private SHIP_TYPE shipType;
     
     private static final float M_ROTATION_SPEED = FastMath.PI / 2.0f;
     
-    private double fuel;    
+    private double fuel;
     
+    private Vector3f position;
     private Vector3f targetMovementPoint;
-    
     private float prevAngle;
     private float prevDistance;
     
-    private Geometry wireBoxGeometry;
+    private transient Geometry wireBoxGeometry;
     
     private String Qual;
     private double level;
     private String type;
+
     
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START CONSTRUCTORS /////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
     /**
      * Should not be used unless other values are going to be set.
      */
     public Ship()
     {
         super();
-                
+
         fuel = 0;
     }
-    
+
     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel)
     {
         super(nameOfShip, stats, cost, display, crew, ammo);
@@ -75,8 +88,8 @@ public class Ship extends BattleObject
         type = shipType.toString();
         setShip(type);
     }
-    
-     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
+
+    public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
     {
         super(nameOfShip, stats, cost, display, crew, ammo);
         this.fuel = fuel;
@@ -87,379 +100,413 @@ public class Ship extends BattleObject
         type = shipType.toString();
     }
     
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END CONSTRUCTORS ///////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     private void initialize(SHIP_TYPE shipType, Node node, Vector3f position)
     {
         if (shipType == SHIP_TYPE.Fighter)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
+            model = new MoveableObject(name, node, GameGraphics.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
             model.getModel().setLocalTranslation(position);
-        }
-        else if (shipType == SHIP_TYPE.Frigate)
-        {            
-            model = new MoveableObject(name, node, GameGraphics.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
-            model.getModel().setLocalTranslation(position);
-        }
-        else if (shipType == SHIP_TYPE.Cruiser)
+        } else if (shipType == SHIP_TYPE.Frigate)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
+            model = new MoveableObject(name, node, GameGraphics.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
             model.getModel().setLocalTranslation(position);
-        }
-        else if (shipType == SHIP_TYPE.CapitalShip)
+        } else if (shipType == SHIP_TYPE.Cruiser)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
+            model = new MoveableObject(name, node, GameGraphics.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
+            model.getModel().setLocalTranslation(position);
+        } else if (shipType == SHIP_TYPE.CapitalShip)
+        {
+            model = new MoveableObject(name, node, GameGraphics.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
             model.getModel().setLocalTranslation(position);
         }
         
+        this.position = model.getPosition();
+
         model.getModel().setUserData("Selected", false);
-        
+
+        createWireBoxGeometry();
+    }
+    
+    private void createWireBoxGeometry()
+    {
         WireBox wireBox = new WireBox();
         wireBox.fromBoundingBox((BoundingBox) model.getModel().getWorldBound());
         wireBoxGeometry = new Geometry("Ship WireBox Geometry", wireBox);
         wireBoxGeometry.setMaterial(GameGraphics.getDefaultWhiteMaterial());
-        wireBoxGeometry.setLocalTranslation(position);
+        wireBoxGeometry.setLocalTranslation(model.getPosition());
         wireBoxGeometry.scale(1.5f);
     }
     
-    public void addFuel(double add)
-    {
-        fuel = fuel + add;
-    }
-    public double getFuel()
-    {
-        return fuel;
-    }
-    public void useFuel(double amount)
-    {
-        fuel = fuel - amount;
-    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public void update(float deltaTime)
     {
-        if (((MoveableObject)model).isRotating())
-        {            
+        if (((MoveableObject) model).isRotating())
+        {
             Vector3f v = targetMovementPoint.subtract(model.getPosition()).normalizeLocal();
-            
-            float angle = (float)Math.acos(v.dot(((MoveableObject)model).getDirection()));         
-            
+
+            float angle = (float) Math.acos(v.dot(((MoveableObject) model).getDirection()));
+
             // If the cross product points up, the ship needs to rotate to the right.
-            Vector3f cross = ((MoveableObject)model).getDirection().cross(v);
+            Vector3f cross = ((MoveableObject) model).getDirection().cross(v);
             if (cross.y > 0)
             {
-                ((MoveableObject)model).rotateDirection(Vector3f.UNIT_Y, deltaTime);
-            }
-            else if (cross.y < 0)                
+                ((MoveableObject) model).rotateDirection(Vector3f.UNIT_Y, deltaTime);
+            } else if (cross.y < 0)
             {
-                ((MoveableObject)model).rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
+                ((MoveableObject) model).rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
             }
-            
+
             if (angle > prevAngle)
-                ((MoveableObject)model).setIsRotating(false);
-            
+            {
+                ((MoveableObject) model).setIsRotating(false);
+            }
+
             prevAngle = angle;
         }
-        
-        if (((MoveableObject)model).isMoving() && !((MoveableObject)model).isRotating())
+
+        if (((MoveableObject) model).isMoving() && !((MoveableObject) model).isRotating())
         {
-            ((MoveableObject)model).moveAlongDirectionalVector(deltaTime);
-            
-            float distance = targetMovementPoint.distance(((MoveableObject)model).getPosition());
-            
+            ((MoveableObject) model).moveAlongDirectionalVector(deltaTime);
+
+            float distance = targetMovementPoint.distance(((MoveableObject) model).getPosition());
+
             if (distance > prevDistance)
-                ((MoveableObject)model).setIsMoving(false);
-            
+            {
+                ((MoveableObject) model).setIsMoving(false);
+            }
+
             prevDistance = distance;
         }
-        
+
         if (isRotating())
+        {
             wireBoxGeometry.setLocalRotation(model.getModel().getLocalRotation());
-        
+        }
+
         if (isMoving() && !isRotating())
         {
-            MoveableObject m = (MoveableObject)model;
+            System.out.println(position);
+            
+            MoveableObject m = (MoveableObject) model;
             wireBoxGeometry.move(m.getDirection().mult(m.getMovementSpeed() * deltaTime));
         }
+        
+        
     }
-    
+
     public void move(Vector3f offset)
     {
         model.getModel().move(offset);
         wireBoxGeometry.move(offset);
     }
-    
+
     public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
     {
         targetMovementPoint = targetPoint;
-        ((MoveableObject)model).setIsMoving(moveTo);
-        ((MoveableObject)model).setIsRotating(true);
+        ((MoveableObject) model).setIsMoving(moveTo);
+        ((MoveableObject) model).setIsRotating(true);
         prevAngle = FastMath.PI;
         prevDistance = Float.POSITIVE_INFINITY;
     }
     
+    
+    public void addFuel(double add)
+    {
+        fuel = fuel + add;
+    }
+
+    public double getFuel()
+    {
+        return fuel;
+    }
+
+    public void useFuel(double amount)
+    {
+        fuel = fuel - amount;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END UPDATE METHODS /////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // START GETTERS/SETTERS //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @return true if the ship is moving or rotating, false otherwise.
      */
     public boolean isTransforming()
     {
-        return ((MoveableObject)model).isMoving() || ((MoveableObject)model).isRotating();
+        return ((MoveableObject) model).isMoving() || ((MoveableObject) model).isRotating();
     }
-    
+
     public boolean isMoving()
     {
-        return ((MoveableObject)model).isMoving();
+        return ((MoveableObject) model).isMoving();
     }
-    
+
     public boolean isRotating()
     {
-        return ((MoveableObject)model).isRotating();
+        return ((MoveableObject) model).isRotating();
     }
+
     
     public boolean isSelected()
     {
         return model.getModel().getUserData("Selected");
     }
-    
+
     public void setIsSelected(boolean selected)
     {
         model.getModel().setUserData("Selected", selected);
     }
+
     
     public Geometry getWireBoxGeometry()
     {
         return wireBoxGeometry;
     }
+
     
     @Override
     public String getDisplayInfo()
     {
         return this.shipType.toString() + ":\n " + super.getDisplayInfo();
     }
-    
+
     
     public void setToFighter()
-	{
-		crew = 1;
-		//Fighter		Can�t exist in space without a mother capital ship. 1 pilot, only 100 per flotilla
-		if(Qual.equals("Heal"))
-		{
-			setCrew(crew);
-			setStatsHeal(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Build"))
-		{
-			setCrew(crew);
-			setStatsBuild(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Attack"))
-		{
-			setCrew(crew);
-			setStatsAttack(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Defence"))
-		{
-			setCrew(crew);
-			setStatsDefend(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Speed"))
-		{
-			setCrew(crew);
-			setStatsSpeed(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Range"))
-		{
-			setCrew(crew);
-			setStatsRange(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Balance"))
-		{
-			setCrew(crew);
-			setStatsBalance(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else 
-			System.out.println("error!!!");
-	}
-	public void setToFrigate()
-	{
-            level = level * 2;
-		crew = 5;
-		//Frigates	Small ships with a crew of around 5 people, only 20 per flotilla
-		if(Qual.equals("Heal"))
-		{
-			setCrew(crew);
-			setStatsHeal(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Build"))
-		{
-			setCrew(crew);
-			setStatsBuild(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Attack"))
-		{
-			setCrew(crew);
-			setStatsAttack(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Defence"))
-		{
-			setCrew(crew);
-			setStatsDefend(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Speed"))
-		{
-			setCrew(crew);
-			setStatsSpeed(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Range"))
-		{
-			setCrew(crew);
-			setStatsRange(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Balance"))
-		{
-			setCrew(crew);
-			setStatsBalance(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else 
-			System.out.println("error!!!");
-	}
-	public void setToCruiser()
-	{
-                level = level * 3;
-		crew = 20;
-		//Cruisers	Bigger ships with a crew of 20 people, only 5 per flotilla
-		if(Qual.equals("Heal"))
-		{
-			setCrew(crew);
-			setStatsHeal(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Build"))
-		{
-			setCrew(crew);
-			setStatsBuild(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Attack"))
-		{
-			setCrew(crew);
-			setStatsAttack(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Defence"))
-		{
-			setCrew(crew);
-			setStatsDefend(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Speed"))
-		{
-			setCrew(crew);
-			setStatsSpeed(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Range"))
-		{
-			setCrew(crew);
-			setStatsRange(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Balance"))
-		{
-			setCrew(crew);
-			setStatsBalance(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else 
-			System.out.println("error!!!");
-	}
-	public void setToCapital()
-	{
-		crew = 100;
-                level = level * 4;
-		//Capital Ships	Massive ships with crews of 100 people, only one per flotilla
-		if(Qual.equals("Heal"))
-		{
-			setCrew(crew);
-			setStatsHeal(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Build"))
-		{
-			setCrew(crew);
-			setStatsBuild(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Attack"))
-		{
-			setCrew(crew);
-			setStatsAttack(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Defence"))
-		{
-			setCrew(crew);
-			setStatsDefend(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Speed"))
-		{
-			setCrew(crew);
-			setStatsSpeed(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Range"))
-		{
-			setCrew(crew);
-			setStatsRange(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else if(Qual.equals("Balance"))
-		{
-			setCrew(crew);
-			setStatsBalance(level);
-			setCost((int)(level * 5 - 1));
-		}
-		else 
-			System.out.println("error!!!");
-	}
-	public void setShip(String type)
-	{
-		if(type.equals("Fighter"))
-			setToFighter();
-		else if(type.equals("Capital Ship"))
-			setToCapital();
-		else if(type.equals("Frigate"))
-			setToFrigate();
-		else if(type.equals("Cruiser"))
-			setToCruiser();
-		else 
-			System.out.println("invalid input!!!!!");
-	}
-        
-    public void write(JmeExporter e) throws IOException {
-//        OutputCapsule capsule = e.getCapsule(this);
-//        capsule.write
-//        capsule.write(x, "x", 0);
-//        capsule.write(y, "y", 0);
-//        capsule.write(z, "z", 0);
+    {
+        crew = 1;
+        //Fighter		Can�t exist in space without a mother capital ship. 1 pilot, only 100 per flotilla
+        if (Qual.equals("Heal"))
+        {
+            setCrew(crew);
+            setStatsHeal(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Build"))
+        {
+            setCrew(crew);
+            setStatsBuild(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Attack"))
+        {
+            setCrew(crew);
+            setStatsAttack(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Defence"))
+        {
+            setCrew(crew);
+            setStatsDefend(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Speed"))
+        {
+            setCrew(crew);
+            setStatsSpeed(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Range"))
+        {
+            setCrew(crew);
+            setStatsRange(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Balance"))
+        {
+            setCrew(crew);
+            setStatsBalance(level);
+            setCost((int) (level * 5 - 1));
+        } else
+        {
+            System.out.println("error!!!");
+        }
     }
 
-    public void read(JmeImporter e) throws IOException {
-//        InputCapsule capsule = e.getCapsule(this);
-//        x = capsule.readFloat("x", 0);
-//        y = capsule.readFloat("y", 0);
-//        z = capsule.readFloat("z", 0);
+    public void setToFrigate()
+    {
+        level = level * 2;
+        crew = 5;
+        //Frigates	Small ships with a crew of around 5 people, only 20 per flotilla
+        if (Qual.equals("Heal"))
+        {
+            setCrew(crew);
+            setStatsHeal(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Build"))
+        {
+            setCrew(crew);
+            setStatsBuild(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Attack"))
+        {
+            setCrew(crew);
+            setStatsAttack(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Defence"))
+        {
+            setCrew(crew);
+            setStatsDefend(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Speed"))
+        {
+            setCrew(crew);
+            setStatsSpeed(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Range"))
+        {
+            setCrew(crew);
+            setStatsRange(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Balance"))
+        {
+            setCrew(crew);
+            setStatsBalance(level);
+            setCost((int) (level * 5 - 1));
+        } else
+        {
+            System.out.println("error!!!");
+        }
+    }
+
+    public void setToCruiser()
+    {
+        level = level * 3;
+        crew = 20;
+        //Cruisers	Bigger ships with a crew of 20 people, only 5 per flotilla
+        if (Qual.equals("Heal"))
+        {
+            setCrew(crew);
+            setStatsHeal(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Build"))
+        {
+            setCrew(crew);
+            setStatsBuild(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Attack"))
+        {
+            setCrew(crew);
+            setStatsAttack(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Defence"))
+        {
+            setCrew(crew);
+            setStatsDefend(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Speed"))
+        {
+            setCrew(crew);
+            setStatsSpeed(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Range"))
+        {
+            setCrew(crew);
+            setStatsRange(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Balance"))
+        {
+            setCrew(crew);
+            setStatsBalance(level);
+            setCost((int) (level * 5 - 1));
+        } else
+        {
+            System.out.println("error!!!");
+        }
+    }
+
+    public void setToCapital()
+    {
+        crew = 100;
+        level = level * 4;
+        //Capital Ships	Massive ships with crews of 100 people, only one per flotilla
+        if (Qual.equals("Heal"))
+        {
+            setCrew(crew);
+            setStatsHeal(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Build"))
+        {
+            setCrew(crew);
+            setStatsBuild(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Attack"))
+        {
+            setCrew(crew);
+            setStatsAttack(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Defence"))
+        {
+            setCrew(crew);
+            setStatsDefend(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Speed"))
+        {
+            setCrew(crew);
+            setStatsSpeed(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Range"))
+        {
+            setCrew(crew);
+            setStatsRange(level);
+            setCost((int) (level * 5 - 1));
+        } else if (Qual.equals("Balance"))
+        {
+            setCrew(crew);
+            setStatsBalance(level);
+            setCost((int) (level * 5 - 1));
+        } else
+        {
+            System.out.println("error!!!");
+        }
+    }
+
+    public void setShip(String type)
+    {
+        if (type.equals("Fighter"))
+        {
+            setToFighter();
+        } else if (type.equals("Capital Ship"))
+        {
+            setToCapital();
+        } else if (type.equals("Frigate"))
+        {
+            setToFrigate();
+        } else if (type.equals("Cruiser"))
+        {
+            setToCruiser();
+        } else
+        {
+            System.out.println("invalid input!!!!!");
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // END GETTERS/SETTERS ////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Called after being passed through a network to reconstruct itself.
+     * @param node The Node this ship is drawn to.
+     */
+    public void reconstruct(Node node)
+    {
+        initialize(shipType, node, position);
     }
 }
