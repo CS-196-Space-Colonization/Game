@@ -15,7 +15,7 @@ public class Globals {
     
     public static void registerClasses()
     {
-        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class);
+        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class, TestSub.class);
     }
     
 }

@@ -1,9 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.thecolony.tractus;
 
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -15,9 +15,14 @@ import javax.swing.UIManager;
 public class MainMenu extends JFrame
 {
     private JPanel window;
+    private JButton singlePlayer, multiplayer, quit;
+    private Rectangle rSinglePlayer, rMultiplayer, rquit;
     
     private int width = 400;
     private int height = 600;
+    private int buttonWidth = 200;
+    private int buttonHeight = 100;
+    
     public MainMenu()
     {
         window = new JPanel();
@@ -35,6 +40,35 @@ public class MainMenu extends JFrame
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        getContentPane().add(window);
+        window.setLayout(null);
+        add(window);
+        addButtons();
+        repaint();
     }
+    
+    private void addButtons()
+    {
+        singlePlayer = new JButton("Single Player");
+        rSinglePlayer = new Rectangle((width / 2) - (buttonWidth / 2), 200, buttonWidth, buttonHeight);
+        singlePlayer.setBounds(rSinglePlayer);
+        window.add(singlePlayer);
+        
+        multiplayer = new JButton("Multiplayer");
+        rMultiplayer = new Rectangle((width / 2) - (buttonWidth / 2), 300, buttonWidth, buttonHeight);
+        multiplayer.setBounds(rMultiplayer);
+        window.add(multiplayer);
+        
+        quit = new JButton("Quit");
+        rquit = new Rectangle((width / 2) - (buttonWidth / 2), 400, buttonWidth, buttonHeight);
+        quit.setBounds(rquit);
+        window.add(quit);
+        
+        quit.addActionListener(new ActionListener()
+        {
+	  public void actionPerformed(ActionEvent e)
+	  {
+	      System.exit(0);
+	  }
+        });
+    } 
 }
