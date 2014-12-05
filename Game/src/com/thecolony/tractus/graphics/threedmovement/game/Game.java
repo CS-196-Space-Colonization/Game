@@ -19,7 +19,6 @@ import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
@@ -32,6 +31,8 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Joe Pagliuco
@@ -62,7 +63,7 @@ public class Game extends SimpleApplication
     private Node mSelectedShipsNode;
     private Node mSelectedFlotillasNode;
     private Vector3f mSelectedNodeCenterPos;
-        
+    
     private Plane mMovementPlane;
     
     private boolean mIsShiftPressed;
@@ -88,6 +89,8 @@ public class Game extends SimpleApplication
     public Game()
     {
         super(new FlyCamAppState());
+        
+        Logger.getLogger("").setLevel(Level.SEVERE);
     }
     
     @Override
@@ -138,7 +141,7 @@ public class Game extends SimpleApplication
     
     private Planet generatePlanet(int index)
     {
-        float radius = (float)(Math.random() * 5);
+        float radius = (float)(1 + (Math.random() * 5));
         int posNeg = (Math.random() < 0.5) ? -1 : 1;
         int orbitRadius = 15 + (25 * (index+1));
         float xPos = posNeg * (int)(Math.random() * orbitRadius);

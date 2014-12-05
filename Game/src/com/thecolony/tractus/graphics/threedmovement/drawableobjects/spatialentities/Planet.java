@@ -7,6 +7,7 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -17,14 +18,15 @@ import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObj
  * A class used to represent a planet.
  * @author Joe Pagliuco
  */
-public class Planet
+@Serializable
+public class Planet implements java.io.Serializable
 {
-    protected DrawableObject3d drawableObject;
+    protected transient DrawableObject3d drawableObject;
     
     private String name;
     private ColorRGBA color;
     
-    private BoundingSphere boundingSphere;
+    private transient BoundingSphere boundingSphere;
     
     public Planet(String name, Node node, Spatial model, Vector3f position)
     {

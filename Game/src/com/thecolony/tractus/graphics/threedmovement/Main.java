@@ -17,8 +17,8 @@ public class Main
         int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
         if (input == JOptionPane.YES_OPTION)
             fullscreen = true;
-        else if (input == JOptionPane.CANCEL_OPTION)
-            System.exit(0);
+        else if (input == JOptionPane.CANCEL_OPTION || input == JOptionPane.CLOSED_OPTION)
+            System.exit(0);            
         
         Game game = new Game();
         
