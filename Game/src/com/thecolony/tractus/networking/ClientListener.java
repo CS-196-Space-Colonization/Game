@@ -34,7 +34,6 @@ public class ClientListener implements MessageListener<Client> {
         {
 	  UpdateClientMessage msg = (UpdateClientMessage) message;
 	  System.out.println("Msg: " + msg.getGreeting());
-	  System.out.println(msg.getOther());
         }
     }
 }
