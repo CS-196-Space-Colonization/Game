@@ -90,8 +90,16 @@ public abstract class BattleObject
     }
     public BattleObject(String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
     {
-            name = nameOfShip;
-        qualities = stats;
+        name = nameOfShip;
+        double[] fullStats = new double[19];
+        for(int i = 0; i < 19; i++)
+        {
+            if(stats[i] == 0)
+                fullStats[i] = 10;
+            else
+                fullStats[i] = stats[i];
+        }
+        qualities = fullStats;
         cost = Cost;
         image = display;
         crew = Crew;

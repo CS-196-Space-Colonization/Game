@@ -58,15 +58,7 @@ public class Ship extends BattleObject
     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel)
     {
         super(nameOfShip, stats, cost, display, crew, ammo);
-        double[] fullStats = new double[19];
-        for(int i = 0; i < 19; i++)
-        {
-            if(stats[i] == 0)
-                fullStats[i] = 10;
-            else
-                fullStats[i] = stats[i];
-        }
-        super.qualities = fullStats;
+        
         
         this.fuel = fuel;
         
