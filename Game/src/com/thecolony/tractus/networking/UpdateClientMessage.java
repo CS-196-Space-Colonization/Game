@@ -15,21 +15,24 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public class UpdateClientMessage extends AbstractMessage
 {    
-     private String greeting = "Hello SpiderMonkey!"; // your message data
+     private String greeting = "I'm updating!!!"; // your message data
      
-     //private Vector3f position;
-     //private ColorRGBA color;
+     private Vector3f position;
+     private ColorRGBA color;
+     private TestClass other;
      
      public UpdateClientMessage() { }                  // empty default constructor
-     public UpdateClientMessage(String s) 
+     public UpdateClientMessage(String s)
      {           // custom constructor
        greeting = s;
      }                  
      
-//     public UpdateClientMessage(Vector3f pos, ColorRGBA col)
-//     {
-//         setInfo(pos, col);
-//     }   
+     public UpdateClientMessage(Vector3f pos, ColorRGBA col)
+     {
+         setInfo(pos, col);
+         other = new TestClass();
+         
+     }   
      public void setGreeting(String s)
      {
          greeting = s;
@@ -39,19 +42,24 @@ public class UpdateClientMessage extends AbstractMessage
          return greeting;
      }
      
-//     public void setInfo(Vector3f pos, ColorRGBA col)
-//     {
-//         position = pos;
-//         color = col;
-//     }
-//     
-//     public Vector3f getPosition()
-//     {
-//         return position;
-//     }
-//     
-//     public ColorRGBA getColor()
-//     {
-//         return color;
-//     }
+     public String getOther()
+     {
+         return other.hold;
+     }
+     
+     public void setInfo(Vector3f pos, ColorRGBA col)
+     {
+         position = pos;
+         color = col;
+     }
+     
+     public Vector3f getPosition()
+     {
+         return position;
+     }
+     
+     public ColorRGBA getColor()
+     {
+         return color;
+     }
 }

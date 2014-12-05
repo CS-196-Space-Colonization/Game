@@ -19,7 +19,6 @@ import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
@@ -32,12 +31,15 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Joe Pagliuco
  */
 public class Game extends SimpleApplication
 {
+    
     public static int M_WIDTH, M_HEIGHT;
     private final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
     private final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
@@ -87,7 +89,9 @@ public class Game extends SimpleApplication
     
     public Game()
     {
+        
         super(new FlyCamAppState());
+        Logger.getLogger("").setLevel(Level.SEVERE);
     }
     
     @Override
