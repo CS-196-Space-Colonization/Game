@@ -68,6 +68,7 @@ public class Ship extends BattleObject
         Qual = "Attack";
         level = 1;
         type = shipType.toString();
+        setShip(type);
     }
     
      public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
@@ -449,7 +450,7 @@ public class Ship extends BattleObject
 	{
 		if(type.equals("Fighter"))
 			setToFighter();
-		else if(type.equals("Capital"))
+		else if(type.equals("Capital Ship"))
 			setToCapital();
 		else if(type.equals("Frigate"))
 			setToFrigate();
