@@ -1,9 +1,11 @@
 package com.thecolony.tractus.player.ai.battle;
 
+import com.jme3.export.Savable;
+import com.jme3.math.Vector3f;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
-public abstract class BattleObject
+public abstract class BattleObject implements Savable
 {
     /** 0x00 ---- First Battle Stat */
     public static final int BATTLE_STAT_REG_POWER   		= 0x00;
@@ -159,6 +161,11 @@ public abstract class BattleObject
         }
         else
             qualities[BATTLE_STAT] = value;
+    }
+    
+    public Vector3f getPosition()
+    {
+        return model.getPosition();
     }
 
     public int getCost()

@@ -5,7 +5,10 @@
 
 package com.thecolony.tractus.player.ai.battle.ships;
 
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
+import java.io.IOException;
 
 /**
  *
@@ -150,4 +153,12 @@ public class ShipFactory extends BattleObject {
 		}
 		return one;
 	}
+
+    public void write(JmeExporter ex) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void read(JmeImporter im) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

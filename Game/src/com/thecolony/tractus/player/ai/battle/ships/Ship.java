@@ -6,21 +6,26 @@
 package com.thecolony.tractus.player.ai.battle.ships;
 
 import com.jme3.bounding.BoundingBox;
+import com.jme3.export.InputCapsule;
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.OutputCapsule;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
-import com.jme3.scene.shape.Line;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.GameGraphics;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.MoveableObject;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
+import java.io.IOException;
 
 /**
  *
  * @author Joe Pagliuco
  */
-
+@Serializable
 public class Ship extends BattleObject
 {
     public static enum SHIP_TYPE { 
@@ -84,8 +89,6 @@ public class Ship extends BattleObject
     
     private void initialize(SHIP_TYPE shipType, Node node, Vector3f position)
     {
-        
-        
         if (shipType == SHIP_TYPE.Fighter)
         {
             model = new MoveableObject(name, node, GameGraphics.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
@@ -190,24 +193,6 @@ public class Ship extends BattleObject
         ((MoveableObject)model).setIsRotating(true);
         prevAngle = FastMath.PI;
         prevDistance = Float.POSITIVE_INFINITY;
-    }
-    
-    public Vector3f getPosition()
-    {
-        return model.getPosition();
-    }
-    
-    /**
-     * @return If the ship is moving or rotating, this method returns a Line
-     * running from the ship's position to it's target point, returns null
-     * otherwise.
-     */
-    public Line getLineToTarget()
-    {
-        if (!isTransforming())
-            return null;
-        else
-            return new Line(model.getPosition(), targetMovementPoint);
     }
     
     /**
@@ -462,4 +447,19 @@ public class Ship extends BattleObject
 		else 
 			System.out.println("invalid input!!!!!");
 	}
+        
+    public void write(JmeExporter e) throws IOException {
+//        OutputCapsule capsule = e.getCapsule(this);
+//        capsule.write
+//        capsule.write(x, "x", 0);
+//        capsule.write(y, "y", 0);
+//        capsule.write(z, "z", 0);
+    }
+
+    public void read(JmeImporter e) throws IOException {
+//        InputCapsule capsule = e.getCapsule(this);
+//        x = capsule.readFloat("x", 0);
+//        y = capsule.readFloat("y", 0);
+//        z = capsule.readFloat("z", 0);
+    }
 }
