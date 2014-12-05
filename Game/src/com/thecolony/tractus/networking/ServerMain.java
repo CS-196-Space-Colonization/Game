@@ -13,7 +13,6 @@ import com.jme3.network.Message;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
-import com.jme3.scene.Spatial;
 import com.jme3.system.JmeContext;
 import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         Serializer.registerClasses(UpdateClientMessage.class);
         myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
         
-        update = new UpdateClientMessage(new Vector3f(20.0f, 0.0f, 20.0f).toString(), ColorRGBA.Blue.toString());
+        update = new UpdateClientMessage();//(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
     }
     
     @Override

@@ -10,35 +10,32 @@ import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.system.AppSettings;
-import com.thecolony.tractus.Map;
+import com.jme3.system.JmeContext;
 import com.thecolony.tractus.graphics.threedmovement.game.Game;
-import com.thecolony.tractus.player.Player;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
 
 public class ClientMain extends SimpleApplication implements ClientStateListener {
 
-    public static int M_WIDTH, M_HEIGHT;
-    private Player mPlayer;
     private Client myClient;
-    private Map mMap;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
 
+        ClientMain app = new ClientMain();
+        app.start(JmeContext.Type.Headless);
+        
         boolean fullscreen = false;
         int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
         if (input == JOptionPane.YES_OPTION)
             fullscreen = true;
         else if (input == JOptionPane.CANCEL_OPTION)
             System.exit(0);
-            
         Game game = new Game();
         
         game.setShowSettings(false);
@@ -79,26 +76,11 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         } catch (IOException ex) {
 	  System.out.println("Failed to connect to server");
         }
-
-        M_WIDTH = settings.getWidth();
-        M_HEIGHT = settings.getHeight();
-
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_HIDE_STATS);
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_MEMORY);
-        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_CAMERA_POS);
-        setDisplayFps(true);
-        setDisplayStatView(false);
-
         System.out.println("pre-registered classes");
         Serializer.registerClasses(UpdateClientMessage.class);
         System.out.println("registered classes");
         myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
         myClient.addClientStateListener(this);
-
-        //Message m = new GreetingMessage("Hi server, do you hear me?");
-        //myClient.send(m);
-        
-        mPlayer = new Player(mMap, myClient.getId());
     }
     public void destroy() {
         try {
