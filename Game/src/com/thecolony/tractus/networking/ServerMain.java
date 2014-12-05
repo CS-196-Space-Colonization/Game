@@ -27,10 +27,10 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
     
     Message update;
     
-    public static void main(String[] args) {
+    public ServerMain ()
+    {
         Logger.getLogger("").setLevel(Level.SEVERE);
-        ServerMain app = new ServerMain();
-        app.start(JmeContext.Type.Headless);
+        start(JmeContext.Type.Headless);
     }
 
     @Override
@@ -45,16 +45,20 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
         
         update = new UpdateClientMessage(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
+        new ClientMain();
     }
     
     @Override
     public void simpleUpdate(float deltaTime) {
         connections = myServer.getConnections().size();
+        if(connections == 0)
+	  destroy();
         if (connectionsOld != connections) {
             System.out.println("Server connections: " + connections);
             connectionsOld = connections;
 	  myServer.broadcast(update);
         }
+        
     }    
 
     @Override
