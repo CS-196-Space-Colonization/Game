@@ -7,7 +7,6 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
@@ -20,8 +19,7 @@ import com.jme3.scene.Spatial;
 /**
  * Created by wesley on 11/28/14.
  */
-@Serializable
-public class VisualEntity extends Territory implements java.io.Serializable {
+public class VisualEntity extends Territory{
     protected int ID;
     protected static int ID_COUNT=0;
     protected float RADIUS;

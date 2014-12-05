@@ -3,6 +3,7 @@ package resources;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +18,8 @@ import java.util.ArrayList;
  *
  * Created by chthonic7 on 10/11/14.
  */
-public class Res {
+@com.jme3.network.serializing.Serializable
+public class Res implements Serializable {
     //Initial assumption is a text file that has all the resource information
     private String pathName;
     private final String dir="Game/src/com/thecolony/tractus/resources/";

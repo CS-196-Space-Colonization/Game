@@ -7,6 +7,7 @@ import java.io.Serializable;
 /**
  * Created by chthonic7 on 10/15/14.
  */
+@com.jme3.network.serializing.Serializable
 public abstract class Territory implements Serializable {
     protected Vector3f location; //Or any sort of spatial positioning...
     protected String name, owner;
