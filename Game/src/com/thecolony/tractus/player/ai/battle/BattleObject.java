@@ -53,7 +53,7 @@ public abstract class BattleObject
     protected int ammo;
 
     private double x = 100.0;
-    private double y = 1;// no longer going to change sp stat in this way.
+    private double y = 0;// no longer going to change sp stat in this way.
     private double z = 100.0;
 
     static double HPfactor = 10;
@@ -90,8 +90,21 @@ public abstract class BattleObject
     }
     public BattleObject(String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
     {
-            name = nameOfShip;
-        qualities = stats;
+        name = nameOfShip;
+        double[] fullStats = new double[19];
+        for(int i = 0; i < 19; i++)
+        {
+            if(stats[i] == 0)
+            {
+                if(i == 4 || i == 5)
+                    fullStats[i] = 5;
+                else
+                fullStats[i] = 10;
+            }
+            else
+                fullStats[i] = stats[i];
+        }
+        qualities = fullStats;
         cost = Cost;
         image = display;
         crew = Crew;

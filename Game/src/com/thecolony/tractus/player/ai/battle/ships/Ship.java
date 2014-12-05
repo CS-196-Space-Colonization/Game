@@ -45,6 +45,10 @@ public class Ship extends BattleObject
     
     private Geometry wireBoxGeometry;
     
+    private String Qual;
+    private double level;
+    private String type;
+    
     /**
      * Should not be used unless other values are going to be set.
      */
@@ -58,15 +62,29 @@ public class Ship extends BattleObject
     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel)
     {
         super(nameOfShip, stats, cost, display, crew, ammo);
-        
         this.fuel = fuel;
-        
+        this.shipType = shipType;
         initialize(shipType, node, position);
+        Qual = "Attack";
+        level = 1;
+        type = shipType.toString();
+        setShip(type);
+    }
+    
+     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
+    {
+        super(nameOfShip, stats, cost, display, crew, ammo);
+        this.fuel = fuel;
+        this.shipType = shipType;
+        initialize(shipType, node, position);
+        Qual = qual;
+        level = Lev;
+        type = shipType.toString();
     }
     
     private void initialize(SHIP_TYPE shipType, Node node, Vector3f position)
     {
-        this.shipType = shipType;
+        
         
         if (shipType == SHIP_TYPE.Fighter)
         {
@@ -230,4 +248,215 @@ public class Ship extends BattleObject
     {
         return this.shipType.toString() + ":\n " + super.getDisplayInfo();
     }
+    
+    
+    public void setToFighter()
+	{
+		crew = 1;
+		//Fighter		Can�t exist in space without a mother capital ship. 1 pilot, only 100 per flotilla
+		if(Qual.equals("Heal"))
+		{
+			setCrew(crew);
+			setStatsHeal(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Build"))
+		{
+			setCrew(crew);
+			setStatsBuild(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Attack"))
+		{
+			setCrew(crew);
+			setStatsAttack(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Defence"))
+		{
+			setCrew(crew);
+			setStatsDefend(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Speed"))
+		{
+			setCrew(crew);
+			setStatsSpeed(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Range"))
+		{
+			setCrew(crew);
+			setStatsRange(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Balance"))
+		{
+			setCrew(crew);
+			setStatsBalance(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else 
+			System.out.println("error!!!");
+	}
+	public void setToFrigate()
+	{
+		crew = 5;
+		//Frigates	Small ships with a crew of around 5 people, only 20 per flotilla
+		if(Qual.equals("Heal"))
+		{
+			setCrew(crew);
+			setStatsHeal(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Build"))
+		{
+			setCrew(crew);
+			setStatsBuild(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Attack"))
+		{
+			setCrew(crew);
+			setStatsAttack(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Defence"))
+		{
+			setCrew(crew);
+			setStatsDefend(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Speed"))
+		{
+			setCrew(crew);
+			setStatsSpeed(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Range"))
+		{
+			setCrew(crew);
+			setStatsRange(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Balance"))
+		{
+			setCrew(crew);
+			setStatsBalance(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else 
+			System.out.println("error!!!");
+	}
+	public void setToCruiser()
+	{
+		crew = 20;
+		//Cruisers	Bigger ships with a crew of 20 people, only 5 per flotilla
+		if(Qual.equals("Heal"))
+		{
+			setCrew(crew);
+			setStatsHeal(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Build"))
+		{
+			setCrew(crew);
+			setStatsBuild(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Attack"))
+		{
+			setCrew(crew);
+			setStatsAttack(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Defence"))
+		{
+			setCrew(crew);
+			setStatsDefend(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Speed"))
+		{
+			setCrew(crew);
+			setStatsSpeed(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Range"))
+		{
+			setCrew(crew);
+			setStatsRange(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Balance"))
+		{
+			setCrew(crew);
+			setStatsBalance(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else 
+			System.out.println("error!!!");
+	}
+	public void setToCapital()
+	{
+		crew = 100;
+		//Capital Ships	Massive ships with crews of 100 people, only one per flotilla
+		if(Qual.equals("Heal"))
+		{
+			setCrew(crew);
+			setStatsHeal(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Build"))
+		{
+			setCrew(crew);
+			setStatsBuild(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Attack"))
+		{
+			setCrew(crew);
+			setStatsAttack(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Defence"))
+		{
+			setCrew(crew);
+			setStatsDefend(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Speed"))
+		{
+			setCrew(crew);
+			setStatsSpeed(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Range"))
+		{
+			setCrew(crew);
+			setStatsRange(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else if(Qual.equals("Balance"))
+		{
+			setCrew(crew);
+			setStatsBalance(level);
+			setCost((int)(level * 5 - 1));
+		}
+		else 
+			System.out.println("error!!!");
+	}
+	public void setShip(String type)
+	{
+		if(type.equals("Fighter"))
+			setToFighter();
+		else if(type.equals("Capital Ship"))
+			setToCapital();
+		else if(type.equals("Frigate"))
+			setToFrigate();
+		else if(type.equals("Cruiser"))
+			setToCruiser();
+		else 
+			System.out.println("invalid input!!!!!");
+	}
 }

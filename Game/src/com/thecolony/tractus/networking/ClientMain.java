@@ -21,15 +21,12 @@ import javax.swing.JOptionPane;
 public class ClientMain extends SimpleApplication implements ClientStateListener {
 
     private Client myClient;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-// START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     public static void main(String[] args) {
-
+        //network stuff
         ClientMain app = new ClientMain();
         app.start(JmeContext.Type.Headless);
-        
+        //graphics stuff
         boolean fullscreen = false;
         int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
         if (input == JOptionPane.YES_OPTION)
@@ -72,13 +69,12 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         try {
             myClient = Network.connectToServer(Globals.NAME, Globals.VERSION, Globals.DEFAULT_SERVER, Globals.DEFAULT_PORT);
             myClient.start();
-	  System.out.println("client started");
         } catch (IOException ex) {
 	  System.out.println("Failed to connect to server");
         }
-        System.out.println("pre-registered classes");
-        Serializer.registerClasses(UpdateClientMessage.class);
-        System.out.println("registered classes");
+
+        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class);
+
         myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
         myClient.addClientStateListener(this);
     }

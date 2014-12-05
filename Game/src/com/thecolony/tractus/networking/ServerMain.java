@@ -14,7 +14,6 @@ import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.system.JmeContext;
-import com.thecolony.tractus.graphics.threedmovement.drawableobjects.spatialentities.Planet;
 import java.io.IOException;
 
 import java.util.logging.Level;
@@ -28,11 +27,8 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
     
     Message update;
     
-    static Planet[] myPlanets;
-    private static final Logger logger = Logger.getLogger(ServerMain.class.getName());
-    
     public static void main(String[] args) {
-        logger.setLevel(Level.SEVERE);
+        Logger.getLogger("").setLevel(Level.SEVERE);
         ServerMain app = new ServerMain();
         app.start(JmeContext.Type.Headless);
     }
@@ -43,12 +39,12 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
             myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);
             myServer.start();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Could not create network connection.");
+            System.out.println("Could not create network connection.");
         }
-        Serializer.registerClasses(UpdateClientMessage.class);
+        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class);
         myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
         
-        update = new UpdateClientMessage();//(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
+        update = new UpdateClientMessage(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
     }
     
     @Override
