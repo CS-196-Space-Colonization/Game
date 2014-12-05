@@ -33,3 +33,7 @@ Territiry lvls
     starSys
     cluster
     sector
+
+NETWORKING
+    Terr will implement serializable, allow passing all terrs along
+    ResFiles need to be passed and then Res can be recreated. Terr object will have name of appropriate resFile and can reset.

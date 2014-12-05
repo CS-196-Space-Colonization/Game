@@ -2,42 +2,26 @@ package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.math.Vector3f;
 import com.thecolony.tractus.resources.Res;
-import java.io.Serializable;
+import com.jme3.network.serializing.Serializable;
 
 /**
  * Created by chthonic7 on 10/15/14.
  */
-@com.jme3.network.serializing.Serializable
-public abstract class Territory implements Serializable {
+@Serializable
+public abstract class Territory{
     protected Vector3f location; //Or any sort of spatial positioning...
-    protected String name, owner;
-    protected Res res;
+    protected String name, owner, resName;
+    protected transient Res res;
     protected Territory superTerr, subTerr[];
-    protected Territory(float locX, float locZ, Territory superTerr, Territory[] terr, Res res, String name, String owner){
+    protected Territory(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner){
         this.subTerr=terr;
         this.superTerr=superTerr;
-        this.location=new Vector3f(locX,0,locZ);
+        this.location=pos;
         this.res=res;
+        this.resName=res.toString();
         this.name=name;
         this.owner=owner;
     }
-    //These next few getters/setters are for convenience. One can also just get the vector directly.
-    public final float getLocationX() {
-        return location.getX();
-    }
-
-    public final void setLocationX(float locationX) {
-        this.location.setX(locationX);
-    }
-
-    public final float getlocationZ() {
-        return location.getZ();
-    }
-
-    public final void setlocationZ(float locationZ) {
-        this.location.setZ(locationZ);
-    }
-
     public Vector3f getLocation() {
         return location;
     }
@@ -78,7 +62,17 @@ public abstract class Territory implements Serializable {
         this.subTerr = subTerr;
     }
 
-    public final String getResName() {return res.toString();}
+    public final String getResName() {return resName;}
+
+    public final void setResName(String resName) {this.resName=resName;}
+
+    public Res getRes() {
+        return res;
+    }
+
+    public void setRes(Res res) {
+        this.res = res;
+    }
 
     public final double getResource(String resourceName){
         return res.getResource(resourceName);

@@ -21,7 +21,7 @@ public class Runner {
         a.setSubTerr(new Cluster[]{a1});
         Territory[] terrs = new Territory[]{a1a1a1, a1a1a, a1a1, a1a, a1, a};
         for (Territory terr:terrs){
-            System.out.println(terr.toString()+terr.getID());
+            System.out.println(terr.toString());
         }
         System.out.println("iron="+a1a1a1.getResource("iron"));
         System.out.println("Changed resource? "+a1a1a1.setResource("iron", 4.0));
