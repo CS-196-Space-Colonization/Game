@@ -8,7 +8,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.network.Client;
 import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
-import com.jme3.network.serializing.Serializer;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import com.thecolony.tractus.graphics.threedmovement.game.Game;
@@ -73,7 +72,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 	  System.out.println("Failed to connect to server");
         }
 
-        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class);
+        Globals.registerClasses();
 
         myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
         myClient.addClientStateListener(this);

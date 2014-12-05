@@ -19,7 +19,6 @@ public class UpdateClientMessage extends AbstractMessage
      
      private Vector3f position;
      private ColorRGBA color;
-     private TestClass other;
      
      public UpdateClientMessage() { }                  // empty default constructor
      public UpdateClientMessage(String s)
@@ -30,7 +29,6 @@ public class UpdateClientMessage extends AbstractMessage
      public UpdateClientMessage(Vector3f pos, ColorRGBA col)
      {
          setInfo(pos, col);
-         other = new TestClass();
          
      }   
      public void setGreeting(String s)
@@ -40,11 +38,6 @@ public class UpdateClientMessage extends AbstractMessage
      public String getGreeting()
      {
          return greeting;
-     }
-     
-     public String getOther()
-     {
-         return other.hold;
      }
      
      public void setInfo(Vector3f pos, ColorRGBA col)

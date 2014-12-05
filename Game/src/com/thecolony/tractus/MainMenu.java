@@ -15,24 +15,26 @@ import javax.swing.UIManager;
 public class MainMenu extends JFrame
 {
     private JPanel window;
+    
+    private int width = 400;
+    private int height = 600;
     public MainMenu()
     {
         window = new JPanel();
         try
         {
-	  UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+	  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
         catch(Exception e)
         {
 	  System.out.println("Failed to set look and feel");
         }
         setTitle("Tractus - Main Menu");
-        setSize(400, 720);
+        setSize(width, height);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        add(window);
+        getContentPane().add(window);
     }
-    
 }

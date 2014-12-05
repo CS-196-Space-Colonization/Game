@@ -41,7 +41,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener 
         } catch (IOException ex) {
             System.out.println("Could not create network connection.");
         }
-        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class);
+        Globals.registerClasses();
         myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
         
         update = new UpdateClientMessage(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
