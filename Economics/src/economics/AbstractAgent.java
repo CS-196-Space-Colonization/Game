@@ -22,6 +22,10 @@ public abstract class AbstractAgent implements EconomicAgent {
 		return new Inventory(inventory);
 	}
 	
+	protected Inventory getInventory() {
+		return inventory;
+	}
+	
 	public Market getMarket() {
 		return market;
 	}

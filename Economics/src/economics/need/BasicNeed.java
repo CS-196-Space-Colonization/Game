@@ -1,8 +1,6 @@
 package economics.need;
 
 import java.util.List;
-
-import tree.mutable.MutableTreeNode;
 import economics.Inventory;
 import economics.products.*;
 
@@ -44,25 +42,46 @@ public class BasicNeed implements Need {
 		unsupported();
 		return 0;
 	}
+	
+	@Override
+	public Need copy() {
+		return new BasicNeed(need);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof BasicNeed))
+			return false;
+		BasicNeed other = (BasicNeed)o;
+		return other.need.equals(need);
+	}
+	
+	@Override
+	public String toString() {
+		return need.getUnit().getClass().getName() + ": " + need.getQuantity();
+	}
 
 	@Override
-	public int indexOf(MutableTreeNode<Need> child) {
+	public int indexOf(Need child) {
 		unsupported();
 		return 0;
 	}
 
 	@Override
-	public boolean contains(MutableTreeNode<Need> child) {
+	public boolean contains(Need child) {
 		unsupported();
 		return false;
 	}
 
 	@Override
-	public void removeChild(MutableTreeNode<Need> child) {
+	public void removeChild(Need child) {
 		unsupported();
 	}
-	
-	public Need copy() {
-		return new BasicNeed(need);
+
+	@Override
+	public Need getChild(int index) {
+		unsupported();
+		return null;
 	}
+	
 }

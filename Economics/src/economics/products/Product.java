@@ -29,15 +29,7 @@ public abstract class Product implements Unit {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(initialPrice);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result
-				+ ((inputGoods == null) ? 0 : inputGoods.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
+		return type.hashCode();
 	}
 
 	@Override

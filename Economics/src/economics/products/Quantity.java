@@ -40,7 +40,7 @@ public final class Quantity implements Comparable<Quantity> {
 			return false;
 		Quantity RHS = (Quantity)other;
 		
-		return RHS.unit.equals(this.unit) && RHS.quantity.equals(this.quantity);
+		return RHS.unit.equals(this.unit) && RHS.quantity.compareTo(quantity) == 0;
 	}
 
 	@Override

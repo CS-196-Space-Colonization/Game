@@ -8,11 +8,8 @@ import java.util.List;
 import org.junit.Test;
 
 import economics.*;
-import economics.need.BasicNeed;
-import economics.need.Need;
-import economics.need.NeedBranch;
-import economics.products.Product;
-import economics.products.Quantity;
+import economics.need.*;
+import economics.products.*;
 
 public class BasicBuyerTest {
 	private Market testMarket = new Market() {
@@ -20,7 +17,7 @@ public class BasicBuyerTest {
 		public List<Transaction> getOffers(Product needed) {
 			ArrayList<Transaction> transactions = new ArrayList<>();
 			transactions.add(new GoodsTransaction(new Quantity(needed, 100.0), 
-												  new Quantity(ProductsService.get("money"), 100.0)));
+												  new Quantity(new Money(), 100.0)));
 			return transactions;
 		}
 
@@ -34,7 +31,7 @@ public class BasicBuyerTest {
 		
 		@Override
 		public Product getMoney() {
-			return ProductsService.get("money");
+			return new Money();
 		}
 	};
 	
@@ -61,22 +58,24 @@ public class BasicBuyerTest {
 	public void testBuyGoods() {
 		Buyer underTest = givenBuyerWithTestMarket();
 		Inventory inventoryToExchange = new Inventory();
-		inventoryToExchange.addQuantityOfProduct(ProductsService.get("money"), 10000000.0);
+		inventoryToExchange.addQuantityOfProduct(new Money(), 10000000.0);
 		underTest.give(inventoryToExchange);
 		Need needs = makeNeeds();
+		assertTrue("Buyer does not recognize it has money.", underTest.getSpendingMoney() > 0);
 		underTest.setNeeds(needs);
 		underTest.buyGoods();
 		Inventory got = underTest.take();
-		assertTrue("Buyer failed to buy needs!", needs.portionFulfilled(got) > 1);
+		System.out.println(got);
+		assertTrue("Buyer failed to buy needs!", needs.portionFulfilled(got) >= 1);
 	}
 
 	private Need makeNeeds() {
 		Need rootNeed = new NeedBranch();
 		Need metalNeed = new NeedBranch();
 		rootNeed.add(metalNeed);
-		metalNeed.add(new BasicNeed(new Quantity(ProductsService.get("iron"), 1.0)));
-		metalNeed.add(new BasicNeed(new Quantity(ProductsService.get("steel"), 10.0)));
-		rootNeed.add(new BasicNeed(new Quantity(ProductsService.get("labor"), 100.0)));
+		metalNeed.add(new BasicNeed(new Quantity(new Iron(), 1.0)));
+		metalNeed.add(new BasicNeed(new Quantity(new Steel(), 10.0)));
+		rootNeed.add(new BasicNeed(new Quantity(new Labor(), 100.0)));
 		return rootNeed;
 	}
 

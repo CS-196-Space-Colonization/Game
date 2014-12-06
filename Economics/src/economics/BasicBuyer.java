@@ -12,12 +12,11 @@ import economics.products.Quantity;
 public class BasicBuyer extends AbstractAgent implements Buyer {
 	private Product money;
 	private Need needs;
-	private Inventory inventory;
 	
 	public BasicBuyer(Market market) {
 		super(market);
+		money = market.getMoney();
 		setNeeds(new NeedBranch());
-		inventory = new Inventory();
 	}
 	
 	@Override
@@ -48,8 +47,9 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 		}
 	}
 	
-	private double getSpendingMoney() {
-		return inventory.getAmountOf(money);
+	@Override
+	public double getSpendingMoney() {
+		return getInventory().getAmountOf(money);
 	}
 
 	private void buyGood(Quantity needed) {
@@ -68,17 +68,17 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 	}
 
 	private boolean shouldKeepBuying(Quantity needed) {
-		return inventory.getAmountOf((Product)needed.getUnit()) < needed.getQuantity();
+		return getInventory().getAmountOf((Product)needed.getUnit()) < needed.getQuantity();
 	}
 
 	private void executeTransaction(Quantity needed, Transaction bestOffer) {
 		Product productNeeded = (Product)needed.getUnit();
 		double amtNeeded = needed.getQuantity();
-		Quantity bought = inventory.getQuantityOf(productNeeded);
+		Quantity bought = getInventory().getQuantityOf(productNeeded);
 		double amountActuallyBought = calculateBought(bestOffer, amtNeeded - bought.getQuantity());
 		bestOffer.execute(amountActuallyBought);
-		inventory.addQuantityOfProduct(productNeeded, amountActuallyBought);
-		inventory.removeQuantityOfProduct(money, amountActuallyBought*bestOffer.getMarginalPrice());
+		getInventory().addQuantityOfProduct(productNeeded, amountActuallyBought);
+		getInventory().removeQuantityOfProduct(money, amountActuallyBought*bestOffer.getMarginalPrice());
 	}
 
 	private double calculateBought(Transaction bestOffer, double amtNeeded) {

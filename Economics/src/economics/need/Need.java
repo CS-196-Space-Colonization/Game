@@ -1,9 +1,6 @@
 package economics.need;
 
 import java.util.List;
-
-import tree.mutable.MutableTreeNode;
-
 import economics.Inventory;
 
 public interface Need {
@@ -12,8 +9,9 @@ public interface Need {
 	void add(Need child);
 	List<Need> getChildren();
 	int getChildCount();
-	int indexOf(MutableTreeNode<Need> child);
-	boolean contains(MutableTreeNode<Need> child);
-	void removeChild(MutableTreeNode<Need> child);
+	int indexOf(Need child);
+	boolean contains(Need child);
+	void removeChild(Need child);
+	Need getChild(int index);
 	Need copy();
 }

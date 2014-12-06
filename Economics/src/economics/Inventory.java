@@ -107,6 +107,18 @@ public class Inventory {
 	}
 	
 	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		for (Product p : getProducts()) {
+			result.append(p.getClass().getName());
+			result.append(": ");
+			result.append(getAmountOf(p));
+			result.append('\n');
+		}
+		return result.toString();
+	}
+	
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof Inventory))
 			return false;

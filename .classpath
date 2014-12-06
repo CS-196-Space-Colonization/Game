@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="Economics/src"/>
 	<classpathentry kind="src" path="Tree"/>
-	<classpathentry kind="lib" path="Economics/guava-18.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="lib" path="Economics/guava-18.0.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="Economics/bin"/>
 </classpath>
