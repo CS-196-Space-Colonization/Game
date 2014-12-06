@@ -25,7 +25,6 @@ public class VisualEntity extends Territory{
     protected DrawableObject3d drawableObject;
     protected ColorRGBA color;
     protected BoundingSphere boundingSphere;
-    protected String className;
     protected VisualEntity(Vector3f pos, String name, Node node, Spatial model, VisualType type){
         super(pos, null, null, new Res(), name, "no-one");
         initialize(name, node, model, pos);
@@ -34,7 +33,6 @@ public class VisualEntity extends Territory{
     }
     protected VisualEntity(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner, Node node, AssetManager contentMan, ColorRGBA color, VisualType type){
         super(pos,superTerr,terr,res,name,owner);
-        className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
         this.RADIUS=type.getRADIUS();
         initialize(name, node, loadModel(contentMan,RADIUS,color), pos);
     }
@@ -86,9 +84,5 @@ public class VisualEntity extends Territory{
 
     public double getRadius() {
         return RADIUS;
-    }
-
-    public String getDisplayInfo(){
-        return this.toString();
     }
 }

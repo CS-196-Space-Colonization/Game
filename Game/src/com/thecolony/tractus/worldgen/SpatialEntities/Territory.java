@@ -4,6 +4,8 @@ import com.jme3.math.Vector3f;
 import com.thecolony.tractus.resources.Res;
 import com.jme3.network.serializing.Serializable;
 
+import java.util.ArrayList;
+
 /**
  * Created by chthonic7 on 10/15/14.
  */
@@ -13,6 +15,7 @@ public abstract class Territory{
     protected String name, owner, resName;
     protected transient Res res;
     protected Territory superTerr, subTerr[];
+    protected String className;
     protected Territory(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner){
         this.subTerr=terr;
         this.superTerr=superTerr;
@@ -21,6 +24,7 @@ public abstract class Territory{
         this.resName=res.toString();
         this.name=name;
         this.owner=owner;
+        className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
     }
     public Vector3f getLocation() {
         return location;
@@ -103,5 +107,13 @@ public abstract class Territory{
 
     public final boolean equals(Object o){
         return (o.getClass().equals(this.getClass())) && this.getResName().equals(((Territory)o).getResName());
+    }
+    public final String[] getDisplayInfo(){
+        ArrayList<String> infos=new ArrayList<String>();
+        if (superTerr==null){
+            for(String str:superTerr.getDisplayInfo()) infos.add(str);
+        }
+        infos.add(this.className);
+        return infos.toArray(new String[0]);
     }
 }

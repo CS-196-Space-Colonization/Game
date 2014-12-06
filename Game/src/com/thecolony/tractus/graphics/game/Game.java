@@ -5,7 +5,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
@@ -124,27 +126,34 @@ public class Game extends SimpleApplication
 
         adjustCameraSettings();
 
-        loadPlanets();
-        loadSun();
-        loadShips();
-
-        loadAmbientLight();
-
-        loadSkybox();
-
-        loadMovementPlane();
-
-        initializeListeners();
-
-        loadPictures();
-
-        loadText();
-
-        addNodes();
-
-        loadCursors();
+        GameLoader loader=new GameLoader(assetManager,inputManager,guiNode,rootNode,guiFont,M_WIDTH,M_HEIGHT);
+        unpack(loader.loadGame());
     }
-
+    public void unpack(Object[] arr){
+        rootNode=(arr[0] instanceof Node)?(Node)arr[0]:null;
+        guiNode=(arr[1] instanceof Node)?(Node)arr[1]:null;
+        guiFont=(arr[2] instanceof BitmapFont)?(BitmapFont)arr[2]:null;
+        inputManager=(arr[3] instanceof InputManager)?(InputManager)arr[3]:null;
+        planetsNode=(arr[4] instanceof Node)?(Node)arr[4]:null;
+        mPlanets=(arr[5] instanceof Planet[])?(Planet[])arr[5]:null;
+        starsNode=(arr[6] instanceof Node)?(Node)arr[6]:null;
+        mSuns=(arr[7] instanceof Star[])?(Star[])arr[7]:null;
+        mSelectedShipsNode=(arr[8] instanceof Node)?(Node)arr[8]:null;
+        loneShipsNode=(arr[9] instanceof Node)?(Node)arr[9]:null;
+        loneShips=(arr[10] instanceof ArrayList)?(ArrayList<Ship>)arr[10]:null;
+        mSelectedFlotillasNode=(arr[11] instanceof Node)?(Node)arr[11]:null;
+        flotillasNode=(arr[12] instanceof Node)?(Node)arr[12]:null;
+        flotillas=(arr[13] instanceof ArrayList)?(ArrayList<Flotilla>)arr[13]:null;
+        flotillaBattles=(arr[14] instanceof ArrayList)?(ArrayList<FlotillaBattler>)arr[14]:null;
+        mSelectedNodeCenterPos=(arr[15] instanceof Vector3f)?(Vector3f)arr[15]:null;
+        mMovementPlane=(arr[16] instanceof Plane)?(Plane)arr[16]:null;
+        selectionMode=(arr[17] instanceof Game.Selection_Mode)?(Game.Selection_Mode)arr[17]:null;
+        mCursorSmiley=(arr[18] instanceof JmeCursor)?(JmeCursor)arr[18]:null;
+        mPictureBoxSelect=(arr[19] instanceof Picture)?(Picture)arr[19]:null;
+        mOverlay=(arr[20] instanceof Picture)?(Picture)arr[20]:null;
+        mInfoHubText=(arr[21] instanceof ScrollText)?(ScrollText)arr[21]:null;
+        mSelectionModeText=(arr[22] instanceof BitmapText)?(BitmapText)arr[22]:null;
+    }
     private void adjustCameraSettings()
     {
         cam.setLocation(new Vector3f(75.0f, 75.0f, -75.0f));
@@ -154,123 +163,6 @@ public class Game extends SimpleApplication
         flyCam.setDragToRotate(true);
         flyCam.setMoveSpeed(50.0f);
     }
-
-    private Planet generatePlanet(int index)
-    {
-        float radius = (float) (1 + (Math.random() * 5));
-        int posNeg = (Math.random() < 0.5) ? -1 : 1;
-        int orbitRadius = 15 + (25 * (index + 1));
-        float xPos = posNeg * (int) (Math.random() * orbitRadius);
-        posNeg = (Math.random() < 0.5) ? -1 : 1;
-        float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
-
-        return new Planet("Planet " + Integer.toString(index), planetsNode, new Vector3f(xPos, 0.0f, zPos), assetManager, radius, ColorRGBA.randomColor());
-    }
-
-    private void loadSkybox()
-    {
-        Texture skybox_tex = assetManager.loadTexture("Textures/space_skybox.png");
-        rootNode.attachChild(SkyFactory.createSky(assetManager, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex));
-    }
-
-    private void loadAmbientLight()
-    {
-        AmbientLight ambientLight = new AmbientLight();
-        ambientLight.setColor(ColorRGBA.White.mult(0.7f));
-        rootNode.addLight(ambientLight);
-    }
-
-    private void loadPlanets()
-    {
-        planetsNode = new Node("Planets Node");
-        mPlanets = new Planet[10];
-
-        for (int i = 0; i < mPlanets.length; i++)
-        {
-	  mPlanets[i] = generatePlanet(i);
-        }
-        rootNode.attachChild(planetsNode);
-    }
-
-    private void loadSun()
-    {
-        starsNode = new Node("Stars Node");
-
-        mSuns = new Star[1];
-        mSuns[0] = new Star("StarX", starsNode, Vector3f.ZERO, assetManager, 20.0f);
-        rootNode.addLight(mSuns[0].getPointLight());
-
-        rootNode.attachChild(starsNode);
-    }
-
-    private void loadMovementPlane()
-    {
-        mMovementPlane = new Plane(Vector3f.UNIT_Y, 0.0f);
-    }
-
-    private void loadShips()
-    {
-        mSelectedShipsNode = new Node("Selected Ships");
-        mSelectedFlotillasNode = new Node("Selected Flotillas");
-        selectionMode = Selection_Mode.Ship_Selection;
-        rootNode.attachChild(mSelectedShipsNode);
-        mSelectedNodeCenterPos = new Vector3f();
-
-        loneShipsNode = new Node("Lone Ships");
-
-        double[] stats = new double[19];
-        stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
-
-        loneShips = new ArrayList<Ship>();
-
-        for (int i = 0; i < 5; i++)
-        {
-	  loneShips.add(new Ship(new Player(3), Ship.SHIP_TYPE.Fighter, "Fighter " + i, loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + i * 3)),
-		stats, 0, "Fighter " + i, 0, 0, 0.0));
-	  loneShips.get(i).getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(loneShips.get(i).getPlayer().getColor()));
-        }
-
-        rootNode.attachChild(loneShipsNode);
-
-        ///////////////////////////////
-        // Not Related /\ \/ //////////
-        ///////////////////////////////
-
-        flotillasNode = new Node("Flotillas Node");
-
-        Ship[] ships1 = new Ship[25];
-        for (int i = 0; i < ships1.length; i++)
-        {
-	  ships1[i] = new Ship(new Player(0), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-	  ships1[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships1[i].getPlayer().getColor()));
-        }
-
-        Ship[] ships2 = new Ship[9];
-        for (int i = 0; i < ships2.length; i++)
-        {
-	  ships2[i] = new Ship(new Player(1), Ship.SHIP_TYPE.CapitalShip, "Capital Ship " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-	  ships2[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships2[i].getPlayer().getColor()));
-        }
-
-        Ship[] ships3 = new Ship[25];
-        for (int i = 0; i < ships3.length; i++)
-        {
-	  ships3[i] = new Ship(new Player(2), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-	  ships3[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships3[i].getPlayer().getColor()));
-        }
-
-        flotillas = new ArrayList<Flotilla>();
-        flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 100.0f), "Flotilla 1"));
-        flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 2"));
-        flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
-
-        rootNode.attachChild(flotillasNode);
-
-        flotillaBattles = new ArrayList<FlotillaBattler>();
-//        attackers = new ArrayList<ArrayList<Flotilla>>();
-//        defenders = new ArrayList<Flotilla>();
-    }
-
     private void initializeListeners()
     {
         mIsShiftPressed = false;
@@ -302,68 +194,15 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Scroll Down", new KeyTrigger(KeyInput.KEY_DOWN));
 
         inputManager.addListener(mKeyboardActionListener, new String[]
-        {
-	  "Shift", "Move", "Rotate", "Box Select",
-	  "Attack", "Switch Selection Mode", "Pause",
-	  "Exit", "Scroll Up", "Scroll Down", "More Ships"
-        });
+                {
+                        "Shift", "Move", "Rotate", "Box Select",
+                        "Attack", "Switch Selection Mode", "Pause",
+                        "Exit", "Scroll Up", "Scroll Down", "More Ships"
+                });
         inputManager.addListener(mKeyboardAnalogListener, new String[]
-        {
-	  "Compress", "Decompress"
-        });
-    }
-
-    private void addNodes()
-    {
-        rootNode.attachChild(mSelectedShipsNode);
-        rootNode.attachChild(planetsNode);
-        rootNode.attachChild(starsNode);
-        rootNode.attachChild(loneShipsNode);
-        rootNode.attachChild(flotillasNode);
-    }
-
-    private void loadCursors()
-    {
-        mCursorSmiley = (JmeCursor) assetManager.loadAsset("Textures/cursor_smiley.cur");
-        mCursorSmiley.setxHotSpot(mCursorSmiley.getWidth() >> 1);
-        mCursorSmiley.setyHotSpot(mCursorSmiley.getHeight() >> 1);
-        inputManager.setMouseCursor(null);
-    }
-
-    private void loadPictures()
-    {
-        mPictureBoxSelect = new Picture("Box Select Picture");
-        mPictureBoxSelect.setImage(assetManager, "Textures/box_select.png", true);
-        mPictureBoxSelect.setUserData("Initial Position", Vector2f.ZERO);
-
-        mOverlay = new Picture("Overlay Picture");
-        mOverlay.setImage(assetManager, "Textures/in_game_background.png", true);
-        mOverlay.setPosition(0.0f, 0.0f);
-        mOverlay.setWidth(M_WIDTH);
-        mOverlay.setHeight(M_HEIGHT);
-        guiNode.attachChild(mOverlay);
-    }
-
-    private void loadText()
-    {
-        float fontSize = (guiFont.getCharSet().getRenderedSize() * ((float) M_WIDTH / (float) M_HEIGHT)) / (1920.0f / 1080.0f);
-
-//        mInfoHubText = new BitmapText(guiFont);
-//        mInfoHubText.setSize(fontSize);
-//        mInfoHubText.setColor(ColorRGBA.White);
-//        mInfoHubText.setText("");
-//        mInfoHubText.setLocalTranslation(M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH, M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, 0.0f);
-//        guiNode.attachChild(mInfoHubText);
-
-        mInfoHubText = new ScrollText(M_HEIGHT, fontSize, M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH,
-	      M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, guiFont, guiNode);
-
-        mSelectionModeText = new BitmapText(guiFont);
-        mSelectionModeText.setSize(fontSize);
-        mSelectionModeText.setColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 0.75f));
-        mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
-        mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
-        guiNode.attachChild(mSelectionModeText);
+                {
+                        "Compress", "Decompress"
+                });
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
