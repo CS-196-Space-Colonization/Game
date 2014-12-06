@@ -58,4 +58,13 @@ public abstract class GameGraphics
     {
         return M_DEFAULT_WHITE_MATERIAL.clone();
     }
+    
+    
+    public static Material generateMaterial(ColorRGBA color)
+    {
+        Material m = M_DEFAULT_WHITE_MATERIAL.clone();
+        m.setColor("Color", color);
+        
+        return m.clone();
+    }
 }
