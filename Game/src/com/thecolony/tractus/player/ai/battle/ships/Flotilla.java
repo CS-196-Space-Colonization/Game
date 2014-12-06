@@ -312,24 +312,24 @@ public class Flotilla
     }
     
     //these static doubles are for the flotilla battle method
-    public static double BattleTime = 0;
-    public static double rt1 = 0;
-    public static double rt2 = 0;
-    public static double st1 = 0;
-    public static double st2 = 0;
-    public static void flotillaBattle(Flotilla a, Flotilla b)
+    public double BattleTime = 0;
+    public double rt1 = 0;
+    public double rt2 = 0;
+    public double st1 = 0;
+    public double st2 = 0;
+    public void flotillaBattle(Flotilla b)
     {
                 BattleTime = BattleTime + .05;  //make this .05 smaller or larger to change how often the ships attack
                                                 //for example, if a flotilla's attack speed is 5, it will attack 
                                                 //every time this method is called 100 times if this number is .05
                 
-                    a.setFlotillaStats();
+                    this.setFlotillaStats();
                     b.setFlotillaStats();
                     rt1 = rt1 + BattleTime;
                     rt2 = rt2 + BattleTime;
                     st1 = st1 + BattleTime;
                     st2 = st2 + BattleTime;
-			if(a.getBattleStat(Ship.BATTLE_STAT_HP) == 0 || b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
+			if(this.getBattleStat(Ship.BATTLE_STAT_HP) == 0 || b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
                         {
                                 BattleTime = 0;
                                 rt1 = 0;
@@ -337,25 +337,25 @@ public class Flotilla
                                 st1 = 0;
                                 st2 = 0;
                         }
-                        if(rt1 >= a.getBattleStat(4))
+                        if(rt1 >= this.getBattleStat(4))
                         {
-                            rt1 = rt1 - a.getBattleStat(4);
-                            calcRegDamage(a, b);
+                            rt1 = rt1 - this.getBattleStat(4);
+                            calcRegDamage(this, b);
                         }
                         if(rt2 >= b.getBattleStat(4))
                         {
                             rt2 = rt2 - b.getBattleStat(4);
-                            calcRegDamage(b, a);
+                            calcRegDamage(b, this);
                         }
-                        if(st1 >= a.getBattleStat(5))
+                        if(st1 >= this.getBattleStat(5))
                         {
-                            st1 = st1 - a.getBattleStat(5);
-                            calcSpDamage(a, b);
+                            st1 = st1 - this.getBattleStat(5);
+                            calcSpDamage(this, b);
                         }
                         if(st2 >= b.getBattleStat(5))
                         {
                             st2 = st2 - b.getBattleStat(5);
-                            calcSpDamage(b, a);
+                            calcSpDamage(b, this);
                         }
         }
     
