@@ -71,11 +71,14 @@ public class Planet implements java.io.Serializable
             boundingSphere = (BoundingSphere)b;
     }
     
-    public String getDisplayInfo()
+    public String[] getDisplayInfo()
     {
-        return "Planet:\n"
-                + " Name: " + name + "\n"
-                + " Other Info...";
+        return new String[]
+        {
+            "Planet:",
+            " Name: " + name,
+            " Other Info..."
+        };
     }
     
     public DrawableObject3d getDrawableObject3d()

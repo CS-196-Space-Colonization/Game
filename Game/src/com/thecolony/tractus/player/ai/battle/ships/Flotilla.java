@@ -283,17 +283,17 @@ public class Flotilla
     }
     
     static double HPfactor = 10;
-    public static void calcSpDamage(Flotilla attack, Flotilla defend, float deltaTime)
+    public static void calcSpDamage(Flotilla attack, Flotilla defend, float factor)
     {
         double damage = ((attack.getBattleStat(BattleObject.BATTLE_STAT_SP_POWER) + attack.getBattleStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT))) /
-                (defend.getBattleStat(BattleObject.BATTLE_STAT_SP_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT)) * HPfactor * deltaTime;
+                (defend.getBattleStat(BattleObject.BATTLE_STAT_SP_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT)) * HPfactor * factor;
         //double damage = ((attack.getSpPower() + attack.getSpWeaponStat())) / (defend.getSpDefence() + defend.getSpArmorStat()) * HPfactor;
         defend.setHP(damage);
     }
-    public static void calcRegDamage(Flotilla attack, Flotilla defend, float deltaTime)
+    public static void calcRegDamage(Flotilla attack, Flotilla defend, float factor)
     {
         double damage = ((attack.getBattleStat(BattleObject.BATTLE_STAT_REG_POWER) + attack.getBattleStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT))) /
-                (defend.getBattleStat(BattleObject.BATTLE_STAT_REG_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT)) * HPfactor * deltaTime;
+                (defend.getBattleStat(BattleObject.BATTLE_STAT_REG_DEFENSE) + defend.getBattleStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT)) * HPfactor * factor;
         //double damage = ((attack.getRegPower() + attack.getRegWeaponStat())) / (defend.getRegDefence() + defend.getRegArmorStat()) * HPfactor;
         defend.setHP(damage);
     }
@@ -591,29 +591,33 @@ public class Flotilla
         return isRotating;
     }
     
-    public String getDisplayInfo()
+    public String[] getDisplayInfo()
     {
-        return "Flotilla:\n" + " Name: " + name + "\n "
-                + "Battle Stats:\n"
-                + "  HP: " + getFlotillaStat(BattleObject.BATTLE_STAT_HP) + "\n"
-                + "  Reg Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_POWER) + "\n"
-                + "  Sp Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_POWER) + "\n"
-                + "  Reg Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_DEFENSE) + "\n"
-                + "  Sp Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_DEFENSE) + "\n"
-                + "  Reg Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ATTACK_COOLDOWN) + "\n"
-                + "  Sp Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ATTACK_COOLDOWN) + "\n"
-                + "  Reg Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ACCURACY) + "\n"
-                + "  Sp Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ACCURACY) + "\n"
-                + "  Reg Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_RANGE) + "\n"
-                + "  Sp Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_RANGE) + "\n"
-                + "  Reg Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT) + "\n"
-                + "  Sp Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT) + "\n"
-                + "  Reg Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT) + "\n"
-                + "  Sp Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT) + "\n"
-                + "  Repair Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_REPAIR_ABILITY) + "\n"
-                + "  Transport Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_TRANSPORT_ABILITY) + "\n"
-                + "  Build Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_BUILD_ABILITY) + "\n"
-                + "  Movement Speed: " + movementSpeed;
+        return new String[]
+        {
+            "Flotilla:",
+            " Name: " + name,
+            " Battle Stats",
+            "  HP: " + (int)getFlotillaStat(BattleObject.BATTLE_STAT_HP),
+            "  Reg Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_POWER),
+            "  Sp Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_POWER),
+            "  Reg Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_DEFENSE),
+            "  Sp Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_DEFENSE),
+            "  Reg Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ATTACK_COOLDOWN),
+            "  Sp Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ATTACK_COOLDOWN),
+            "  Reg Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ACCURACY),
+            "  Sp Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ACCURACY),
+            "  Reg Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_RANGE),
+            "  Sp Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_RANGE),
+            "  Reg Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT),
+            "  Sp Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT),
+            "  Reg Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT),
+            "  Sp Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT),
+            "  Repair Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_REPAIR_ABILITY),
+            "  Transport Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_TRANSPORT_ABILITY),
+            "  Build Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_BUILD_ABILITY),
+            "  Movement Speed: " + movementSpeed
+        };
     }
     
     /**

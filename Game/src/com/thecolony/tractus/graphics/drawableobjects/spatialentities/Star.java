@@ -110,10 +110,13 @@ public class Star
         return name;
     }
     
-    public String getDisplayInfo()
+    public String[] getDisplayInfo()
     {
-        return "Star:\n"
-                + " Name: " + name + "\n"
-                + " Other Info...";
+        return new String[]
+        {
+            "Star:",
+            " Name: " + name,
+            " Other Info..."
+        };
     }
 }

@@ -12,7 +12,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
-import com.thecolony.tractus.graphics.drawableobjects.MoveableObject;
+import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
@@ -88,9 +88,7 @@ public class Ship extends BattleObject
         Qual = "Attack";
         level = 1;
         type = shipType.toString();
-        //setShip(type);
-        if (shipType == SHIP_TYPE.CapitalShip)
-            setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, 15.0f);
+        setShip(type);
     }
 
     public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
@@ -117,19 +115,19 @@ public class Ship extends BattleObject
     {
         if (shipType == SHIP_TYPE.Fighter)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
+            model = new MoveableObject3d(name, node, GameGraphics.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.Frigate)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
+            model = new MoveableObject3d(name, node, GameGraphics.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.Cruiser)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
+            model = new MoveableObject3d(name, node, GameGraphics.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.CapitalShip)
         {
-            model = new MoveableObject(name, node, GameGraphics.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
+            model = new MoveableObject3d(name, node, GameGraphics.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
             model.getModel().setLocalTranslation(position);
         }
         
@@ -161,39 +159,39 @@ public class Ship extends BattleObject
     
     public void update(float deltaTime)
     {
-        if (((MoveableObject) model).isRotating())
+        if (((MoveableObject3d) model).isRotating())
         {
             Vector3f v = targetMovementPoint.subtract(model.getPosition()).normalizeLocal();
 
-            float angle = (float) Math.acos(v.dot(((MoveableObject) model).getDirection()));
+            float angle = (float) Math.acos(v.dot(((MoveableObject3d) model).getDirection()));
 
             // If the cross product points up, the ship needs to rotate to the right.
-            Vector3f cross = ((MoveableObject) model).getDirection().cross(v);
+            Vector3f cross = ((MoveableObject3d) model).getDirection().cross(v);
             if (cross.y > 0)
             {
-                ((MoveableObject) model).rotateDirection(Vector3f.UNIT_Y, deltaTime);
+                ((MoveableObject3d) model).rotateDirection(Vector3f.UNIT_Y, deltaTime);
             } else if (cross.y < 0)
             {
-                ((MoveableObject) model).rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
+                ((MoveableObject3d) model).rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
             }
 
             if (angle > prevAngle)
             {
-                ((MoveableObject) model).setIsRotating(false);
+                ((MoveableObject3d) model).setIsRotating(false);
             }
 
             prevAngle = angle;
         }
 
-        if (((MoveableObject) model).isMoving() && !((MoveableObject) model).isRotating())
+        if (((MoveableObject3d) model).isMoving() && !((MoveableObject3d) model).isRotating())
         {
-            ((MoveableObject) model).moveAlongDirectionalVector(deltaTime);
+            ((MoveableObject3d) model).moveAlongDirectionalVector(deltaTime);
 
-            float distance = targetMovementPoint.distance(((MoveableObject) model).getPosition());
+            float distance = targetMovementPoint.distance(((MoveableObject3d) model).getPosition());
 
             if (distance > prevDistance)
             {
-                ((MoveableObject) model).setIsMoving(false);
+                ((MoveableObject3d) model).setIsMoving(false);
             }
 
             prevDistance = distance;
@@ -206,7 +204,7 @@ public class Ship extends BattleObject
 
         if (isMoving() && !isRotating())
         {            
-            MoveableObject m = (MoveableObject) model;
+            MoveableObject3d m = (MoveableObject3d) model;
             wireBoxGeometry.move(m.getDirection().mult(m.getMovementSpeed() * deltaTime));
         }
         
@@ -222,8 +220,8 @@ public class Ship extends BattleObject
     public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
     {
         targetMovementPoint = targetPoint;
-        ((MoveableObject) model).setIsMoving(moveTo);
-        ((MoveableObject) model).setIsRotating(true);
+        ((MoveableObject3d) model).setIsMoving(moveTo);
+        ((MoveableObject3d) model).setIsRotating(true);
         prevAngle = FastMath.PI;
         prevDistance = Float.POSITIVE_INFINITY;
     }
@@ -258,17 +256,17 @@ public class Ship extends BattleObject
      */
     public boolean isTransforming()
     {
-        return ((MoveableObject) model).isMoving() || ((MoveableObject) model).isRotating();
+        return ((MoveableObject3d) model).isMoving() || ((MoveableObject3d) model).isRotating();
     }
 
     public boolean isMoving()
     {
-        return ((MoveableObject) model).isMoving();
+        return ((MoveableObject3d) model).isMoving();
     }
 
     public boolean isRotating()
     {
-        return ((MoveableObject) model).isRotating();
+        return ((MoveableObject3d) model).isRotating();
     }
 
     
@@ -290,9 +288,13 @@ public class Ship extends BattleObject
 
     
     @Override
-    public String getDisplayInfo()
+    public String[] getDisplayInfo()
     {
-        return this.shipType.toString() + ":\n " + super.getDisplayInfo();
+        String[] s = super.getDisplayInfo();
+        String[] ret = new String[s.length + 1];
+        System.arraycopy(s, 0, ret, 1, s.length);
+        ret[0] = this.shipType.toString() + ":";
+        return ret;
     }
 
     
@@ -497,6 +499,11 @@ public class Ship extends BattleObject
         {
             System.out.println("invalid input!!!!!");
         }
+    }
+    
+    public MoveableObject3d getMoveableObject3d()
+    {
+        return (MoveableObject3d)model;
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

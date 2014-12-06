@@ -24,6 +24,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
+import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.graphics.drawableobjects.spatialentities.Planet;
 import com.thecolony.tractus.graphics.drawableobjects.spatialentities.Star;
@@ -32,6 +33,7 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,44 +42,57 @@ import java.util.logging.Logger;
  */
 public class Game extends SimpleApplication
 {
-
     public static int M_WIDTH, M_HEIGHT;
     private final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
     private final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     private final float M_COMPRESS_SPEED = 1.0f;
 
+    private final float M_ATTACK_DISTANCE = 50.0f;
+    
     public static enum Selection_Mode
     {
 
         Ship_Selection, Flotilla_Selection
     };
     private Selection_Mode selectionMode;
+    
     private Planet[] mPlanets;
     private Star[] mSuns;
+    
     private ArrayList<Ship> loneShips;
     private ArrayList<Flotilla> flotillas;
+    
     private Node planetsNode;
     private Node starsNode;
     private Node loneShipsNode;
     private Node flotillasNode;
     private Node mSelectedShipsNode;
     private Node mSelectedFlotillasNode;
+    
     private Vector3f mSelectedNodeCenterPos;
+    
     private Plane mMovementPlane;
+    
     private boolean mIsShiftPressed;
     private boolean isMoveToggleOn;
     private boolean isRotateToggleOn;
     private boolean isBoxSelectToggleOn;
     private boolean isAttackToggleOn;
+    
     private JmeCursor mCursorSmiley;
+    
     private Picture mPictureBoxSelect;
     private Picture mOverlay;
-    private BitmapText mInfoHubText;
+    
+    private ScrollText mInfoHubText;
     private BitmapText mSelectionModeText;
+    
     private boolean isRunning;
+    
     private ClientMain client;
     
-    private long startTime;
+    private ArrayList<ArrayList<Flotilla>> attackers;
+    private ArrayList<Flotilla> defenders;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -251,13 +266,14 @@ public class Game extends SimpleApplication
         }
 
         flotillas = new ArrayList<Flotilla>();
-        flotillas.add(new Flotilla(ships1, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 1"));
-        flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 50.0f), "Flotilla 2"));
+        flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 100.0f), "Flotilla 1"));
+        flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 2"));
         flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
 
         rootNode.attachChild(flotillasNode);
         
-        startTime = System.currentTimeMillis();
+        attackers = new ArrayList<ArrayList<Flotilla>>();
+        defenders = new ArrayList<Flotilla>();
     }
 
     private void initializeListeners()
@@ -279,7 +295,7 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Move", new KeyTrigger(KeyInput.KEY_M));
         inputManager.addMapping("Rotate", new KeyTrigger(KeyInput.KEY_R));
         inputManager.addMapping("Box Select", new KeyTrigger(KeyInput.KEY_B));
-        inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_A));
+        inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_P));
         inputManager.addMapping("Compress", new KeyTrigger(KeyInput.KEY_C));
         inputManager.addMapping("Decompress", new KeyTrigger(KeyInput.KEY_X));
         inputManager.addMapping("Switch Selection Mode", new KeyTrigger(KeyInput.KEY_TAB));
@@ -332,12 +348,15 @@ public class Game extends SimpleApplication
     {
         float fontSize = (guiFont.getCharSet().getRenderedSize() * ((float) M_WIDTH / (float) M_HEIGHT)) / (1920.0f / 1080.0f);
 
-        mInfoHubText = new BitmapText(guiFont);
-        mInfoHubText.setSize(fontSize);
-        mInfoHubText.setColor(ColorRGBA.White);
-        mInfoHubText.setText("");
-        mInfoHubText.setLocalTranslation(M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH, M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, 0.0f);
-        guiNode.attachChild(mInfoHubText);
+//        mInfoHubText = new BitmapText(guiFont);
+//        mInfoHubText.setSize(fontSize);
+//        mInfoHubText.setColor(ColorRGBA.White);
+//        mInfoHubText.setText("");
+//        mInfoHubText.setLocalTranslation(M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH, M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, 0.0f);
+//        guiNode.attachChild(mInfoHubText);
+        
+        mInfoHubText = new ScrollText(M_HEIGHT, fontSize, M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH, 
+                M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, guiFont, guiNode);        
 
         mSelectionModeText = new BitmapText(guiFont);
         mSelectionModeText.setSize(fontSize);
@@ -481,6 +500,43 @@ public class Game extends SimpleApplication
                         isMoveToggleOn = isRotateToggleOn = false;
                         inputManager.setMouseCursor(null);
                     }
+                    else if (isAttackToggleOn)
+                    {
+                        Ray r = getMouseRay();
+                        for (int i = 0; i < flotillas.size(); i++)
+                        {
+                            Flotilla f = flotillas.get(i);
+                            if (f.isSelected())
+                                break;
+                            
+                            boolean selected = f.getBoundingBox().intersects(r);
+                            if (selected)
+                            {
+                                Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
+                                float change = M_ATTACK_DISTANCE / targetDirection.length();
+                                Vector3f targetPoint = f.getCenterPosition().interpolate(mSelectedNodeCenterPos, change);
+                                
+                                // Add attackers
+                                ArrayList<Flotilla> newAttackers = new ArrayList<Flotilla>();
+                                for (int j = 0; j < flotillas.size(); j++)
+                                {
+                                    Flotilla f2 = flotillas.get(j);
+                                    if (f2.isSelected())
+                                    {
+                                        newAttackers.add(f2);
+                                        f2.setTargetPoint(targetPoint, true);
+                                    }
+                                }
+                                attackers.add(newAttackers);
+                                
+                                // Add defenders
+                                defenders.add(f);
+                            }
+                        }
+                        
+                        isAttackToggleOn = false;
+                        inputManager.setMouseCursor(null);
+                    }
                 }
             }
         }
@@ -524,7 +580,7 @@ public class Game extends SimpleApplication
                     isAttackToggleOn = false;
 
                     flyCam.setEnabled(!flyCam.isEnabled());
-                } else if (name.equals("Attack") && isPressed)
+                } else if (name.equals("Attack")  && mSelectedFlotillasNode.getQuantity() > 0 && isPressed)
                 {
                     isMoveToggleOn = false;
                     isRotateToggleOn = false;
@@ -691,7 +747,8 @@ public class Game extends SimpleApplication
                     somethingSelected = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound().intersects(r);
                     if (somethingSelected)
                     {
-                        mInfoHubText.setText(loneShips.get(i).getDisplayInfo());
+                        mInfoHubText.clearText();
+                        mInfoHubText.addText(loneShips.get(i).getDisplayInfo());
                         break;
                     }
                 }
@@ -705,7 +762,8 @@ public class Game extends SimpleApplication
                             somethingSelected = f.getFlotilla()[j].getDrawableObject3d().getModel().getWorldBound().intersects(r);
                             if (somethingSelected)
                             {
-                                mInfoHubText.setText(f.getFlotilla()[j].getDisplayInfo());
+                                mInfoHubText.clearText();
+                                mInfoHubText.addText(f.getFlotilla()[j].getDisplayInfo());
                                 break;
                             }
                         }
@@ -723,7 +781,8 @@ public class Game extends SimpleApplication
                     somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
                     if (somethingSelected)
                     {
-                        mInfoHubText.setText(flotillas.get(i).getDisplayInfo());
+                        mInfoHubText.clearText();
+                        mInfoHubText.addText(flotillas.get(i).getDisplayInfo());
                         break;
                     }
                 }
@@ -736,7 +795,8 @@ public class Game extends SimpleApplication
                     somethingSelected = p.getBoundingSphere().intersects(r);
                     if (somethingSelected)
                     {
-                        mInfoHubText.setText(p.getDisplayInfo());
+                        mInfoHubText.clearText();
+                        mInfoHubText.addText(p.getDisplayInfo());
                         break;
                     }
                 }
@@ -749,7 +809,8 @@ public class Game extends SimpleApplication
                         somethingSelected = s.getBoundingSphere().intersects(r);
                         if (somethingSelected)
                         {
-                            mInfoHubText.setText(s.getDisplayInfo());
+                            mInfoHubText.clearText();
+                            mInfoHubText.addText(s.getDisplayInfo());
                             break;
                         }
                     }
@@ -757,24 +818,24 @@ public class Game extends SimpleApplication
             }
             if (!somethingSelected)
             {
-                mInfoHubText.setText("");
+                mInfoHubText.clearText();
             }
-            
-            int over = flotillas.get(0).flotillaBattle(flotillas.get(1), tpf);
-            if (over == 0)
+
+            for (int i = 0; i < attackers.size(); i++)
             {
-                System.out.println("Flotilla 1: " + flotillas.get(0).getHP());
-                System.out.println("Flotilla 2: " + flotillas.get(1).getHP());
-            }
-            else if (over == -1)
-            {
-                System.out.println("Flotilla 1 wins!!");
-                System.out.println(System.currentTimeMillis() - startTime);
-            }
-            else if (over == 1)
-            {
-                System.out.println("Flotilla 2 wins!!");
-                System.out.println(System.currentTimeMillis() - startTime);
+                for (int j = 0; j < attackers.get(i).size(); j++)
+                {
+                    Flotilla f = attackers.get(i).get(j);
+                    
+                    if (f.isTransforming())
+                        continue;
+                    else
+                    {
+                        int battleResult = f.flotillaBattle(defenders.get(i), tpf);
+                        if (battleResult != 0)
+                            System.out.println("Battles Over!");
+                    }
+                }
             }
         }
     }
