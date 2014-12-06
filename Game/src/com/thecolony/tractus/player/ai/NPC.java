@@ -25,13 +25,13 @@ public abstract class NPC extends Player
 
 	public NPC(Map map, int playerNumber)
 	{
-		super(map, playerNumber);
+		super(playerNumber);
 		commands = new PriorityQueue<Command>(0,comparator);
 		setType(TYPE_NONE);
 		setInGame(true);
 	}
 
-	public NPC(Map map, int playerNumber, int type)
+	public NPC(int playerNumber, int type)
 	{
 		this(map, playerNumber);
 		this.setType(type);

@@ -11,7 +11,7 @@ public class TestPlayer
 	@SuppressWarnings("resource")
 	public static void main(String[] args)
 	{
-		NPC p = new DefaultAI(null, 0);
+		NPC p = new DefaultAI(0);
 		Scanner in = new Scanner(System.in);
 		System.out.println("Testing command queue...");
 		for (int i = 0; i < 3; i++)

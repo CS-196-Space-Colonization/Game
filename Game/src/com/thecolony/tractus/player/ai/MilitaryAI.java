@@ -7,7 +7,7 @@ public class MilitaryAI extends NPC
 
 	public MilitaryAI(Map map, int playerNumber)
 	{
-		super(map, playerNumber,NPC.TYPE_MILITARY);
+		super(playerNumber,NPC.TYPE_MILITARY);
 	}
 
 	/**

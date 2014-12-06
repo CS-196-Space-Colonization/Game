@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.thecolony.tractus.Map;
 import com.thecolony.tractus.Trade;
 import com.thecolony.tractus.Unit;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import com.thecolony.tractus.techonology.Technology;
 
 public class Player
@@ -27,10 +28,10 @@ public class Player
     // Fog of War (light)
     // explored terrain needs a way to be kept track of
     protected static Map map; // same map for all players
-    protected ArrayList<Unit> ownUnits; //units that you can control
-    protected ArrayList<Unit> otherUnits; //other units that don't belong to you
+    protected ArrayList<Ship> ownShips; //units that you can control
+    protected ArrayList<Ship> otherShips; //other units that don't belong to you and are visible to you?
 
-    public Player(Map map, int playerNumber)
+    public Player(int playerNumber)
     {
         setCurrentTech(new Technology());
         setAllies(new ArrayList<Player>());
@@ -38,10 +39,9 @@ public class Player
         setMoney(0);
         setResearched(new ArrayList<Technology>());
         setTrades(new ArrayList<Trade>());
-        this.setPlayerNumber(playerNumber);
-        this.setMap(map);
-        setOwnUnits(new ArrayList<Unit>());
-        setOtherUnits(new ArrayList<Unit>());
+        setPlayerNumber(playerNumber);
+        setOwnShips(new ArrayList<Ship>());
+        setOtherShips(new ArrayList<Ship>());
     }
 
     public void sendMessage()
@@ -54,7 +54,7 @@ public class Player
     
     protected boolean hasUnits()
     {
-        return !ownUnits.isEmpty();
+        return !ownShips.isEmpty();
     }
     
     // setters and getters for all instance variables, nothing special, will
@@ -139,23 +139,23 @@ public class Player
         Player.map = map;
     }
 
-    public ArrayList<Unit> getOwnUnits()
+    public ArrayList<Ship> getOwnShips()
     {
-        return ownUnits;
+        return ownShips;
     }
 
-    public void setOwnUnits(ArrayList<Unit> units)
+    public void setOwnShips(ArrayList<Ship> ships)
     {
-        this.ownUnits = units;
+        this.ownShips = ships;
     }
 
-    public ArrayList<Unit> getOtherUnits()
+    public ArrayList<Ship> getOtherShips()
     {
-        return otherUnits;
+        return otherShips;
     }
 
-    public void setOtherUnits(ArrayList<Unit> otherUnits)
+    public void setOtherShips(ArrayList<Ship> otherShips)
     {
-        this.otherUnits = otherUnits;
+        this.otherShips = otherShips;
     }
 }

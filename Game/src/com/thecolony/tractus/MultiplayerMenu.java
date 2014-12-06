@@ -120,7 +120,7 @@ public class MultiplayerMenu extends JFrame
     {
         title = new JLabel("Mutiplayer");
         title.setBounds((width / 2) - (titleWidth / 2), 0, titleWidth, buttonHeight);
-        title.setForeground(Color.orange);
+        title.setForeground(new Color(0xff, 0x4f, 0x00));
         title.setFont(titleFont);
         window.add(title);
     }
