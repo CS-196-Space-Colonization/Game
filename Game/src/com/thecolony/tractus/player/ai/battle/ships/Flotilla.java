@@ -419,13 +419,17 @@ public class Flotilla
         // the defending ship will win.
         if (b.getHP() <= 0)
         {
+            b.regenerate();
             return -1;
+         
         }
         else
         {
             if (this.getHP() <= 0)
             {
+                this.regenerate();
                 return 1;
+                
             }
             else
             {
@@ -433,6 +437,10 @@ public class Flotilla
             }
         }
 
+    }
+    public void regenerate()
+    {
+        initialize(flotilla, centerPosition, isFull, name);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
