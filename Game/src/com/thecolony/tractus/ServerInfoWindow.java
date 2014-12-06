@@ -91,10 +91,14 @@ public class ServerInfoWindow extends JFrame
 	  public void actionPerformed(ActionEvent e)
 	  {
 	      name = tName.getText();
-	      version = tVersion.getText();
-	      ip = tIp.getText();
-	      port = tPort.getText();
-	      Globals.setInfo(name, version, ip, port);
+	      if (type == CLIENT)
+	      {
+		version = tVersion.getText();
+		ip = tIp.getText();
+		port = tPort.getText();
+		Globals.setInfo(name, version, ip, port);
+	      }
+	      Globals.setName(name);
 	      if (type == CLIENT)
 	      {
 		new ClientMain();
