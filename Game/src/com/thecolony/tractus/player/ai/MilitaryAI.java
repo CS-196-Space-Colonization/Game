@@ -1,11 +1,9 @@
 package com.thecolony.tractus.player.ai;
 
-import com.thecolony.tractus.Map;
-
 public class MilitaryAI extends NPC
 {
 
-	public MilitaryAI(Map map, int playerNumber)
+	public MilitaryAI(int playerNumber)
 	{
 		super(playerNumber,NPC.TYPE_MILITARY);
 	}

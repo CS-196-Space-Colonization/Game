@@ -7,11 +7,10 @@ package com.thecolony.tractus.player;
 
 import java.util.ArrayList;
 
-import com.thecolony.tractus.Map;
 import com.thecolony.tractus.Trade;
-import com.thecolony.tractus.Unit;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import com.thecolony.tractus.techonology.Technology;
+import java.util.Map;
 
 public class Player
 {
