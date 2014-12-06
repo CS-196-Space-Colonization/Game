@@ -3,6 +3,7 @@ package com.thecolony.tractus.player.ai.battle;
 
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
+import com.thecolony.tractus.player.Player;
 import java.io.IOException;
 
 public class Stationary_Object extends BattleObject {
@@ -14,9 +15,9 @@ public class Stationary_Object extends BattleObject {
 	{
 		super(HP);
 	}
-	public Stationary_Object(String nameOfShip, double[] stats, int Cost, String display, int Crew, int ammo)
+	public Stationary_Object(Player owner, String nameOfShip, double[] stats, int Cost, String display, int Crew, int ammo)
 	{
-		super(nameOfShip, stats, Cost, display, Crew, ammo);
+		super(owner, nameOfShip, stats, Cost, display, Crew, ammo);
 	}
 
     public void write(JmeExporter ex) throws IOException {
