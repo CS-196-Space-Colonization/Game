@@ -8,6 +8,7 @@ package com.thecolony.tractus.player.ai.battle.ships;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
@@ -232,6 +233,8 @@ public class Flotilla
     
     public void checkRemoveShip()
     {
+        if(flotilla.length > 1)
+        {
         Ship[] temp = flotilla;
         for(int i = 0; i < temp.length; i++)
         {
@@ -255,6 +258,19 @@ public class Flotilla
             }
         }
         flotilla = temp;
+    }
+        else
+        {
+            if(this.getShip(0).getBattleStat(8) == 0)
+            {
+                flotilla = new Ship[1];
+                Node flotillasNode = new Node("Flotillas Node");
+                double[] stats = new double[19];
+                Ship a = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter ", flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
+                a.setEqualStats(0);
+                flotilla[0] = a;
+            }
+        }
     }
     
     public void damageShip(int ship, double damage)
