@@ -23,13 +23,14 @@ public class FlotillaBattler
     }
     
     /**
-     * Simulates the battle between the attacking and defender flotillas.
+     * Simulates the battle between the attacker and defender flotillas.
      * @param deltaTime The time between two consecutive frames.
-     * @return 0 if the battle has not ended, -1 if the attackers won, +1 if the
+     * @return 0 if the battle has not ended, -1 if the attacker won, +1 if the
      * defender won.
      */
     public int update(float deltaTime)
-    {   
-        return attacker.flotillaBattle(defender, deltaTime);
+    {
+        int battle = attacker.flotillaBattle(defender, deltaTime);        
+        return battle;
     }
 }

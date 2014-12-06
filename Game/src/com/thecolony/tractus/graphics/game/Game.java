@@ -30,6 +30,7 @@ import com.thecolony.tractus.graphics.drawableobjects.spatialentities.Planet;
 import com.thecolony.tractus.graphics.drawableobjects.spatialentities.Star;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
+import com.thecolony.tractus.player.ai.battle.FlotillaBattler;
 import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
@@ -78,8 +79,10 @@ public class Game extends SimpleApplication
     private BitmapText mSelectionModeText;
     private boolean isRunning;
     private ClientMain client;
-    private ArrayList<ArrayList<Flotilla>> attackers;
-    private ArrayList<Flotilla> defenders;
+    
+    private ArrayList<FlotillaBattler> flotillaBattles;
+//    private ArrayList<ArrayList<Flotilla>> attackers;
+//    private ArrayList<Flotilla> defenders;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -259,8 +262,9 @@ public class Game extends SimpleApplication
 
         rootNode.attachChild(flotillasNode);
 
-        attackers = new ArrayList<ArrayList<Flotilla>>();
-        defenders = new ArrayList<Flotilla>();
+        flotillaBattles = new ArrayList<FlotillaBattler>();
+//        attackers = new ArrayList<ArrayList<Flotilla>>();
+//        defenders = new ArrayList<Flotilla>();
     }
 
     private void initializeListeners()
@@ -511,32 +515,30 @@ public class Game extends SimpleApplication
                                 {
                                     Flotilla f = flotillas.get(i);
                                     if (f.isSelected())
-                                    {
                                         break;
-                                    }
 
-                                    boolean selected = f.getBoundingBox().intersects(r);
-                                    if (selected)
+                                    boolean hover = f.getBoundingBox().intersects(r);
+                                    if (hover)
                                     {
                                         Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
                                         float change = M_ATTACK_DISTANCE / targetDirection.length();
                                         Vector3f targetPoint = f.getCenterPosition().interpolate(mSelectedNodeCenterPos, change);
-
-                                        // Add attackers
-                                        ArrayList<Flotilla> newAttackers = new ArrayList<Flotilla>();
+                                        
+                                        
+                                        // Add attacker
+                                        Flotilla attacker = null;
                                         for (int j = 0; j < flotillas.size(); j++)
                                         {
                                             Flotilla f2 = flotillas.get(j);
                                             if (f2.isSelected())
                                             {
-                                                newAttackers.add(f2);
+                                                attacker = f2;
                                                 f2.setTargetPoint(targetPoint, true);
+                                                break;
                                             }
                                         }
-                                        attackers.add(newAttackers);
-
-                                        // Add defenders
-                                        defenders.add(f);
+                                        
+                                        flotillaBattles.add(new FlotillaBattler(attacker, f));
                                     }
                                 }
 
@@ -868,26 +870,13 @@ public class Game extends SimpleApplication
                 mInfoHubText.clearText();
             }
 
-            for (int i = 0; i < attackers.size(); i++)
+            // Update battles...
+            for (int i = 0; i < flotillaBattles.size(); i++)
             {
-                for (int j = 0; j < attackers.get(i).size(); j++)
-                {
-                    Flotilla f = attackers.get(i).get(j);
-
-                    if (f.isTransforming())
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        int battleResult = f.flotillaBattle(defenders.get(i), tpf);
-                        if (battleResult != 0)
-                        {
-                            System.out.println("Battles Over!");
-                        }
-                    }
-                }
-            }
+                int battle = flotillaBattles.get(i).update(tpf);
+                if (battle != 0)
+                    flotillaBattles.remove(i--);
+            }    
         }
     }
 
