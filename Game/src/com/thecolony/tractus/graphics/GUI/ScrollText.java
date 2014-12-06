@@ -51,6 +51,7 @@ public class ScrollText
     {
         bitmapText.setText("");
         text = new ArrayList<String>();
+        topIndex = 0;
     }
     
     /**
@@ -99,12 +100,9 @@ public class ScrollText
     private void addTextToBitmap()
     {
         String t = "";
-        int cap = Math.min(linesPerScreen, text.size());        
+        int cap = Math.min(linesPerScreen, text.size() - topIndex);        
         for (int i = 0; i < cap; i++)
-        {
-            System.out.println(i);
             t += text.get(i + topIndex) + "\n";
-        }
         
         bitmapText.setText(t);
     }

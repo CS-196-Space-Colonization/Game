@@ -33,7 +33,6 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
 import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -301,11 +300,15 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Switch Selection Mode", new KeyTrigger(KeyInput.KEY_TAB));
         inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_ESCAPE));
         inputManager.addMapping("Exit", new KeyTrigger(KeyInput.KEY_BACK));
+        
+        inputManager.addMapping("Scroll Up", new KeyTrigger(KeyInput.KEY_UP));
+        inputManager.addMapping("Scroll Down", new KeyTrigger(KeyInput.KEY_DOWN));
+        
         inputManager.addListener(mKeyboardActionListener, new String[]
         {
             "Shift", "Move", "Rotate", "Box Select",
             "Attack", "Switch Selection Mode", "Pause",
-            "Exit"
+            "Exit", "Scroll Up", "Scroll Down"
         });
         inputManager.addListener(mKeyboardAnalogListener, new String[]
         {
@@ -625,6 +628,9 @@ public class Game extends SimpleApplication
                     isAttackToggleOn = false;
                     inputManager.setMouseCursor(null);
                 }
+                
+                if (name.contains("Scroll") && isPressed)
+                    mInfoHubText.scroll(name.contains("Up"));
             }
 
             if (name.equals("Exit"))
