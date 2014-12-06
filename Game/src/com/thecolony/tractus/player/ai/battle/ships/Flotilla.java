@@ -366,6 +366,10 @@ public class Flotilla
 //                            st2 = st2 - b.getBattleStat(5);
                             calcSpDamage(b, this, deltaTime * BATTLE_TIME_FACTOR);
 //                        }
+                            
+                            
+            this.checkRemoveShip();
+            b.checkRemoveShip();
 
                             // Probably unecessary, but if they both die at the same time,
                             // the defending ship will win.
