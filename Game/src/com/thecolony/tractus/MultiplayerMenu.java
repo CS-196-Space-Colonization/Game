@@ -4,20 +4,22 @@
  */
 package com.thecolony.tractus;
 
-import com.jme3.system.AppSettings;
-import com.thecolony.tractus.graphics.game.Game;
+import com.thecolony.tractus.networking.ClientMain;
+import com.thecolony.tractus.networking.Globals;
+import com.thecolony.tractus.networking.ServerMain;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 
 /**
@@ -26,29 +28,27 @@ import javax.swing.UIManager;
  */
 public class MultiplayerMenu extends JFrame
 {
+
     private JPanel window;
-    private JButton singlePlayer, multiplayer, quit;
-    private Rectangle rSinglePlayer, rMultiplayer, rquit;
+    private JButton startServer, connectToServer, back;
+    private Rectangle rStartServer, rConnectToServer, rBack;
     private JLabel title;
-    
-    private int width = 400;
-    private int height = 600;
-    private int buttonWidth = 200;
+    private int width = 600;
+    private int height = 450;
+    private int buttonWidth = 275;
     private int buttonHeight = 100;
-    
-    private int titleWidth = buttonWidth - 0;
-    
+    private int titleWidth = buttonWidth;
+    private int lableWidth = titleWidth - 100;
     private Font buttonFont = new Font("Comic Sans MS", 0, 25);
     private Font titleFont = new Font("Comic Sans MS", 0, 50);
-    
+
     public MultiplayerMenu()
     {
         window = new JPanel();
         try
         {
 	  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
 	  System.out.println("Failed to set look and feel");
         }
@@ -61,96 +61,66 @@ public class MultiplayerMenu extends JFrame
         setLocationRelativeTo(null);
         setResizable(false);
         window.setLayout(null);
-        window.setBackground(Color.yellow);
-        
+        window.setBackground(Color.cyan);
+
+        addLabels();
         addButtons();
-        addTitleLabel();
         repaint();
     }
-    
+
     private void addButtons()
     {
-        singlePlayer = new JButton("Single Player");
-        rSinglePlayer = new Rectangle((width / 2) - (buttonWidth / 2), 200, buttonWidth, buttonHeight);
-        singlePlayer.setBounds(rSinglePlayer);
-        singlePlayer.setFont(buttonFont);
-        window.add(singlePlayer);
-        
-        multiplayer = new JButton("Multiplayer");
-        rMultiplayer = new Rectangle((width / 2) - (buttonWidth / 2), 300, buttonWidth, buttonHeight);
-        multiplayer.setBounds(rMultiplayer);
-        multiplayer.setFont(buttonFont);
-        window.add(multiplayer);
-        
-        quit = new JButton("Quit");
-        rquit = new Rectangle((width / 2) - (buttonWidth / 2), 400, buttonWidth, buttonHeight);
-        quit.setFont(buttonFont);
-        quit.setBounds(rquit);
-        window.add(quit);
-        
-        singlePlayer.addActionListener(new ActionListener()
+        startServer = new JButton("Start Server");
+        rStartServer = new Rectangle((width / 2) - (buttonWidth / 2), 100, buttonWidth, buttonHeight);
+        startServer.setBounds(rStartServer);
+        startServer.setFont(buttonFont);
+        window.add(startServer);
+
+        connectToServer = new JButton("Connect to Server");
+        rConnectToServer = new Rectangle((width / 2) - (buttonWidth / 2), 200, buttonWidth, buttonHeight);
+        connectToServer.setBounds(rConnectToServer);
+        connectToServer.setFont(buttonFont);
+        window.add(connectToServer);
+
+        back = new JButton("Back");
+        rBack = new Rectangle((width / 2) - (buttonWidth / 2), 300, buttonWidth, buttonHeight);
+        back.setFont(buttonFont);
+        back.setBounds(rBack);
+        window.add(back);
+
+        startServer.addActionListener(new ActionListener()
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      boolean fullscreen = false;
-	      int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
-	      if (input == JOptionPane.YES_OPTION)
-		fullscreen = true;
-	      else if (input == JOptionPane.CANCEL_OPTION || input == JOptionPane.CLOSED_OPTION)
-		System.exit(0);            
-
-	      Game game = new Game();
-
-	      game.setShowSettings(false);
-	      AppSettings settings = new AppSettings(true);
-
-	      settings.setTitle("Tractus");
-	      settings.setFrameRate(60);
-	      settings.setVSync(true);
-	      settings.setFrequency(60);
-
-	      try {
-		settings.setFullscreen(fullscreen);
-	      } catch (Exception ex) { settings.setFullscreen(false); }
-
-	      if (fullscreen)
-	      {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		settings.setResolution(screenSize.width, screenSize.height);
-	      }
-	      else
-	      {
-		settings.setResolution(800, 600);
-	      }
-
-	      game.setSettings(settings);
-	      game.start();
+	      new ServerInfoWindow(ServerInfoWindow.SERVER);
 	      dispose();
 	  }
         });
-        
-        multiplayer.addActionListener(new ActionListener()
+
+        connectToServer.addActionListener(new ActionListener()
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      System.out.println("Boop");
+	      new ServerInfoWindow(ServerInfoWindow.CLIENT);
+	      dispose();
 	  }
         });
-        
-        quit.addActionListener(new ActionListener()
+
+        back.addActionListener(new ActionListener()
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      System.exit(0);
+	      new MainMenu();
+	      dispose();
 	  }
         });
-    } 
-    
-    private void addTitleLabel()
+    }
+
+    private void addLabels()
     {
-        title = new JLabel("Tractus");
+        title = new JLabel("Mutiplayer");
         title.setBounds((width / 2) - (titleWidth / 2), 0, titleWidth, buttonHeight);
-        title.setForeground(Color.red);
+        title.setForeground(new Color(0xff, 0x4f, 0x00));
         title.setFont(titleFont);
         window.add(title);
     }

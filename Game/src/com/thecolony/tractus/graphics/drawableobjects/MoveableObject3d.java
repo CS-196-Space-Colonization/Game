@@ -9,7 +9,7 @@ import com.jme3.scene.Spatial;
  * A class used to represent an object that needs to move.
  * @author Joe Pagliuco
  */
-public class MoveableObject extends DrawableObject3d
+public class MoveableObject3d extends DrawableObject3d
 {
     
     protected Vector3f mDirection;
@@ -19,7 +19,7 @@ public class MoveableObject extends DrawableObject3d
     protected boolean mIsMoving;
     protected boolean mIsRotating;
     
-    public MoveableObject(String name, Node node, Spatial model, Vector3f position, Vector3f direction, float movementSpeed, float rotationSpeed, String classType)
+    public MoveableObject3d(String name, Node node, Spatial model, Vector3f position, Vector3f direction, float movementSpeed, float rotationSpeed, String classType)
     {
         super(name, node, model, position, classType);
         
@@ -37,7 +37,7 @@ public class MoveableObject extends DrawableObject3d
     }
     public void setDirection(Vector3f direction)
     {
-        mDirection = direction;
+        mDirection = direction.normalize();
     }
     public void rotateDirection(Vector3f rotationAxis, float deltaTime)
     {

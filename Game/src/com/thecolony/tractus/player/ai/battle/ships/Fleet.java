@@ -48,7 +48,7 @@ public class Fleet {
 	public static void battle(Fleet fleet, Fleet flee, int FlotillaOfFleet, int FlotillaOfFlee)
 	{
 		if(fleet.getFlotilla(FlotillaOfFleet).getFlotilla().length > 0 && flee.getFlotilla(FlotillaOfFlee).getFlotilla().length > 0)
-		Flotilla.battle(fleet.getFlotilla(FlotillaOfFleet), flee.getFlotilla(FlotillaOfFlee));
+		Flotilla.battle(fleet.getFlotilla(FlotillaOfFleet), flee.getFlotilla(FlotillaOfFlee), 1);
 		if(fleet.getFlotilla(FlotillaOfFleet).getFlotilla().length == 0)
 			fleet.takeOutFlotilla(FlotillaOfFleet);
 		if(flee.getFlotilla(FlotillaOfFlee).getFlotilla().length == 0)

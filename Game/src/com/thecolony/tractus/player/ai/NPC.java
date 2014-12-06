@@ -6,7 +6,6 @@ package com.thecolony.tractus.player.ai;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-import com.thecolony.tractus.Map;
 import com.thecolony.tractus.player.Player;
 
 public abstract class NPC extends Player
@@ -23,17 +22,17 @@ public abstract class NPC extends Player
 	private Comparator<Command> comparator = new CommandComparator();
 	private PriorityQueue<Command> commands;
 
-	public NPC(Map map, int playerNumber)
+	public NPC(int playerNumber)
 	{
-		super(map, playerNumber);
+		super(playerNumber);
 		commands = new PriorityQueue<Command>(0,comparator);
 		setType(TYPE_NONE);
 		setInGame(true);
 	}
 
-	public NPC(Map map, int playerNumber, int type)
+	public NPC(int playerNumber, int type)
 	{
-		this(map, playerNumber);
+		this(playerNumber);
 		this.setType(type);
 	}
 

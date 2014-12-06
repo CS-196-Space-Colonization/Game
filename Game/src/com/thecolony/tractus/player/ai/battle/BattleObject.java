@@ -1,11 +1,14 @@
 package com.thecolony.tractus.player.ai.battle;
 
-import com.jme3.export.Savable;
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
+import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
-public abstract class BattleObject implements Savable
+@Serializable
+public abstract class BattleObject
 {
     /** 0x00 ---- First Battle Stat */
     public static final int BATTLE_STAT_REG_POWER   		= 0x00;
@@ -60,17 +63,19 @@ public abstract class BattleObject implements Savable
 
     static double HPfactor = 10;
     
-    protected DrawableObject3d model;
+    private Player player;
+    
+    protected transient DrawableObject3d model;
 
     public BattleObject(double hp)
-    {	
+    {
         name = "object";
         qualities = new double[BATTLE_STAT_REG_WEAPON_STAT + 1]; // BATTLE_STAT_REG_WEAPON_STAT is the largest value
         cost = 10;
         image = "[]";
         crew = 1;
         setEqualStats(10.0);
-        qualities[BATTLE_STAT_HP] = hp;		
+        qualities[BATTLE_STAT_HP] = hp;
     }
     public BattleObject(String name)
     {
@@ -90,8 +95,9 @@ public abstract class BattleObject implements Savable
         crew = 1;
         setEqualStats(10.0);
     }
-    public BattleObject(String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
+    public BattleObject(Player p, String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
     {
+        player = p;
         name = nameOfShip;
         double[] fullStats = new double[19];
         for(int i = 0; i < 19; i++)
@@ -111,6 +117,16 @@ public abstract class BattleObject implements Savable
         image = display;
         crew = Crew;
         ammo = am;
+    }
+    
+    public Player getPlayer()
+    {
+        return player;
+    }
+    
+    public void setPlayer(Player p)
+    {
+        player = p;
     }
 
     public int getAmmo()
@@ -158,6 +174,11 @@ public abstract class BattleObject implements Savable
             qualities[BATTLE_STAT_HP] = qualities[BATTLE_STAT_HP] - value;
             if (qualities[BATTLE_STAT_HP] < 0)
                     qualities[BATTLE_STAT_HP] = 0;
+        }
+        else if (BATTLE_STAT == BATTLE_STAT_MOVEMENT_SPEED)
+        {
+            qualities[BATTLE_STAT] = value;
+            ((MoveableObject3d)model).setMovementSpeed((float)value);
         }
         else
             qualities[BATTLE_STAT] = value;
@@ -236,7 +257,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 3 * x;
         qualities[9] = level * 0;
         qualities[10] = (level - y) * 0;
-        qualities[11] = level * 4 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 4 * x);
         qualities[12] = level * 3 * x;
         qualities[13] = level * 0;
         qualities[14] = level * 2 * x;
@@ -258,7 +279,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 3 * x;
         qualities[9] = level * 0;
         qualities[10] = (level - y) * 0;
-        qualities[11] = level * 2 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 2 * x);
         qualities[12] = level * x;
         qualities[13] = level * 10 * x;
         qualities[14] = level * 10 * x;
@@ -280,7 +301,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 5 * x;
         qualities[9] = level * 4 * z;
         qualities[10] = level * 4 * z;
-        qualities[11] = level * 5 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 5 * x);
         qualities[12] = level * 0;
         qualities[13] = level * 0;
         qualities[14] = level * x;
@@ -302,7 +323,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 5 * x;
         qualities[9] = level * 4 * z;
         qualities[10] = level * 4 * z;
-        qualities[11] = level * 5 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 5 * x);
         qualities[12] = level * 0;
         qualities[13] = level * 0;
         qualities[14] = level * x;
@@ -324,7 +345,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 5 * x;
         qualities[9] = level * 3 * z;
         qualities[10] = level * 3 * z;
-        qualities[11] = level * 5 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 5 * x);
         qualities[12] = level * 0;
         qualities[13] = level * 0;
         qualities[14] = level * x;
@@ -346,7 +367,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 5 * x;
         qualities[9] = level * 10 * z;
         qualities[10] = level * 10 * z;
-        qualities[11] = level * 7 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 7 * x);
         qualities[12] = level * 0;
         qualities[13] = level * 0;
         qualities[14] = level * x;
@@ -368,7 +389,7 @@ public abstract class BattleObject implements Savable
         qualities[8] = level * 5 * x;
         qualities[9] = level * 4 * z;
         qualities[10] = level * 4 * z;
-        qualities[11] = level * 5 * x;
+        setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, level * 5 * x);
         qualities[12] = level * 0;
         qualities[13] = level * 0;
         qualities[14] = level * x;
@@ -425,28 +446,31 @@ public abstract class BattleObject implements Savable
         return model;
     }
     
-    public String getDisplayInfo()
+    public String[] getDisplayInfo()
     {
-        return "Name: " + name + "\n "
-                + "Battle Stats:\n"
-                + "  HP: " + qualities[BATTLE_STAT_HP] + "\n"
-                + "  Reg Power: " + qualities[BATTLE_STAT_REG_POWER] + "\n"
-                + "  Sp Power: " + qualities[BATTLE_STAT_SP_POWER] + "\n"
-                + "  Reg Defense: " + qualities[BATTLE_STAT_REG_DEFENSE] + "\n"
-                + "  Sp Defense: " + qualities[BATTLE_STAT_SP_DEFENSE] + "\n"
-                + "  Reg Attack Cooldown: " + qualities[BATTLE_STAT_REG_ATTACK_COOLDOWN] + "\n"
-                + "  Sp Attack Cooldown: " + qualities[BATTLE_STAT_SP_ATTACK_COOLDOWN] + "\n"
-                + "  Reg Accuracy: " + qualities[BATTLE_STAT_REG_ACCURACY] + "\n"
-                + "  Sp Accuracy: " + qualities[BATTLE_STAT_SP_ACCURACY] + "\n"
-                + "  Reg Range: " + qualities[BATTLE_STAT_REG_RANGE] + "\n"
-                + "  Sp Range: " + qualities[BATTLE_STAT_SP_RANGE] + "\n"
-                + "  Reg Armor Stat: " + qualities[BATTLE_STAT_REG_ARMOR_STAT] + "\n"
-                + "  Sp Armor Stat: " + qualities[BATTLE_STAT_SP_ARMOR_STAT] + "\n"
-                + "  Reg Weapon Stat: " + qualities[BATTLE_STAT_REG_WEAPON_STAT] + "\n"
-                + "  Sp Weapon Stat: " + qualities[BATTLE_STAT_SP_WEAPON_STAT] + "\n"
-                + "  Repair Ability: " + qualities[BATTLE_STAT_REPAIR_ABILITY] + "\n"
-                + "  Transport Ability: " + qualities[BATTLE_STAT_TRANSPORT_ABILITY] + "\n"
-                + "  Build Ability: " + qualities[BATTLE_STAT_BUILD_ABILITY] + "\n"
-                + "  Movement Speed: " + qualities[BATTLE_STAT_MOVEMENT_SPEED];
+        return new String[] 
+        {
+            "Name: " + name,
+            "Battle Stats:",
+            "  HP: " + (int)qualities[BATTLE_STAT_HP],
+            "  Reg Power: " + qualities[BATTLE_STAT_REG_POWER],
+            "  Sp Power: " + qualities[BATTLE_STAT_SP_POWER],
+            "  Reg Defense: " + qualities[BATTLE_STAT_REG_DEFENSE],
+            "  Sp Defense: " + qualities[BATTLE_STAT_SP_DEFENSE],
+            "  Reg Attack Cooldown: " + qualities[BATTLE_STAT_REG_ATTACK_COOLDOWN],
+            "  Sp Attack Cooldown: " + qualities[BATTLE_STAT_SP_ATTACK_COOLDOWN],
+            "  Reg Accuracy: " + qualities[BATTLE_STAT_REG_ACCURACY],
+            "  Sp Accuracy: " + qualities[BATTLE_STAT_SP_ACCURACY],
+            "  Reg Range: " + qualities[BATTLE_STAT_REG_RANGE],
+            "  Sp Range: " + qualities[BATTLE_STAT_SP_RANGE],
+            "  Reg Armor Stat: " + qualities[BATTLE_STAT_REG_ARMOR_STAT],
+            "  Sp Armor Stat: " + qualities[BATTLE_STAT_SP_ARMOR_STAT],
+            "  Reg Weapon Stat: " + qualities[BATTLE_STAT_REG_WEAPON_STAT],
+            "  Sp Weapon Stat: " + qualities[BATTLE_STAT_SP_WEAPON_STAT],
+            "  Repair Ability: " + qualities[BATTLE_STAT_REPAIR_ABILITY],
+            "  Transport Ability: " + qualities[BATTLE_STAT_TRANSPORT_ABILITY],
+            "  Build Ability: " + qualities[BATTLE_STAT_BUILD_ABILITY],
+            "  Movement Speed: " + qualities[BATTLE_STAT_MOVEMENT_SPEED]
+        };               
     }
 }

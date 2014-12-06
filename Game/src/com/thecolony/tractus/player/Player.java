@@ -5,43 +5,45 @@
  */
 package com.thecolony.tractus.player;
 
+import com.jme3.math.ColorRGBA;
+import com.jme3.network.serializing.Serializable;
 import java.util.ArrayList;
 
-import com.thecolony.tractus.Map;
-import com.thecolony.tractus.Trade;
-import com.thecolony.tractus.Unit;
-import com.thecolony.tractus.techonology.Technology;
+import com.thecolony.tractus.player.ai.battle.BattleObject;
+import java.awt.Color;
 
-public class Player
+@Serializable
+public class Player implements java.io.Serializable
 {
+    public static final ColorRGBA colors[] = {ColorRGBA.Red, ColorRGBA.Blue, ColorRGBA.Green, ColorRGBA.Yellow, ColorRGBA.Magenta};
     // viewable to other players
 
-    protected Technology currentTech;
-    protected ArrayList<Player> allies;
+//    protected Technology currentTech;
+//    protected ArrayList<Player> allies;
     protected boolean atWar;
     // not viewable to other players
     protected double money;
-    protected ArrayList<Technology> researched;
-    protected ArrayList<Trade> trades;
+//    protected ArrayList<Technology> researched;
+//    protected ArrayList<Trade> trades;
     protected int playerNumber;
+    protected ColorRGBA color;
     // Fog of War (light)
     // explored terrain needs a way to be kept track of
-    protected static Map map; // same map for all players
-    protected ArrayList<Unit> ownUnits; //units that you can control
-    protected ArrayList<Unit> otherUnits; //other units that don't belong to you
+    protected ArrayList<BattleObject> ownUnits; //units that you can control
+    protected ArrayList<BattleObject> otherUnits; //other units that don't belong to you and are visible to you?
 
-    public Player(Map map, int playerNumber)
+    public Player(int playerNumber)
     {
-        setCurrentTech(new Technology());
-        setAllies(new ArrayList<Player>());
+//        setCurrentTech(new Technology());
+//        setAllies(new ArrayList<Player>());
         setAtWar(false);
         setMoney(0);
-        setResearched(new ArrayList<Technology>());
-        setTrades(new ArrayList<Trade>());
-        this.setPlayerNumber(playerNumber);
-        this.setMap(map);
-        setOwnUnits(new ArrayList<Unit>());
-        setOtherUnits(new ArrayList<Unit>());
+//        setResearched(new ArrayList<Technology>());
+//        setTrades(new ArrayList<Trade>());
+        setPlayerNumber(playerNumber);
+        setOwnShips(new ArrayList<BattleObject>());
+        setOtherShips(new ArrayList<BattleObject>());
+        color = colors[playerNumber];
     }
 
     public void sendMessage()
@@ -59,24 +61,29 @@ public class Player
     
     // setters and getters for all instance variables, nothing special, will
     // probably altered later
-    public Technology getCurrentTech()
+//    public Technology getCurrentTech()
+//    {
+//        return currentTech;
+//    }
+//
+//    public void setCurrentTech(Technology currentTech)
+//    {
+//        this.currentTech = currentTech;
+//    }
+//
+//    public ArrayList<Player> getAllies()
+//    {
+//        return allies;
+//    }
+//
+//    public void setAllies(ArrayList<Player> allies)
+//    {
+//        this.allies = allies;
+//    }
+    
+    public ColorRGBA getColor()
     {
-        return currentTech;
-    }
-
-    public void setCurrentTech(Technology currentTech)
-    {
-        this.currentTech = currentTech;
-    }
-
-    public ArrayList<Player> getAllies()
-    {
-        return allies;
-    }
-
-    public void setAllies(ArrayList<Player> allies)
-    {
-        this.allies = allies;
+        return color;
     }
 
     public boolean isAtWar()
@@ -99,25 +106,25 @@ public class Player
         this.money = money;
     }
 
-    public ArrayList<Technology> getResearched()
-    {
-        return researched;
-    }
-
-    public void setResearched(ArrayList<Technology> researched)
-    {
-        this.researched = researched;
-    }
-
-    public ArrayList<Trade> getTrades()
-    {
-        return trades;
-    }
-
-    public void setTrades(ArrayList<Trade> trades)
-    {
-        this.trades = trades;
-    }
+//    public ArrayList<Technology> getResearched()
+//    {
+//        return researched;
+//    }
+//
+//    public void setResearched(ArrayList<Technology> researched)
+//    {
+//        this.researched = researched;
+//    }
+//
+//    public ArrayList<Trade> getTrades()
+//    {
+//        return trades;
+//    }
+//
+//    public void setTrades(ArrayList<Trade> trades)
+//    {
+//        this.trades = trades;
+//    }
 
     public int getPlayerNumber()
     {
@@ -129,33 +136,33 @@ public class Player
         this.playerNumber = playerNumber;
     }
 
-    public Map getMap()
-    {
-        return map;
-    }
+//    public Map getMap()
+//    {
+//        return map;
+//    }
+//
+//    public void setMap(Map map)
+//    {
+//        Player.map = map;
+//    }
 
-    public void setMap(Map map)
-    {
-        Player.map = map;
-    }
-
-    public ArrayList<Unit> getOwnUnits()
+    public ArrayList<BattleObject> getOwnShips()
     {
         return ownUnits;
     }
 
-    public void setOwnUnits(ArrayList<Unit> units)
+    public void setOwnShips(ArrayList<BattleObject> ships)
     {
-        this.ownUnits = units;
+        this.ownUnits = ships;
     }
 
-    public ArrayList<Unit> getOtherUnits()
+    public ArrayList<BattleObject> getOtherShips()
     {
         return otherUnits;
     }
 
-    public void setOtherUnits(ArrayList<Unit> otherUnits)
+    public void setOtherShips(ArrayList<BattleObject> otherShips)
     {
-        this.otherUnits = otherUnits;
+        this.otherUnits = otherShips;
     }
 }

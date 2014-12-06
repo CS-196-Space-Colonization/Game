@@ -74,6 +74,7 @@ public class Specific_Ship extends Ship {
 	}
 	public void setToFrigate()
 	{
+            level = level * 2;
 		crew = 5;
 		//Frigates	Small ships with a crew of around 5 people, only 20 per flotilla
 		if(Qual.equals("Heal"))
@@ -123,6 +124,7 @@ public class Specific_Ship extends Ship {
 	}
 	public void setToCruiser()
 	{
+                level = level * 3;
 		crew = 20;
 		//Cruisers	Bigger ships with a crew of 20 people, only 5 per flotilla
 		if(Qual.equals("Heal"))
@@ -173,6 +175,7 @@ public class Specific_Ship extends Ship {
 	public void setToCapital()
 	{
 		crew = 100;
+                level = level * 4;
 		//Capital Ships	Massive ships with crews of 100 people, only one per flotilla
 		if(Qual.equals("Heal"))
 		{
@@ -223,7 +226,7 @@ public class Specific_Ship extends Ship {
 	{
 		if(type.equals("Fighter"))
 			setToFighter();
-		else if(type.equals("Capital"))
+		else if(type.equals("Capital Ship"))
 			setToCapital();
 		else if(type.equals("Frigate"))
 			setToFrigate();

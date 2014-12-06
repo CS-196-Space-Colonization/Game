@@ -1,7 +1,7 @@
 package com.thecolony.tractus.player.ai;
 
-import com.thecolony.tractus.Map;
 import com.thecolony.tractus.Unit;
+import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
 
 /**
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class DefaultAI extends NPC
 {
 
-    public DefaultAI(Map map, int playerNumber)
+    public DefaultAI(int playerNumber)
     {
-        super(map, playerNumber, NPC.TYPE_NONE);
+        super(playerNumber, NPC.TYPE_NONE);
     }
 
     /**
@@ -32,7 +32,7 @@ public class DefaultAI extends NPC
     public void act()
     {
         //if there are other units vissible, then attack those untis.
-        Unit closest = findClosest(otherUnits);
+        Ship closest = findClosest(otherUnits);
         if (hasUnits())
         {
 	  allAttack(closest);
@@ -46,9 +46,9 @@ public class DefaultAI extends NPC
      * If the unit this AI is trying to attack is not null, it will send all of
      * its units to that unit and attack it.
      */
-    private void allAttack(Unit unit)
+    private void allAttack(Ship ship)
     {
-        if (unit != null)
+        if (ship != null)
         {
 	  for (int i = 0; i < ownUnits.size(); i++)
 	  {
@@ -62,9 +62,9 @@ public class DefaultAI extends NPC
      * @todo This should be moved to the unit class to ba called on every unit.
      * @return the closest unit to some abitrary point
      */
-    private Unit findClosest(ArrayList<Unit> units)
+    private Ship findClosest(ArrayList<Ship> ships)
     {
-        if (units.size() == 0)
+        if (ships.size() == 0)
         {
 	  return null;
         }

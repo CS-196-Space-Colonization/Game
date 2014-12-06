@@ -6,18 +6,31 @@ package com.thecolony.tractus.networking;
 
 import com.jme3.network.serializing.Serializer;
 
-public class Globals {
+public class Globals
+{
 
-    public static final String NAME = "My Server";
-    public static final String DEFAULT_SERVER = "localhost"; 
-    public static final int VERSION = 1;
-    public static final int DEFAULT_PORT = 6143;
-    
+    public static String NAME = "Server Name";
+    public static String DEFAULT_SERVER = "localhost";//172.17.218.92
+    public static int VERSION = 1;
+    public static int DEFAULT_PORT = 6143;
+
     public static void registerClasses()
     {
-        Serializer.registerClasses(UpdateClientMessage.class, TestClass.class, TestSub.class);
+        Serializer.registerClass(UpdateClientMessage.class);
+        Serializer.registerClass(TestClass.class);
+        Serializer.registerClass(TestSub.class);
+    }
+
+    public static void setInfo(String n, String v, String i, String p)
+    {
+        NAME = n;
+        DEFAULT_SERVER = i;
+        VERSION = Integer.parseInt(v);
+        DEFAULT_PORT = Integer.parseInt(p);
     }
     
+    public static void setName(String n)
+    {
+        NAME = n;
+    }
 }
-//172.17.159.108 ananaa
-
