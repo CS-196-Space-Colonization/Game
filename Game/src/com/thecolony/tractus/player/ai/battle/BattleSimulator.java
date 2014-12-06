@@ -56,7 +56,7 @@ public class BattleSimulator {
 				System.out.println("a wins");
 				done = true;
 			}
-			Flotilla.battle(a, b);
+			Flotilla.battle(a, b, 1);
 		}
 		System.out.println("move: " + move);
 		
