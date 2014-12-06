@@ -32,7 +32,7 @@ public class DefaultAI extends NPC
     public void act()
     {
         //if there are other units vissible, then attack those untis.
-        Ship closest = findClosest(otherShips);
+        Ship closest = findClosest(otherUnits);
         if (hasUnits())
         {
 	  allAttack(closest);
@@ -50,7 +50,7 @@ public class DefaultAI extends NPC
     {
         if (ship != null)
         {
-	  for (int i = 0; i < ownShips.size(); i++)
+	  for (int i = 0; i < ownUnits.size(); i++)
 	  {
 	      //attack that unit
 	      //or at the very least, move to that unit

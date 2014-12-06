@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.network.serializing.Serializable;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
+import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 
 @Serializable
@@ -62,6 +63,8 @@ public abstract class BattleObject
 
     static double HPfactor = 10;
     
+    private Player player;
+    
     protected transient DrawableObject3d model;
 
     public BattleObject(double hp)
@@ -92,8 +95,9 @@ public abstract class BattleObject
         crew = 1;
         setEqualStats(10.0);
     }
-    public BattleObject(String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
+    public BattleObject(Player p, String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
     {
+        player = p;
         name = nameOfShip;
         double[] fullStats = new double[19];
         for(int i = 0; i < 19; i++)
@@ -113,6 +117,16 @@ public abstract class BattleObject
         image = display;
         crew = Crew;
         ammo = am;
+    }
+    
+    public Player getPlayer()
+    {
+        return player;
+    }
+    
+    public void setPlayer(Player p)
+    {
+        player = p;
     }
 
     public int getAmmo()

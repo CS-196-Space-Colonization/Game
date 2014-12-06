@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
+import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
@@ -79,9 +80,9 @@ public class Ship extends BattleObject
         fuel = 0;
     }
 
-    public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel)
+    public Ship(Player p, SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel)
     {
-        super(nameOfShip, stats, cost, display, crew, ammo);
+        super(p, nameOfShip, stats, cost, display, crew, ammo);
         this.fuel = fuel;
         this.shipType = shipType;
         initialize(shipType, node, position);
@@ -91,9 +92,9 @@ public class Ship extends BattleObject
         setShip(type);
     }
 
-    public Ship(SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
+    public Ship(Player p, SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
     {
-        super(nameOfShip, stats, cost, display, crew, ammo);
+        super(p, nameOfShip, stats, cost, display, crew, ammo);
         this.fuel = fuel;
         this.shipType = shipType;
         initialize(shipType, node, position);

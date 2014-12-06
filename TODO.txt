@@ -1,1 +1,2 @@
-take out map from all the player classes
+add sound
+add player ship possesion
