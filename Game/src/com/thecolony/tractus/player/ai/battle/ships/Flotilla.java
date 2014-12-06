@@ -288,12 +288,8 @@ public class Flotilla
         {
             if (this.getShip(0).getBattleStat(8) == 0)
             {
+                flotilla[0].getDrawableObject3d().changeNodeState(false);
                 flotilla = new Ship[0];
-                Node flotillasNode = new Node("Flotillas Node");
-                double[] stats = new double[19];
-                Ship a = new Ship(Ship.SHIP_TYPE.Fighter, "Fighter ", flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-                a.setEqualStats(0);
-                flotilla[0] = a;
             }
         }
     }
