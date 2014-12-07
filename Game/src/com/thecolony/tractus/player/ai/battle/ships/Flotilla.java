@@ -23,7 +23,6 @@ public class Flotilla
     private String[] names;
     private double[] qualities;
     private int worth;
-    private String[] image;
     private int crew;
     private Ship[] flotilla;
     private boolean isFull;
@@ -99,7 +98,7 @@ public class Flotilla
         float maxExtent = 0;
         for (int i = 0; i < flotilla.length; i++)
         {
-            BoundingBox b = (BoundingBox) flotilla[i].getDrawableObject3d().getModel().getWorldBound();
+            BoundingBox b = (BoundingBox) flotilla[i].getMoveableObject3d().getModel().getWorldBound();
             maxExtent = Math.max(maxExtent, b.getXExtent());
             maxExtent = Math.max(maxExtent, b.getZExtent());
         }
@@ -113,7 +112,7 @@ public class Flotilla
             boolean stop = false;
             for (int j = -halfSideLength; j < halfSideLength + offset; j++)
             {
-                flotilla[index++].getDrawableObject3d().getModel().setLocalTranslation(centerPosition.add(new Vector3f(maxExtent, 0.0f, maxExtent).mult(new Vector3f(i, 1, j))));                
+                flotilla[index++].getMoveableObject3d().getModel().setLocalTranslation(centerPosition.add(new Vector3f(maxExtent, 0.0f, maxExtent).mult(new Vector3f(i, 1, j))));                
                 stop = index == flotilla.length;
                 if (stop)
                     break;
@@ -124,15 +123,15 @@ public class Flotilla
 
         float height = 0.0f;
         for (int i = 0; i < flotilla.length; i++)
-            height = Math.max(height, ((BoundingBox) flotilla[i].getDrawableObject3d().getModel().getWorldBound()).getYExtent());
+            height = Math.max(height, ((BoundingBox) flotilla[i].getMoveableObject3d().getModel().getWorldBound()).getYExtent());
         height *= 2.0f;
         
         Vector3f min = flotilla[0].getPosition();
-        BoundingBox b = (BoundingBox) flotilla[0].getDrawableObject3d().getModel().getWorldBound();
+        BoundingBox b = (BoundingBox) flotilla[0].getMoveableObject3d().getModel().getWorldBound();
 //        min.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
         min.add(10, 10, 10);
         
-        b = (BoundingBox) flotilla[flotilla.length - 1].getDrawableObject3d().getModel().getWorldBound();
+        b = (BoundingBox) flotilla[flotilla.length - 1].getMoveableObject3d().getModel().getWorldBound();
         Vector3f max = flotilla[flotilla.length - 1].getPosition();
         max.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
         
@@ -260,7 +259,7 @@ public class Flotilla
             {
                 if (temp[i].getBattleStat(BattleObject.BATTLE_STAT_HP) == 0)
                 {
-                    flotilla[i].getDrawableObject3d().changeNodeState(false);
+                    flotilla[i].getMoveableObject3d().changeNodeState(false);
 
                     boolean passed = false;
                     Ship[] temp2 = new Ship[temp.length - 1];
@@ -289,7 +288,7 @@ public class Flotilla
         {
             if (this.getShip(0).getBattleStat(8) == 0)
             {
-                flotilla[0].getDrawableObject3d().changeNodeState(false);
+                flotilla[0].getMoveableObject3d().changeNodeState(false);
                 flotilla = new Ship[0];
             }
         }
@@ -467,21 +466,6 @@ public class Flotilla
         isFull = !isFull;
     }
 
-    public String[] getImage()
-    {
-        return image;
-    }
-
-    public void setImage()
-    {
-        String[] temp = new String[flotilla.length];
-        for (int i = 0; i < flotilla.length; i++)
-        {
-            temp[i] = getShip(i).getImage();
-        }
-        image = temp;
-    }
-
     public void setFlotillaStats()
     {
         if (flotilla.length > 0)
@@ -503,7 +487,6 @@ public class Flotilla
                 }
                 worth = worth + flotilla[i].getCost();
                 crew = crew + flotilla[i].getCrew();
-                setImage();
             }
             qualities[4] = qualities[4] / flotilla.length;
             qualities[5] = qualities[5] / flotilla.length;

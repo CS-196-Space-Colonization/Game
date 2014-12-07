@@ -234,8 +234,8 @@ public class GameLoader
     private Ship generateShip(int player, Node node, int num, Ship.SHIP_TYPE type, Vector3f pos, double[] stats)
     {
         Player playah = new Player(player);
-        Ship shit = new Ship(playah, type, type.toString() + num, node, pos, stats, 0, "Fighter " + num, 0, 0, 0.0);
-        shit.getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(shit.getPlayer().getColor()));
+        Ship shit = new Ship(playah, type, type.toString() + num, node, pos, stats, 0, 0, 0, 0.0);
+        shit.getMoveableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(shit.getPlayer().getColor()));
         return shit;
     }
 

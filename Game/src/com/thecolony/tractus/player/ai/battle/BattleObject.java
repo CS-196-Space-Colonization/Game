@@ -10,120 +10,162 @@ import com.thecolony.tractus.player.ai.battle.ships.Ship;
 @Serializable
 public abstract class BattleObject
 {
-    /** 0x00 ---- First Battle Stat */
-    public static final int BATTLE_STAT_REG_POWER   		= 0x00;
-    /** 0x01 */
-    public static final int BATTLE_STAT_SP_POWER    		= 0x01;
-    /** 0x02 */
-    public static final int BATTLE_STAT_REG_DEFENSE 		= 0x02;
-    /** 0x03 */
-    public static final int BATTLE_STAT_SP_DEFENSE  		= 0x03;
-    /** 0x04 */
-    public static final int BATTLE_STAT_REG_ATTACK_COOLDOWN     = 0x04;
-    /** 0x05 */
-    public static final int BATTLE_STAT_SP_ATTACK_COOLDOWN      = 0x05;
-    /** 0x06 */
-    public static final int BATTLE_STAT_REG_ACCURACY		= 0x06;
-    /** 0x07 */
-    public static final int BATTLE_STAT_SP_ACCURACY		= 0x07;
-    /** 0x08 */
-    public static final int BATTLE_STAT_HP 			= 0x08;
-    /** 0x09 */
-    public static final int BATTLE_STAT_REG_RANGE 		= 0x09;
-    /** 0x0A */
-    public static final int BATTLE_STAT_SP_RANGE 		= 0x0A;
-    /** 0x0B */
-    public static final int BATTLE_STAT_MOVEMENT_SPEED		= 0x0B;
-    /** 0x0C */
-    public static final int BATTLE_STAT_REPAIR_ABILITY 		= 0x0C;
-    /** 0x0D */
-    public static final int BATTLE_STAT_BUILD_ABILITY		= 0x0D;
-    /** 0x0E */
-    public static final int BATTLE_STAT_TRANSPORT_ABILITY	= 0x0E;
-    /** 0x0F */
-    public static final int BATTLE_STAT_SP_ARMOR_STAT	 	= 0x0F;
-    /** 0x10 */
-    public static final int BATTLE_STAT_REG_ARMOR_STAT 		= 0x10;
-    /** 0x11 */
-    public static final int BATTLE_STAT_SP_WEAPON_STAT	 	= 0x11;
-    /** 0x12 */
-    public static final int BATTLE_STAT_REG_WEAPON_STAT 	= 0x12;
 
+    /**
+     * 0x00 ---- First Battle Stat
+     */
+    public static final int BATTLE_STAT_REG_POWER = 0x00;
+    /**
+     * 0x01
+     */
+    public static final int BATTLE_STAT_SP_POWER = 0x01;
+    /**
+     * 0x02
+     */
+    public static final int BATTLE_STAT_REG_DEFENSE = 0x02;
+    /**
+     * 0x03
+     */
+    public static final int BATTLE_STAT_SP_DEFENSE = 0x03;
+    /**
+     * 0x04
+     */
+    public static final int BATTLE_STAT_REG_ATTACK_COOLDOWN = 0x04;
+    /**
+     * 0x05
+     */
+    public static final int BATTLE_STAT_SP_ATTACK_COOLDOWN = 0x05;
+    /**
+     * 0x06
+     */
+    public static final int BATTLE_STAT_REG_ACCURACY = 0x06;
+    /**
+     * 0x07
+     */
+    public static final int BATTLE_STAT_SP_ACCURACY = 0x07;
+    /**
+     * 0x08
+     */
+    public static final int BATTLE_STAT_HP = 0x08;
+    /**
+     * 0x09
+     */
+    public static final int BATTLE_STAT_REG_RANGE = 0x09;
+    /**
+     * 0x0A
+     */
+    public static final int BATTLE_STAT_SP_RANGE = 0x0A;
+    /**
+     * 0x0B
+     */
+    public static final int BATTLE_STAT_MOVEMENT_SPEED = 0x0B;
+    /**
+     * 0x0C
+     */
+    public static final int BATTLE_STAT_REPAIR_ABILITY = 0x0C;
+    /**
+     * 0x0D
+     */
+    public static final int BATTLE_STAT_BUILD_ABILITY = 0x0D;
+    /**
+     * 0x0E
+     */
+    public static final int BATTLE_STAT_TRANSPORT_ABILITY = 0x0E;
+    /**
+     * 0x0F
+     */
+    public static final int BATTLE_STAT_SP_ARMOR_STAT = 0x0F;
+    /**
+     * 0x10
+     */
+    public static final int BATTLE_STAT_REG_ARMOR_STAT = 0x10;
+    /**
+     * 0x11
+     */
+    public static final int BATTLE_STAT_SP_WEAPON_STAT = 0x11;
+    /**
+     * 0x12
+     */
+    public static final int BATTLE_STAT_REG_WEAPON_STAT = 0x12;
+    
     protected String name;
     
     protected double[] qualities;
     protected int cost;
-    protected String image;
+    
     protected int crew;
     protected int ammo;
-
+    
     private double x = 1;
     private double y = 0;// no longer going to change sp stat in this way.
     private double z = 1;
-
-    static double HPfactor = 10;
+    
+    private static double HPfactor = 10;
     
     private Player player;
-    
-    protected transient DrawableObject3d model;
 
     public BattleObject(double hp)
     {
         name = "object";
         qualities = new double[BATTLE_STAT_REG_WEAPON_STAT + 1]; // BATTLE_STAT_REG_WEAPON_STAT is the largest value
         cost = 10;
-        image = "[]";
         crew = 1;
         setEqualStats(10.0);
         qualities[BATTLE_STAT_HP] = hp;
     }
+
     public BattleObject(String name)
     {
         this.name = name;
         qualities = new double[BATTLE_STAT_REG_WEAPON_STAT + 1]; // BATTLE_STAT_REG_WEAPON_STAT is the largest value
         cost = 10;
-        image = "[]";
         crew = 1;
-        setEqualStats(10.0);		
+        setEqualStats(10.0);
     }
+
     public BattleObject()
     {
         name = "object";
         qualities = new double[BATTLE_STAT_REG_WEAPON_STAT + 1]; // BATTLE_STAT_REG_WEAPON_STAT is the largest value
         cost = 10;
-        image = "[]";
         crew = 1;
         setEqualStats(10.0);
     }
-    public BattleObject(Player p, String nameOfShip, double[] stats, int Cost, String display, int Crew, int am)
+
+    public BattleObject(Player p, String nameOfShip, double[] stats, int Cost, int Crew, int am)
     {
         player = p;
         name = nameOfShip;
         double[] fullStats = new double[19];
-        for(int i = 0; i < 19; i++)
+        for (int i = 0; i < 19; i++)
         {
-            if(stats[i] == 0)
+            if (stats[i] == 0)
             {
-                if(i == 4 || i == 5)
+                if (i == 4 || i == 5)
+                {
                     fullStats[i] = 5;
+                }
                 else
-                fullStats[i] = 10;
+                {
+                    fullStats[i] = 10;
+                }
             }
             else
+            {
                 fullStats[i] = stats[i];
+            }
         }
         qualities = fullStats;
         cost = Cost;
-        image = display;
         crew = Crew;
         ammo = am;
     }
-    
+
     public Player getPlayer()
     {
         return player;
     }
-    
+
     public void setPlayer(Player p)
     {
         player = p;
@@ -133,20 +175,17 @@ public abstract class BattleObject
     {
         return ammo;
     }
+
     public void addAmmo(int amount)
     {
         ammo = ammo + amount;
     }
-
-    public String getImage()
-    {
-        return image;
-    }
-
+    
     public String getName()
     {
         return name;
     }
+
     public void setName(String newName)
     {
         name = newName;
@@ -155,9 +194,9 @@ public abstract class BattleObject
     public double[] getStats()
     {
         double[] temp = new double[19];
-        for(int i = 0; i < temp.length; i++)
+        for (int i = 0; i < temp.length; i++)
         {
-                temp[i] = qualities[i];
+            temp[i] = qualities[i];
         }
         return temp;
     }
@@ -173,26 +212,19 @@ public abstract class BattleObject
         {
             qualities[BATTLE_STAT_HP] = qualities[BATTLE_STAT_HP] - value;
             if (qualities[BATTLE_STAT_HP] < 0)
-                    qualities[BATTLE_STAT_HP] = 0;
-        }
-        else if (BATTLE_STAT == BATTLE_STAT_MOVEMENT_SPEED)
-        {
-            qualities[BATTLE_STAT] = value;
-            ((MoveableObject3d)model).setMovementSpeed((float)value);
+            {
+                qualities[BATTLE_STAT_HP] = 0;
+            }
         }
         else
             qualities[BATTLE_STAT] = value;
-    }
-    
-    public Vector3f getPosition()
-    {
-        return model.getPosition();
     }
 
     public int getCost()
     {
         return cost;
     }
+
     public void setCost(int Cost)
     {
         cost = Cost;
@@ -202,6 +234,7 @@ public abstract class BattleObject
     {
         return crew;
     }
+
     public void setCrew(int newCrew)
     {
         crew = newCrew;
@@ -212,11 +245,13 @@ public abstract class BattleObject
         double damage = ((attack.getBattleStat(BATTLE_STAT_SP_POWER) + attack.getBattleStat(BATTLE_STAT_SP_WEAPON_STAT)) / (defend.getBattleStat(BATTLE_STAT_SP_DEFENSE) + defend.getBattleStat(BATTLE_STAT_SP_ARMOR_STAT)) * HPfactor);
         defend.setBattleStat(BATTLE_STAT_HP, damage);
     }
+
     public static void calcRegDamage(Ship attack, Ship defend)
     {
-        double damage = ((attack.getBattleStat(BATTLE_STAT_REG_POWER) + attack.getBattleStat(BATTLE_STAT_REG_WEAPON_STAT))) / (defend.getBattleStat(BATTLE_STAT_REG_DEFENSE) + defend.getBattleStat(BATTLE_STAT_REG_ARMOR_STAT)  * HPfactor);
+        double damage = ((attack.getBattleStat(BATTLE_STAT_REG_POWER) + attack.getBattleStat(BATTLE_STAT_REG_WEAPON_STAT))) / (defend.getBattleStat(BATTLE_STAT_REG_DEFENSE) + defend.getBattleStat(BATTLE_STAT_REG_ARMOR_STAT) * HPfactor);
         defend.setBattleStat(BATTLE_STAT_HP, damage);
     }
+
     public static void battle(Ship a, Ship b)
     {
         calcRegDamage(a, b);
@@ -239,12 +274,14 @@ public abstract class BattleObject
     {
         y = Y;
     }
+
     public void setStaionaryObject(double[] qual)
     {
         setStats(qual);
     }
+
     public void setStatsHeal(double level)//level varies directly with cost, ex if a ship is twice the level
-                                                                              //of one ship it will cost a little less than twice as much	
+    //of one ship it will cost a little less than twice as much	
     {
         qualities[0] = level * 0;
         qualities[1] = (level - y) * 0;
@@ -266,6 +303,7 @@ public abstract class BattleObject
         qualities[17] = (level - y) * 0;
         qualities[18] = level * 0;
     }
+
     public void setStatsBuild(double level)
     {
         qualities[0] = level * 0;
@@ -288,6 +326,7 @@ public abstract class BattleObject
         qualities[17] = (level - y) * 0;
         qualities[18] = level * 0;
     }
+
     public void setStatsAttack(double level)
     {
         qualities[0] = level * 10 * x;
@@ -310,6 +349,7 @@ public abstract class BattleObject
         qualities[17] = level * 0;
         qualities[18] = level * 0;
     }
+
     public void setStatsDefend(double level)
     {
         qualities[0] = level * 2 * x;
@@ -332,6 +372,7 @@ public abstract class BattleObject
         qualities[17] = level * 0;
         qualities[18] = level * 0;
     }
+
     public void setStatsSpeed(double level)
     {
         qualities[0] = level * 4 * x;
@@ -354,6 +395,7 @@ public abstract class BattleObject
         qualities[17] = level * 0;
         qualities[18] = level * 0;
     }
+
     public void setStatsRange(double level)
     {
         qualities[0] = level * 5 * x;
@@ -376,6 +418,7 @@ public abstract class BattleObject
         qualities[17] = level * 0;
         qualities[18] = level * 0;
     }
+
     public void setStatsBalance(double level)
     {
         qualities[0] = level * 6 * x;
@@ -399,26 +442,30 @@ public abstract class BattleObject
         qualities[18] = level * 0;
     }
 
-    public void setEqualStats(double stat)
+    public final void setEqualStats(double stat)
     {
         double[] temp = new double[19];
-        for(int i = 0; i < temp.length; i++)
+        for (int i = 0; i < temp.length; i++)
         {
-                temp[i] = stat;
+            temp[i] = stat;
         }
         temp[6] = 1;
         temp[7] = 1;
         qualities = temp;
     }
+
     public void setStats(double[] stat)
     {
         for (int i = 0; i < qualities.length; i++)
-                qualities[i] = stat[i];
+        {
+            qualities[i] = stat[i];
+        }
     }
     //do not intend to use this setCustom method in anything but testing
-    public void setStatsCustom(double regPower, double spPower, double regDefence, double spDefence, double regCoolDown, double spCooldown, 
-                    double regWeaponsAccuracy, double spWeaponsAccuracy, double HP,	double regAttackRange, double spAttackRange, double MovementSpeed, 
-                    double Repair, double build, double transport, double spArmor, double regArmor, double spWeapon, double regWeapon)
+
+    public void setStatsCustom(double regPower, double spPower, double regDefence, double spDefence, double regCoolDown, double spCooldown,
+            double regWeaponsAccuracy, double spWeaponsAccuracy, double HP, double regAttackRange, double spAttackRange, double MovementSpeed,
+            double Repair, double build, double transport, double spArmor, double regArmor, double spWeapon, double regWeapon)
     {
         qualities[0] = regPower;
         qualities[1] = spPower;
@@ -440,19 +487,14 @@ public abstract class BattleObject
         qualities[17] = spWeapon;
         qualities[18] = regWeapon;
     }
-    
-    public DrawableObject3d getDrawableObject3d()
-    {
-        return model;
-    }
-    
+
     public String[] getDisplayInfo()
     {
-        return new String[] 
+        return new String[]
         {
             "Name: " + name,
             "Battle Stats:",
-            "  HP: " + (int)qualities[BATTLE_STAT_HP],
+            "  HP: " + (int) qualities[BATTLE_STAT_HP],
             "  Reg Power: " + qualities[BATTLE_STAT_REG_POWER],
             "  Sp Power: " + qualities[BATTLE_STAT_SP_POWER],
             "  Reg Defense: " + qualities[BATTLE_STAT_REG_DEFENSE],
@@ -471,6 +513,8 @@ public abstract class BattleObject
             "  Transport Ability: " + qualities[BATTLE_STAT_TRANSPORT_ABILITY],
             "  Build Ability: " + qualities[BATTLE_STAT_BUILD_ABILITY],
             "  Movement Speed: " + qualities[BATTLE_STAT_MOVEMENT_SPEED]
-        };               
+        };
     }
+    
+    public abstract Vector3f getPosition();
 }

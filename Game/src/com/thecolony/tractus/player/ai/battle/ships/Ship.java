@@ -7,7 +7,6 @@ package com.thecolony.tractus.player.ai.battle.ships;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
@@ -21,7 +20,6 @@ import com.thecolony.tractus.player.ai.battle.BattleObject;
  * @author Mark Haynie
  * @author Joe Pagliuco
  */
-@Serializable
 public class Ship extends BattleObject
 {
     /** Class Structure **/
@@ -59,7 +57,8 @@ public class Ship extends BattleObject
     private float prevAngle;
     private float prevDistance;
     
-    private transient Geometry wireBoxGeometry;
+    private MoveableObject3d model; 
+    private Geometry wireBoxGeometry;
     
     private String Qual;
     private double level;
@@ -80,9 +79,9 @@ public class Ship extends BattleObject
         fuel = 0;
     }
 
-    public Ship(Player p, SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel)
+    public Ship(Player p, SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, int crew, int ammo, double fuel)
     {
-        super(p, nameOfShip, stats, cost, display, crew, ammo);
+        super(p, nameOfShip, stats, cost, crew, ammo);
         this.fuel = fuel;
         this.shipType = shipType;
         initialize(shipType, node, position);
@@ -92,9 +91,9 @@ public class Ship extends BattleObject
         setShip(type);
     }
 
-    public Ship(Player p, SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, String display, int crew, int ammo, double fuel, String qual, int Lev)
+    public Ship(Player p, SHIP_TYPE shipType, String nameOfShip, Node node, Vector3f position, double[] stats, int cost, int crew, int ammo, double fuel, String qual, int Lev)
     {
-        super(p, nameOfShip, stats, cost, display, crew, ammo);
+        super(p, nameOfShip, stats, cost, crew, ammo);
         this.fuel = fuel;
         this.shipType = shipType;
         initialize(shipType, node, position);
@@ -160,39 +159,39 @@ public class Ship extends BattleObject
     
     public void update(float deltaTime)
     {
-        if (((MoveableObject3d) model).isRotating())
+        if (model.isRotating())
         {
             Vector3f v = targetMovementPoint.subtract(model.getPosition()).normalizeLocal();
 
-            float angle = (float) Math.acos(v.dot(((MoveableObject3d) model).getDirection()));
+            float angle = (float) Math.acos(v.dot(model.getDirection()));
 
             // If the cross product points up, the ship needs to rotate to the right.
-            Vector3f cross = ((MoveableObject3d) model).getDirection().cross(v);
+            Vector3f cross = model.getDirection().cross(v);
             if (cross.y > 0)
             {
-                ((MoveableObject3d) model).rotateDirection(Vector3f.UNIT_Y, deltaTime);
+                model.rotateDirection(Vector3f.UNIT_Y, deltaTime);
             } else if (cross.y < 0)
             {
-                ((MoveableObject3d) model).rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
+                model.rotateDirection(Vector3f.UNIT_Y.negate(), deltaTime);
             }
 
             if (angle > prevAngle)
             {
-                ((MoveableObject3d) model).setIsRotating(false);
+                model.setIsRotating(false);
             }
 
             prevAngle = angle;
         }
 
-        if (((MoveableObject3d) model).isMoving() && !((MoveableObject3d) model).isRotating())
+        if (model.isMoving() && !model.isRotating())
         {
-            ((MoveableObject3d) model).moveAlongDirectionalVector(deltaTime);
+            model.moveAlongDirectionalVector(deltaTime);
 
-            float distance = targetMovementPoint.distance(((MoveableObject3d) model).getPosition());
+            float distance = targetMovementPoint.distance(model.getPosition());
 
             if (distance > prevDistance)
             {
-                ((MoveableObject3d) model).setIsMoving(false);
+                model.setIsMoving(false);
             }
 
             prevDistance = distance;
@@ -205,7 +204,7 @@ public class Ship extends BattleObject
 
         if (isMoving() && !isRotating())
         {            
-            MoveableObject3d m = (MoveableObject3d) model;
+            MoveableObject3d m =  model;
             wireBoxGeometry.move(m.getDirection().mult(m.getMovementSpeed() * deltaTime));
         }
         
@@ -221,12 +220,20 @@ public class Ship extends BattleObject
     public void setTargetPoint(Vector3f targetPoint, boolean moveTo)
     {
         targetMovementPoint = targetPoint;
-        ((MoveableObject3d) model).setIsMoving(moveTo);
-        ((MoveableObject3d) model).setIsRotating(true);
+        model.setIsMoving(moveTo);
+        model.setIsRotating(true);
         prevAngle = FastMath.PI;
         prevDistance = Float.POSITIVE_INFINITY;
     }
     
+    @Override
+    public void setBattleStat(int BATTLE_STAT, double value)
+    {
+        if (BATTLE_STAT == BATTLE_STAT_MOVEMENT_SPEED)            
+            model.setMovementSpeed((float)value);
+        
+        super.setBattleStat(BATTLE_STAT, value);
+    }
     
     public void addFuel(double add)
     {
@@ -257,17 +264,17 @@ public class Ship extends BattleObject
      */
     public boolean isTransforming()
     {
-        return ((MoveableObject3d) model).isMoving() || ((MoveableObject3d) model).isRotating();
+        return model.isMoving() || model.isRotating();
     }
 
     public boolean isMoving()
     {
-        return ((MoveableObject3d) model).isMoving();
+        return model.isMoving();
     }
 
     public boolean isRotating()
     {
-        return ((MoveableObject3d) model).isRotating();
+        return model.isRotating();
     }
 
     
@@ -502,9 +509,15 @@ public class Ship extends BattleObject
         }
     }
     
+    @Override
+    public Vector3f getPosition()
+    {
+        return model.getPosition();
+    }
+    
     public MoveableObject3d getMoveableObject3d()
     {
-        return (MoveableObject3d)model;
+        return model;
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
