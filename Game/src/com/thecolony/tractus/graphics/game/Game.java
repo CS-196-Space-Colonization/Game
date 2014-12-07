@@ -83,7 +83,6 @@ public class Game extends SimpleApplication
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
-    private AnalogListener getmKeyboardAnalogListener;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -205,8 +204,7 @@ public class Game extends SimpleApplication
     }
     private AudioNode[] battles;
     private AudioNode[] creates;
-    private void loadAudio()
-    {
+    private void loadAudio() {
         AudioNode audio_battle1 = new AudioNode(assetManager, "Sounds/Battle/35683__jobro__laser6.wav", false);
         audio_battle1.setLooping(false);
         audio_battle1.setVolume(3);
@@ -227,15 +225,14 @@ public class Game extends SimpleApplication
         audio_battle4.setVolume(3);
         audio_battle4.setPositional(false);
         rootNode.attachChild(audio_battle4);
-        
+
         battles = new AudioNode[4];
-        battles[0]=audio_battle1;
-        battles[1]=audio_battle2;
-        battles[2]=audio_battle3;
-        battles[3]=audio_battle4;
-        
-       
-        
+        battles[0] = audio_battle1;
+        battles[1] = audio_battle2;
+        battles[2] = audio_battle3;
+        battles[3] = audio_battle4;
+
+
         AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
         audio_onCreate1.setLooping(false);
         audio_onCreate1.setVolume(3);
@@ -257,12 +254,11 @@ public class Game extends SimpleApplication
         audio_onCreate4.setPositional(false);
         rootNode.attachChild(audio_onCreate4);
         creates = new AudioNode[4];
-        creates[0]=audio_onCreate1;
-        creates[1]=audio_onCreate2;
-        creates[2]=audio_onCreate3;
-        creates[3]=audio_onCreate4;
-       
-    }
+        creates[0] = audio_onCreate1;
+        creates[1] = audio_onCreate2;
+        creates[2] = audio_onCreate3;
+        creates[3] = audio_onCreate4;
+
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
