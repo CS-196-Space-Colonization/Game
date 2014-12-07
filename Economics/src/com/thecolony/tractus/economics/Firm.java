@@ -35,6 +35,7 @@ public class Firm extends AbstractAgent {
 		inventory = supplier.take();
 		production.give(inventory);
 		production.runProductionStep();
+		production.performMaintenance();
 		inventory = production.take();
 		sales.give(inventory);
 		sales.postAdvertisements();
