@@ -2,6 +2,7 @@ package com.thecolony.tractus.graphics.game;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
@@ -309,6 +310,69 @@ public class Game extends SimpleApplication
             "Compress", "Decompress"
         });
     }
+    private AudioNode[] battles;
+    private AudioNode[] creates;
+    private void loadAudio()
+    {
+        AudioNode audio_battle1 = new AudioNode(assetManager, "assets/Sounds/Battle/35683__jobro__laser6.wav", false);
+        audio_battle1.setLooping(false);
+        audio_battle1.setVolume(3);
+        audio_battle1.setPositional(false);
+        rootNode.attachChild(audio_battle1);
+        AudioNode audio_battle2 = new AudioNode(assetManager, "assets/Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
+        audio_battle2.setLooping(false);
+        audio_battle2.setVolume(3);
+        audio_battle2.setPositional(false);
+        rootNode.attachChild(audio_battle2);
+        AudioNode audio_battle3 = new AudioNode(assetManager, "assets/Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
+        audio_battle3.setLooping(false);
+        audio_battle3.setVolume(3);
+        audio_battle3.setPositional(false);
+        rootNode.attachChild(audio_battle3);
+        AudioNode audio_battle4 = new AudioNode(assetManager, "assets/Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
+        audio_battle4.setLooping(false);
+        audio_battle4.setVolume(3);
+        audio_battle4.setPositional(false);
+        rootNode.attachChild(audio_battle4);
+        
+        battles = new AudioNode[4];
+        battles[0]=audio_battle1;
+        battles[1]=audio_battle2;
+        battles[2]=audio_battle3;
+        battles[3]=audio_battle4;
+        
+       
+        
+        AudioNode audio_onCreate1 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
+        audio_onCreate1.setLooping(false);
+        audio_onCreate1.setVolume(3);
+        audio_onCreate1.setPositional(false);
+        rootNode.attachChild(audio_onCreate1);
+        AudioNode audio_onCreate2 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
+        audio_onCreate2.setLooping(false);
+        audio_onCreate2.setVolume(3);
+        audio_onCreate2.setPositional(false);
+        rootNode.attachChild(audio_onCreate2);
+        AudioNode audio_onCreate3 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
+        audio_onCreate3.setLooping(false);
+        audio_onCreate3.setVolume(3);
+        audio_onCreate3.setPositional(false);
+        rootNode.attachChild(audio_onCreate3);
+        AudioNode audio_onCreate4 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
+        audio_onCreate4.setLooping(false);
+        audio_onCreate4.setVolume(3);
+        audio_onCreate4.setPositional(false);
+        rootNode.attachChild(audio_onCreate4);
+        creates = new AudioNode[4];
+        creates[0]=audio_onCreate1;
+        creates[1]=audio_onCreate2;
+        creates[2]=audio_onCreate3;
+        creates[3]=audio_onCreate4;
+       
+    }
+                
+        
+    
 
     private void addNodes()
     {
@@ -372,315 +436,306 @@ public class Game extends SimpleApplication
     {
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (selectionMode == Selection_Mode.Ship_Selection)
-            {
-                if (name.equals("Right Click") && isPressed)
-                {
-                    if (!mIsShiftPressed)
-                    {
-                        clearSelectedObjects();
-                    }
+	  if (selectionMode == Selection_Mode.Ship_Selection)
+	  {
+	      if (name.equals("Right Click") && isPressed)
+	      {
+		if (!mIsShiftPressed)
+		{
+		    clearSelectedObjects();
+		}
 
-                    Ray r = getMouseRay();
+		Ray r = getMouseRay();
 
-                    boolean selectedSomething = false;
-                    for (int i = 0; i < loneShips.size(); i++)
-                    {
-                        Ship s = loneShips.get(i);
-                        selectedSomething = ((BoundingBox) s.getDrawableObject3d().getModel().getWorldBound()).intersects(r);
-                        if (selectedSomething)
-                        {
-                            addSelectedObject(s);
-                            break;
-                        }
-                    }
-                    if (!selectedSomething)
-                    {
-                        clearSelectedObjects();
-                    }
-                }
+		boolean selectedSomething = false;
+		for (int i = 0; i < loneShips.size(); i++)
+		{
+		    Ship s = loneShips.get(i);
+		    selectedSomething = ((BoundingBox) s.getDrawableObject3d().getModel().getWorldBound()).intersects(r);
+		    if (selectedSomething)
+		    {
+		        addSelectedObject(s);
+		        break;
+		    }
+		}
+		if (!selectedSomething)
+		{
+		    clearSelectedObjects();
+		}
+	      }
 
-                if (name.equals("Left Click") && isPressed)
-                {
-                    if (isMoveToggleOn || isRotateToggleOn)
-                    {
-                        Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
+	      if (name.equals("Left Click") && isPressed)
+	      {
+		if (isMoveToggleOn || isRotateToggleOn)
+		{
+		    Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
 
-                        for (int i = 0; i < loneShips.size(); i++)
-                        {
-                            Ship s = loneShips.get(i);
-                            if (s.isSelected())
-                            {
-                                s.setTargetPoint(s.getPosition().add(directionalVector), isMoveToggleOn);
-                            }
-                        }
+		    for (int i = 0; i < loneShips.size(); i++)
+		    {
+		        Ship s = loneShips.get(i);
+		        if (s.isSelected())
+		        {
+			  s.setTargetPoint(s.getPosition().add(directionalVector), isMoveToggleOn);
+		        }
+		    }
 
-                        isMoveToggleOn = isRotateToggleOn = false;
-                        inputManager.setMouseCursor(null);
-                    }
-                    else
-                    {
-                        if (isBoxSelectToggleOn)
-                        {
-                            Vector2f cursorPos = inputManager.getCursorPosition();
-                            mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
-                            guiNode.attachChild(mPictureBoxSelect);
-                        }
-                    }
-                }
-                else
-                {
-                    if (name.equals("Left Click") && !isPressed)
-                    {
-                        if (isBoxSelectToggleOn)
-                        {
-                            clearSelectedObjects();
+		    isMoveToggleOn = isRotateToggleOn = false;
+		    inputManager.setMouseCursor(null);
+		} else
+		{
+		    if (isBoxSelectToggleOn)
+		    {
+		        Vector2f cursorPos = inputManager.getCursorPosition();
+		        mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
+		        guiNode.attachChild(mPictureBoxSelect);
+		    }
+		}
+	      } else
+	      {
+		if (name.equals("Left Click") && !isPressed)
+		{
+		    if (isBoxSelectToggleOn)
+		    {
+		        clearSelectedObjects();
 
-                            // Create big ass selector cube...
-                            Vector3f min = getMouseRayIntersectionPoint();
-                            Vector3f max = Vector3f.ZERO;
-                            Ray r = createRayFromPoint((Vector2f) mPictureBoxSelect.getUserData("Initial Position"));
-                            r.intersectsWherePlane(mMovementPlane, max);
-                            Box bigAssSelectorCube = new Box(min, max);
+		        // Create big ass selector cube...
+		        Vector3f min = getMouseRayIntersectionPoint();
+		        Vector3f max = Vector3f.ZERO;
+		        Ray r = createRayFromPoint((Vector2f) mPictureBoxSelect.getUserData("Initial Position"));
+		        r.intersectsWherePlane(mMovementPlane, max);
+		        Box bigAssSelectorCube = new Box(min, max);
 
-                            // Loop through ships to see if they're in the selected area...
-                            for (int i = 0; i < loneShips.size(); i++)
-                            {
-                                BoundingVolume shipBound = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound();
-                                if (bigAssSelectorCube.getBound().intersects(shipBound))
-                                {
-                                    addSelectedObject(loneShips.get(i));
-                                }
-                            }
+		        // Loop through ships to see if they're in the selected area...
+		        for (int i = 0; i < loneShips.size(); i++)
+		        {
+			  BoundingVolume shipBound = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound();
+			  if (bigAssSelectorCube.getBound().intersects(shipBound))
+			  {
+			      addSelectedObject(loneShips.get(i));
+			  }
+		        }
 
-                            guiNode.detachChild(mPictureBoxSelect);
-                            isBoxSelectToggleOn = false;
-                            inputManager.setMouseCursor(null);
-                            flyCam.setEnabled(true);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (selectionMode == Selection_Mode.Flotilla_Selection)
-                {
-                    if (name.equals("Right Click") && isPressed)
-                    {
-                        if (!mIsShiftPressed)
-                        {
-                            clearSelectedObjects();
-                        }
+		        guiNode.detachChild(mPictureBoxSelect);
+		        isBoxSelectToggleOn = false;
+		        inputManager.setMouseCursor(null);
+		        flyCam.setEnabled(true);
+		    }
+		}
+	      }
+	  } else
+	  {
+	      if (selectionMode == Selection_Mode.Flotilla_Selection)
+	      {
+		if (name.equals("Right Click") && isPressed)
+		{
+		    if (!mIsShiftPressed)
+		    {
+		        clearSelectedObjects();
+		    }
 
-                        Ray r = getMouseRay();
+		    Ray r = getMouseRay();
 
-                        boolean selectedSomething = false;
-                        for (int i = 0; i < flotillas.size(); i++)
-                        {
-                            Flotilla f = flotillas.get(i);
-                            selectedSomething = f.getBoundingBox().intersects(r);
-                            if (selectedSomething)
-                            {
-                                addSelectedObject(f);
-                                break;
-                            }
-                        }
-                        if (!selectedSomething)
-                        {
-                            clearSelectedObjects();
-                        }
-                    }
+		    boolean selectedSomething = false;
+		    for (int i = 0; i < flotillas.size(); i++)
+		    {
+		        Flotilla f = flotillas.get(i);
+		        selectedSomething = f.getBoundingBox().intersects(r);
+		        if (selectedSomething)
+		        {
+			  addSelectedObject(f);
+			  break;
+		        }
+		    }
+		    if (!selectedSomething)
+		    {
+		        clearSelectedObjects();
+		    }
+		}
 
-                    if (name.equals("Left Click") && isPressed)
-                    {
-                        if (isMoveToggleOn || isRotateToggleOn)
-                        {
-                            Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
-                            for (int i = 0; i < flotillas.size(); i++)
-                            {
-                                Flotilla f = flotillas.get(i);
-                                if (f.isSelected())
-                                {
-                                    f.setTargetPoint(f.getCenterPosition().add(directionalVector), isMoveToggleOn);
-                                }
-                            }
+		if (name.equals("Left Click") && isPressed)
+		{
+		    if (isMoveToggleOn || isRotateToggleOn)
+		    {
+		        Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
+		        for (int i = 0; i < flotillas.size(); i++)
+		        {
+			  Flotilla f = flotillas.get(i);
+			  if (f.isSelected())
+			  {
+			      f.setTargetPoint(f.getCenterPosition().add(directionalVector), isMoveToggleOn);
+			  }
+		        }
 
-                            isMoveToggleOn = isRotateToggleOn = false;
-                            inputManager.setMouseCursor(null);
-                        }
-                        else
-                        {
-                            if (isAttackToggleOn)
-                            {
-                                Ray r = getMouseRay();
-                                for (int i = 0; i < flotillas.size(); i++)
-                                {
-                                    Flotilla f = flotillas.get(i);
-                                    if (f.isSelected())
-                                    {
-                                        continue;
-                                    }
+		        isMoveToggleOn = isRotateToggleOn = false;
+		        inputManager.setMouseCursor(null);
+		    } else
+		    {
+		        if (isAttackToggleOn)
+		        {
+			  Ray r = getMouseRay();
+			  for (int i = 0; i < flotillas.size(); i++)
+			  {
+			      Flotilla f = flotillas.get(i);
+			      if (f.isSelected())
+			      {
+				break;
+			      }
 
-                                    boolean hover = f.getBoundingBox().intersects(r);
-                                    if (hover)
-                                    {
-                                        Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
-                                        float change = M_ATTACK_DISTANCE / targetDirection.length();
-                                        Vector3f targetPoint = f.getCenterPosition().clone().interpolate(mSelectedNodeCenterPos, change);
-                                        
-                                        f.setTargetPoint(targetPoint, false);
+			      boolean hover = f.getBoundingBox().intersects(r);
+			      if (hover)
+			      {
+				Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
+				float change = M_ATTACK_DISTANCE / targetDirection.length();
+				Vector3f targetPoint = f.getCenterPosition().interpolate(mSelectedNodeCenterPos, change);
 
-                                        // Add attacker
-                                        Flotilla attacker = null;
-                                        for (int j = 0; j < flotillas.size(); j++)
-                                        {
-                                            Flotilla f2 = flotillas.get(j);
-                                            if (f2.isSelected())
-                                            {
-                                                attacker = f2;
-                                                f2.setTargetPoint(targetPoint, true);
-                                                break;
-                                            }
-                                        }
+                                f.setTargetPoint(targetPoint, false);
 
-                                        flotillaBattles.add(new FlotillaBattler(attacker, f));
-                                    }
-                                }
+				// Add attacker
+				Flotilla attacker = null;
+				for (int j = 0; j < flotillas.size(); j++)
+				{
+				    Flotilla f2 = flotillas.get(j);
+				    if (f2.isSelected())
+				    {
+				        attacker = f2;
+				        f2.setTargetPoint(targetPoint, true);
+				        break;
+				    }
+				}
 
-                                isAttackToggleOn = false;
-                                inputManager.setMouseCursor(null);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+				flotillaBattles.add(new FlotillaBattler(attacker, f));
+			      }
+			  }
+
+			  isAttackToggleOn = false;
+			  inputManager.setMouseCursor(null);
+		        }
+		    }
+		}
+	      }
+	  }
+}
     };
     private ActionListener mKeyboardActionListener = new ActionListener()
     {
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("Pause") && isPressed)
-            {
-                isRunning = !isRunning;
+	  if (name.equals("Pause") && isPressed)
+	  {
+	      isRunning = !isRunning;
 
-                flyCam.setEnabled(isRunning);
-            }
+	      flyCam.setEnabled(isRunning);
+	  }
 
-            if (isRunning)
-            {
-                if (name.equals("More Ships") && isPressed)
-                {
-                    double[] stats = new double[19];
-                    stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
+	  if (isRunning)
+	  {
 
-                    loneShips.add(new Ship(new Player(4), Ship.SHIP_TYPE.Fighter, "Fighter " + loneShips.size(), loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + loneShips.size() * 3)),
-                            stats, 0, "Fighter " + loneShips.size(), 0, 0, 0.0));
-                    loneShips.get(loneShips.size() - 1).getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(loneShips.get(loneShips.size() - 1).getPlayer().getColor()));
+	      if (name.equals("More Ships"))
+	      {
+                  creates[(int)((Math.random()*4)%3)].playInstance();
+		double[] stats = new double[19];
+		stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
 
-                    System.out.println(flotillas.get(1).getCenterPosition() + ", " + mSelectedNodeCenterPos);
-                }
+		loneShips.add(new Ship(new Player(4), Ship.SHIP_TYPE.Fighter, "Fighter " + loneShips.size(), loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + loneShips.size() * 3)),
+		        stats, 0, "Fighter " + loneShips.size(), 0, 0, 0.0));
+		loneShips.get(loneShips.size() - 1).getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(loneShips.get(loneShips.size() - 1).getPlayer().getColor()));
+	      }
 
-                if (name.equals("Shift"))
-                {
-                    mIsShiftPressed = isPressed;
-                }
-
-
-                if (name.equals("Move") && isPressed)
-                {
-                    isMoveToggleOn = !isMoveToggleOn;
-                    isRotateToggleOn = false;
-                    isBoxSelectToggleOn = false;
-                    isAttackToggleOn = false;
-                }
-                else
-                {
-                    if (name.equals("Rotate") && isPressed)
-                    {
-                        isMoveToggleOn = false;
-                        isRotateToggleOn = !isRotateToggleOn;
-                        isBoxSelectToggleOn = false;
-                        isAttackToggleOn = false;
-                    }
-                    else
-                    {
-                        if (name.equals("Box Select") && isPressed)
-                        {
-                            isMoveToggleOn = false;
-                            isRotateToggleOn = false;
-                            isBoxSelectToggleOn = !isBoxSelectToggleOn;
-                            isAttackToggleOn = false;
-
-                            flyCam.setEnabled(!flyCam.isEnabled());
-                        }
-                        else
-                        {
-                            if (name.equals("Attack") && mSelectedFlotillasNode.getQuantity() > 0 && isPressed)
-                            {
-                                isMoveToggleOn = false;
-                                isRotateToggleOn = false;
-                                isBoxSelectToggleOn = false;
-                                isAttackToggleOn = !isAttackToggleOn;
-                            }
-                        }
-                    }
-                }
+	      if (name.equals("Shift"))
+	      {
+		mIsShiftPressed = isPressed;
+	      }
 
 
-                if (isMoveToggleOn || isRotateToggleOn || (isBoxSelectToggleOn && selectionMode == Selection_Mode.Ship_Selection) || isAttackToggleOn)
-                {
-                    inputManager.setMouseCursor(mCursorSmiley);
-                }
-                else
-                {
-                    inputManager.setMouseCursor(null);
-                }
+	      if (name.equals("Move") && isPressed)
+	      {
+		isMoveToggleOn = !isMoveToggleOn;
+		isRotateToggleOn = false;
+		isBoxSelectToggleOn = false;
+		isAttackToggleOn = false;
+	      } else
+	      {
+		if (name.equals("Rotate") && isPressed)
+		{
+		    isMoveToggleOn = false;
+		    isRotateToggleOn = !isRotateToggleOn;
+		    isBoxSelectToggleOn = false;
+		    isAttackToggleOn = false;
+		} else
+		{
+		    if (name.equals("Box Select") && isPressed)
+		    {
+		        isMoveToggleOn = false;
+		        isRotateToggleOn = false;
+		        isBoxSelectToggleOn = !isBoxSelectToggleOn;
+		        isAttackToggleOn = false;
+
+		        flyCam.setEnabled(!flyCam.isEnabled());
+		    } else
+		    {
+		        if (name.equals("Attack") && mSelectedFlotillasNode.getQuantity() > 0 && isPressed)
+		        {
+			  isMoveToggleOn = false;
+			  isRotateToggleOn = false;
+			  isBoxSelectToggleOn = false;
+			  isAttackToggleOn = !isAttackToggleOn;
+		        }
+		    }
+		}
+	      }
 
 
-                if (name.equals("Switch Selection Mode") && isPressed)
-                {
-                    if (selectionMode == Selection_Mode.Ship_Selection)
-                    {
-                        selectionMode = Selection_Mode.Flotilla_Selection;
-                        rootNode.detachChild(mSelectedShipsNode);
-                        rootNode.attachChild(mSelectedFlotillasNode);
-                        mSelectionModeText.setText("Selection Mode: Flotilla (Press 'Tab' to switch)");
-                    }
-                    else
-                    {
-                        if (selectionMode == Selection_Mode.Flotilla_Selection)
-                        {
-                            selectionMode = Selection_Mode.Ship_Selection;
-                            rootNode.detachChild(mSelectedFlotillasNode);
-                            rootNode.attachChild(mSelectedShipsNode);
-                            mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
-                        }
-                    }
+	      if (isMoveToggleOn || isRotateToggleOn || isBoxSelectToggleOn || isAttackToggleOn)
+	      {
+		inputManager.setMouseCursor(mCursorSmiley);
+	      } else
+	      {
+		inputManager.setMouseCursor(null);
+	      }
 
-                    mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
 
-                    calculateCenterPoint();
+	      if (name.equals("Switch Selection Mode") && isPressed)
+	      {
+		if (selectionMode == Selection_Mode.Ship_Selection)
+		{
+		    selectionMode = Selection_Mode.Flotilla_Selection;
+		    rootNode.detachChild(mSelectedShipsNode);
+		    rootNode.attachChild(mSelectedFlotillasNode);
+		    mSelectionModeText.setText("Selection Mode: Flotilla (Press 'Tab' to switch)");
+		} else
+		{
+		    if (selectionMode == Selection_Mode.Flotilla_Selection)
+		    {
+		        selectionMode = Selection_Mode.Ship_Selection;
+		        rootNode.detachChild(mSelectedFlotillasNode);
+		        rootNode.attachChild(mSelectedShipsNode);
+		        mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
+		    }
+		}
 
-                    mIsShiftPressed = false;
-                    isMoveToggleOn = false;
-                    isRotateToggleOn = false;
-                    isBoxSelectToggleOn = false;
-                    isAttackToggleOn = false;
-                    inputManager.setMouseCursor(null);
-                }
+		mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
 
-                if (name.contains("Scroll") && isPressed)
-                {
-                    mInfoHubText.scroll(name.contains("Up"));
-                }
-            }
+		calculateCenterPoint();
 
-            if (name.equals("Exit"))
-            {
-                stop();
-            }
-        }
+		mIsShiftPressed = false;
+		isMoveToggleOn = false;
+		isRotateToggleOn = false;
+		isBoxSelectToggleOn = false;
+		isAttackToggleOn = false;
+		inputManager.setMouseCursor(null);
+	      }
+
+	      if (name.contains("Scroll") && isPressed)
+	      {
+		mInfoHubText.scroll(name.contains("Up"));
+	      }
+	  }
+
+	  if (name.equals("Exit"))
+	  {
+	      stop();
+	  }
+       }
     };
     private AnalogListener mKeyboardAnalogListener = new AnalogListener()
     {
