@@ -83,7 +83,6 @@ public class Game extends SimpleApplication
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
-    private AnalogListener mKeyboardAnalogListener;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -163,6 +162,124 @@ public class Game extends SimpleApplication
         flyCam.setZoomSpeed(15.0f);
         flyCam.setMoveSpeed(50.0f);
     }
+<<<<<<< HEAD
+=======
+
+    private Planet generatePlanet(int index)
+    {
+        float radius = (float) (1 + (Math.random() * 5));
+        int posNeg = (Math.random() < 0.5) ? -1 : 1;
+        int orbitRadius = 15 + (25 * (index + 1));
+        float xPos = posNeg * (int) (Math.random() * orbitRadius);
+        posNeg = (Math.random() < 0.5) ? -1 : 1;
+        float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
+
+        return new Planet("Planet " + Integer.toString(index), planetsNode, new Vector3f(xPos, 0.0f, zPos), assetManager, radius, ColorRGBA.randomColor());
+    }
+
+    private void loadSkybox()
+    {
+        Texture skybox_tex = assetManager.loadTexture("Textures/space_skybox.png");
+        rootNode.attachChild(SkyFactory.createSky(assetManager, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex));
+    }
+
+    private void loadAmbientLight()
+    {
+        AmbientLight ambientLight = new AmbientLight();
+        ambientLight.setColor(ColorRGBA.White.mult(0.7f));
+        rootNode.addLight(ambientLight);
+    }
+
+    private void loadPlanets()
+    {
+        planetsNode = new Node("Planets Node");
+        mPlanets = new Planet[10];
+
+        for (int i = 0; i < mPlanets.length; i++)
+        {
+            mPlanets[i] = generatePlanet(i);
+        }
+        rootNode.attachChild(planetsNode);
+    }
+
+    private void loadSun()
+    {
+        starsNode = new Node("Stars Node");
+
+        mSuns = new Star[1];
+        mSuns[0] = new Star("StarX", starsNode, Vector3f.ZERO, assetManager, 20.0f);
+        rootNode.addLight(mSuns[0].getPointLight());
+
+        rootNode.attachChild(starsNode);
+    }
+
+    private void loadMovementPlane()
+    {
+        mMovementPlane = new Plane(Vector3f.UNIT_Y, 0.0f);
+    }
+
+    private void loadShips()
+    {
+        mSelectedShipsNode = new Node("Selected Ships");
+        mSelectedFlotillasNode = new Node("Selected Flotillas");
+        selectionMode = Selection_Mode.Ship_Selection;
+        rootNode.attachChild(mSelectedShipsNode);
+        mSelectedNodeCenterPos = new Vector3f();
+
+        loneShipsNode = new Node("Lone Ships");
+
+        double[] stats = new double[19];
+        stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
+
+        loneShips = new ArrayList<Ship>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            loneShips.add(new Ship(new Player(3), Ship.SHIP_TYPE.Fighter, "Fighter " + i, loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + i * 3)),
+                    stats, 0, "Fighter " + i, 0, 0, 0.0));
+            loneShips.get(i).getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(loneShips.get(i).getPlayer().getColor()));
+        }
+
+        rootNode.attachChild(loneShipsNode);
+
+        ///////////////////////////////
+        // Not Related /\ \/ //////////
+        ///////////////////////////////
+
+        flotillasNode = new Node("Flotillas Node");
+
+        Ship[] ships1 = new Ship[50];
+        for (int i = 0; i < ships1.length; i++)
+        {
+            ships1[i] = new Ship(new Player(0), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
+            ships1[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships1[i].getPlayer().getColor()));
+        }
+
+        Ship[] ships2 = new Ship[25];
+        for (int i = 0; i < ships2.length; i++)
+        {
+            ships2[i] = new Ship(new Player(1), Ship.SHIP_TYPE.CapitalShip, "Capital Ship " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
+            ships2[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships2[i].getPlayer().getColor()));
+        }
+
+        Ship[] ships3 = new Ship[25];
+        for (int i = 0; i < ships3.length; i++)
+        {
+            ships3[i] = new Ship(new Player(2), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
+            ships3[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships3[i].getPlayer().getColor()));
+        }
+
+        flotillas = new ArrayList<Flotilla>();
+        flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 50.0f), "Flotilla 1"));
+        flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 2"));
+        flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
+
+        rootNode.attachChild(flotillasNode);
+
+        flotillaBattles = new ArrayList<FlotillaBattler>();
+    }
+
+>>>>>>> master
     private void initializeListeners()
     {
         mIsShiftPressed = false;
@@ -194,6 +311,7 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Scroll Down", new KeyTrigger(KeyInput.KEY_DOWN));
 
         inputManager.addListener(mKeyboardActionListener, new String[]
+<<<<<<< HEAD
                 {
                         "Shift", "Move", "Rotate", "Box Select",
                         "Attack", "Switch Selection Mode", "Pause",
@@ -203,6 +321,7 @@ public class Game extends SimpleApplication
                 {
                         "Compress", "Decompress"
                 });
+=======
         {
             "Shift", "Move", "Rotate", "Box Select",
             "Attack", "Switch Selection Mode", "Pause",
@@ -215,61 +334,120 @@ public class Game extends SimpleApplication
     }
     private AudioNode[] battles;
     private AudioNode[] creates;
-    private void loadAudio() {
-        AudioNode audio_battle1 = new AudioNode(assetManager, "assets/Sounds/Battle/35683__jobro__laser6.wav", false);
+    private void loadAudio()
+    {
+        AudioNode audio_battle1 = new AudioNode(assetManager, "Sounds/Battle/35683__jobro__laser6.wav", false);
         audio_battle1.setLooping(false);
         audio_battle1.setVolume(3);
         audio_battle1.setPositional(false);
         rootNode.attachChild(audio_battle1);
-        AudioNode audio_battle2 = new AudioNode(assetManager, "assets/Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
+        AudioNode audio_battle2 = new AudioNode(assetManager, "Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
         audio_battle2.setLooping(false);
         audio_battle2.setVolume(3);
         audio_battle2.setPositional(false);
         rootNode.attachChild(audio_battle2);
-        AudioNode audio_battle3 = new AudioNode(assetManager, "assets/Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
+        AudioNode audio_battle3 = new AudioNode(assetManager, "Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
         audio_battle3.setLooping(false);
         audio_battle3.setVolume(3);
         audio_battle3.setPositional(false);
         rootNode.attachChild(audio_battle3);
-        AudioNode audio_battle4 = new AudioNode(assetManager, "assets/Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
+        AudioNode audio_battle4 = new AudioNode(assetManager, "Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
         audio_battle4.setLooping(false);
         audio_battle4.setVolume(3);
         audio_battle4.setPositional(false);
         rootNode.attachChild(audio_battle4);
-
+        
         battles = new AudioNode[4];
-        battles[0] = audio_battle1;
-        battles[1] = audio_battle2;
-        battles[2] = audio_battle3;
-        battles[3] = audio_battle4;
-
-
-        AudioNode audio_onCreate1 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
+        battles[0]=audio_battle1;
+        battles[1]=audio_battle2;
+        battles[2]=audio_battle3;
+        battles[3]=audio_battle4;
+        
+       
+        
+        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
         audio_onCreate1.setLooping(false);
         audio_onCreate1.setVolume(3);
         audio_onCreate1.setPositional(false);
         rootNode.attachChild(audio_onCreate1);
-        AudioNode audio_onCreate2 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
+        AudioNode audio_onCreate2 = new AudioNode(assetManager, "Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
         audio_onCreate2.setLooping(false);
         audio_onCreate2.setVolume(3);
         audio_onCreate2.setPositional(false);
         rootNode.attachChild(audio_onCreate2);
-        AudioNode audio_onCreate3 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
+        AudioNode audio_onCreate3 = new AudioNode(assetManager, "Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
         audio_onCreate3.setLooping(false);
         audio_onCreate3.setVolume(3);
         audio_onCreate3.setPositional(false);
         rootNode.attachChild(audio_onCreate3);
-        AudioNode audio_onCreate4 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
+        AudioNode audio_onCreate4 = new AudioNode(assetManager, "Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
         audio_onCreate4.setLooping(false);
         audio_onCreate4.setVolume(3);
         audio_onCreate4.setPositional(false);
         rootNode.attachChild(audio_onCreate4);
         creates = new AudioNode[4];
-        creates[0] = audio_onCreate1;
-        creates[1] = audio_onCreate2;
-        creates[2] = audio_onCreate3;
-        creates[3] = audio_onCreate4;
+        creates[0]=audio_onCreate1;
+        creates[1]=audio_onCreate2;
+        creates[2]=audio_onCreate3;
+        creates[3]=audio_onCreate4;
+       
+    }
+                
+        
+    
 
+    private void addNodes()
+    {
+        rootNode.attachChild(mSelectedShipsNode);
+        rootNode.attachChild(planetsNode);
+        rootNode.attachChild(starsNode);
+        rootNode.attachChild(loneShipsNode);
+        rootNode.attachChild(flotillasNode);
+    }
+
+    private void loadCursors()
+    {
+        mCursorSmiley = (JmeCursor) assetManager.loadAsset("Textures/cursor_smiley.cur");
+        mCursorSmiley.setxHotSpot(mCursorSmiley.getWidth() >> 1);
+        mCursorSmiley.setyHotSpot(mCursorSmiley.getHeight() >> 1);
+        inputManager.setMouseCursor(null);
+    }
+
+    private void loadPictures()
+    {
+        mPictureBoxSelect = new Picture("Box Select Picture");
+        mPictureBoxSelect.setImage(assetManager, "Textures/box_select.png", true);
+        mPictureBoxSelect.setUserData("Initial Position", Vector2f.ZERO);
+
+        mOverlay = new Picture("Overlay Picture");
+        mOverlay.setImage(assetManager, "Textures/in_game_background.png", true);
+        mOverlay.setPosition(0.0f, 0.0f);
+        mOverlay.setWidth(M_WIDTH);
+        mOverlay.setHeight(M_HEIGHT);
+        guiNode.attachChild(mOverlay);
+    }
+
+    private void loadText()
+    {
+        float fontSize = (guiFont.getCharSet().getRenderedSize() * ((float) M_WIDTH / (float) M_HEIGHT)) / (1920.0f / 1080.0f);
+
+//        mInfoHubText = new BitmapText(guiFont);
+//        mInfoHubText.setSize(fontSize);
+//        mInfoHubText.setColor(ColorRGBA.White);
+//        mInfoHubText.setText("");
+//        mInfoHubText.setLocalTranslation(M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH, M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, 0.0f);
+//        guiNode.attachChild(mInfoHubText);
+
+        mInfoHubText = new ScrollText(M_HEIGHT, fontSize, M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH,
+                M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, guiFont, guiNode);
+
+        mSelectionModeText = new BitmapText(guiFont);
+        mSelectionModeText.setSize(fontSize);
+        mSelectionModeText.setColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 0.75f));
+        mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
+        mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
+        guiNode.attachChild(mSelectionModeText);
+>>>>>>> master
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
@@ -476,6 +654,7 @@ public class Game extends SimpleApplication
 	  {
 
 	      if (name.equals("More Ships"))
+              {
 	      
                   
     loadAudio();
