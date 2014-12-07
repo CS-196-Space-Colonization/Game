@@ -56,7 +56,7 @@ public class BasicMarket implements Market, Observer {
 		Transaction transaction = (Transaction)other;
 		Quantity offer = transaction.getOffer();
 		if (Double.compare(0.0, offer.getQuantity()) == 0)
-			market.remove(transaction);
+			market.get((Product)offer.getUnit()).remove(transaction);
 		lastPrices.put((Product)transaction.getOffer().getUnit(), transaction.getMarginalPrice());
 	}
 }
