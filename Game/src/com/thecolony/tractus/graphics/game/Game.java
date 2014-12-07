@@ -2,6 +2,7 @@ package com.thecolony.tractus.graphics.game;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
@@ -312,6 +313,69 @@ public class Game extends SimpleApplication
 	  "Compress", "Decompress"
         });
     }
+    private AudioNode[] battles;
+    private AudioNode[] creates;
+    private void loadAudio()
+    {
+        AudioNode audio_battle1 = new AudioNode(assetManager, "assets/Sounds/Battle/35683__jobro__laser6.wav", false);
+        audio_battle1.setLooping(false);
+        audio_battle1.setVolume(3);
+        audio_battle1.setPositional(false);
+        rootNode.attachChild(audio_battle1);
+        AudioNode audio_battle2 = new AudioNode(assetManager, "assets/Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
+        audio_battle2.setLooping(false);
+        audio_battle2.setVolume(3);
+        audio_battle2.setPositional(false);
+        rootNode.attachChild(audio_battle2);
+        AudioNode audio_battle3 = new AudioNode(assetManager, "assets/Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
+        audio_battle3.setLooping(false);
+        audio_battle3.setVolume(3);
+        audio_battle3.setPositional(false);
+        rootNode.attachChild(audio_battle3);
+        AudioNode audio_battle4 = new AudioNode(assetManager, "assets/Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
+        audio_battle4.setLooping(false);
+        audio_battle4.setVolume(3);
+        audio_battle4.setPositional(false);
+        rootNode.attachChild(audio_battle4);
+        
+        battles = new AudioNode[4];
+        battles[0]=audio_battle1;
+        battles[1]=audio_battle2;
+        battles[2]=audio_battle3;
+        battles[3]=audio_battle4;
+        
+       
+        
+        AudioNode audio_onCreate1 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
+        audio_onCreate1.setLooping(false);
+        audio_onCreate1.setVolume(3);
+        audio_onCreate1.setPositional(false);
+        rootNode.attachChild(audio_onCreate1);
+        AudioNode audio_onCreate2 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
+        audio_onCreate2.setLooping(false);
+        audio_onCreate2.setVolume(3);
+        audio_onCreate2.setPositional(false);
+        rootNode.attachChild(audio_onCreate2);
+        AudioNode audio_onCreate3 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
+        audio_onCreate3.setLooping(false);
+        audio_onCreate3.setVolume(3);
+        audio_onCreate3.setPositional(false);
+        rootNode.attachChild(audio_onCreate3);
+        AudioNode audio_onCreate4 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
+        audio_onCreate4.setLooping(false);
+        audio_onCreate4.setVolume(3);
+        audio_onCreate4.setPositional(false);
+        rootNode.attachChild(audio_onCreate4);
+        creates = new AudioNode[4];
+        creates[0]=audio_onCreate1;
+        creates[1]=audio_onCreate2;
+        creates[2]=audio_onCreate3;
+        creates[3]=audio_onCreate4;
+       
+    }
+                
+        
+    
 
     private void addNodes()
     {
@@ -405,6 +469,8 @@ public class Game extends SimpleApplication
 
 	      if (name.equals("Left Click") && isPressed)
 	      {
+                  int aud=(int)((Math.random()*5)%4);
+                  audio_battle1.playInstance();
 		if (isMoveToggleOn || isRotateToggleOn)
 		{
 		    Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
@@ -570,6 +636,7 @@ public class Game extends SimpleApplication
 
 	      if (name.equals("More Ships"))
 	      {
+                  creates[(int)((Math.random()*4)%3)].playInstance();
 		double[] stats = new double[19];
 		stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
 
