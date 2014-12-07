@@ -108,7 +108,7 @@ public abstract class Territory{
     public final boolean equals(Object o){
         return (o.getClass().equals(this.getClass())) && this.getResName().equals(((Territory)o).getResName());
     }
-    public final String[] getDisplayInfo(){
+    public String[] getDisplayInfo(){
         ArrayList<String> infos=new ArrayList<String>();
         if (superTerr!=null){
             for(String str:superTerr.getDisplayInfo()) infos.add(str);
