@@ -47,8 +47,6 @@ public class Game extends SimpleApplication
 {
 
     public static int M_WIDTH, M_HEIGHT;
-    private final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
-    private final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     private final float M_COMPRESS_SPEED = 1.0f;
     private final float M_ATTACK_DISTANCE = 50.0f;
 
@@ -126,6 +124,7 @@ public class Game extends SimpleApplication
 
         GameLoader loader=new GameLoader(assetManager,inputManager,guiNode,rootNode,guiFont,M_WIDTH,M_HEIGHT);
         unpack(loader.loadGame());
+        initializeListeners();
     }
     public void unpack(Object[] arr){
         rootNode=(arr[0] instanceof Node)?(Node)arr[0]:null;

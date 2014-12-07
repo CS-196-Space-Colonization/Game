@@ -113,7 +113,7 @@ public abstract class Territory{
         if (superTerr!=null){
             for(String str:superTerr.getDisplayInfo()) infos.add(str);
         }
-        infos.add(this.className);
+        infos.add(this.className+": "+name);
         return infos.toArray(new String[0]);
     }
 }
