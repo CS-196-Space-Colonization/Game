@@ -15,13 +15,11 @@ import com.thecolony.tractus.graphics.GUI.OptionWindow;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 public class ClientMain extends SimpleApplication implements ClientStateListener
 {
 
     private Client myClient;
-    private Game game;
 
     public ClientMain()
     {
@@ -29,16 +27,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         start(JmeContext.Type.Headless);
         //graphics stuff
         boolean fullscreen = OptionWindow.fullscreen;
-        System.out.println(fullscreen);
-        int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
-        if (input == JOptionPane.YES_OPTION)
-        {
-	  fullscreen = true;
-        } else if (input == JOptionPane.CANCEL_OPTION)
-        {
-	  System.exit(0);
-        }
-        game = new Game();
+        Game game = new Game();
 
         game.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
@@ -62,7 +51,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 	  settings.setResolution(screenSize.width, screenSize.height);
         } else
         {
-	  settings.setResolution(800, 600);
+	  settings.setResolution(OptionWindow.resWidth, OptionWindow.resHeight);
         }
 
         game.addClient(this);
