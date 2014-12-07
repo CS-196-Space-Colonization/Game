@@ -2,57 +2,36 @@ package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.math.Vector3f;
 import com.thecolony.tractus.resources.Res;
-import java.io.Serializable;
+import com.jme3.network.serializing.Serializable;
+
+import java.util.ArrayList;
 
 /**
  * Created by chthonic7 on 10/15/14.
  */
-@com.jme3.network.serializing.Serializable
-public abstract class Territory implements Serializable {
+@Serializable
+public abstract class Territory{
     protected Vector3f location; //Or any sort of spatial positioning...
-    protected String name, owner;
-    protected Res res;
+    protected String name, owner, resName;
+    protected transient Res res;
     protected Territory superTerr, subTerr[];
-    protected static int ID_COUNT=0;
-    protected int ID;
-
-    protected Territory(float locX, float locZ, Territory superTerr, Territory[] terr, Res res, String name, String owner){
+    protected String className;
+    protected Territory(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner){
         this.subTerr=terr;
         this.superTerr=superTerr;
-        this.location=new Vector3f(locX,0,locZ);
+        this.location=pos;
         this.res=res;
+        this.resName=(res==null)?"":res.toString();
         this.name=name;
         this.owner=owner;
-        this.ID_COUNT++;
-        this.ID=ID_COUNT;
+        className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
     }
-    //These next few getters/setters are for convenience. One can also just get the vector directly.
-    public final float getLocationX() {
-        return location.getX();
-    }
-
-    public final void setLocationX(float locationX) {
-        this.location.setX(locationX);
-    }
-
-    public final float getlocationZ() {
-        return location.getZ();
-    }
-
-    public final void setlocationZ(float locationZ) {
-        this.location.setZ(locationZ);
-    }
-
     public Vector3f getLocation() {
         return location;
     }
 
     public void setLocation(Vector3f location) {
         this.location = location;
-    }
-
-    public int getID() {
-        return ID;
     }
 
     public final String getName() {
@@ -87,6 +66,18 @@ public abstract class Territory implements Serializable {
         this.subTerr = subTerr;
     }
 
+    public final String getResName() {return resName;}
+
+    public final void setResName(String resName) {this.resName=resName;}
+
+    public Res getRes() {
+        return res;
+    }
+
+    public void setRes(Res res) {
+        this.res = res;
+    }
+
     public final double getResource(String resourceName){
         return res.getResource(resourceName);
     }
@@ -115,6 +106,14 @@ public abstract class Territory implements Serializable {
     }
 
     public final boolean equals(Object o){
-        return (o.getClass().equals(this.getClass())) && ((Territory)o).getID()==this.ID;
+        return (o.getClass().equals(this.getClass())) && this.getResName().equals(((Territory)o).getResName());
+    }
+    public final String[] getDisplayInfo(){
+        ArrayList<String> infos=new ArrayList<String>();
+        if (superTerr!=null){
+            for(String str:superTerr.getDisplayInfo()) infos.add(str);
+        }
+        infos.add(this.className);
+        return infos.toArray(new String[0]);
     }
 }

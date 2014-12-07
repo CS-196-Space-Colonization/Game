@@ -5,6 +5,7 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
 
+
 /**
  * A class that holds all the common objects used for graphics.
  * @author Joe Pagliuco
@@ -19,7 +20,7 @@ public abstract class GameGraphics
     private static Material M_DEFAULT_WHITE_MATERIAL;
     
     public static void loadGraphics(AssetManager contentMan)
-    {        
+    {
         Material mat = new Material(contentMan, "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Ambient", ColorRGBA.Red);

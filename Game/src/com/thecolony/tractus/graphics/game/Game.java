@@ -5,7 +5,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
@@ -26,8 +28,7 @@ import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
-import com.thecolony.tractus.graphics.drawableobjects.spatialentities.Planet;
-import com.thecolony.tractus.graphics.drawableobjects.spatialentities.Star;
+import com.thecolony.tractus.worldgen.SpatialEntities.*;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
@@ -122,27 +123,34 @@ public class Game extends SimpleApplication
 
         adjustCameraSettings();
 
-        loadPlanets();
-        loadSun();
-        loadShips();
-
-        loadAmbientLight();
-
-        loadSkybox();
-
-        loadMovementPlane();
-
-        initializeListeners();
-
-        loadPictures();
-
-        loadText();
-
-        addNodes();
-
-        loadCursors();
+        GameLoader loader=new GameLoader(assetManager,inputManager,guiNode,rootNode,guiFont,M_WIDTH,M_HEIGHT);
+        unpack(loader.loadGame());
     }
-
+    public void unpack(Object[] arr){
+        rootNode=(arr[0] instanceof Node)?(Node)arr[0]:null;
+        guiNode=(arr[1] instanceof Node)?(Node)arr[1]:null;
+        guiFont=(arr[2] instanceof BitmapFont)?(BitmapFont)arr[2]:null;
+        inputManager=(arr[3] instanceof InputManager)?(InputManager)arr[3]:null;
+        planetsNode=(arr[4] instanceof Node)?(Node)arr[4]:null;
+        mPlanets=(arr[5] instanceof Planet[])?(Planet[])arr[5]:null;
+        starsNode=(arr[6] instanceof Node)?(Node)arr[6]:null;
+        mSuns=(arr[7] instanceof Star[])?(Star[])arr[7]:null;
+        mSelectedShipsNode=(arr[8] instanceof Node)?(Node)arr[8]:null;
+        loneShipsNode=(arr[9] instanceof Node)?(Node)arr[9]:null;
+        loneShips=(arr[10] instanceof ArrayList)?(ArrayList<Ship>)arr[10]:null;
+        mSelectedFlotillasNode=(arr[11] instanceof Node)?(Node)arr[11]:null;
+        flotillasNode=(arr[12] instanceof Node)?(Node)arr[12]:null;
+        flotillas=(arr[13] instanceof ArrayList)?(ArrayList<Flotilla>)arr[13]:null;
+        flotillaBattles=(arr[14] instanceof ArrayList)?(ArrayList<FlotillaBattler>)arr[14]:null;
+        mSelectedNodeCenterPos=(arr[15] instanceof Vector3f)?(Vector3f)arr[15]:null;
+        mMovementPlane=(arr[16] instanceof Plane)?(Plane)arr[16]:null;
+        selectionMode=(arr[17] instanceof Game.Selection_Mode)?(Game.Selection_Mode)arr[17]:null;
+        mCursorSmiley=(arr[18] instanceof JmeCursor)?(JmeCursor)arr[18]:null;
+        mPictureBoxSelect=(arr[19] instanceof Picture)?(Picture)arr[19]:null;
+        mOverlay=(arr[20] instanceof Picture)?(Picture)arr[20]:null;
+        mInfoHubText=(arr[21] instanceof ScrollText)?(ScrollText)arr[21]:null;
+        mSelectionModeText=(arr[22] instanceof BitmapText)?(BitmapText)arr[22]:null;
+    }
     private void adjustCameraSettings()
     {
         cam.setLocation(new Vector3f(75.0f, 75.0f, -75.0f));
@@ -153,6 +161,8 @@ public class Game extends SimpleApplication
         flyCam.setZoomSpeed(15.0f);
         flyCam.setMoveSpeed(50.0f);
     }
+<<<<<<< HEAD
+=======
 
     private Planet generatePlanet(int index)
     {
@@ -268,6 +278,7 @@ public class Game extends SimpleApplication
         flotillaBattles = new ArrayList<FlotillaBattler>();
     }
 
+>>>>>>> master
     private void initializeListeners()
     {
         mIsShiftPressed = false;
@@ -299,6 +310,17 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Scroll Down", new KeyTrigger(KeyInput.KEY_DOWN));
 
         inputManager.addListener(mKeyboardActionListener, new String[]
+<<<<<<< HEAD
+                {
+                        "Shift", "Move", "Rotate", "Box Select",
+                        "Attack", "Switch Selection Mode", "Pause",
+                        "Exit", "Scroll Up", "Scroll Down", "More Ships"
+                });
+        inputManager.addListener(mKeyboardAnalogListener, new String[]
+                {
+                        "Compress", "Decompress"
+                });
+=======
         {
             "Shift", "Move", "Rotate", "Box Select",
             "Attack", "Switch Selection Mode", "Pause",
@@ -361,6 +383,7 @@ public class Game extends SimpleApplication
         mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
         mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
         guiNode.attachChild(mSelectionModeText);
+>>>>>>> master
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////

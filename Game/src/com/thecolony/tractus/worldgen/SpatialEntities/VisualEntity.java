@@ -20,29 +20,21 @@ import com.jme3.scene.Spatial;
  * Created by wesley on 11/28/14.
  */
 public class VisualEntity extends Territory{
-    protected int ID;
-    protected static int ID_COUNT=0;
     protected float RADIUS;
     protected VisualType type;
     protected DrawableObject3d drawableObject;
     protected ColorRGBA color;
     protected BoundingSphere boundingSphere;
-    protected String className;
     protected VisualEntity(Vector3f pos, String name, Node node, Spatial model, VisualType type){
-        super(pos.getX(), pos.getZ(), null, null, new Res(), name, "no-one");
+        super(pos, null, null, new Res(), name, "no-one");
         initialize(name, node, model, pos);
         this.type=type;
         this.RADIUS=type.getRADIUS();
-        this.ID_COUNT++;
-        this.ID=ID_COUNT;
     }
     protected VisualEntity(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner, Node node, AssetManager contentMan, ColorRGBA color, VisualType type){
-        super(pos.getX(),pos.getZ(),superTerr,terr,res,name,owner);
-        className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
+        super(pos,superTerr,terr,res,name,owner);
         this.RADIUS=type.getRADIUS();
         initialize(name, node, loadModel(contentMan,RADIUS,color), pos);
-        this.ID_COUNT++;
-        this.ID=ID_COUNT;
     }
     protected void initialize(String name, Node node, Spatial model, Vector3f position)
     {
@@ -58,7 +50,7 @@ public class VisualEntity extends Territory{
             boundingSphere = (BoundingSphere)b;
     }
     // Temporary
-    private Spatial loadModel(AssetManager contentMan, float radius, ColorRGBA color)
+    protected Spatial loadModel(AssetManager contentMan, float radius, ColorRGBA color)
     {
         Sphere s = new Sphere(32, 32, radius);
         Geometry g = new Geometry("Planet", s);
@@ -92,14 +84,5 @@ public class VisualEntity extends Territory{
 
     public double getRadius() {
         return RADIUS;
-    }
-
-    @Override
-    public int getID() {
-        return this.ID;
-    }
-
-    public String getDisplayInfo(){
-        return this.toString();
     }
 }

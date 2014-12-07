@@ -21,7 +21,7 @@ import java.util.ArrayList;
 @com.jme3.network.serializing.Serializable
 public class Res implements Serializable {
     //Initial assumption is a text file that has all the resource information
-    private String pathName;
+    private String pathName, name;
     private final String dir="Game/src/com/thecolony/tractus/resources/";
     //private final String dir="resources/";
     private Path path;
@@ -32,6 +32,7 @@ public class Res implements Serializable {
      * @param resFile file name for this resource
      */
     public Res(String resFile){
+        this.name=resFile;
         pathName=dir+resFile;
         path= Paths.get(pathName);
         if (!Files.exists(path)){
@@ -44,7 +45,6 @@ public class Res implements Serializable {
      * Empty constructor will create new file for this
      */
     public Res(){
-        //TODO: Think of names for new files. Or just be unoriginal
         pathName=dir+"resFile";
         path=Paths.get(pathName);
         int i=1;
@@ -155,4 +155,5 @@ public class Res implements Serializable {
         }
         return str;
     }
+    public String toString(){ return name; }
 }
