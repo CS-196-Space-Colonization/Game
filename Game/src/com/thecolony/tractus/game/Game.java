@@ -27,6 +27,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
+import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
@@ -81,8 +82,6 @@ public class Game extends SimpleApplication
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
-    private AudioNode[] battles;
-    private AudioNode[] creates;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -120,10 +119,7 @@ public class Game extends SimpleApplication
         setDisplayStatView(false);
         isRunning = true;
 
-        GraphicsManager.loadGraphics(assetManager);
-
         adjustCameraSettings();
-        loadAudio();
 
         GameLoader loader = new GameLoader(assetManager, inputManager, guiNode, rootNode, guiFont, M_WIDTH, M_HEIGHT);
         unpack(loader.loadGame());
@@ -210,63 +206,7 @@ public class Game extends SimpleApplication
         });
     }
 
-    private void loadAudio()
-    {
-        AudioNode audio_battle1 = new AudioNode(assetManager, "Sounds/Battle/laser1.wav", false);
-        audio_battle1.setLooping(false);
-        audio_battle1.setVolume(3);
-        audio_battle1.setPositional(false);
-        rootNode.attachChild(audio_battle1);
-        AudioNode audio_battle2 = new AudioNode(assetManager, "Sounds/Battle/laser2.wav", false);
-        audio_battle2.setLooping(false);
-        audio_battle2.setVolume(3);
-        audio_battle2.setPositional(false);
-        rootNode.attachChild(audio_battle2);
-        AudioNode audio_battle3 = new AudioNode(assetManager, "Sounds/Battle/laser3.wav", false);
-        audio_battle3.setLooping(false);
-        audio_battle3.setVolume(3);
-        audio_battle3.setPositional(false);
-        rootNode.attachChild(audio_battle3);
-        AudioNode audio_battle4 = new AudioNode(assetManager, "Sounds/Battle/laser4.wav", false);
-        audio_battle4.setLooping(false);
-        audio_battle4.setVolume(3);
-        audio_battle4.setPositional(false);
-        rootNode.attachChild(audio_battle4);
-
-        battles = new AudioNode[4];
-        battles[0] = audio_battle1;
-        battles[1] = audio_battle2;
-        battles[2] = audio_battle3;
-        battles[3] = audio_battle4;
-
-
-//        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/create.wav", false);
-//        audio_onCreate1.setLooping(false);
-//        audio_onCreate1.setVolume(3);
-//        audio_onCreate1.setPositional(false);
-//        rootNode.attachChild(audio_onCreate1);
-        AudioNode audio_onCreate2 = new AudioNode(assetManager, "Sounds/Unit_Creation/gear_bursts.wav", false);
-        audio_onCreate2.setLooping(false);
-        audio_onCreate2.setVolume(3);
-        audio_onCreate2.setPositional(false);
-        rootNode.attachChild(audio_onCreate2);
-        AudioNode audio_onCreate3 = new AudioNode(assetManager, "Sounds/Unit_Creation/dc_wielding.wav", false);
-        audio_onCreate3.setLooping(false);
-        audio_onCreate3.setVolume(3);
-        audio_onCreate3.setPositional(false);
-        rootNode.attachChild(audio_onCreate3);
-        AudioNode audio_onCreate4 = new AudioNode(assetManager, "Sounds/Unit_Creation/hammer.wav", false);
-        audio_onCreate4.setLooping(false);
-        audio_onCreate4.setVolume(3);
-        audio_onCreate4.setPositional(false);
-        rootNode.attachChild(audio_onCreate4);
-        creates = new AudioNode[4];
-        creates[0] = audio_onCreate2;
-        creates[1] = audio_onCreate2;
-        creates[2] = audio_onCreate3;
-        creates[3] = audio_onCreate4;
-
-    }
+    
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,7 +416,10 @@ public class Game extends SimpleApplication
             {
                 if (name.equals("More Ships") && isPressed)
                 {
-                    creates[1].playInstance();
+                    AudioManager.getCreate().playInstance();
+                    AudioManager.getHammer().playInstance();
+                    AudioManager.getDCWielding().playInstance();
+                    AudioManager.getGearBursts().playInstance();
                     double[] stats = new double[19];
                     stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
 

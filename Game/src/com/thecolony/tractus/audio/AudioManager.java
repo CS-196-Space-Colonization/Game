@@ -63,7 +63,7 @@ public abstract class AudioManager
         node.attachChild(CREATE_HAMMER);
     }
     
-    public void setVolume(float volumeLevel)
+    public static void setVolume(float volumeLevel)
     {        
         BATTLE_LASER_1.setVolume(volumeLevel);
         BATTLE_LASER_2.setVolume(volumeLevel);
@@ -76,7 +76,7 @@ public abstract class AudioManager
         CREATE_HAMMER.setVolume(volumeLevel);
     }
     
-    public AudioNode getBattleLaser(int index)
+    public static AudioNode getBattleLaser(int index)
     {
         switch (index)
         {
@@ -93,19 +93,19 @@ public abstract class AudioManager
         }
     }
     
-    public AudioNode getCreate()
+    public static AudioNode getCreate()
     {
         return CREATE_CREATE.clone();
     }
-    public AudioNode getDCWielding()
+    public static AudioNode getDCWielding()
     {
         return CREATE_DC_WIELDING.clone();
     }
-    public AudioNode getGearBursts()
+    public static AudioNode getGearBursts()
     {
         return CREATE_GEAR_BURSTS.clone();
     }
-    public AudioNode getHammer()
+    public static AudioNode getHammer()
     {
         return CREATE_HAMMER.clone();
     }
