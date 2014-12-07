@@ -1,6 +1,7 @@
 package com.thecolony.tractus.player.ai;
 
 import com.thecolony.tractus.Unit;
+import com.thecolony.tractus.player.ai.battle.BattleObject;
 import com.thecolony.tractus.player.ai.battle.ships.Ship;
 import java.util.ArrayList;
 
@@ -62,7 +63,7 @@ public class DefaultAI extends NPC
      * @todo This should be moved to the unit class to ba called on every unit.
      * @return the closest unit to some abitrary point
      */
-    private Ship findClosest(ArrayList<Ship> ships)
+    private Ship findClosest(ArrayList<BattleObject> ships)
     {
         if (ships.size() == 0)
         {

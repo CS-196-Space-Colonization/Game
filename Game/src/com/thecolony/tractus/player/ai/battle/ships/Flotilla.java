@@ -355,13 +355,7 @@ public class Flotilla
             d.checkRemoveShip();
         }
     }
-
-    //these static doubles are for the flotilla battle method
-//    public double BattleTime = 0;
-//    public double rt1 = 0;
-//    public double rt2 = 0;
-//    public double st1 = 0;
-//    public double st2 = 0;
+    
     /**
      * Simulates a flotilla battle through a factor of time.
      *
@@ -372,44 +366,13 @@ public class Flotilla
      */
     public int flotillaBattle(Flotilla b, float deltaTime)
     {
-//                BattleTime = BattleTime + deltaTime;  //make this .05 smaller or larger to change how often the ships attack
-        //for example, if a flotilla's attack speed is 5, it will attack 
-        //every time this method is called 100 times if this number is .05
-
         this.setFlotillaStats();
         b.setFlotillaStats();
-//                    rt1 += deltaTime;
-//                    rt2 += deltaTime;
-//                    st1 += deltaTime;
-//                    st2 += deltaTime;
-//			if(this.getBattleStat(Ship.BATTLE_STAT_HP) == 0 || b.getBattleStat(Ship.BATTLE_STAT_HP) == 0)
-//                        {
-//                                BattleTime = 0;
-//                                rt1 = 0;
-//                                rt2 = 0;
-//                                st1 = 0;
-//                                st2 = 0;
-//                        }
-//                        if(rt1 >= this.getBattleStat(4))
-//                        {
-//                            rt1 = rt1 - this.getBattleStat(4);
+        
         calcRegDamage(this, b, deltaTime * BATTLE_TIME_FACTOR);
-//                        }
-//                        if(rt2 >= b.getBattleStat(4))
-//                        {
-//                            rt2 = rt2 - b.getBattleStat(4);
         calcRegDamage(b, this, deltaTime * BATTLE_TIME_FACTOR);
-//                        }
-//                        if(st1 >= this.getBattleStat(5))
-//                        {
-//                            st1 = st1 - this.getBattleStat(5);
         calcSpDamage(this, b, deltaTime * BATTLE_TIME_FACTOR);
-//                        }
-//                        if(st2 >= b.getBattleStat(5))
-//                        {
-//                            st2 = st2 - b.getBattleStat(5);
         calcSpDamage(b, this, deltaTime * BATTLE_TIME_FACTOR);
-//                        }
 
 
         this.checkRemoveShip();
@@ -419,13 +382,17 @@ public class Flotilla
         // the defending ship will win.
         if (b.getHP() <= 0)
         {
+            b.regenerate();
             return -1;
+         
         }
         else
         {
             if (this.getHP() <= 0)
             {
+                this.regenerate();
                 return 1;
+                
             }
             else
             {
@@ -433,6 +400,11 @@ public class Flotilla
             }
         }
 
+    }
+    public void regenerate()
+    {
+        System.out.println(centerPosition);
+        initialize(flotilla, centerPosition, isFull, name);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
