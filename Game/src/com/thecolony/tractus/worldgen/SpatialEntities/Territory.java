@@ -21,7 +21,7 @@ public abstract class Territory{
         this.superTerr=superTerr;
         this.location=pos;
         this.res=res;
-        this.resName=res.toString();
+        this.resName=(res==null)?"":res.toString();
         this.name=name;
         this.owner=owner;
         className=this.getClass().toString(); className=className.substring(className.lastIndexOf('.')+1);
@@ -110,7 +110,7 @@ public abstract class Territory{
     }
     public final String[] getDisplayInfo(){
         ArrayList<String> infos=new ArrayList<String>();
-        if (superTerr==null){
+        if (superTerr!=null){
             for(String str:superTerr.getDisplayInfo()) infos.add(str);
         }
         infos.add(this.className);
