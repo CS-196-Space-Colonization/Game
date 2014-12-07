@@ -1,4 +1,4 @@
-package com.thecolony.tractus;
+package com.thecolony.tractus.graphics.GUI;
 
 import com.jme3.system.AppSettings;
 import com.thecolony.tractus.graphics.game.Game;
@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,24 +23,38 @@ import javax.swing.UIManager;
  */
 public class MainMenu extends JFrame
 {
+    public static ArrayList<Color> GUIColors;
+    static {
+        GUIColors = new ArrayList<Color>();
+        GUIColors.add(Color.yellow);
+        GUIColors.add(Color.red);
+        GUIColors.add(Color.cyan);
+        GUIColors.add(new Color(0xff, 0x4f, 0x00));//international orange
+        GUIColors.add(new Color(0xcc, 0x88, 0x99));//puce
+        GUIColors.add(new Color(127, 51, 0));//brown?
+    }
+    
     private JPanel window;
-    private JButton singlePlayer, multiplayer, quit;
-    private Rectangle rSinglePlayer, rMultiplayer, rquit;
+    private JButton singlePlayer, multiplayer, options, quit;
+    private Rectangle rSinglePlayer, rMultiplayer, rOptions, rquit;
     private JLabel title;
     
-    private int width = 400;
-    private int height = 600;
-    private int buttonWidth = 200;
-    private int buttonHeight = 100;
+    private final int WIDTH = 400;
+    private final int HEIGHT = 600;
+    private final int BUTTON_WIDTH = 200;
+    private final int BUTTON_HEIGHT = 100;
     
-    private int titleWidth = buttonWidth - 0;
+    private final int TITLE_WIDTH = BUTTON_WIDTH - 0;
     
-    private Font buttonFont = new Font("Comic Sans MS", 0, 25);
-    private Font titleFont = new Font("Comic Sans MS", 0, 50);
+    private final Font BUTTON_FONT = new Font("Comic Sans MS", 0, 25);
+    private final Font TITLE_FONT = new Font("Comic Sans MS", 0, 50);
+    
+    private final Color backgroundColor;
     
     public MainMenu()
     {
         window = new JPanel();
+        backgroundColor = null;
         try
         {
 	  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -50,7 +65,7 @@ public class MainMenu extends JFrame
         }
         setUndecorated(true);
         setTitle("Tractus - Main Menu");
-        setSize(width, height);
+        setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().add(window);
         setVisible(true);
@@ -67,20 +82,26 @@ public class MainMenu extends JFrame
     private void addButtons()
     {
         singlePlayer = new JButton("Single Player");
-        rSinglePlayer = new Rectangle((width / 2) - (buttonWidth / 2), 200, buttonWidth, buttonHeight);
+        rSinglePlayer = new Rectangle((WIDTH / 2) - (BUTTON_WIDTH / 2), 175, BUTTON_WIDTH, BUTTON_HEIGHT);
         singlePlayer.setBounds(rSinglePlayer);
-        singlePlayer.setFont(buttonFont);
+        singlePlayer.setFont(BUTTON_FONT);
         window.add(singlePlayer);
         
         multiplayer = new JButton("Multiplayer");
-        rMultiplayer = new Rectangle((width / 2) - (buttonWidth / 2), 300, buttonWidth, buttonHeight);
+        rMultiplayer = new Rectangle((WIDTH / 2) - (BUTTON_WIDTH / 2), 275, BUTTON_WIDTH, BUTTON_HEIGHT);
         multiplayer.setBounds(rMultiplayer);
-        multiplayer.setFont(buttonFont);
+        multiplayer.setFont(BUTTON_FONT);
         window.add(multiplayer);
         
+        options = new JButton("Options");
+        rOptions = new Rectangle((WIDTH / 2) - (BUTTON_WIDTH / 2), 375, BUTTON_WIDTH, BUTTON_HEIGHT);
+        options.setBounds(rOptions);
+        options.setFont(BUTTON_FONT);
+        window.add(options);
+        
         quit = new JButton("Quit");
-        rquit = new Rectangle((width / 2) - (buttonWidth / 2), 400, buttonWidth, buttonHeight);
-        quit.setFont(buttonFont);
+        rquit = new Rectangle((WIDTH / 2) - (BUTTON_WIDTH / 2), 475, BUTTON_WIDTH, BUTTON_HEIGHT);
+        quit.setFont(BUTTON_FONT);
         quit.setBounds(rquit);
         window.add(quit);
         
@@ -134,6 +155,15 @@ public class MainMenu extends JFrame
 	  }
         });
         
+        options.addActionListener(new ActionListener()
+        {
+	  public void actionPerformed(ActionEvent e)
+	  {
+	      new OptionWindow();
+	      dispose();
+	  }
+        });
+        
         quit.addActionListener(new ActionListener()
         {
 	  public void actionPerformed(ActionEvent e)
@@ -146,9 +176,9 @@ public class MainMenu extends JFrame
     private void addTitleLabel()
     {
         title = new JLabel("Tractus");
-        title.setBounds((width / 2) - (titleWidth / 2), 0, titleWidth, buttonHeight);
+        title.setBounds((WIDTH / 2) - (TITLE_WIDTH / 2), 0, TITLE_WIDTH, BUTTON_HEIGHT);
         title.setForeground(Color.red);
-        title.setFont(titleFont);
+        title.setFont(TITLE_FONT);
         window.add(title);
     }
 }

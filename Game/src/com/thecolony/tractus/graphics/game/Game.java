@@ -232,7 +232,7 @@ public class Game extends SimpleApplication
         battles[3] = audio_battle4;
 
 
-        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
+        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/create.wav", false);
         audio_onCreate1.setLooping(false);
         audio_onCreate1.setVolume(3);
         audio_onCreate1.setPositional(false);
