@@ -1,7 +1,7 @@
 package com.thecolony.tractus.graphics.GUI;
 
 import com.jme3.system.AppSettings;
-import com.thecolony.tractus.graphics.game.Game;
+import com.thecolony.tractus.game.Game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
