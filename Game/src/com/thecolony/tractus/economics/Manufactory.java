@@ -12,7 +12,8 @@ public class Manufactory extends AbstractAgent implements Producer {
 	private final Product production;
 	private Need inputNeed;
 	private Machinery machines;
-
+	private double yesterdaysProductionQty;
+	
 	public Manufactory(Product productionGood) {
 		super(null);
 		production = productionGood;
@@ -46,6 +47,7 @@ public class Manufactory extends AbstractAgent implements Producer {
 		for (Product p : inputGoods.keySet()) {
 			inventory.removeQuantityOfProduct(p, portionOfMaxProduced * inputGoods.get(p).getQuantity());
 		}
+		yesterdaysProductionQty = quantityProduced;
 	}
 
 	@Override
@@ -104,5 +106,9 @@ public class Manufactory extends AbstractAgent implements Producer {
 	
 	public Machinery getMachinery() {
 		return machines;
+	}
+
+	public double getYesterdaysProductionQty() {
+		return yesterdaysProductionQty;
 	}
 }

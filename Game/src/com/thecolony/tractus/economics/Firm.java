@@ -35,8 +35,17 @@ public class Firm extends AbstractAgent {
 		inventory = supplier.take();
 		production.give(inventory);
 		production.runProductionStep();
+		production.performMaintenance();
 		inventory = production.take();
 		sales.give(inventory);
 		sales.postAdvertisements();
+	}
+	
+	public Product getProductionGood() {
+		return production.getProductionGood();
+	}
+	
+	public double getQuantity() {
+		return production.getYesterdaysProductionQty();
 	}
 }
