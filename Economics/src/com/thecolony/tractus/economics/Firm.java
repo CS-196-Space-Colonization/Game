@@ -39,4 +39,8 @@ public class Firm extends AbstractAgent {
 		sales.give(inventory);
 		sales.postAdvertisements();
 	}
+	
+	public Product getProductionGood() {
+		return production.getProductionGood();
+	}
 }
