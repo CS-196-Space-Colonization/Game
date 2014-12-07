@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
 import com.thecolony.tractus.economics.Firm;
+import com.thecolony.tractus.economics.products.Product;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import java.util.ArrayList;
 
@@ -77,12 +78,17 @@ public class Planet implements java.io.Serializable
     
     public String[] getDisplayInfo()
     {
-        return new String[]
+        String[] info = new String[2 + firms.size()];
+        info[0] = "Planet:";
+        info[1] = " Name: " + name;
+        for(int i = 0; i < firms.size(); i++)
         {
-            "Planet:",
-            " Name: " + name,
-            " Other Info..."
-        };
+           Firm firm = firms.get(i);
+           String product = firm.getProductionGood().getType();
+           double amt = firm.getQuantity();
+           info[2 + i] = product + " factory production: " + amt;
+        }
+        return info;
     }
     
     public DrawableObject3d getDrawableObject3d()
