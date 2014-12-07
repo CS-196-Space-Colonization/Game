@@ -12,7 +12,9 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Sphere;
+import com.thecolony.tractus.economics.Firm;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
+import java.util.ArrayList;
 
 /**
  * A class used to represent a planet.
@@ -27,6 +29,8 @@ public class Planet implements java.io.Serializable
     private ColorRGBA color;
     
     private transient BoundingSphere boundingSphere;
+    
+    private ArrayList<Firm> firms;
     
     public Planet(String name, Node node, Spatial model, Vector3f position)
     {
