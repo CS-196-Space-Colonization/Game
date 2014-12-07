@@ -1,7 +1,7 @@
 package com.thecolony.tractus.player.ai;
 
-import com.thecolony.tractus.player.ai.battle.BattleObject;
-import com.thecolony.tractus.player.ai.battle.ships.Ship;
+import com.thecolony.tractus.military.battle.BattleObject;
+import com.thecolony.tractus.military.ships.Ship;
 import java.util.ArrayList;
 
 /**

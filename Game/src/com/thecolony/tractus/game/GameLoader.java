@@ -19,10 +19,10 @@ import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.player.Player;
-import com.thecolony.tractus.player.ai.battle.BattleObject;
-import com.thecolony.tractus.player.ai.battle.FlotillaBattler;
-import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
-import com.thecolony.tractus.player.ai.battle.ships.Ship;
+import com.thecolony.tractus.military.battle.BattleObject;
+import com.thecolony.tractus.military.battle.FlotillaBattler;
+import com.thecolony.tractus.military.ships.Flotilla;
+import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.resources.Res;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 
