@@ -2,7 +2,7 @@ package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
-import com.thecolony.tractus.player.ai.battle.BattleObject;
+import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.resources.Res;
 
 /**

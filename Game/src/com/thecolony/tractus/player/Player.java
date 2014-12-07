@@ -9,7 +9,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.network.serializing.Serializable;
 import java.util.ArrayList;
 
-import com.thecolony.tractus.player.ai.battle.BattleObject;
+import com.thecolony.tractus.military.battle.BattleObject;
 import java.awt.Color;
 
 @Serializable

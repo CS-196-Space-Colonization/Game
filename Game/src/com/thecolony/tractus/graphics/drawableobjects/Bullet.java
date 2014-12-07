@@ -1,10 +1,11 @@
 package com.thecolony.tractus.graphics.drawableobjects;
 
+import com.thecolony.tractus.graphics.GraphicsManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Line;
-import com.thecolony.tractus.player.ai.battle.ships.Ship;
+import com.thecolony.tractus.military.ships.Ship;
 
 /**
  * A class used to represent a bullet shot by a ship.
@@ -37,7 +38,7 @@ public class Bullet
         Vector3f direction = ship.getMoveableObject3d().getDirection().normalize().mult(BULLET_LENGTH);
         Line line = new Line(ship.getPosition(), ship.getPosition().add(direction));
         Geometry g = new Geometry("Bullet Line", line);
-        g.setMaterial(GameGraphics.getDefaultWhiteMaterial());
+        g.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         
         model = new MoveableObject3d("Bullet", node, g, ship.getPosition(), direction, BULLET_SPEED, 0.0f, "Bullet");
         

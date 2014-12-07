@@ -1,7 +1,9 @@
 package com.thecolony.tractus;
 
 
-public class TestMain 
+import com.thecolony.tractus.player.ai.Reputations;
+
+public class TestMain
 {
 	public static void main(String[] args)
 	{

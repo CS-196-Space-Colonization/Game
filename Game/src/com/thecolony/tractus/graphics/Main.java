@@ -4,7 +4,7 @@ import com.jme3.system.AppSettings;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
-import com.thecolony.tractus.graphics.game.Game;
+import com.thecolony.tractus.game.Game;
 
 /**
  * @author Joe Pagliuco
