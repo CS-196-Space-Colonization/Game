@@ -12,7 +12,7 @@ public class Inventory {
 	private Map<Product, Quantity> inventory;
 	
 	public Inventory() {
-		inventory = new HashMap<>();
+		inventory = new HashMap<Product, Quantity>();
 	}
 	
 	public Inventory(Map<Product, Quantity> inventory) {

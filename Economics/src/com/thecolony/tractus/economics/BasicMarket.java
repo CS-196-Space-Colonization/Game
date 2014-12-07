@@ -14,7 +14,7 @@ public class BasicMarket implements Market, Observer {
 	
 	public BasicMarket() {
 		market = new HashMap<Product, LinkedList<Transaction>>();
-		lastPrices = new HashMap<>();
+		lastPrices = new HashMap<Product, Double>();
 	}
 	
 	
