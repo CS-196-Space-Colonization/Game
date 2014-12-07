@@ -1,10 +1,8 @@
 package com.thecolony.tractus.game;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioNode;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
@@ -23,6 +21,7 @@ import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.FlotillaBattler;
 import com.thecolony.tractus.military.ships.Flotilla;
 import com.thecolony.tractus.military.ships.Ship;
+import com.thecolony.tractus.resources.Res;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 
 import java.util.ArrayList;
@@ -33,38 +32,33 @@ import java.util.ArrayList;
 public class GameLoader
 {
 
-    Node planetsNode, starsNode, rootNode, guiNode, selectedShipsNode, selectedFlotillasNode, loneShipsNode, flotillasNode;
-    AssetManager assetManager;
-    InputManager inputManager;
-    Planet[] mPlanets;
-    Star[] mSuns;
-    ArrayList<Ship> loneShips;
-    ArrayList<Flotilla> flotillas;
-    ArrayList<FlotillaBattler> flotillaBattles;
-    JmeCursor mCursorSmiley;
-    Picture mPictureBoxSelect, mOverlay;
-    BitmapFont guiFont;
-    ScrollText mInfoHubText;
-    int M_WIDTH, M_HEIGHT;
-    private final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
-    private final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
-    Plane mvmtPlane;
-    Vector3f selectedNodeCenterPos;
-    AudioNode[] battles, creates;
+    private static Node planetsNode, starsNode, rootNode, guiNode, selectedShipsNode, selectedFlotillasNode, loneShipsNode, flotillasNode;
+    private static AssetManager assetManager;
+    private static InputManager inputManager;
+    private static Planet[] mPlanets;
+    private static Star[] mSuns;
+    private static ArrayList<Ship> loneShips;
+    private static ArrayList<Flotilla> flotillas;
+    private static ArrayList<FlotillaBattler> flotillaBattles;
+    private static JmeCursor mCursorSmiley;
+    private static Picture mPictureBoxSelect, mOverlay;
+    private static BitmapFont guiFont;
+    private static ScrollText mInfoHubText;
+    private static int M_WIDTH, M_HEIGHT;
+    private static final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
+    private static final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
+    private static Plane mvmtPlane;
+    private static Vector3f selectedNodeCenterPos;
 
-    public GameLoader(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
+    public static Object[] loadGame(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
     {
-        this.assetManager = assetManager;
-        this.inputManager = inputManager;
-        this.rootNode = rootNode;
-        this.guiNode = guiNode;
-        this.guiFont = guiFont;
-        this.M_HEIGHT = M_HEIGHT;
-        this.M_WIDTH = M_WIDTH;
-    }
-
-    public Object[] loadGame()
-    {
+        GameLoader.assetManager = assetManager;
+        GameLoader.inputManager = inputManager;
+        GameLoader.rootNode = rootNode;
+        GameLoader.guiNode = guiNode;
+        GameLoader.guiFont = guiFont;
+        GameLoader.M_HEIGHT = M_HEIGHT;
+        GameLoader.M_WIDTH = M_WIDTH;
         GraphicsManager.loadGraphics(assetManager);
         AudioManager.loadAudio(assetManager, rootNode);
         loadThings(); //Load territories. Lazy naming, LOL
@@ -83,25 +77,25 @@ public class GameLoader
         return arr;
     }
 
-    private void loadSkybox()
+    private static void loadSkybox()
     {
         Texture skybox_tex = assetManager.loadTexture("Textures/space_skybox.png");
         rootNode.attachChild(SkyFactory.createSky(assetManager, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex, skybox_tex));
     }
 
-    private void loadAmbientLight()
+    private static void loadAmbientLight()
     {
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setColor(ColorRGBA.White.mult(0.7f));
         rootNode.addLight(ambientLight);
     }
 
-    private void loadMovementPlane()
+    private static void loadMovementPlane()
     {
         mvmtPlane = new Plane(Vector3f.UNIT_Y, 0.0f);
     }
 
-    private void loadCursors()
+    private static void loadCursors()
     {
         mCursorSmiley = (JmeCursor) assetManager.loadAsset("Textures/cursor_smiley.cur");
         mCursorSmiley.setxHotSpot(mCursorSmiley.getWidth() >> 1);
@@ -109,7 +103,7 @@ public class GameLoader
         inputManager.setMouseCursor(null);
     }
 
-    private void loadPictures()
+    private static void loadPictures()
     {
         mPictureBoxSelect = new Picture("Box Select Picture");
         mPictureBoxSelect.setImage(assetManager, "Textures/box_select.png", true);
@@ -123,14 +117,14 @@ public class GameLoader
         guiNode.attachChild(mOverlay);
     }
 
-    private void loadText()
+    private static void loadText()
     {
         float fontSize = (guiFont.getCharSet().getRenderedSize() * ((float) M_WIDTH / (float) M_HEIGHT)) / (1920.0f / 1080.0f);
         mInfoHubText = new ScrollText(M_HEIGHT, fontSize, M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH,
                 M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, guiFont, guiNode);
     }
 
-    private Planet generatePlanet(int index)
+    private static Planet generatePlanet(int index)
     {
         VisualType type = null;
         switch ((int) (Math.random() * 5))
@@ -157,10 +151,10 @@ public class GameLoader
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
 
-        return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null, null, "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
+        return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null, new Res(), "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
     }
 
-    private void loadThings()
+    private static void loadThings()
     {
         loadPlanets();
         loadSun();
@@ -171,7 +165,7 @@ public class GameLoader
         mSuns[0].setSubTerr(mPlanets);
     }
 
-    private void loadPlanets()
+    private static void loadPlanets()
     {
         planetsNode = new Node("Planets Node");
         mPlanets = new Planet[10];
@@ -182,7 +176,7 @@ public class GameLoader
         }
     }
 
-    private void loadSun()
+    private static void loadSun()
     {
         starsNode = new Node("Stars Node");
         VisualType type = null;
@@ -202,27 +196,27 @@ public class GameLoader
                 break;
         }
         mSuns = new Star[1];
-        mSuns[0] = new Star(Vector3f.ZERO, null, null, null, "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
+        mSuns[0] = new Star(Vector3f.ZERO, null, null, new Res(), "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
         rootNode.addLight(mSuns[0].getPointLight());
 
     }
 
-    private Ship generateShip(int player, Node node, int num, double[] stats)
+    private static Ship generateShip(int player, Node node, int num, double[] stats)
     {
         return generateShip(player, node, num, Vector3f.ZERO, stats);
     }
 
-    private Ship generateShip(int player, Node node, int num, Vector3f pos, double[] stats)
+    private static Ship generateShip(int player, Node node, int num, Vector3f pos, double[] stats)
     {
         return generateShip(player, node, num, Ship.SHIP_TYPE.Fighter, pos, stats);
     }
 
-    private Ship generateShip(int player, Node node, int num, Ship.SHIP_TYPE type, double[] stats)
+    private static Ship generateShip(int player, Node node, int num, Ship.SHIP_TYPE type, double[] stats)
     {
         return generateShip(player, node, num, type, Vector3f.ZERO, stats);
     }
 
-    private Ship generateShip(int player, Node node, int num, Ship.SHIP_TYPE type, Vector3f pos, double[] stats)
+    private static Ship generateShip(int player, Node node, int num, Ship.SHIP_TYPE type, Vector3f pos, double[] stats)
     {
         Player playah = new Player(player);
         Ship shit = new Ship(playah, type, type.toString() + num, node, pos, stats, 0, 0, 0, 0.0);
@@ -230,7 +224,7 @@ public class GameLoader
         return shit;
     }
 
-    private void loadShips()
+    private static void loadShips()
     {
         selectedShipsNode = new Node("Selected Ships");
         selectedFlotillasNode = new Node("Selected Flotillas");
@@ -279,43 +273,7 @@ public class GameLoader
 //        attackers = new ArrayList<ArrayList<Flotilla>>();
 //        defenders = new ArrayList<Flotilla>();
     }
-
-    private void loadAudio()
-    {
-        AudioNode audio_battle1 = new AudioNode(assetManager, "Sounds/Battle/35683__jobro__laser6.wav", false);
-        AudioNode audio_battle2 = new AudioNode(assetManager, "Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
-        AudioNode audio_battle3 = new AudioNode(assetManager, "Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
-        AudioNode audio_battle4 = new AudioNode(assetManager, "Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
-        battles = new AudioNode[]
-        {
-            audio_battle1, audio_battle2, audio_battle3, audio_battle4
-        };
-        for (int i = 0; i < battles.length; i++)
-        {
-            battles[i].setLooping(false);
-            battles[i].setVolume(3);
-            battles[i].setPositional(false);
-            rootNode.attachChild(battles[i]);
-        }
-
-        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
-        AudioNode audio_onCreate2 = new AudioNode(assetManager, "Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
-        AudioNode audio_onCreate3 = new AudioNode(assetManager, "Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
-        AudioNode audio_onCreate4 = new AudioNode(assetManager, "Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
-        creates = new AudioNode[]
-        {
-            audio_onCreate1, audio_onCreate2, audio_onCreate3, audio_onCreate4
-        };
-        for (int i = 0; i < battles.length; i++)
-        {
-            creates[i].setLooping(false);
-            creates[i].setVolume(3);
-            creates[i].setPositional(false);
-            rootNode.attachChild(creates[i]);
-        }
-    }
-
-    private void addNodes()
+    private static void addNodes()
     {
         rootNode.attachChild(selectedShipsNode);
         rootNode.attachChild(planetsNode);
