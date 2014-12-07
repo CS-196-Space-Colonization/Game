@@ -32,6 +32,8 @@ public class MainMenu extends JFrame
         GUIColors.add(new Color(0xff, 0x4f, 0x00));//international orange
         GUIColors.add(new Color(0xcc, 0x88, 0x99));//puce
         GUIColors.add(new Color(127, 51, 0));//brown?
+        GUIColors.add(new Color(224,20,147));//deep pink
+        GUIColors.add(new Color(57,255,20));//neon green
     }
     
     private JPanel window;
@@ -44,17 +46,26 @@ public class MainMenu extends JFrame
     private final int BUTTON_WIDTH = 200;
     private final int BUTTON_HEIGHT = 100;
     
-    private final int TITLE_WIDTH = BUTTON_WIDTH - 0;
+    private final int TITLE_WIDTH = BUTTON_WIDTH;
     
     private final Font BUTTON_FONT = new Font("Comic Sans MS", 0, 25);
     private final Font TITLE_FONT = new Font("Comic Sans MS", 0, 50);
     
-    private final Color backgroundColor;
+    private final Color BACKGROUND_COLOR;
+    private final Color TEXT_COLOR;
+    
+    public static void startGame(Game game)
+    {
+        
+    }
     
     public MainMenu()
     {
         window = new JPanel();
-        backgroundColor = null;
+        BACKGROUND_COLOR = MainMenu.GUIColors.remove((int)(Math.random() * MainMenu.GUIColors.size()));
+        TEXT_COLOR = MainMenu.GUIColors.remove((int)(Math.random() * MainMenu.GUIColors.size()));
+        MainMenu.GUIColors.add(BACKGROUND_COLOR);
+        MainMenu.GUIColors.add(TEXT_COLOR);
         try
         {
 	  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -72,7 +83,7 @@ public class MainMenu extends JFrame
         setLocationRelativeTo(null);
         setResizable(false);
         window.setLayout(null);
-        window.setBackground(Color.yellow);
+        window.setBackground(BACKGROUND_COLOR);
         
         addButtons();
         addTitleLabel();
@@ -109,12 +120,12 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      boolean fullscreen = false;
-	      int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
-	      if (input == JOptionPane.YES_OPTION)
-		fullscreen = true;
-	      else if (input == JOptionPane.CANCEL_OPTION || input == JOptionPane.CLOSED_OPTION)
-		System.exit(0);            
+	      boolean fullscreen = OptionWindow.fullscreen;
+//	      int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
+//	      if (input == JOptionPane.YES_OPTION)
+//		fullscreen = true;
+//	      else if (input == JOptionPane.CANCEL_OPTION || input == JOptionPane.CLOSED_OPTION)
+//		System.exit(0);            
 
 	      Game game = new Game();
 
@@ -177,7 +188,7 @@ public class MainMenu extends JFrame
     {
         title = new JLabel("Tractus");
         title.setBounds((WIDTH / 2) - (TITLE_WIDTH / 2), 0, TITLE_WIDTH, BUTTON_HEIGHT);
-        title.setForeground(Color.red);
+        title.setForeground(TEXT_COLOR);
         title.setFont(TITLE_FONT);
         window.add(title);
     }

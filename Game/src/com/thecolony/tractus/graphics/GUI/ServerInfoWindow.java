@@ -43,11 +43,17 @@ public class ServerInfoWindow extends JFrame
     private String name, version, ip, port;
     private JTextField tName, tVersion, tIp, tPort;
     private final int TYPE;
+    private final Color BACKGROUND_COLOR;
+    private final Color TEXT_COLOR;
 
     public ServerInfoWindow(int t)
     {
         TYPE = t;
         window = new JPanel();
+        BACKGROUND_COLOR = MainMenu.GUIColors.remove((int)(Math.random() * MainMenu.GUIColors.size()));
+        TEXT_COLOR = MainMenu.GUIColors.remove((int)(Math.random() * MainMenu.GUIColors.size()));
+        MainMenu.GUIColors.add(BACKGROUND_COLOR);
+        MainMenu.GUIColors.add(TEXT_COLOR);
         try
         {
 	  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -64,7 +70,7 @@ public class ServerInfoWindow extends JFrame
         setLocationRelativeTo(null);
         setResizable(false);
         window.setLayout(null);
-        window.setBackground(new Color(0xcc, 0x88, 0x99));
+        window.setBackground(BACKGROUND_COLOR);
 
         addLabels();
         addButtons();
@@ -124,7 +130,7 @@ public class ServerInfoWindow extends JFrame
     {
         title = new JLabel("Server info?");
         title.setBounds((WIDTH / 2) - (TITLE_WIDTH / 2), 0, TITLE_WIDTH, BUTTON_HEIGHT);
-        title.setForeground(new Color(127, 51, 0));
+        title.setForeground(TEXT_COLOR);
         title.setFont(TITLE_FONT);
         window.add(title);
     }

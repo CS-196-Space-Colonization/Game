@@ -34,10 +34,16 @@ public class MultiplayerMenu extends JFrame
     private final int LABLE_WIDTH = TITLE_WIDTH - 100;
     private final Font BUTTON_FONT = new Font("Comic Sans MS", 0, 25);
     private final Font TITLE_FONT = new Font("Comic Sans MS", 0, 50);
+    private final Color BACKGROUND_COLOR;
+    private final Color TEXT_COLOR;
 
     public MultiplayerMenu()
     {
         window = new JPanel();
+        BACKGROUND_COLOR = MainMenu.GUIColors.remove((int)(Math.random() * MainMenu.GUIColors.size()));
+        TEXT_COLOR = MainMenu.GUIColors.remove((int)(Math.random() * MainMenu.GUIColors.size()));
+        MainMenu.GUIColors.add(BACKGROUND_COLOR);
+        MainMenu.GUIColors.add(TEXT_COLOR);
         try
         {
 	  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -54,7 +60,7 @@ public class MultiplayerMenu extends JFrame
         setLocationRelativeTo(null);
         setResizable(false);
         window.setLayout(null);
-        window.setBackground(Color.cyan);
+        window.setBackground(BACKGROUND_COLOR);
 
         addLabels();
         addButtons();
@@ -113,7 +119,7 @@ public class MultiplayerMenu extends JFrame
     {
         title = new JLabel("Mutiplayer");
         title.setBounds((WIDTH / 2) - (TITLE_WIDTH / 2), 0, TITLE_WIDTH, BUTTON_HEIGHT);
-        title.setForeground(new Color(0xff, 0x4f, 0x00));
+        title.setForeground(TEXT_COLOR);
         title.setFont(TITLE_FONT);
         window.add(title);
     }

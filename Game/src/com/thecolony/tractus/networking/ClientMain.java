@@ -10,6 +10,7 @@ import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
+import com.thecolony.tractus.graphics.GUI.OptionWindow;
 import com.thecolony.tractus.graphics.game.Game;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -27,7 +28,8 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         //network stuff
         start(JmeContext.Type.Headless);
         //graphics stuff
-        boolean fullscreen = false;
+        boolean fullscreen = OptionWindow.fullscreen;
+        System.out.println(fullscreen);
         int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
         if (input == JOptionPane.YES_OPTION)
         {
@@ -79,7 +81,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 	  myClient.start();
         } catch (IOException ex)
         {
-	  System.out.println("Failed to connect to server");
+	  System.out.println("Failed to connect to server in init");
         }
 
         Globals.registerClasses();
