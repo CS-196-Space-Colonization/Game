@@ -1,39 +1,10 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/Game/lib/nifty-default-controls.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jglfont-core.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-blender.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jbullet.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/joal.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-jbullet.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/stack-alloc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-desktop.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-networking.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-openal-soft-natives-android.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/j-ogg-oggd.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/nifty.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/xmlpull-xpp3.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/vecmath.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-lwjgl-natives.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/nifty-style-black.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/nifty-examples.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-jogg.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-plugins.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/lwjgl.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/j-ogg-vorbisd.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-terrain.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-core.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-niftygui.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-lwjgl.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jinput.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/gluegen-rt.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-testdata.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jogl-all.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/jME3-effects.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Game/lib/eventbus.jar!/" />
+      <root url="file://$PROJECT_DIR$/Game/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/Game/lib" recursive="false" />
   </library>
 </component>
