@@ -631,7 +631,9 @@ public class Game extends SimpleApplication
 	  {
 
 	      if (name.equals("More Ships"))
-	      {
+	      
+                  
+    loadAudio();
                   creates[1].playInstance();
 		double[] stats = new double[19];
 		stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
