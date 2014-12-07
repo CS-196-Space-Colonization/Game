@@ -6,6 +6,7 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -44,6 +45,13 @@ public class Game extends SimpleApplication
     public static int M_WIDTH, M_HEIGHT;
     private final float M_COMPRESS_SPEED = 1.0f;
     private final float M_ATTACK_DISTANCE = 50.0f;
+
+    public static enum Selection_Mode
+    {
+
+        Ship_Selection, Flotilla_Selection
+    };
+    private Selection_Mode selectionMode;
     private Planet[] mPlanets;
     private Star[] mSuns;
     private ArrayList<Ship> loneShips;
@@ -65,6 +73,7 @@ public class Game extends SimpleApplication
     private Picture mPictureBoxSelect;
     private Picture mOverlay;
     private ScrollText mInfoHubText;
+    private BitmapText mSelectionModeText;
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
@@ -114,28 +123,29 @@ public class Game extends SimpleApplication
 
     public void unpack(Object[] arr)
     {
-        int index = 0;
-        rootNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        guiNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        guiFont = (arr[index] instanceof BitmapFont) ? (BitmapFont) arr[index++] : null;
-        inputManager = (arr[index] instanceof InputManager) ? (InputManager) arr[index++] : null;
-        planetsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        mPlanets = (arr[index] instanceof Planet[]) ? (Planet[]) arr[index++] : null;
-        starsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        mSuns = (arr[index] instanceof Star[]) ? (Star[]) arr[index++] : null;
-        mSelectedShipsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        loneShipsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        loneShips = (arr[index] instanceof ArrayList) ? (ArrayList<Ship>) arr[index++] : null;
-        mSelectedFlotillasNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        flotillasNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
-        flotillas = (arr[index] instanceof ArrayList) ? (ArrayList<Flotilla>) arr[index++] : null;
-        flotillaBattles = (arr[index] instanceof ArrayList) ? (ArrayList<FlotillaBattler>) arr[index++] : null;
-        mSelectedNodeCenterPos = (arr[15] instanceof Vector3f) ? (Vector3f) arr[index++] : null;
-        mMovementPlane = (arr[index] instanceof Plane) ? (Plane) arr[index++] : null;
-        mCursorSmiley = (arr[index] instanceof JmeCursor) ? (JmeCursor) arr[index++] : null;
-        mPictureBoxSelect = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
-        mOverlay = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
-        mInfoHubText = (arr[index] instanceof ScrollText) ? (ScrollText) arr[index++] : null;
+        rootNode = (arr[0] instanceof Node) ? (Node) arr[0] : null;
+        guiNode = (arr[1] instanceof Node) ? (Node) arr[1] : null;
+        guiFont = (arr[2] instanceof BitmapFont) ? (BitmapFont) arr[2] : null;
+        inputManager = (arr[3] instanceof InputManager) ? (InputManager) arr[3] : null;
+        planetsNode = (arr[4] instanceof Node) ? (Node) arr[4] : null;
+        mPlanets = (arr[5] instanceof Planet[]) ? (Planet[]) arr[5] : null;
+        starsNode = (arr[6] instanceof Node) ? (Node) arr[6] : null;
+        mSuns = (arr[7] instanceof Star[]) ? (Star[]) arr[7] : null;
+        mSelectedShipsNode = (arr[8] instanceof Node) ? (Node) arr[8] : null;
+        loneShipsNode = (arr[9] instanceof Node) ? (Node) arr[9] : null;
+        loneShips = (arr[10] instanceof ArrayList) ? (ArrayList<Ship>) arr[10] : null;
+        mSelectedFlotillasNode = (arr[11] instanceof Node) ? (Node) arr[11] : null;
+        flotillasNode = (arr[12] instanceof Node) ? (Node) arr[12] : null;
+        flotillas = (arr[13] instanceof ArrayList) ? (ArrayList<Flotilla>) arr[13] : null;
+        flotillaBattles = (arr[14] instanceof ArrayList) ? (ArrayList<FlotillaBattler>) arr[14] : null;
+        mSelectedNodeCenterPos = (arr[15] instanceof Vector3f) ? (Vector3f) arr[15] : null;
+        mMovementPlane = (arr[16] instanceof Plane) ? (Plane) arr[16] : null;
+        selectionMode = (arr[17] instanceof Game.Selection_Mode) ? (Game.Selection_Mode) arr[17] : null;
+        mCursorSmiley = (arr[18] instanceof JmeCursor) ? (JmeCursor) arr[18] : null;
+        mPictureBoxSelect = (arr[19] instanceof Picture) ? (Picture) arr[19] : null;
+        mOverlay = (arr[20] instanceof Picture) ? (Picture) arr[20] : null;
+        mInfoHubText = (arr[21] instanceof ScrollText) ? (ScrollText) arr[21] : null;
+        mSelectionModeText = (arr[22] instanceof BitmapText) ? (BitmapText) arr[22] : null;
     }
 
     private void adjustCameraSettings()
@@ -171,6 +181,7 @@ public class Game extends SimpleApplication
         inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_P));
         inputManager.addMapping("Compress", new KeyTrigger(KeyInput.KEY_C));
         inputManager.addMapping("Decompress", new KeyTrigger(KeyInput.KEY_X));
+        inputManager.addMapping("Switch Selection Mode", new KeyTrigger(KeyInput.KEY_TAB));
         inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_ESCAPE));
         inputManager.addMapping("Exit", new KeyTrigger(KeyInput.KEY_BACK));
         inputManager.addMapping("More Ships", new KeyTrigger(KeyInput.KEY_SPACE));
@@ -181,14 +192,16 @@ public class Game extends SimpleApplication
         inputManager.addListener(mKeyboardActionListener, new String[]
         {
             "Shift", "Move", "Rotate", "Box Select",
-            "Attack", "Pause", "Exit", "Scroll Up",
-            "Scroll Down", "More Ships"
+            "Attack", "Switch Selection Mode", "Pause",
+            "Exit", "Scroll Up", "Scroll Down", "More Ships"
         });
         inputManager.addListener(mKeyboardAnalogListener, new String[]
         {
             "Compress", "Decompress"
         });
     }
+
+    
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,176 +212,185 @@ public class Game extends SimpleApplication
     {
         public void onAction(String name, boolean isPressed, float tpf)
         {
-            if (name.equals("Right Click") && isPressed)
+            if (selectionMode == Selection_Mode.Ship_Selection)
             {
-                if (!mIsShiftPressed)
+                if (name.equals("Right Click") && isPressed)
                 {
-                    clearSelectedObjects();
-                }
-
-                Ray r = getMouseRay();
-
-                boolean selectedSomething = false;
-                for (int i = 0; i < loneShips.size(); i++)
-                {
-                    Ship s = loneShips.get(i);
-                    selectedSomething = ((BoundingBox) s.getMoveableObject3d().getModel().getWorldBound()).intersects(r);
-                    if (selectedSomething)
+                    if (!mIsShiftPressed)
                     {
-                        addSelectedObject(s);
-                        break;
+                        clearSelectedObjects();
                     }
-                }
-                if (!selectedSomething)
-                {
-                    clearSelectedObjects();
-                }
-            }
 
-            if (name.equals("Left Click") && isPressed)
-            {
-                if (isMoveToggleOn || isRotateToggleOn)
-                {
-                    Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
+                    Ray r = getMouseRay();
 
+                    boolean selectedSomething = false;
                     for (int i = 0; i < loneShips.size(); i++)
                     {
                         Ship s = loneShips.get(i);
-                        if (s.isSelected())
+                        selectedSomething = ((BoundingBox) s.getMoveableObject3d().getModel().getWorldBound()).intersects(r);
+                        if (selectedSomething)
                         {
-                            s.setTargetPoint(s.getPosition().add(directionalVector), isMoveToggleOn);
+                            addSelectedObject(s);
+                            break;
                         }
                     }
+                    if (!selectedSomething)
+                    {
+                        clearSelectedObjects();
+                    }
+                }
 
-                    isMoveToggleOn = isRotateToggleOn = false;
-                    inputManager.setMouseCursor(null);
+                if (name.equals("Left Click") && isPressed)
+                {
+                    if (isMoveToggleOn || isRotateToggleOn)
+                    {
+                        Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
+
+                        for (int i = 0; i < loneShips.size(); i++)
+                        {
+                            Ship s = loneShips.get(i);
+                            if (s.isSelected())
+                            {
+                                s.setTargetPoint(s.getPosition().add(directionalVector), isMoveToggleOn);
+                            }
+                        }
+
+                        isMoveToggleOn = isRotateToggleOn = false;
+                        inputManager.setMouseCursor(null);
+                    }
+                    else
+                    {
+                        if (isBoxSelectToggleOn)
+                        {
+                            Vector2f cursorPos = inputManager.getCursorPosition();
+                            mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
+                            guiNode.attachChild(mPictureBoxSelect);
+                        }
+                    }
                 }
                 else
                 {
-                    if (isBoxSelectToggleOn)
+                    if (name.equals("Left Click") && !isPressed)
                     {
-                        Vector2f cursorPos = inputManager.getCursorPosition();
-                        mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
-                        guiNode.attachChild(mPictureBoxSelect);
+                        if (isBoxSelectToggleOn)
+                        {
+                            clearSelectedObjects();
+
+                            // Create big ass selector cube...
+                            Vector3f min = getMouseRayIntersectionPoint();
+                            Vector3f max = Vector3f.ZERO;
+                            Ray r = createRayFromPoint((Vector2f) mPictureBoxSelect.getUserData("Initial Position"));
+                            r.intersectsWherePlane(mMovementPlane, max);
+                            Box bigAssSelectorCube = new Box(min, max);
+
+                            // Loop through ships to see if they're in the selected area...
+                            for (int i = 0; i < loneShips.size(); i++)
+                            {
+                                BoundingVolume shipBound = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound();
+                                if (bigAssSelectorCube.getBound().intersects(shipBound))
+                                {
+                                    addSelectedObject(loneShips.get(i));
+                                }
+                            }
+
+                            guiNode.detachChild(mPictureBoxSelect);
+                            isBoxSelectToggleOn = false;
+                            inputManager.setMouseCursor(null);
+                            flyCam.setEnabled(true);
+                        }
                     }
                 }
             }
             else
             {
-                if (name.equals("Left Click") && !isPressed)
+                if (selectionMode == Selection_Mode.Flotilla_Selection)
                 {
-                    if (isBoxSelectToggleOn)
+                    if (name.equals("Right Click") && isPressed)
                     {
-                        clearSelectedObjects();
-
-                        // Create big ass selector cube...
-                        Vector3f min = getMouseRayIntersectionPoint();
-                        Vector3f max = Vector3f.ZERO;
-                        Ray r = createRayFromPoint((Vector2f) mPictureBoxSelect.getUserData("Initial Position"));
-                        r.intersectsWherePlane(mMovementPlane, max);
-                        Box bigAssSelectorCube = new Box(min, max);
-
-                        // Loop through ships to see if they're in the selected area...
-                        for (int i = 0; i < loneShips.size(); i++)
+                        if (!mIsShiftPressed)
                         {
-                            BoundingVolume shipBound = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound();
-                            if (bigAssSelectorCube.getBound().intersects(shipBound))
-                            {
-                                addSelectedObject(loneShips.get(i));
-                            }
+                            clearSelectedObjects();
                         }
 
-                        guiNode.detachChild(mPictureBoxSelect);
-                        isBoxSelectToggleOn = false;
-                        inputManager.setMouseCursor(null);
-                        flyCam.setEnabled(true);
-                    }
-                }
-            }
-            if (name.equals("Right Click") && isPressed)
-            {
-                if (!mIsShiftPressed)
-                {
-                    clearSelectedObjects();
-                }
-
-                Ray r = getMouseRay();
-
-                boolean selectedSomething = false;
-                for (int i = 0; i < flotillas.size(); i++)
-                {
-                    Flotilla f = flotillas.get(i);
-                    selectedSomething = f.getBoundingBox().intersects(r);
-                    if (selectedSomething)
-                    {
-                        addSelectedObject(f);
-                        break;
-                    }
-                }
-                if (!selectedSomething)
-                {
-                    clearSelectedObjects();
-                }
-            }
-
-            if (name.equals("Left Click") && isPressed)
-            {
-                if (isMoveToggleOn || isRotateToggleOn)
-                {
-                    Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
-                    for (int i = 0; i < flotillas.size(); i++)
-                    {
-                        Flotilla f = flotillas.get(i);
-                        if (f.isSelected())
-                        {
-                            f.setTargetPoint(f.getCenterPosition().add(directionalVector), isMoveToggleOn);
-                        }
-                    }
-
-                    isMoveToggleOn = isRotateToggleOn = false;
-                    inputManager.setMouseCursor(null);
-                }
-                else
-                {
-                    if (isAttackToggleOn)
-                    {
                         Ray r = getMouseRay();
+
+                        boolean selectedSomething = false;
                         for (int i = 0; i < flotillas.size(); i++)
                         {
                             Flotilla f = flotillas.get(i);
-                            if (f.isSelected())
+                            selectedSomething = f.getBoundingBox().intersects(r);
+                            if (selectedSomething)
                             {
+                                addSelectedObject(f);
                                 break;
                             }
+                        }
+                        if (!selectedSomething)
+                        {
+                            clearSelectedObjects();
+                        }
+                    }
 
-                            boolean hover = f.getBoundingBox().intersects(r);
-                            if (hover)
+                    if (name.equals("Left Click") && isPressed)
+                    {
+                        if (isMoveToggleOn || isRotateToggleOn)
+                        {
+                            Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
+                            for (int i = 0; i < flotillas.size(); i++)
                             {
-                                Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
-                                float change = M_ATTACK_DISTANCE / targetDirection.length();
-                                Vector3f targetPoint = f.getCenterPosition().clone().interpolate(mSelectedNodeCenterPos, change);
-
-                                f.setTargetPoint(targetPoint, false);
-
-                                // Add attacker
-                                Flotilla attacker = null;
-                                for (int j = 0; j < flotillas.size(); j++)
+                                Flotilla f = flotillas.get(i);
+                                if (f.isSelected())
                                 {
-                                    Flotilla f2 = flotillas.get(j);
-                                    if (f2.isSelected())
+                                    f.setTargetPoint(f.getCenterPosition().add(directionalVector), isMoveToggleOn);
+                                }
+                            }
+
+                            isMoveToggleOn = isRotateToggleOn = false;
+                            inputManager.setMouseCursor(null);
+                        }
+                        else
+                        {
+                            if (isAttackToggleOn)
+                            {
+                                Ray r = getMouseRay();
+                                for (int i = 0; i < flotillas.size(); i++)
+                                {
+                                    Flotilla f = flotillas.get(i);
+                                    if (f.isSelected())
                                     {
-                                        attacker = f2;
-                                        f2.setTargetPoint(targetPoint, true);
                                         break;
+                                    }
+
+                                    boolean hover = f.getBoundingBox().intersects(r);
+                                    if (hover)
+                                    {
+                                        Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
+                                        float change = M_ATTACK_DISTANCE / targetDirection.length();
+                                        Vector3f targetPoint = f.getCenterPosition().clone().interpolate(mSelectedNodeCenterPos, change);
+
+                                        f.setTargetPoint(targetPoint, false);
+
+                                        // Add attacker
+                                        Flotilla attacker = null;
+                                        for (int j = 0; j < flotillas.size(); j++)
+                                        {
+                                            Flotilla f2 = flotillas.get(j);
+                                            if (f2.isSelected())
+                                            {
+                                                attacker = f2;
+                                                f2.setTargetPoint(targetPoint, true);
+                                                break;
+                                            }
+                                        }
+
+                                        flotillaBattles.add(new FlotillaBattler(attacker, f));
                                     }
                                 }
 
-                                flotillaBattles.add(new FlotillaBattler(attacker, f));
+                                isAttackToggleOn = false;
+                                inputManager.setMouseCursor(null);
                             }
                         }
-
-                        isAttackToggleOn = false;
-                        inputManager.setMouseCursor(null);
                     }
                 }
             }
@@ -457,6 +479,39 @@ public class Game extends SimpleApplication
                     inputManager.setMouseCursor(null);
                 }
 
+
+                if (name.equals("Switch Selection Mode") && isPressed)
+                {
+                    if (selectionMode == Selection_Mode.Ship_Selection)
+                    {
+                        selectionMode = Selection_Mode.Flotilla_Selection;
+                        rootNode.detachChild(mSelectedShipsNode);
+                        rootNode.attachChild(mSelectedFlotillasNode);
+                        mSelectionModeText.setText("Selection Mode: Flotilla (Press 'Tab' to switch)");
+                    }
+                    else
+                    {
+                        if (selectionMode == Selection_Mode.Flotilla_Selection)
+                        {
+                            selectionMode = Selection_Mode.Ship_Selection;
+                            rootNode.detachChild(mSelectedFlotillasNode);
+                            rootNode.attachChild(mSelectedShipsNode);
+                            mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
+                        }
+                    }
+
+                    mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
+
+                    calculateCenterPoint();
+
+                    mIsShiftPressed = false;
+                    isMoveToggleOn = false;
+                    isRotateToggleOn = false;
+                    isBoxSelectToggleOn = false;
+                    isAttackToggleOn = false;
+                    inputManager.setMouseCursor(null);
+                }
+
                 if (name.contains("Scroll") && isPressed)
                 {
                     mInfoHubText.scroll(name.contains("Up"));
@@ -473,44 +528,53 @@ public class Game extends SimpleApplication
     {
         public void onAnalog(String name, float value, float tpf)
         {
-            if (name.equals("Compress") || name.equals("Decompress"))
+            if (selectionMode == Selection_Mode.Ship_Selection)
             {
-                if (mSelectedShipsNode.getQuantity() > 1)
+                if (name.equals("Compress") || name.equals("Decompress"))
                 {
-                    float speed = M_COMPRESS_SPEED;
-                    if (name.equals("Decompress"))
+                    if (mSelectedShipsNode.getQuantity() > 1)
                     {
-                        speed *= -1;
-                    }
-
-                    for (int i = 0; i < loneShips.size(); i++)
-                    {
-                        Ship s = loneShips.get(i);
-                        if (s.isSelected() && !s.isTransforming())
+                        float speed = M_COMPRESS_SPEED;
+                        if (name.equals("Decompress"))
                         {
-                            Vector3f direction = mSelectedNodeCenterPos.subtract(s.getPosition()).normalize();
-                            s.move(direction.mult(speed * tpf));
+                            speed *= -1;
+                        }
+
+                        for (int i = 0; i < loneShips.size(); i++)
+                        {
+                            Ship s = loneShips.get(i);
+                            if (s.isSelected() && !s.isTransforming())
+                            {
+                                Vector3f direction = mSelectedNodeCenterPos.subtract(s.getPosition()).normalize();
+                                s.move(direction.mult(speed * tpf));
+                            }
                         }
                     }
                 }
             }
-            if (name.equals("Compress") || name.equals("Decompress"))
+            else
             {
-                if (mSelectedFlotillasNode.getQuantity() > 1)
+                if (selectionMode == Selection_Mode.Flotilla_Selection)
                 {
-                    float speed = M_COMPRESS_SPEED;
-                    if (name.equals("Decompress"))
+                    if (name.equals("Compress") || name.equals("Decompress"))
                     {
-                        speed *= -1;
-                    }
-
-                    for (int i = 0; i < flotillas.size(); i++)
-                    {
-                        Flotilla f = flotillas.get(i);
-                        if (f.isSelected() && !f.isTransforming())
+                        if (mSelectedFlotillasNode.getQuantity() > 1)
                         {
-                            Vector3f direction = mSelectedNodeCenterPos.subtract(f.getCenterPosition()).normalize();
-                            f.move(direction.mult(speed * tpf));
+                            float speed = M_COMPRESS_SPEED;
+                            if (name.equals("Decompress"))
+                            {
+                                speed *= -1;
+                            }
+
+                            for (int i = 0; i < flotillas.size(); i++)
+                            {
+                                Flotilla f = flotillas.get(i);
+                                if (f.isSelected() && !f.isTransforming())
+                                {
+                                    Vector3f direction = mSelectedNodeCenterPos.subtract(f.getCenterPosition()).normalize();
+                                    f.move(direction.mult(speed * tpf));
+                                }
+                            }
                         }
                     }
                 }
@@ -578,29 +642,55 @@ public class Game extends SimpleApplication
 
             Ray r = getMouseRay();
             boolean somethingSelected = false;
-
-            // Check if mouse hovering over anything to update info hub...
-            for (int i = 0; i < loneShips.size(); i++)
-            {
-                somethingSelected = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound().intersects(r);
-                if (somethingSelected)
-                {
-                    mInfoHubText.clearText();
-                    mInfoHubText.addText(loneShips.get(i).getDisplayInfo());
-                    break;
-                }
-            }
-            if (!somethingSelected)
+            if (selectionMode == Selection_Mode.Ship_Selection)
             {
                 // Check if mouse hovering over anything to update info hub...
-                for (int i = 0; i < flotillas.size(); i++)
+                for (int i = 0; i < loneShips.size(); i++)
                 {
-                    somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
+                    somethingSelected = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound().intersects(r);
                     if (somethingSelected)
                     {
                         mInfoHubText.clearText();
-                        mInfoHubText.addText(flotillas.get(i).getDisplayInfo());
+                        mInfoHubText.addText(loneShips.get(i).getDisplayInfo());
                         break;
+                    }
+                }
+                if (!somethingSelected)
+                {
+                    for (int i = 0; i < flotillas.size(); i++)
+                    {
+                        Flotilla f = flotillas.get(i);
+                        for (int j = 0; j < f.getFlotilla().length; j++)
+                        {
+                            somethingSelected = f.getFlotilla()[j].getMoveableObject3d().getModel().getWorldBound().intersects(r);
+                            if (somethingSelected)
+                            {
+                                mInfoHubText.clearText();
+                                mInfoHubText.addText(f.getFlotilla()[j].getDisplayInfo());
+                                break;
+                            }
+                        }
+                        if (somethingSelected)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (selectionMode == Selection_Mode.Flotilla_Selection)
+                {
+                    // Check if mouse hovering over anything to update info hub...
+                    for (int i = 0; i < flotillas.size(); i++)
+                    {
+                        somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
+                        if (somethingSelected)
+                        {
+                            mInfoHubText.clearText();
+                            mInfoHubText.addText(flotillas.get(i).getDisplayInfo());
+                            break;
+                        }
                     }
                 }
             }
@@ -711,38 +801,55 @@ public class Game extends SimpleApplication
      */
     private void clearSelectedObjects()
     {
-        for (int i = 0; i < loneShips.size(); i++)
+        if (selectionMode == Selection_Mode.Ship_Selection)
         {
-            loneShips.get(i).setIsSelected(false);
+            for (int i = 0; i < loneShips.size(); i++)
+            {
+                loneShips.get(i).setIsSelected(false);
+            }
+
+            mSelectedShipsNode.detachAllChildren();
         }
-
-        mSelectedShipsNode.detachAllChildren();
-
-        for (int i = 0; i < flotillas.size(); i++)
+        else
         {
-            flotillas.get(i).setIsSelected(false);
-        }
+            if (selectionMode == Selection_Mode.Flotilla_Selection)
+            {
+                for (int i = 0; i < flotillas.size(); i++)
+                {
+                    flotillas.get(i).setIsSelected(false);
+                }
 
-        mSelectedFlotillasNode.detachAllChildren();
+                mSelectedFlotillasNode.detachAllChildren();
+            }
+        }
     }
 
     private void calculateCenterPoint()
     {
         ArrayList<Vector3f> points = new ArrayList<Vector3f>();
-        for (int i = 0; i < loneShips.size(); i++)
+        if (selectionMode == Selection_Mode.Ship_Selection)
         {
-            Ship s = loneShips.get(i);
-            if (s.isSelected())
+            for (int i = 0; i < loneShips.size(); i++)
             {
-                points.add(s.getPosition());
+                Ship s = loneShips.get(i);
+                if (s.isSelected())
+                {
+                    points.add(s.getPosition());
+                }
             }
         }
-        for (int i = 0; i < flotillas.size(); i++)
+        else
         {
-            Flotilla f = flotillas.get(i);
-            if (f.isSelected())
+            if (selectionMode == Selection_Mode.Flotilla_Selection)
             {
-                points.add(f.getCenterPosition());
+                for (int i = 0; i < flotillas.size(); i++)
+                {
+                    Flotilla f = flotillas.get(i);
+                    if (f.isSelected())
+                    {
+                        points.add(f.getCenterPosition());
+                    }
+                }
             }
         }
 
