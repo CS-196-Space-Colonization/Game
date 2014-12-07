@@ -25,20 +25,42 @@ public abstract class AudioManager
         BATTLE_LASER_1 = new AudioNode(assetManager, "Sounds/Battle/laser1.ogg", false);
         BATTLE_LASER_1.setLooping(false);
         BATTLE_LASER_1.setPositional(false);
+        node.attachChild(BATTLE_LASER_1);
+        
         BATTLE_LASER_2 = new AudioNode(assetManager, "Sounds/Battle/laser2.ogg", false);
         BATTLE_LASER_2.setLooping(false);
         BATTLE_LASER_2.setPositional(false);
+        node.attachChild(BATTLE_LASER_2);
+        
         BATTLE_LASER_3 = new AudioNode(assetManager, "Sounds/Battle/laser3.ogg", false);
         BATTLE_LASER_3.setLooping(false);
         BATTLE_LASER_3.setPositional(false);
+        node.attachChild(BATTLE_LASER_3);
+        
         BATTLE_LASER_4 = new AudioNode(assetManager, "Sounds/Battle/laser4.ogg", false);
         BATTLE_LASER_4.setLooping(false);
         BATTLE_LASER_4.setPositional(false);
+        node.attachChild(BATTLE_LASER_4);
         
         CREATE_CREATE = new AudioNode(assetManager, "Sounds/Unit_Creation/create.ogg", false);
+        CREATE_CREATE.setLooping(false);
+        CREATE_CREATE.setPositional(false);
+        node.attachChild(CREATE_CREATE);
+        
         CREATE_DC_WIELDING = new AudioNode(assetManager, "Sounds/Unit_Creation/dc_wielding.ogg", false);
+        CREATE_DC_WIELDING.setLooping(false);
+        CREATE_DC_WIELDING.setPositional(false);
+        node.attachChild(CREATE_DC_WIELDING);
+        
         CREATE_GEAR_BURSTS = new AudioNode(assetManager, "Sounds/Unit_Creation/gear_bursts.ogg", false);
+        CREATE_GEAR_BURSTS.setLooping(false);
+        CREATE_GEAR_BURSTS.setPositional(false);
+        node.attachChild(CREATE_GEAR_BURSTS);
+        
         CREATE_HAMMER = new AudioNode(assetManager, "Sounds/Unit_Creation/hammer.ogg", false);
+        CREATE_HAMMER.setLooping(false);
+        CREATE_HAMMER.setPositional(false);
+        node.attachChild(CREATE_HAMMER);
     }
     
     public void setVolume(float volumeLevel)
