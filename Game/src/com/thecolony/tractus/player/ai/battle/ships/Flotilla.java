@@ -7,7 +7,6 @@ package com.thecolony.tractus.player.ai.battle.ships;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
@@ -71,6 +70,7 @@ public class Flotilla
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void initialize(Ship[] group, Vector3f centerPosition, boolean isFull, String name)
     {
+        System.out.println(group.length);
         flotilla = group;
         this.centerPosition = centerPosition;
         this.isFull = isFull;
@@ -105,7 +105,7 @@ public class Flotilla
             maxExtent = Math.max(maxExtent, b.getZExtent());
         }
         maxExtent *= 2.0f * 1.5f;
-
+        
         int halfSideLength = sideLength >> 1;
         int offset = (sideLength % 2 == 0) ? 0 : 1;
         int index = 0;
@@ -114,33 +114,34 @@ public class Flotilla
             boolean stop = false;
             for (int j = -halfSideLength; j < halfSideLength + offset; j++)
             {
-                flotilla[index++].getDrawableObject3d().getModel().setLocalTranslation(centerPosition.add(new Vector3f(maxExtent, 0.0f, maxExtent).mult(new Vector3f(i, 1, j))));
+                flotilla[index++].getDrawableObject3d().getModel().setLocalTranslation(centerPosition.add(new Vector3f(maxExtent, 0.0f, maxExtent).mult(new Vector3f(i, 1, j))));                
                 stop = index == flotilla.length;
                 if (stop)
-                {
                     break;
-                }
             }
             if (stop)
-            {
                 break;
-            }
         }
 
         float height = 0.0f;
         for (int i = 0; i < flotilla.length; i++)
-        {
             height = Math.max(height, ((BoundingBox) flotilla[i].getDrawableObject3d().getModel().getWorldBound()).getYExtent());
-        }
         height *= 2.0f;
-
-        BoundingBox boundingBox = new BoundingBox(centerPosition, maxExtent * halfSideLength, height, maxExtent * halfSideLength);
+        
+        Vector3f min = flotilla[0].getPosition();
+        BoundingBox b = (BoundingBox) flotilla[0].getDrawableObject3d().getModel().getWorldBound();
+        min.subtract(b.getXExtent(), 0.0f, b.getZExtent());
+        
+        b = (BoundingBox) flotilla[flotilla.length - 1].getDrawableObject3d().getModel().getWorldBound();
+        Vector3f max = flotilla[flotilla.length - 1].getPosition();
+        max.add(b.getXExtent(), 0.0f, b.getZExtent());
+        
+        BoundingBox boundingBox = new BoundingBox(min, max.add(0, height, 0));
         WireBox wireBox = new WireBox();
         wireBox.fromBoundingBox(boundingBox);
         wireBoxGeometry = new Geometry("Flotilla WireBox Geometry", wireBox);
         wireBoxGeometry.setMaterial(GameGraphics.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(centerPosition);
-        wireBoxGeometry.scale(1.5f);
     }
 
     private void setMovementSpeed()
