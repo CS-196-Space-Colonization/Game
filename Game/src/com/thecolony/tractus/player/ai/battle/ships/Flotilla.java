@@ -70,7 +70,6 @@ public class Flotilla
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void initialize(Ship[] group, Vector3f centerPosition, boolean isFull, String name)
     {
-        System.out.println(group.length);
         flotilla = group;
         this.centerPosition = centerPosition;
         this.isFull = isFull;
