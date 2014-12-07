@@ -1,6 +1,7 @@
 
 package com.thecolony.tractus.graphics.GUI;
 
+import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -36,14 +37,11 @@ public class OptionWindow extends JFrame
     private JLabel title;
     private JButton back;
     private Choice resolution;
-    private String 
     
     private int masterVolume;
     private int resWidth;
     private int resHeight;
-    
-    
-    
+    private boolean fullscreen;
     
     public OptionWindow()
     {
