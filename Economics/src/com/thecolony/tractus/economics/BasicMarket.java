@@ -1,41 +1,29 @@
 package com.thecolony.tractus.economics;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.thecolony.tractus.economics.products.Product;
-import com.thecolony.tractus.economics.products.Quantity;
+import com.thecolony.tractus.economics.products.*;
 
 
 public class BasicMarket implements Market, Observer {
-	public final ImmutableMap<String, Product> GOOD_PROTOTYPES;
 	private Map<Product, LinkedList<Transaction>> market;
 	private Map<Product, Double> lastPrices;
 	
-	public BasicMarket(ImmutableMap<String, Product> goods) {
-		GOOD_PROTOTYPES = goods;
+	public BasicMarket() {
 		market = new HashMap<Product, LinkedList<Transaction>>();
 		lastPrices = new HashMap<>();
-		refreshOffers();
-	}
-	
-	private void refreshOffers() {
-		ImmutableSet<String> keys = GOOD_PROTOTYPES.keySet();
-		for (Iterator<String> i = keys.iterator(); i.hasNext();) {
-			Product forSale = GOOD_PROTOTYPES.get(i.next());
-			market.put(forSale, new LinkedList<Transaction>());
-		}
 	}
 	
 	
 	@Override
 	public List<Transaction> getOffers(Product needed) {
-		return market.get(needed);
+		List<Transaction> result = market.get(needed);
+		if (result == null)
+			return new LinkedList<Transaction>();
+		return result;
 	}
 
 	
@@ -44,6 +32,9 @@ public class BasicMarket implements Market, Observer {
 		Quantity offer = transaction.getOffer();
 		Product onOffer = (Product)offer.getUnit();
 		transaction.acceptObserver(this);
+		List<Transaction> TransactionList = market.get(onOffer);
+		if (TransactionList == null)
+			market.put(onOffer, new LinkedList<Transaction>());
 		market.get(onOffer).add(transaction);
 	}
 
@@ -52,12 +43,12 @@ public class BasicMarket implements Market, Observer {
 		Double lastPrice = lastPrices.get(product);
 		if (lastPrice == null)
 			return 0.0;
-		return product.getInitialPrice();
+		return lastPrice;
 	}
 
 	@Override
 	public Product getMoney() {
-		return GOOD_PROTOTYPES.get("money");
+		return new Money();
 	}
 
 	@Override
@@ -66,5 +57,6 @@ public class BasicMarket implements Market, Observer {
 		Quantity offer = transaction.getOffer();
 		if (Double.compare(0.0, offer.getQuantity()) == 0)
 			market.remove(transaction);
+		lastPrices.put((Product)transaction.getOffer().getUnit(), transaction.getMarginalPrice());
 	}
 }
