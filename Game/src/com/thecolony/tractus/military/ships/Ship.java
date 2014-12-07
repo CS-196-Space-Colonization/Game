@@ -45,7 +45,7 @@ public class Ship extends BattleObject
         {
             return type;
         }
-    };
+    }
     private SHIP_TYPE shipType;
     
     private static final float M_ROTATION_SPEED = FastMath.PI / 2.0f;

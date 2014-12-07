@@ -23,7 +23,6 @@ import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.FlotillaBattler;
 import com.thecolony.tractus.military.ships.Flotilla;
 import com.thecolony.tractus.military.ships.Ship;
-import com.thecolony.tractus.resources.Res;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ public class GameLoader
     ArrayList<FlotillaBattler> flotillaBattles;
     JmeCursor mCursorSmiley;
     Picture mPictureBoxSelect, mOverlay;
-    BitmapText mSelectionModeText;
     BitmapFont guiFont;
     ScrollText mInfoHubText;
     int M_WIDTH, M_HEIGHT;
@@ -52,7 +50,6 @@ public class GameLoader
     private final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     Plane mvmtPlane;
     Vector3f selectedNodeCenterPos;
-    Game.Selection_Mode selectionMode;
     AudioNode[] battles, creates;
 
     public GameLoader(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
@@ -81,7 +78,7 @@ public class GameLoader
         loadCursors();
         Object[] arr =
         {
-            rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, selectedShipsNode, loneShipsNode, loneShips, selectedFlotillasNode, flotillasNode, flotillas, flotillaBattles, selectedNodeCenterPos, mvmtPlane, selectionMode, mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText, mSelectionModeText
+            rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, selectedShipsNode, loneShipsNode, loneShips, selectedFlotillasNode, flotillasNode, flotillas, flotillaBattles, selectedNodeCenterPos, mvmtPlane, mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText
         };
         return arr;
     }
@@ -131,12 +128,6 @@ public class GameLoader
         float fontSize = (guiFont.getCharSet().getRenderedSize() * ((float) M_WIDTH / (float) M_HEIGHT)) / (1920.0f / 1080.0f);
         mInfoHubText = new ScrollText(M_HEIGHT, fontSize, M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH,
                 M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, guiFont, guiNode);
-        mSelectionModeText = new BitmapText(guiFont);
-        mSelectionModeText.setSize(fontSize);
-        mSelectionModeText.setColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 0.75f));
-        mSelectionModeText.setText("Selection Mode: Ship (Press 'Tab' to switch)");
-        mSelectionModeText.setLocalTranslation(M_WIDTH - mSelectionModeText.getLineWidth(), mSelectionModeText.getLineHeight(), 0.0f);
-        guiNode.attachChild(mSelectionModeText);
     }
 
     private Planet generatePlanet(int index)
@@ -243,7 +234,6 @@ public class GameLoader
     {
         selectedShipsNode = new Node("Selected Ships");
         selectedFlotillasNode = new Node("Selected Flotillas");
-        selectionMode = Game.Selection_Mode.Ship_Selection;
         selectedNodeCenterPos = new Vector3f();
 
         loneShipsNode = new Node("Lone Ships");
