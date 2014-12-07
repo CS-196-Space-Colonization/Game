@@ -336,22 +336,22 @@ public class Game extends SimpleApplication
     private AudioNode[] creates;
     private void loadAudio()
     {
-        AudioNode audio_battle1 = new AudioNode(assetManager, "assets/Sounds/Battle/35683__jobro__laser6.wav", false);
+        AudioNode audio_battle1 = new AudioNode(assetManager, "Sounds/Battle/35683__jobro__laser6.wav", false);
         audio_battle1.setLooping(false);
         audio_battle1.setVolume(3);
         audio_battle1.setPositional(false);
         rootNode.attachChild(audio_battle1);
-        AudioNode audio_battle2 = new AudioNode(assetManager, "assets/Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
+        AudioNode audio_battle2 = new AudioNode(assetManager, "Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
         audio_battle2.setLooping(false);
         audio_battle2.setVolume(3);
         audio_battle2.setPositional(false);
         rootNode.attachChild(audio_battle2);
-        AudioNode audio_battle3 = new AudioNode(assetManager, "assets/Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
+        AudioNode audio_battle3 = new AudioNode(assetManager, "Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
         audio_battle3.setLooping(false);
         audio_battle3.setVolume(3);
         audio_battle3.setPositional(false);
         rootNode.attachChild(audio_battle3);
-        AudioNode audio_battle4 = new AudioNode(assetManager, "assets/Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
+        AudioNode audio_battle4 = new AudioNode(assetManager, "Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
         audio_battle4.setLooping(false);
         audio_battle4.setVolume(3);
         audio_battle4.setPositional(false);
@@ -365,22 +365,22 @@ public class Game extends SimpleApplication
         
        
         
-        AudioNode audio_onCreate1 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
+        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
         audio_onCreate1.setLooping(false);
         audio_onCreate1.setVolume(3);
         audio_onCreate1.setPositional(false);
         rootNode.attachChild(audio_onCreate1);
-        AudioNode audio_onCreate2 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
+        AudioNode audio_onCreate2 = new AudioNode(assetManager, "Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
         audio_onCreate2.setLooping(false);
         audio_onCreate2.setVolume(3);
         audio_onCreate2.setPositional(false);
         rootNode.attachChild(audio_onCreate2);
-        AudioNode audio_onCreate3 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
+        AudioNode audio_onCreate3 = new AudioNode(assetManager, "Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
         audio_onCreate3.setLooping(false);
         audio_onCreate3.setVolume(3);
         audio_onCreate3.setPositional(false);
         rootNode.attachChild(audio_onCreate3);
-        AudioNode audio_onCreate4 = new AudioNode(assetManager, "assets/Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
+        AudioNode audio_onCreate4 = new AudioNode(assetManager, "Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
         audio_onCreate4.setLooping(false);
         audio_onCreate4.setVolume(3);
         audio_onCreate4.setPositional(false);
