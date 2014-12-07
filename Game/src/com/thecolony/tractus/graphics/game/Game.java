@@ -586,7 +586,7 @@ public class Game extends SimpleApplication
 			      {
 				Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
 				float change = M_ATTACK_DISTANCE / targetDirection.length();
-				Vector3f targetPoint = f.getCenterPosition().interpolate(mSelectedNodeCenterPos, change);
+				Vector3f targetPoint = f.getCenterPosition().clone().interpolate(mSelectedNodeCenterPos, change);
 
                                 f.setTargetPoint(targetPoint, false);
 
