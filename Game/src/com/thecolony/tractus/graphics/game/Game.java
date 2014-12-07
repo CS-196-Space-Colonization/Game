@@ -238,14 +238,14 @@ public class Game extends SimpleApplication
 
         flotillasNode = new Node("Flotillas Node");
 
-        Ship[] ships1 = new Ship[25];
+        Ship[] ships1 = new Ship[50];
         for (int i = 0; i < ships1.length; i++)
         {
             ships1[i] = new Ship(new Player(0), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
             ships1[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships1[i].getPlayer().getColor()));
         }
 
-        Ship[] ships2 = new Ship[9];
+        Ship[] ships2 = new Ship[25];
         for (int i = 0; i < ships2.length; i++)
         {
             ships2[i] = new Ship(new Player(1), Ship.SHIP_TYPE.CapitalShip, "Capital Ship " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
@@ -260,7 +260,7 @@ public class Game extends SimpleApplication
         }
 
         flotillas = new ArrayList<Flotilla>();
-        flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 100.0f), "Flotilla 1"));
+        flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 50.0f), "Flotilla 1"));
         flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 2"));
         flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
 
@@ -588,6 +588,7 @@ public class Game extends SimpleApplication
 				float change = M_ATTACK_DISTANCE / targetDirection.length();
 				Vector3f targetPoint = f.getCenterPosition().interpolate(mSelectedNodeCenterPos, change);
 
+                                f.setTargetPoint(targetPoint, false);
 
 				// Add attacker
 				Flotilla attacker = null;
