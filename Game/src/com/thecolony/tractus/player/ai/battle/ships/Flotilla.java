@@ -8,7 +8,7 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.debug.WireBox;
-import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
+import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 
 /**
@@ -141,7 +141,7 @@ public class Flotilla
         WireBox wireBox = new WireBox();
         wireBox.fromBoundingBox(boundingBox);
         wireBoxGeometry = new Geometry("Flotilla WireBox Geometry", wireBox);
-        wireBoxGeometry.setMaterial(GameGraphics.getDefaultWhiteMaterial());
+        wireBoxGeometry.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(centerPosition);
     }
 

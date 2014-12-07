@@ -14,8 +14,9 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
+import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
-import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
+import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
 import com.thecolony.tractus.player.ai.battle.FlotillaBattler;
@@ -64,6 +65,9 @@ public class GameLoader
 
     public Object[] loadGame()
     {
+        GraphicsManager.loadGraphics(assetManager);
+        AudioManager.loadAudio(assetManager, rootNode);
+        
         loadPlanets();
         loadSun();
         loadShips();
@@ -74,6 +78,7 @@ public class GameLoader
         loadText();
         addNodes();
         loadCursors();
+        
         Object[] arr =
         {
             rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, selectedShipsNode, loneShipsNode, loneShips, selectedFlotillasNode, flotillasNode, flotillas, flotillaBattles, selectedNodeCenterPos, mvmtPlane, selectionMode, mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText, mSelectionModeText
@@ -220,7 +225,7 @@ public class GameLoader
         {
             loneShips.add(new Ship(new Player(3), Ship.SHIP_TYPE.Fighter, "Fighter " + i, loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + i * 3)),
                     stats, 0, "Fighter " + i, 0, 0, 0.0));
-            loneShips.get(i).getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(loneShips.get(i).getPlayer().getColor()));
+            loneShips.get(i).getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(loneShips.get(i).getPlayer().getColor()));
         }
 
         rootNode.attachChild(loneShipsNode);
@@ -235,21 +240,21 @@ public class GameLoader
         for (int i = 0; i < ships1.length; i++)
         {
             ships1[i] = new Ship(new Player(0), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-            ships1[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships1[i].getPlayer().getColor()));
+            ships1[i].getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(ships1[i].getPlayer().getColor()));
         }
 
         Ship[] ships2 = new Ship[9];
         for (int i = 0; i < ships2.length; i++)
         {
             ships2[i] = new Ship(new Player(1), Ship.SHIP_TYPE.CapitalShip, "Capital Ship " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-            ships2[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships2[i].getPlayer().getColor()));
+            ships2[i].getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(ships2[i].getPlayer().getColor()));
         }
 
         Ship[] ships3 = new Ship[25];
         for (int i = 0; i < ships3.length; i++)
         {
             ships3[i] = new Ship(new Player(2), Ship.SHIP_TYPE.Fighter, "Fighter " + i, flotillasNode, Vector3f.ZERO, stats, 0, "H", 0, 0, 0);
-            ships3[i].getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(ships3[i].getPlayer().getColor()));
+            ships3[i].getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(ships3[i].getPlayer().getColor()));
         }
 
         flotillas = new ArrayList<Flotilla>();

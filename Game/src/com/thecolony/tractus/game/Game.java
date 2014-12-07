@@ -28,7 +28,7 @@ import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
-import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
+import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.Player;
@@ -120,7 +120,7 @@ public class Game extends SimpleApplication
         setDisplayStatView(false);
         isRunning = true;
 
-        GameGraphics.loadGraphics(assetManager);
+        GraphicsManager.loadGraphics(assetManager);
 
         adjustCameraSettings();
         loadAudio();
@@ -482,7 +482,7 @@ public class Game extends SimpleApplication
 
                     loneShips.add(new Ship(new Player(4), Ship.SHIP_TYPE.Fighter, "Fighter " + loneShips.size(), loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + loneShips.size() * 3)),
                             stats, 0, "Fighter " + loneShips.size(), 0, 0, 0.0));
-                    loneShips.get(loneShips.size() - 1).getDrawableObject3d().getModel().setMaterial(GameGraphics.generateMaterial(loneShips.get(loneShips.size() - 1).getPlayer().getColor()));
+                    loneShips.get(loneShips.size() - 1).getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(loneShips.get(loneShips.size() - 1).getPlayer().getColor()));
                 }
 
                 if (name.equals("Shift"))

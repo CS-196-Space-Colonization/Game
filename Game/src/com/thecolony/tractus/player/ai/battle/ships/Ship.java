@@ -11,7 +11,7 @@ import com.jme3.network.serializing.Serializable;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
-import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
+import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
@@ -116,19 +116,19 @@ public class Ship extends BattleObject
     {
         if (shipType == SHIP_TYPE.Fighter)
         {
-            model = new MoveableObject3d(name, node, GameGraphics.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.Frigate)
         {
-            model = new MoveableObject3d(name, node, GameGraphics.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.Cruiser)
         {
-            model = new MoveableObject3d(name, node, GameGraphics.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.CapitalShip)
         {
-            model = new MoveableObject3d(name, node, GameGraphics.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
             model.getModel().setLocalTranslation(position);
         }
         
@@ -144,7 +144,7 @@ public class Ship extends BattleObject
         WireBox wireBox = new WireBox();
         wireBox.fromBoundingBox((BoundingBox) model.getModel().getWorldBound());
         wireBoxGeometry = new Geometry("Ship WireBox Geometry", wireBox);
-        wireBoxGeometry.setMaterial(GameGraphics.getDefaultWhiteMaterial());
+        wireBoxGeometry.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(model.getPosition());
         wireBoxGeometry.scale(1.5f);
     }
