@@ -4,7 +4,7 @@
  * @author Arturo Guerrero
  * @version v0.01 2014-10-28
  */
-package com.thecolony.tractus;
+package com.thecolony.tractus.player.ai;
 
 public class Rep {
 	//tendency to fight

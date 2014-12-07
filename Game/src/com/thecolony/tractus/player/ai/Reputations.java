@@ -1,4 +1,4 @@
-package com.thecolony.tractus;
+package com.thecolony.tractus.player.ai;
 
 
 /**
