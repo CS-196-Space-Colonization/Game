@@ -14,6 +14,7 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
+import com.thecolony.tractus.economics.Firm;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.drawableobjects.GameGraphics;
 import com.thecolony.tractus.player.Player;
@@ -146,7 +147,12 @@ public class GameLoader {
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos =  posNeg * (float)Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
 
-        return new Planet(new Vector3f(xPos, 0.0f, zPos), null,null,null,"Planet " + Integer.toString(index),"no-one", planetsNode, assetManager, ColorRGBA.randomColor(),type);
+        Planet p = new Planet(new Vector3f(xPos, 0.0f, zPos), null,null,null,"Planet " + Integer.toString(index),"no-one", planetsNode, assetManager, ColorRGBA.randomColor(),type);
+        ArrayList<Firm> firms = new ArrayList<Firm>();
+        int num = (int)(Math.random()*8);
+        // Add firms to the firms list
+        p.addFirms(firms);
+        return p;
     }
     private void loadPlanets()
     {
