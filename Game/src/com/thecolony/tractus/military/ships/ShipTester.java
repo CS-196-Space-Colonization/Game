@@ -1,4 +1,4 @@
-package com.thecolony.tractus.player.ai.battle.ships;
+package com.thecolony.tractus.military.ships;
 
 import com.jme3.math.Vector3f;
 

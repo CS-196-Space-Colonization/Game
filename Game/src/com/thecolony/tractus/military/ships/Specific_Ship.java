@@ -1,5 +1,5 @@
 
-package com.thecolony.tractus.player.ai.battle.ships;
+package com.thecolony.tractus.military.ships;
 
 
 public class Specific_Ship extends Ship {

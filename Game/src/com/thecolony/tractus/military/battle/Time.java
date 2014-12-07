@@ -1,4 +1,4 @@
-package com.thecolony.tractus.player.ai.battle;
+package com.thecolony.tractus.military.battle;
 
 public class Time {
 	private static int time;

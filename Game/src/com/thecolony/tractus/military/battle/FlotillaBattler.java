@@ -1,6 +1,6 @@
-package com.thecolony.tractus.player.ai.battle;
+package com.thecolony.tractus.military.battle;
 
-import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
+import com.thecolony.tractus.military.ships.Flotilla;
 
 /**
  * A class used to simulate a flotilla battle.

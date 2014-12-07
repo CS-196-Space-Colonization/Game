@@ -1,4 +1,4 @@
-package com.thecolony.tractus.player.ai.battle;
+package com.thecolony.tractus.military.battle;
 //will be used to add changes to specific stats of ships
 public class BattleUpgrades {
 private String stat;

@@ -5,7 +5,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Line;
-import com.thecolony.tractus.player.ai.battle.ships.Ship;
+import com.thecolony.tractus.military.ships.Ship;
 
 /**
  * A class used to represent a bullet shot by a ship.

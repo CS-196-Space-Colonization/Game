@@ -1,4 +1,4 @@
-package com.thecolony.tractus.player.ai.battle.ships;
+package com.thecolony.tractus.military.ships;
 
 public class FlotillaCreator {
 	private static ShipFactory first;

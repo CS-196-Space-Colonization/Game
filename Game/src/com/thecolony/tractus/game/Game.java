@@ -2,7 +2,6 @@ package com.thecolony.tractus.game;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.audio.AudioNode;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
@@ -15,8 +14,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.light.AmbientLight;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Plane;
 import com.jme3.math.Ray;
@@ -24,19 +21,17 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
-import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.Player;
-import com.thecolony.tractus.player.ai.battle.BattleObject;
-import com.thecolony.tractus.player.ai.battle.FlotillaBattler;
-import com.thecolony.tractus.player.ai.battle.ships.Flotilla;
-import com.thecolony.tractus.player.ai.battle.ships.Ship;
+import com.thecolony.tractus.military.battle.BattleObject;
+import com.thecolony.tractus.military.battle.FlotillaBattler;
+import com.thecolony.tractus.military.ships.Flotilla;
+import com.thecolony.tractus.military.ships.Ship;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -232,7 +227,7 @@ public class Game extends SimpleApplication
                     for (int i = 0; i < loneShips.size(); i++)
                     {
                         Ship s = loneShips.get(i);
-                        selectedSomething = ((BoundingBox) s.getDrawableObject3d().getModel().getWorldBound()).intersects(r);
+                        selectedSomething = ((BoundingBox) s.getMoveableObject3d().getModel().getWorldBound()).intersects(r);
                         if (selectedSomething)
                         {
                             addSelectedObject(s);
@@ -291,7 +286,7 @@ public class Game extends SimpleApplication
                             // Loop through ships to see if they're in the selected area...
                             for (int i = 0; i < loneShips.size(); i++)
                             {
-                                BoundingVolume shipBound = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound();
+                                BoundingVolume shipBound = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound();
                                 if (bigAssSelectorCube.getBound().intersects(shipBound))
                                 {
                                     addSelectedObject(loneShips.get(i));
@@ -424,8 +419,8 @@ public class Game extends SimpleApplication
                     stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
 
                     loneShips.add(new Ship(new Player(4), Ship.SHIP_TYPE.Fighter, "Fighter " + loneShips.size(), loneShipsNode, new Vector3f(0.0f, 0.0f, -(30 + loneShips.size() * 3)),
-                            stats, 0, "Fighter " + loneShips.size(), 0, 0, 0.0));
-                    loneShips.get(loneShips.size() - 1).getDrawableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(loneShips.get(loneShips.size() - 1).getPlayer().getColor()));
+                            stats, 0, 0, 0, 0.0));
+                    loneShips.get(loneShips.size() - 1).getMoveableObject3d().getModel().setMaterial(GraphicsManager.generateMaterial(loneShips.get(loneShips.size() - 1).getPlayer().getColor()));
                 }
 
                 if (name.equals("Shift"))
@@ -652,7 +647,7 @@ public class Game extends SimpleApplication
                 // Check if mouse hovering over anything to update info hub...
                 for (int i = 0; i < loneShips.size(); i++)
                 {
-                    somethingSelected = loneShips.get(i).getDrawableObject3d().getModel().getWorldBound().intersects(r);
+                    somethingSelected = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound().intersects(r);
                     if (somethingSelected)
                     {
                         mInfoHubText.clearText();
@@ -667,7 +662,7 @@ public class Game extends SimpleApplication
                         Flotilla f = flotillas.get(i);
                         for (int j = 0; j < f.getFlotilla().length; j++)
                         {
-                            somethingSelected = f.getFlotilla()[j].getDrawableObject3d().getModel().getWorldBound().intersects(r);
+                            somethingSelected = f.getFlotilla()[j].getMoveableObject3d().getModel().getWorldBound().intersects(r);
                             if (somethingSelected)
                             {
                                 mInfoHubText.clearText();

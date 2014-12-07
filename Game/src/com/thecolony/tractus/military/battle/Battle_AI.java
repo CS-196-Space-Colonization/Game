@@ -1,6 +1,6 @@
-package com.thecolony.tractus.player.ai.battle;
+package com.thecolony.tractus.military.battle;
 
-import com.thecolony.tractus.player.ai.battle.ships.Fleet;
+import com.thecolony.tractus.military.ships.Fleet;
 
 public class Battle_AI {
 	
