@@ -16,7 +16,7 @@ public class Inventory {
 	}
 	
 	public Inventory(Map<Product, Quantity> inventory) {
-		Map<Product, Quantity> copy = new HashMap<>();
+		Map<Product, Quantity> copy = new HashMap<Product, Quantity>();
 		copy.putAll(inventory);
 		this.inventory = copy;
 	}
