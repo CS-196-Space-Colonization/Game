@@ -1,0 +1,37 @@
+Planet
+    Type
+    Location
+        x-coord
+        z-coord
+    name
+    ColorRGBA
+    ResFileName (default:none)
+    Star (Default:StarX)
+    Continents (default:none)
+Star
+    Type
+    Location
+        x-coord (default: 0)
+        z-coord (default: 0)
+    name (default: StarX)
+    colour (default: White)
+    StarSystem (default:none)
+    Planets (default is coded in, don't worry yet
+Ship
+    Player
+    type
+    name
+    node
+    Position
+    stats
+        Currently, only thing is a mvmt speed set to 5, all else to 0
+    crew (default:0)
+    ammo (default:0)
+    fuel (default:0)
+Flotilla
+    ships
+
+    Location
+        x-coord
+        z-coord
+    Name
