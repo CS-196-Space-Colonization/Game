@@ -130,11 +130,12 @@ public class Flotilla
         
         Vector3f min = flotilla[0].getPosition();
         BoundingBox b = (BoundingBox) flotilla[0].getDrawableObject3d().getModel().getWorldBound();
-        min.subtract(b.getXExtent(), 0.0f, b.getZExtent());
+//        min.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
+        min.add(10, 10, 10);
         
         b = (BoundingBox) flotilla[flotilla.length - 1].getDrawableObject3d().getModel().getWorldBound();
         Vector3f max = flotilla[flotilla.length - 1].getPosition();
-        max.add(b.getXExtent(), 0.0f, b.getZExtent());
+        max.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
         
         BoundingBox boundingBox = new BoundingBox(min, max.add(0, height, 0));
         WireBox wireBox = new WireBox();
