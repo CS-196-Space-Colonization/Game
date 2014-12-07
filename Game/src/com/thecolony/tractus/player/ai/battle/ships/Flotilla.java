@@ -10,55 +10,44 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.player.ai.battle.BattleObject;
+import static com.thecolony.tractus.player.ai.battle.BattleObject.BATTLE_STAT_MOVEMENT_SPEED;
 
 /**
  *
  * @author Mark Haynie
  * @author Joe Pagliuco
  */
-public class Flotilla
+public class Flotilla extends BattleObject
 {
-
     private static final float BATTLE_TIME_FACTOR = 0.05f;
-    private String[] names;
-    private double[] qualities;
-    private int worth;
-    private int crew;
-    private Ship[] flotilla;
+    
+    private Ship[] flotilla;    
     private boolean isFull;
-    private float movementSpeed; // Slowest ship's movement ship
+    
+    private int worth;
+    
     private Vector3f centerPosition;
     private Geometry wireBoxGeometry;
     private Vector3f targetPoint;
+    
     private boolean isSelected;
-    private String name;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // START CONSTRUCTORS /////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Flotilla()
     {
-        initialize(new Ship[0], Vector3f.ZERO, false, "Empty Name");
-    }
-
-    public Flotilla(Vector3f centerPosition, String name)
-    {
-        initialize(new Ship[0], centerPosition, false, name);
-    }
-
-    public Flotilla(Ship[] group, boolean isFull, String name)
-    {
-        initialize(group, Vector3f.ZERO, isFull, name);
-    }
-
-    public Flotilla(Ship[] group, String name)
-    {
-        initialize(group, Vector3f.ZERO, false, name);
+        initialize(new Ship[0], Vector3f.ZERO, false, "Empty Name", true);
     }
 
     public Flotilla(Ship[] group, boolean isFull, Vector3f centerPosition, String name)
     {
-        initialize(group, centerPosition, isFull, name);
+        initialize(group, centerPosition, isFull, name, true);
+    }
+    
+    public Flotilla(Ship[] group, boolean isFull, Vector3f centerPosition, String name, boolean setPositions)
+    {
+        initialize(group, centerPosition, isFull, name, setPositions);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,17 +56,14 @@ public class Flotilla
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // START INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void initialize(Ship[] group, Vector3f centerPosition, boolean isFull, String name)
+    private void initialize(Ship[] group, Vector3f centerPosition, boolean isFull, String name, boolean setPositions)
     {
         flotilla = group;
         this.centerPosition = centerPosition;
         this.isFull = isFull;
-        names = new String[flotilla.length];
 
-        if (flotilla.length != 0)
-        {
+        if (setPositions && flotilla.length != 0)
             setShipPositions();
-        }
 
         isSelected = false;
 
@@ -128,7 +114,7 @@ public class Flotilla
         
         Vector3f min = flotilla[0].getPosition();
         BoundingBox b = (BoundingBox) flotilla[0].getMoveableObject3d().getModel().getWorldBound();
-//        min.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
+        min.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
         min.add(10, 10, 10);
         
         b = (BoundingBox) flotilla[flotilla.length - 1].getMoveableObject3d().getModel().getWorldBound();
@@ -147,11 +133,11 @@ public class Flotilla
     {
         if (flotilla.length > 0)
         {
-            movementSpeed = (float) flotilla[0].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED);
+            setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, (float) flotilla[0].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
         }
         for (int i = 1; i < flotilla.length; i++)
         {
-            movementSpeed = (float) Math.min(movementSpeed, flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
+            setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, (float) Math.min(getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED)));
         }
     }
 
@@ -176,8 +162,8 @@ public class Flotilla
         if (isMoving() && !isRotating())
         {
             Vector3f direction = targetPoint.subtract(centerPosition).normalize();
-            wireBoxGeometry.move(direction.mult(movementSpeed * deltaTime));
-            centerPosition.addLocal(direction.mult(movementSpeed * deltaTime));
+            wireBoxGeometry.move(direction.mult((float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED) * deltaTime));
+            centerPosition.addLocal(direction.mult((float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED) * deltaTime));
         }
     }
 
@@ -401,10 +387,13 @@ public class Flotilla
         }
 
     }
+    
+    /**
+     * Resets flotilla positions.
+     */
     public void regenerate()
     {
-        System.out.println(centerPosition);
-        initialize(flotilla, centerPosition, isFull, name);
+        initialize(flotilla, centerPosition, isFull, name, true);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -416,11 +405,6 @@ public class Flotilla
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // START GETTERS/SETTERS //////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public String getName()
-    {
-        return name;
-    }
-
     public String getName(int place)
     {
         return flotilla[place].getName();
@@ -470,7 +454,6 @@ public class Flotilla
     {
         if (flotilla.length > 0)
         {
-            names = new String[flotilla.length];
             worth = 0;
             crew = 0;
             qualities = new double[19];
@@ -480,10 +463,9 @@ public class Flotilla
             }
             for (int i = 0; i < flotilla.length; i++)
             {
-                names[i] = getName(i);
                 for (int j = 0; j < 19; j++)
                 {
-                    qualities[j] = qualities[j] + flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_REG_POWER + j); // Get jth battle stat
+                    qualities[j] = qualities[j] + flotilla[i].getBattleStat(j); // Get jth battle stat
                 }
                 worth = worth + flotilla[i].getCost();
                 crew = crew + flotilla[i].getCrew();
@@ -505,6 +487,9 @@ public class Flotilla
 
     public double getFlotillaStat(int BATTLE_STAT)
     {
+        if (BATTLE_STAT == BATTLE_STAT_MOVEMENT_SPEED)
+            return getBattleStat(BATTLE_STAT_MOVEMENT_SPEED);
+        
         double total = 0.0;
         for (int i = 0; i < flotilla.length; i++)
         {
@@ -646,7 +631,7 @@ public class Flotilla
             "  Repair Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_REPAIR_ABILITY),
             "  Transport Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_TRANSPORT_ABILITY),
             "  Build Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_BUILD_ABILITY),
-            "  Movement Speed: " + movementSpeed
+            "  Movement Speed: " + getBattleStat(BATTLE_STAT_MOVEMENT_SPEED)
         };
     }
 
@@ -665,6 +650,12 @@ public class Flotilla
         {
             flotilla[i].setTargetPoint(flotilla[i].getPosition().add(movementVector), moveTo);
         }
+    }
+    
+    @Override
+    public Vector3f getPosition()
+    {
+        return centerPosition;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // END GETTERS/SETTERS ////////////////////////////////////////////////////////////////////////////////////

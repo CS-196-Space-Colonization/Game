@@ -10,7 +10,6 @@ import com.thecolony.tractus.player.ai.battle.ships.Ship;
 @Serializable
 public abstract class BattleObject
 {
-
     /**
      * 0x00 ---- First Battle Stat
      */

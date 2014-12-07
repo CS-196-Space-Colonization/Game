@@ -131,7 +131,7 @@ public class ShipFactory extends BattleObject
 
     public void produceFlotilla(Ship[] floatil, Fleet f)
     {
-        Flotilla one = new Flotilla(floatil, "name");
+        Flotilla one = new Flotilla(floatil, false, Vector3f.ZERO, "name", true);
         f.addFlotilla(one);
     }
 
