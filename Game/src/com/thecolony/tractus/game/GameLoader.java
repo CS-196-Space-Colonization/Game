@@ -20,6 +20,7 @@ import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.FlotillaBattler;
 import com.thecolony.tractus.military.ships.Flotilla;
+import com.thecolony.tractus.military.ships.SelectedFamily;
 import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.resources.Res;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
  */
 public class GameLoader
 {
-
     private static Node planetsNode, starsNode, rootNode, guiNode, selectedShipsNode, selectedFlotillasNode, loneShipsNode, flotillasNode;
     private static AssetManager assetManager;
     private static InputManager inputManager;
@@ -49,6 +49,7 @@ public class GameLoader
     private static final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     private static Plane mvmtPlane;
     private static Vector3f selectedNodeCenterPos;
+    private static SelectedFamily selectedFamily;
 
     public static Object[] loadGame(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
     {
@@ -59,8 +60,10 @@ public class GameLoader
         GameLoader.guiFont = guiFont;
         GameLoader.M_HEIGHT = M_HEIGHT;
         GameLoader.M_WIDTH = M_WIDTH;
+        
         GraphicsManager.loadGraphics(assetManager);
         AudioManager.loadAudio(assetManager, rootNode);
+        
         loadThings(); //Load territories. Lazy naming, LOL
         loadShips();
         loadAmbientLight();
@@ -70,9 +73,13 @@ public class GameLoader
         loadText();
         addNodes();
         loadCursors();
+        loadSelectedFamily();
+        
         Object[] arr =
         {
-            rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, selectedShipsNode, loneShipsNode, loneShips, selectedFlotillasNode, flotillasNode, flotillas, flotillaBattles, selectedNodeCenterPos, mvmtPlane, mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText
+            rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, 
+            loneShipsNode, loneShips, flotillasNode, flotillas, flotillaBattles, mvmtPlane, 
+            mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText, selectedFamily
         };
         return arr;
     }
@@ -226,10 +233,6 @@ public class GameLoader
 
     private static void loadShips()
     {
-        selectedShipsNode = new Node("Selected Ships");
-        selectedFlotillasNode = new Node("Selected Flotillas");
-        selectedNodeCenterPos = new Vector3f();
-
         loneShipsNode = new Node("Lone Ships");
 
         double[] stats = new double[19];
@@ -273,17 +276,17 @@ public class GameLoader
 //        attackers = new ArrayList<ArrayList<Flotilla>>();
 //        defenders = new ArrayList<Flotilla>();
     }
+    
     private static void addNodes()
     {
-        rootNode.attachChild(selectedShipsNode);
         rootNode.attachChild(planetsNode);
         rootNode.attachChild(starsNode);
         rootNode.attachChild(loneShipsNode);
         rootNode.attachChild(flotillasNode);
     }
+    
+    private static void loadSelectedFamily()
+    {
+        selectedFamily = new SelectedFamily(rootNode);
+    }
 }
-/*
-
-
-
- */

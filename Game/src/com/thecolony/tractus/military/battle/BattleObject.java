@@ -2,8 +2,7 @@ package com.thecolony.tractus.military.battle;
 
 import com.jme3.math.Vector3f;
 import com.jme3.network.serializing.Serializable;
-import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
-import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
+import com.jme3.scene.Geometry;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.military.ships.Ship;
 
@@ -100,6 +99,8 @@ public abstract class BattleObject
     private double z = 1;
     
     private static double HPfactor = 10;
+    
+    private boolean isSelected;
     
     private Player player;
 
@@ -516,4 +517,14 @@ public abstract class BattleObject
     }
     
     public abstract Vector3f getPosition();
+    public abstract Geometry getWireBoxGeometry();
+    
+    public boolean isSelected()
+    {
+        return isSelected;
+    }
+    public void setIsSelected(boolean selected)
+    {
+        isSelected = selected;
+    }
 }
