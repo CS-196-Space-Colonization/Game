@@ -107,12 +107,11 @@ public class Game extends SimpleApplication
 
         adjustCameraSettings();
 
-        GameLoader loader = new GameLoader(assetManager, inputManager, guiNode, rootNode, guiFont, M_WIDTH, M_HEIGHT);
-        unpack(loader.loadGame());
+        unpack(GameLoader.loadGame(assetManager, inputManager, guiNode, rootNode, guiFont, M_WIDTH, M_HEIGHT));
         initializeListeners();
     }
 
-    public void unpack(Object[] arr)
+    public void unpack(Object[] arr) //Such a horrible, horrible method. If someone can think of anything better, please replace this monstrosity
     {
         int index = 0;
         rootNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;

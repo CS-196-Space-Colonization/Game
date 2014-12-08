@@ -148,7 +148,7 @@ public class MainMenu extends JFrame
 	      }
 	      else
 	      {
-		settings.setResolution(800, 600);
+		settings.setResolution(OptionWindow.resWidth, OptionWindow.resHeight);
 	      }
 
 	      game.setSettings(settings);

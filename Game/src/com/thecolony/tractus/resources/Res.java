@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Res implements Serializable {
     //Initial assumption is a text file that has all the resource information
     private String pathName, name;
-    private final String dir="Game/src/com/thecolony/tractus/resources/";
+    private final String dir="src/com/thecolony/tractus/resources/";
     //private final String dir="resources/";
     private Path path;
     private BufferedReader reader;
