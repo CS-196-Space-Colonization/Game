@@ -29,7 +29,9 @@ import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.FlotillaBattler;
+import com.thecolony.tractus.military.battle.MoveableBattleObject;
 import com.thecolony.tractus.military.ships.Flotilla;
+import com.thecolony.tractus.military.ships.SelectedFamily;
 import com.thecolony.tractus.military.ships.Ship;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -52,9 +54,7 @@ public class Game extends SimpleApplication
     private Node starsNode;
     private Node loneShipsNode;
     private Node flotillasNode;
-    private Node mSelectedShipsNode;
-    private Node mSelectedFlotillasNode;
-    private Vector3f mSelectedNodeCenterPos;
+    private SelectedFamily selectedObjects;
     private Plane mMovementPlane;
     private boolean mIsShiftPressed;
     private boolean isMoveToggleOn;
@@ -123,19 +123,17 @@ public class Game extends SimpleApplication
         mPlanets = (arr[index] instanceof Planet[]) ? (Planet[]) arr[index++] : null;
         starsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
         mSuns = (arr[index] instanceof Star[]) ? (Star[]) arr[index++] : null;
-        mSelectedShipsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
         loneShipsNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
         loneShips = (arr[index] instanceof ArrayList) ? (ArrayList<Ship>) arr[index++] : null;
-        mSelectedFlotillasNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
         flotillasNode = (arr[index] instanceof Node) ? (Node) arr[index++] : null;
         flotillas = (arr[index] instanceof ArrayList) ? (ArrayList<Flotilla>) arr[index++] : null;
         flotillaBattles = (arr[index] instanceof ArrayList) ? (ArrayList<FlotillaBattler>) arr[index++] : null;
-        mSelectedNodeCenterPos = (arr[15] instanceof Vector3f) ? (Vector3f) arr[index++] : null;
         mMovementPlane = (arr[index] instanceof Plane) ? (Plane) arr[index++] : null;
         mCursorSmiley = (arr[index] instanceof JmeCursor) ? (JmeCursor) arr[index++] : null;
         mPictureBoxSelect = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
         mOverlay = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
         mInfoHubText = (arr[index] instanceof ScrollText) ? (ScrollText) arr[index++] : null;
+        selectedObjects = (arr[index] instanceof SelectedFamily) ? (SelectedFamily) arr[index++] : null;
     }
 
     private void adjustCameraSettings()
@@ -202,9 +200,7 @@ public class Game extends SimpleApplication
             if (name.equals("Right Click") && isPressed)
             {
                 if (!mIsShiftPressed)
-                {
-                    clearSelectedObjects();
-                }
+                    selectedObjects.clearFamily();
 
                 Ray r = getMouseRay();
 
@@ -215,42 +211,83 @@ public class Game extends SimpleApplication
                     selectedSomething = ((BoundingBox) s.getMoveableObject3d().getModel().getWorldBound()).intersects(r);
                     if (selectedSomething)
                     {
-                        addSelectedObject(s);
+                        selectedObjects.addObjects(s);
                         break;
                     }
                 }
+
                 if (!selectedSomething)
                 {
-                    clearSelectedObjects();
+                    for (int i = 0; i < flotillas.size(); i++)
+                    {
+                        Flotilla f = flotillas.get(i);
+                        selectedSomething = f.getBoundingBox().intersects(r);
+                        if (selectedSomething)
+                        {
+                            selectedObjects.addObjects(f);
+                            break;
+                        }
+                    }
                 }
+
+                if (!selectedSomething)
+                    selectedObjects.clearFamily();
             }
 
             if (name.equals("Left Click") && isPressed)
             {
                 if (isMoveToggleOn || isRotateToggleOn)
                 {
-                    Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
-
-                    for (int i = 0; i < loneShips.size(); i++)
-                    {
-                        Ship s = loneShips.get(i);
-                        if (s.isSelected())
-                        {
-                            s.setTargetPoint(s.getPosition().add(directionalVector), isMoveToggleOn);
-                        }
-                    }
+                    selectedObjects.setTargetPoint(getMouseRayIntersectionPoint(), isMoveToggleOn);
 
                     isMoveToggleOn = isRotateToggleOn = false;
                     inputManager.setMouseCursor(null);
                 }
-                else
+                else if (isAttackToggleOn)
                 {
-                    if (isBoxSelectToggleOn)
+                    Ray r = getMouseRay();
+                    for (int i = 0; i < flotillas.size(); i++)
                     {
-                        Vector2f cursorPos = inputManager.getCursorPosition();
-                        mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
-                        guiNode.attachChild(mPictureBoxSelect);
+                        Flotilla f = flotillas.get(i);
+                        if (f.isSelected())
+                        {
+                            break;
+                        }
+
+                        boolean hover = f.getBoundingBox().intersects(r);
+                        if (hover)
+                        {
+                            Vector3f targetDirection = f.getCenterPosition().subtract(selectedObjects.getCenterPosition());
+                            float change = M_ATTACK_DISTANCE / targetDirection.length();
+                            Vector3f targetPoint = f.getCenterPosition().clone().interpolate(selectedObjects.getCenterPosition(), change);
+
+                            f.setTargetPoint(targetPoint, false);
+
+                            // Add attacker
+                            Flotilla attacker = null;
+                            for (int j = 0; j < flotillas.size(); j++)
+                            {
+                                Flotilla f2 = flotillas.get(j);
+                                if (f2.isSelected())
+                                {
+                                    attacker = f2;
+                                    f2.setTargetPoint(targetPoint, true);
+                                    break;
+                                }
+                            }
+
+                            flotillaBattles.add(new FlotillaBattler(attacker, f));
+                        }
                     }
+
+                    isAttackToggleOn = false;
+                    inputManager.setMouseCursor(null);
+                }
+                else if (isBoxSelectToggleOn)
+                {
+                    Vector2f cursorPos = inputManager.getCursorPosition();
+                    mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
+                    guiNode.attachChild(mPictureBoxSelect);
                 }
             }
             else
@@ -259,7 +296,7 @@ public class Game extends SimpleApplication
                 {
                     if (isBoxSelectToggleOn)
                     {
-                        clearSelectedObjects();
+                        selectedObjects.clearFamily();
 
                         // Create big ass selector cube...
                         Vector3f min = getMouseRayIntersectionPoint();
@@ -274,7 +311,7 @@ public class Game extends SimpleApplication
                             BoundingVolume shipBound = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound();
                             if (bigAssSelectorCube.getBound().intersects(shipBound))
                             {
-                                addSelectedObject(loneShips.get(i));
+                                selectedObjects.addObjects(loneShips.get(i));
                             }
                         }
 
@@ -282,93 +319,6 @@ public class Game extends SimpleApplication
                         isBoxSelectToggleOn = false;
                         inputManager.setMouseCursor(null);
                         flyCam.setEnabled(true);
-                    }
-                }
-            }
-            if (name.equals("Right Click") && isPressed)
-            {
-                if (!mIsShiftPressed)
-                {
-                    clearSelectedObjects();
-                }
-
-                Ray r = getMouseRay();
-
-                boolean selectedSomething = false;
-                for (int i = 0; i < flotillas.size(); i++)
-                {
-                    Flotilla f = flotillas.get(i);
-                    selectedSomething = f.getBoundingBox().intersects(r);
-                    if (selectedSomething)
-                    {
-                        addSelectedObject(f);
-                        break;
-                    }
-                }
-                if (!selectedSomething)
-                {
-                    clearSelectedObjects();
-                }
-            }
-
-            if (name.equals("Left Click") && isPressed)
-            {
-                if (isMoveToggleOn || isRotateToggleOn)
-                {
-                    Vector3f directionalVector = getMouseRayIntersectionPoint().subtract(mSelectedNodeCenterPos);
-                    for (int i = 0; i < flotillas.size(); i++)
-                    {
-                        Flotilla f = flotillas.get(i);
-                        if (f.isSelected())
-                        {
-                            f.setTargetPoint(f.getCenterPosition().add(directionalVector), isMoveToggleOn);
-                        }
-                    }
-
-                    isMoveToggleOn = isRotateToggleOn = false;
-                    inputManager.setMouseCursor(null);
-                }
-                else
-                {
-                    if (isAttackToggleOn)
-                    {
-                        Ray r = getMouseRay();
-                        for (int i = 0; i < flotillas.size(); i++)
-                        {
-                            Flotilla f = flotillas.get(i);
-                            if (f.isSelected())
-                            {
-                                break;
-                            }
-
-                            boolean hover = f.getBoundingBox().intersects(r);
-                            if (hover)
-                            {
-                                Vector3f targetDirection = f.getCenterPosition().subtract(mSelectedNodeCenterPos);
-                                float change = M_ATTACK_DISTANCE / targetDirection.length();
-                                Vector3f targetPoint = f.getCenterPosition().clone().interpolate(mSelectedNodeCenterPos, change);
-
-                                f.setTargetPoint(targetPoint, false);
-
-                                // Add attacker
-                                Flotilla attacker = null;
-                                for (int j = 0; j < flotillas.size(); j++)
-                                {
-                                    Flotilla f2 = flotillas.get(j);
-                                    if (f2.isSelected())
-                                    {
-                                        attacker = f2;
-                                        f2.setTargetPoint(targetPoint, true);
-                                        break;
-                                    }
-                                }
-
-                                flotillaBattles.add(new FlotillaBattler(attacker, f));
-                            }
-                        }
-
-                        isAttackToggleOn = false;
-                        inputManager.setMouseCursor(null);
                     }
                 }
             }
@@ -436,7 +386,7 @@ public class Game extends SimpleApplication
                         }
                         else
                         {
-                            if (name.equals("Attack") && mSelectedFlotillasNode.getQuantity() > 0 && isPressed)
+                            if (name.equals("Attack") && selectedObjects.getFamily().size() > 0 && isPressed)
                             {
                                 isMoveToggleOn = false;
                                 isRotateToggleOn = false;
@@ -475,42 +425,17 @@ public class Game extends SimpleApplication
         {
             if (name.equals("Compress") || name.equals("Decompress"))
             {
-                if (mSelectedShipsNode.getQuantity() > 1)
+                if (selectedObjects.getFamily().size() > 1)
                 {
-                    float speed = M_COMPRESS_SPEED;
-                    if (name.equals("Decompress"))
-                    {
-                        speed *= -1;
-                    }
+                    float speed = M_COMPRESS_SPEED * ((name.charAt(0) == 'D') ? -1 : 1);
 
-                    for (int i = 0; i < loneShips.size(); i++)
+                    for (int i = 0; i < selectedObjects.getFamily().size(); i++)
                     {
-                        Ship s = loneShips.get(i);
-                        if (s.isSelected() && !s.isTransforming())
+                        MoveableBattleObject b = selectedObjects.getFamily().get(i);
+                        if (b.isSelected() && !b.isTransforming())
                         {
-                            Vector3f direction = mSelectedNodeCenterPos.subtract(s.getPosition()).normalize();
-                            s.move(direction.mult(speed * tpf));
-                        }
-                    }
-                }
-            }
-            if (name.equals("Compress") || name.equals("Decompress"))
-            {
-                if (mSelectedFlotillasNode.getQuantity() > 1)
-                {
-                    float speed = M_COMPRESS_SPEED;
-                    if (name.equals("Decompress"))
-                    {
-                        speed *= -1;
-                    }
-
-                    for (int i = 0; i < flotillas.size(); i++)
-                    {
-                        Flotilla f = flotillas.get(i);
-                        if (f.isSelected() && !f.isTransforming())
-                        {
-                            Vector3f direction = mSelectedNodeCenterPos.subtract(f.getCenterPosition()).normalize();
-                            f.move(direction.mult(speed * tpf));
+                            Vector3f direction = selectedObjects.getCenterPosition().subtract(b.getPosition()).normalize();
+                            b.move(direction.mult(speed * tpf));
                         }
                     }
                 }
@@ -560,6 +485,8 @@ public class Game extends SimpleApplication
                 mPictureBoxSelect.setWidth(Math.abs(cursorPos.x - initPos.x));
                 mPictureBoxSelect.setHeight(Math.abs(initPos.y - cursorPos.y));
             }
+            
+            selectedObjects.update(tpf);
 
             // Update ships...
             for (int i = 0; i < loneShips.size(); i++)
@@ -571,9 +498,6 @@ public class Game extends SimpleApplication
             {
                 flotillas.get(i).update(tpf);
             }
-
-            // Update center position of selected ships...
-            calculateCenterPoint();
 
 
             Ray r = getMouseRay();
@@ -681,95 +605,6 @@ public class Game extends SimpleApplication
         Vector3f v = new Vector3f();
         r.intersectsWherePlane(mMovementPlane, v);
         return v;
-    }
-
-    /**
-     * Adds an object to the selected object node.
-     *
-     * @param ship The reference to the ship that has been selected.
-     */
-    private void addSelectedObject(Ship ship)
-    {
-        mSelectedShipsNode.attachChild(ship.getWireBoxGeometry());
-
-        ship.setIsSelected(true);
-
-        calculateCenterPoint();
-    }
-
-    public void addSelectedObject(Flotilla flotilla)
-    {
-        mSelectedFlotillasNode.attachChild(flotilla.getWireBoxGeometry());
-
-        flotilla.setIsSelected(true);
-
-        calculateCenterPoint();
-    }
-
-    /**
-     * Clears all of the data in the selected objects node.
-     */
-    private void clearSelectedObjects()
-    {
-        for (int i = 0; i < loneShips.size(); i++)
-        {
-            loneShips.get(i).setIsSelected(false);
-        }
-
-        mSelectedShipsNode.detachAllChildren();
-
-        for (int i = 0; i < flotillas.size(); i++)
-        {
-            flotillas.get(i).setIsSelected(false);
-        }
-
-        mSelectedFlotillasNode.detachAllChildren();
-    }
-
-    private void calculateCenterPoint()
-    {
-        ArrayList<Vector3f> points = new ArrayList<Vector3f>();
-        for (int i = 0; i < loneShips.size(); i++)
-        {
-            Ship s = loneShips.get(i);
-            if (s.isSelected())
-            {
-                points.add(s.getPosition());
-            }
-        }
-        for (int i = 0; i < flotillas.size(); i++)
-        {
-            Flotilla f = flotillas.get(i);
-            if (f.isSelected())
-            {
-                points.add(f.getCenterPosition());
-            }
-        }
-
-        Vector3f[] p = new Vector3f[points.size()];
-        for (int i = 0; i < points.size(); i++)
-        {
-            p[i] = points.get(i);
-        }
-        mSelectedNodeCenterPos = getCenterPoint(p);
-    }
-
-    private Vector3f getCenterPoint(Vector3f[] points)
-    {
-        float x = 0.0f;
-        float z = 0.0f;
-
-        int size = points.length;
-        for (int i = 0; i < size; i++)
-        {
-            x += points[i].x;
-            z += points[i].z;
-        }
-
-        x /= size;
-        z /= size;
-
-        return new Vector3f(x, 0.0f, z);
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////

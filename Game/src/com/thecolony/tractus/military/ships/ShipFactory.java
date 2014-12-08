@@ -5,6 +5,7 @@
 package com.thecolony.tractus.military.ships;
 
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.military.battle.BattleObject;
 
@@ -182,5 +183,11 @@ public class ShipFactory extends BattleObject
     public Vector3f getPosition()
     {
         return model.getPosition();
+    }
+
+    @Override
+    public Geometry getWireBoxGeometry()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

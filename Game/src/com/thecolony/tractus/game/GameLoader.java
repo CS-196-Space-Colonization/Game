@@ -4,7 +4,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
@@ -22,6 +21,7 @@ import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.FlotillaBattler;
 import com.thecolony.tractus.military.ships.Flotilla;
+import com.thecolony.tractus.military.ships.SelectedFamily;
 import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 
@@ -32,8 +32,7 @@ import java.util.ArrayList;
  */
 public class GameLoader
 {
-
-    Node planetsNode, starsNode, rootNode, guiNode, selectedShipsNode, selectedFlotillasNode, loneShipsNode, flotillasNode;
+    Node planetsNode, starsNode, rootNode, guiNode, loneShipsNode, flotillasNode;
     AssetManager assetManager;
     InputManager inputManager;
     Planet[] mPlanets;
@@ -49,8 +48,8 @@ public class GameLoader
     private final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
     private final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     Plane mvmtPlane;
-    Vector3f selectedNodeCenterPos;
     AudioNode[] battles, creates;
+    SelectedFamily selectedFamily;
 
     public GameLoader(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
     {
@@ -76,9 +75,13 @@ public class GameLoader
         loadText();
         addNodes();
         loadCursors();
+        loadSelectedFamily();
+        
         Object[] arr =
         {
-            rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, selectedShipsNode, loneShipsNode, loneShips, selectedFlotillasNode, flotillasNode, flotillas, flotillaBattles, selectedNodeCenterPos, mvmtPlane, mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText
+            rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, 
+            loneShipsNode, loneShips, flotillasNode, flotillas, flotillaBattles, mvmtPlane, 
+            mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText, selectedFamily
         };
         return arr;
     }
@@ -232,10 +235,6 @@ public class GameLoader
 
     private void loadShips()
     {
-        selectedShipsNode = new Node("Selected Ships");
-        selectedFlotillasNode = new Node("Selected Flotillas");
-        selectedNodeCenterPos = new Vector3f();
-
         loneShipsNode = new Node("Lone Ships");
 
         double[] stats = new double[19];
@@ -280,52 +279,16 @@ public class GameLoader
 //        defenders = new ArrayList<Flotilla>();
     }
 
-    private void loadAudio()
-    {
-        AudioNode audio_battle1 = new AudioNode(assetManager, "Sounds/Battle/35683__jobro__laser6.wav", false);
-        AudioNode audio_battle2 = new AudioNode(assetManager, "Sounds/Battle/42106__marcuslee__laser-wrath-4.wav", false);
-        AudioNode audio_battle3 = new AudioNode(assetManager, "Sounds/Battle/151022__bubaproducer__laser-shot-silenced.wav", false);
-        AudioNode audio_battle4 = new AudioNode(assetManager, "Sounds/Battle/196914__dpoggioli__laser-gun.wav", false);
-        battles = new AudioNode[]
-        {
-            audio_battle1, audio_battle2, audio_battle3, audio_battle4
-        };
-        for (int i = 0; i < battles.length; i++)
-        {
-            battles[i].setLooping(false);
-            battles[i].setVolume(3);
-            battles[i].setPositional(false);
-            rootNode.attachChild(battles[i]);
-        }
-
-        AudioNode audio_onCreate1 = new AudioNode(assetManager, "Sounds/Unit_Creation/71079__aharri6__drill-2.wav", false);
-        AudioNode audio_onCreate2 = new AudioNode(assetManager, "Sounds/Unit_Creation/135846__joelaudio__gear-multiple-bursts-001.wav", false);
-        AudioNode audio_onCreate3 = new AudioNode(assetManager, "Sounds/Unit_Creation/146232__ferdinger__dc-welding.wav", false);
-        AudioNode audio_onCreate4 = new AudioNode(assetManager, "Sounds/Unit_Creation/207782__dvideoguy__hammering.wav", false);
-        creates = new AudioNode[]
-        {
-            audio_onCreate1, audio_onCreate2, audio_onCreate3, audio_onCreate4
-        };
-        for (int i = 0; i < battles.length; i++)
-        {
-            creates[i].setLooping(false);
-            creates[i].setVolume(3);
-            creates[i].setPositional(false);
-            rootNode.attachChild(creates[i]);
-        }
-    }
-
     private void addNodes()
     {
-        rootNode.attachChild(selectedShipsNode);
         rootNode.attachChild(planetsNode);
         rootNode.attachChild(starsNode);
         rootNode.attachChild(loneShipsNode);
         rootNode.attachChild(flotillasNode);
     }
+    
+    private void loadSelectedFamily()
+    {
+        selectedFamily = new SelectedFamily(rootNode);
+    }
 }
-/*
-
-
-
- */

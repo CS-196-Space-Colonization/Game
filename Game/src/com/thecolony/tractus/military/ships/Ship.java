@@ -14,13 +14,14 @@ import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.military.battle.BattleObject;
+import com.thecolony.tractus.military.battle.MoveableBattleObject;
 
 /**
  *
  * @author Mark Haynie
  * @author Joe Pagliuco
  */
-public class Ship extends BattleObject
+public class Ship extends MoveableBattleObject
 {
     /** Class Structure **/
         // Variables...
@@ -276,18 +277,6 @@ public class Ship extends BattleObject
     {
         return model.isRotating();
     }
-
-    
-    public boolean isSelected()
-    {
-        return model.getModel().getUserData("Selected");
-    }
-
-    public void setIsSelected(boolean selected)
-    {
-        model.getModel().setUserData("Selected", selected);
-    }
-
     
     public Geometry getWireBoxGeometry()
     {

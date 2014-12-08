@@ -11,13 +11,14 @@ import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.military.battle.BattleObject;
 import static com.thecolony.tractus.military.battle.BattleObject.BATTLE_STAT_MOVEMENT_SPEED;
+import com.thecolony.tractus.military.battle.MoveableBattleObject;
 
 /**
  *
  * @author Mark Haynie
  * @author Joe Pagliuco
  */
-public class Flotilla extends BattleObject
+public class Flotilla extends MoveableBattleObject
 {
     private static final float BATTLE_TIME_FACTOR = 0.05f;
     
@@ -29,8 +30,6 @@ public class Flotilla extends BattleObject
     private Vector3f centerPosition;
     private Geometry wireBoxGeometry;
     private Vector3f targetPoint;
-    
-    private boolean isSelected;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // START CONSTRUCTORS /////////////////////////////////////////////////////////////////////////////////////
@@ -64,8 +63,6 @@ public class Flotilla extends BattleObject
 
         if (setPositions && flotilla.length != 0)
             setShipPositions();
-
-        isSelected = false;
 
         this.name = name;
 
@@ -131,13 +128,13 @@ public class Flotilla extends BattleObject
 
     private void setMovementSpeed()
     {
+        if (flotilla.length == 0)
+            return;
         if (flotilla.length > 0)
         {
-            setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, (float) flotilla[0].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
-        }
-        for (int i = 1; i < flotilla.length; i++)
-        {
-            setBattleStat(BATTLE_STAT_MOVEMENT_SPEED, (float) Math.min(getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED)));
+            qualities[BATTLE_STAT_MOVEMENT_SPEED] = (float) flotilla[0].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED);
+            for (int i = 1; i < flotilla.length; i++)
+                qualities[BATTLE_STAT_MOVEMENT_SPEED] = (float) Math.min(getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
         }
     }
 
@@ -430,16 +427,6 @@ public class Flotilla extends BattleObject
         return wireBoxGeometry;
     }
 
-    public void setIsSelected(boolean isSelected)
-    {
-        this.isSelected = isSelected;
-    }
-
-    public boolean isSelected()
-    {
-        return isSelected;
-    }
-
     public boolean getFull()
     {
         return isFull;
@@ -456,15 +443,21 @@ public class Flotilla extends BattleObject
         {
             worth = 0;
             crew = 0;
+            double m = qualities[BATTLE_STAT_MOVEMENT_SPEED];
             qualities = new double[19];
+            qualities[BATTLE_STAT_MOVEMENT_SPEED] = m;
             for (int i = 0; i < 19; i++)
             {
+                if (i == BATTLE_STAT_MOVEMENT_SPEED)
+                    continue;
                 qualities[i] = 0;
             }
             for (int i = 0; i < flotilla.length; i++)
             {
                 for (int j = 0; j < 19; j++)
                 {
+                    if (j == BATTLE_STAT_MOVEMENT_SPEED)
+                        continue;
                     qualities[j] = qualities[j] + flotilla[i].getBattleStat(j); // Get jth battle stat
                 }
                 worth = worth + flotilla[i].getCost();
@@ -551,6 +544,15 @@ public class Flotilla extends BattleObject
         getShip(shipIndex).setBattleStat(BATTLE_STAT, quality);
     }
 
+    @Override
+    public void setBattleStat(int BATTLE_STAT, double value)
+    {
+        super.setBattleStat(BATTLE_STAT, value);
+        
+        if (BATTLE_STAT == BATTLE_STAT_MOVEMENT_SPEED)
+            setMovementSpeed();
+    }
+    
     public double getBattleStat(int BATTLE_STAT)
     {
         setFlotillaStats();
