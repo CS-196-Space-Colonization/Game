@@ -79,7 +79,7 @@ public class GameLoader
         {
             rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, 
             loneShipsNode, loneShips, flotillasNode, flotillas, flotillaBattles, mvmtPlane, 
-            mCursorSmiley, mPictureBoxSelect, mOverlay, mInfoHubText, selectedFamily
+            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily
         };
         return arr;
     }

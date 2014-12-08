@@ -63,7 +63,6 @@ public class Game extends SimpleApplication
     private boolean isAttackToggleOn;
     private JmeCursor mCursorSmiley;
     private Picture mPictureBoxSelect;
-    private Picture mOverlay;
     private ScrollText mInfoHubText;
     private boolean isRunning;
     private ClientMain client;
@@ -130,7 +129,6 @@ public class Game extends SimpleApplication
         mMovementPlane = (arr[index] instanceof Plane) ? (Plane) arr[index++] : null;
         mCursorSmiley = (arr[index] instanceof JmeCursor) ? (JmeCursor) arr[index++] : null;
         mPictureBoxSelect = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
-        mOverlay = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
         mInfoHubText = (arr[index] instanceof ScrollText) ? (ScrollText) arr[index++] : null;
         selectedObjects = (arr[index] instanceof SelectedFamily) ? (SelectedFamily) arr[index++] : null;
     }
