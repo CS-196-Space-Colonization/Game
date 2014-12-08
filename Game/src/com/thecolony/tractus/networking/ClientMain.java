@@ -10,8 +10,11 @@ import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
+import com.jme3.system.SystemListener;
 import com.thecolony.tractus.game.Game;
 import com.thecolony.tractus.graphics.GUI.OptionWindow;
+import org.lwjgl.Sys;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -66,17 +69,26 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 
         try
         {
-	  myClient = Network.connectToServer(Globals.NAME, Globals.VERSION, Globals.DEFAULT_SERVER, Globals.DEFAULT_PORT);
+            System.out.print("f");
+	  myClient = Network.connectToServer(Globals.NAME, 
+                  Globals.VERSION, 
+                  Globals.DEFAULT_SERVER, 
+                  Globals.DEFAULT_PORT);
+            System.out.print("i");
 	  myClient.start();
+            System.out.print("s");
         } catch (IOException ex)
         {
-	  System.out.println("Failed to connect to server in init");
+            ex.printStackTrace();
+            System.out.println("Failed to connect to server in init");
         }
-
+            System.out.print("H");
         Globals.registerClasses();
-
+            System.out.print("Y");
         myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
+            System.out.print("ne");
         myClient.addClientStateListener(this);
+            System.out.print("ss");
     }
 
     @Override

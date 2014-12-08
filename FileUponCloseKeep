@@ -1,24 +1,29 @@
 Planet
-    Type
-    Location
+    Type (L,S,T,M,G)
+    Location (x,0,z)
         x-coord
         z-coord
-    name
-    ColorRGBA
-    ResFileName (default:none)
-    Star (Default:StarX)
-    Continents (default:none)
+    name (name)
+    ColorRGBA (Hex)
+    ResFileName (#)
+    Star (name)
+    Continents (comma delimited names)
+        (default:none)
 Star
-    Type
-    Location
+    Type (D,M,G,S)
+    Location (x,0,z)
         x-coord (default: 0)
         z-coord (default: 0)
-    name (default: StarX)
-    colour (default: White)
-    StarSystem (default:none)
-    Planets (default is coded in, don't worry yet
+    name (name)
+        (default: StarX)
+    colour (hex)
+        (default: White)
+    StarSystem (name)
+        (default:none)
+    Planets (comma delimited names)
+        (default is coded in, don't worry yet
 Ship
-    Player
+    Player  (name)
     type
     name
     node

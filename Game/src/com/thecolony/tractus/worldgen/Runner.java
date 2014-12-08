@@ -8,7 +8,7 @@ import com.thecolony.tractus.worldgen.SpatialEntities.*;
  */
 public class Runner {
     public static void main(String args[]) {
-        Sector a = new Sector(new Vector3f(1.0f,0, 1.0f), null, new Res(), "a", "no-one");
+        /*Sector a = new Sector(new Vector3f(1.0f,0, 1.0f), null, new Res(), "a", "no-one");
         Cluster a1 = new Cluster(new Vector3f(1.0f,0, 2.0f), a, null, new Res(), "a1", "no-one");
         StarSystem a1a = new StarSystem(new Vector3f(1.0f,0, 2.0f), a1, null, new Res(), "a1a", "no-one");
         for (String str:a1a.getDisplayInfo()) System.out.println(str);
@@ -27,6 +27,7 @@ public class Runner {
         System.out.println("iron="+a1a1a1.getResource("iron"));
         System.out.println("Changed resource? "+a1a1a1.setResource("iron", 4.0));
         System.out.println("iron=" + a1a1a1.getResource("iron"));
-        a1a1a1.updateResources();
+        a1a1a1.updateResources();*/
+        String str="piwjerfpoiwj, wfojwoifej";
     }
 }
