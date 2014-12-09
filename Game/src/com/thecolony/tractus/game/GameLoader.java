@@ -23,6 +23,8 @@ import com.thecolony.tractus.military.ships.Flotilla;
 import com.thecolony.tractus.military.ships.SelectedFamily;
 import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.resources.Res;
+import com.thecolony.tractus.saveInfo.Filer;
+import com.thecolony.tractus.worldgen.Generator;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 
 import java.util.ArrayList;
@@ -63,8 +65,10 @@ public class GameLoader
         
         GraphicsManager.loadGraphics(assetManager);
         AudioManager.loadAudio(assetManager, rootNode);
-        
-        loadThings(); //Load territories. Lazy naming, LOL
+        planetsNode = new Node("Planets Node");
+        starsNode = new Node("Stars Node");
+
+        Generator.loadTerritories(rootNode,planetsNode,starsNode,assetManager,new Filer("tractus"));
         loadShips();
         loadAmbientLight();
         loadSkybox();
@@ -129,83 +133,6 @@ public class GameLoader
         float fontSize = (guiFont.getCharSet().getRenderedSize() * ((float) M_WIDTH / (float) M_HEIGHT)) / (1920.0f / 1080.0f);
         mInfoHubText = new ScrollText(M_HEIGHT, fontSize, M_INFO_HUB_WIDTH_PERCENTAGE * M_WIDTH,
                 M_INFO_HUB_HEIGHT_PERCENTAGE * M_HEIGHT, guiFont, guiNode);
-    }
-
-    private static Planet generatePlanet(int index)
-    {
-        VisualType type = null;
-        switch ((int) (Math.random() * 5))
-        {
-            case (0):
-                type = VisualType.LAVA_PLANET;
-                break;
-            case (1):
-                type = VisualType.SUBEARTH_PLANET;
-                break;
-            case (2):
-                type = VisualType.TERRESTRIAL_PLANET;
-                break;
-            case (3):
-                type = VisualType.MININEPTUNE_PLANET;
-                break;
-            case (4):
-                type = VisualType.GASGIANT_PLANET;
-                break;
-        }
-        int posNeg = (Math.random() < 0.5) ? -1 : 1;
-        int orbitRadius = 15 + (25 * (index + 1));
-        float xPos = posNeg * (int) (Math.random() * orbitRadius);
-        posNeg = (Math.random() < 0.5) ? -1 : 1;
-        float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
-
-        return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null, new Res(), "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
-    }
-
-    private static void loadThings()
-    {
-        loadPlanets();
-        loadSun();
-        for (int i = 0; i < mPlanets.length; i++)
-        {
-            mPlanets[i].setSuperTerr(mSuns[0]);
-        }
-        mSuns[0].setSubTerr(mPlanets);
-    }
-
-    private static void loadPlanets()
-    {
-        planetsNode = new Node("Planets Node");
-        mPlanets = new Planet[10];
-
-        for (int i = 0; i < mPlanets.length; i++)
-        {
-            mPlanets[i] = generatePlanet(i);
-        }
-    }
-
-    private static void loadSun()
-    {
-        starsNode = new Node("Stars Node");
-        VisualType type = null;
-        switch ((int) (Math.random() * 4))
-        {
-            case (0):
-                type = VisualType.DWARF_STAR;
-                break;
-            case (1):
-                type = VisualType.MAINSEQUENCE_STAR;
-                break;
-            case (2):
-                type = VisualType.GIANT_STAR;
-                break;
-            case (3):
-                type = VisualType.SUPERGIANT_STAR;
-                break;
-        }
-        mSuns = new Star[1];
-        mSuns[0] = new Star(Vector3f.ZERO, null, null, new Res(), "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
-        rootNode.addLight(mSuns[0].getPointLight());
-
     }
 
     private static Ship generateShip(int player, Node node, int num, double[] stats)

@@ -18,10 +18,12 @@ public class Planet extends VisualEntity {
     
     public Planet(Vector3f pos, String name, Node node, Spatial model, VisualType type){
         super(pos, name, node, model, type);
+        Res resy=res;
         firms = new ArrayList<Firm>();
     }
     public Planet(Vector3f pos, Star star, Continent[] continents, Res res, String name, String owner, Node node, AssetManager manager, ColorRGBA color, VisualType type){
         super(pos,star,continents,res,name,owner,node,manager,color,type);
+        Res resy=res;
         firms = new ArrayList<Firm>();
     }
     

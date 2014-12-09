@@ -31,6 +31,7 @@ public class Star extends VisualEntity
         super(pos, starSys, planets, res, name, owner, node, manager, color, type);
     }
 
+    @Override
     protected void initialize(String name, Node node, Spatial model, Vector3f position)
     {
         super.initialize(name, node, model, position);

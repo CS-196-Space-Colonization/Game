@@ -4,27 +4,42 @@ import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.thecolony.tractus.resources.Res;
+import com.thecolony.tractus.saveInfo.Filer;
 import com.thecolony.tractus.worldgen.SpatialEntities.Planet;
 import com.thecolony.tractus.worldgen.SpatialEntities.Star;
+import com.thecolony.tractus.worldgen.SpatialEntities.Territory;
 import com.thecolony.tractus.worldgen.SpatialEntities.VisualType;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * Created by wes on 12/6/14.
  */
 public class Generator {
-    Planet[] mPlanets; Star[] mSuns;Node planetsNode,starsNode,rootNode;AssetManager assetManager;
-    private void loadThings()
+    private static Planet[] mPlanets;
+    private static Star[] mSuns;
+    private static Node planetsNode,starsNode,rootNode;
+    private static AssetManager assetManager;
+    private static Filer filer;
+    public static void loadTerritories(Node rootNode, Node planetsNode, Node starsNode, AssetManager assetManager, Filer filer)
     {
-        loadPlanets();
-        loadSun();
+        Generator.planetsNode=planetsNode;
+        Generator.starsNode=starsNode;
+        Generator.rootNode=rootNode;
+        Generator.assetManager=assetManager;
+        Generator.filer=filer;
+        makePlanets();
+        makeStars();
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i].setSuperTerr(mSuns[0]);
         }
         mSuns[0].setSubTerr(mPlanets);
+        addTerrs();
     }
 
-    private Planet generatePlanet(int index)
+    private static Planet generatePlanet(int index)
     {
         VisualType type = null;
         switch ((int) (Math.random() * 5))
@@ -50,13 +65,12 @@ public class Generator {
         float xPos = posNeg * (int) (Math.random() * orbitRadius);
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
-
-        return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null, null, "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
+        Res res=new Res();
+        return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null,res, "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
     }
 
-    private void loadPlanets()
+    private static void makePlanets()
     {
-        planetsNode = new Node("Planets Node");
         mPlanets = new Planet[10];
 
         for (int i = 0; i < mPlanets.length; i++)
@@ -65,9 +79,8 @@ public class Generator {
         }
     }
 
-    private void loadSun()
+    private static void makeStars()
     {
-        starsNode = new Node("Stars Node");
         VisualType type = null;
         switch ((int) (Math.random() * 4))
         {
@@ -85,7 +98,109 @@ public class Generator {
                 break;
         }
         mSuns = new Star[1];
-        mSuns[0] = new Star(Vector3f.ZERO, null, null, null, "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
+        Res res=new Res();
+        mSuns[0] = new Star(Vector3f.ZERO, null, null, res, "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
         rootNode.addLight(mSuns[0].getPointLight());
+    }
+    private static void addTerrs(){
+        for(Planet p:mPlanets) addPlanet(p);
+        for(Star s:mSuns) addStar(s);
+    }
+    private static void addPlanet(Planet p){
+        Element planet=filer.addObject("planet", "name", p.getName());
+        String type="?";
+        switch (p.getType()){
+            case LAVA_PLANET: type="L";
+                break;
+            case SUBEARTH_PLANET: type="S";
+                break;
+            case TERRESTRIAL_PLANET: type="T";
+                break;
+            case MININEPTUNE_PLANET: type="M";
+                break;
+            case GASGIANT_PLANET: type="G";
+                break;
+        }
+        String cont="";
+        if(p.getSubTerr()!=null)for (Territory continent:p.getSubTerr()) cont+=continent.getName()+",";
+        String loc=p.getLocation().getX()+",0,"+p.getLocation().getZ();
+        filer.addInfo(planet, "type", type);
+        filer.addInfo(planet, "loc", loc);
+        filer.addInfo(planet, "color", "" + p.getColor().asIntRGBA());
+        filer.addInfo(planet, "res", ""+p.getResName());
+        filer.addInfo(planet, "star", p.getSuperTerr().getName());
+        filer.addInfo(planet, "conts", cont.length()==0?cont:cont.substring(0, cont.length() - 1));
+        filer.write();
+    }
+    private static void addStar(Star s){
+        Element star=filer.addObject("star", "name", s.getName());
+        String type="?";
+        switch (s.getType()){
+            case DWARF_STAR: type="D";
+                break;
+            case MAINSEQUENCE_STAR: type="M";
+                break;
+            case GIANT_STAR: type="G";
+                break;
+            case SUPERGIANT_STAR: type="S";
+                break;
+        }
+        String planets="";
+        if(s.getSubTerr()!=null)for (Territory planet:s.getSubTerr()) planets+=planet.getName()+",";
+        String loc=s.getLocation().getX()+",0,"+s.getLocation().getZ();
+        filer.addInfo(star, "type", type);
+        filer.addInfo(star, "loc", loc);
+        filer.addInfo(star, "color", "" + s.getColor().asIntRGBA());
+        filer.addInfo(star, "res", ""+s.getResName());
+        filer.addInfo(star, "starSys", "");
+        filer.addInfo(star, "planets", planets.length()==0?planets:planets.substring(0, planets.length() - 1));
+        filer.write();
+    }
+    public static Planet loadPlanet(){
+        NodeList list=filer.getObject("planet");
+        for (int i=0;i<list.getLength();i++){
+            if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
+                Element el=(Element)list.item(i);
+                String name=el.getAttribute("name");
+                String pos=el.getElementsByTagName("type").item(0).getTextContent(), poss[]=pos.split(",");
+                Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
+                String color=el.getElementsByTagName("color").item(0).getTextContent(); ColorRGBA col=new ColorRGBA(); col.fromIntRGBA(Integer.parseInt(color));
+                String res=el.getElementsByTagName("res").item(0).getTextContent();
+                String star=el.getElementsByTagName("star").item(0).getTextContent();
+                String conts=el.getElementsByTagName("conts").item(0).getTextContent();
+                String typ=el.getElementsByTagName("type").item(0).getTextContent();
+                VisualType type;
+                if (typ.equals("L")) {type=VisualType.LAVA_PLANET;}
+                else if (typ.equals("S")) {type=VisualType.SUBEARTH_PLANET;}
+                else if (typ.equals("T")) {type=VisualType.TERRESTRIAL_PLANET;}
+                else if (typ.equals("M")) {type=VisualType.MININEPTUNE_PLANET;}
+                else {type=VisualType.GASGIANT_PLANET;}
+                mPlanets[i]=new Planet(vect,null,null,new Res(res),name,"no-one",planetsNode,assetManager,col,type);
+            }
+        }
+        return null;
+    }
+    public static Star loadStar(){
+        NodeList list=filer.getObject("star");
+        for (int i=0;i<list.getLength();i++){
+            if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
+                Element el=(Element)list.item(i);
+                String name=el.getAttribute("name");
+                String pos=el.getElementsByTagName("type").item(0).getTextContent(), poss[]=pos.split(",");
+                Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
+                String color=el.getElementsByTagName("color").item(0).getTextContent(); ColorRGBA col=new ColorRGBA(); col.fromIntRGBA(Integer.parseInt(color));
+                String res=el.getElementsByTagName("res").item(0).getTextContent();
+                String star=el.getElementsByTagName("starSys").item(0).getTextContent();
+                String conts=el.getElementsByTagName("planets").item(0).getTextContent();
+                String typ=el.getElementsByTagName("type").item(0).getTextContent();
+                VisualType type;
+                if (typ.equals("D")) {type=VisualType.DWARF_STAR;}
+                else if (typ.equals("M")) {type=VisualType.MAINSEQUENCE_STAR;}
+                else if (typ.equals("G")) {type=VisualType.GIANT_STAR;}
+                else {type=VisualType.SUPERGIANT_STAR;}
+                mSuns[i]=new Star(vect,null,null,new Res(res),name,"no-one",starsNode,assetManager,col,type);
+            }
+        }
+        return null;
     }
 }

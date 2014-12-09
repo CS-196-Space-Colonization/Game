@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public abstract class Territory{
     protected Vector3f location; //Or any sort of spatial positioning...
     protected String name, owner, resName;
-    protected transient Res res;
+    protected Res res;
     protected Territory superTerr, subTerr[];
     protected String className;
     protected Territory(Vector3f pos, Territory superTerr, Territory[] terr, Res res, String name, String owner){
@@ -113,7 +113,7 @@ public abstract class Territory{
         if (superTerr!=null){
             for(String str:superTerr.getDisplayInfo()) infos.add(str);
         }
-        infos.add(this.className+": "+name);
+        infos.add(name);
         return infos.toArray(new String[0]);
     }
 }
