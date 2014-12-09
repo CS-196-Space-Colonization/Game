@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -52,7 +53,7 @@ public class Filer {
         node.appendChild(el);
     }
     public NodeList getObject(String name){
-        return doc.getElementsByTagName(name);
+        return root.getElementsByTagName(name);
     }
     public void write(){
         try {
@@ -60,9 +61,8 @@ public class Filer {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(file);
-            transformer.transform(
-                    source,
-                    result);
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(source, result);
         }
         catch (Exception e){e.printStackTrace();}
     }

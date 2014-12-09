@@ -22,13 +22,17 @@ public class Generator {
     private static Node planetsNode,starsNode,rootNode;
     private static AssetManager assetManager;
     private static Filer filer;
-    public static void loadTerritories(Node rootNode, Node planetsNode, Node starsNode, AssetManager assetManager, Filer filer)
+    public static void loadTerritories(Node rootNode, Node planetsNode, Planet[] planets, Node starsNode, Star[] stars, AssetManager assetManager, Filer filer)
     {
         Generator.planetsNode=planetsNode;
+        Generator.mPlanets=planets;
         Generator.starsNode=starsNode;
+        Generator.mSuns=stars;
         Generator.rootNode=rootNode;
         Generator.assetManager=assetManager;
         Generator.filer=filer;
+        //loadPlanet();
+        //loadStar();
         makePlanets();
         makeStars();
         for (int i = 0; i < mPlanets.length; i++)
@@ -71,8 +75,6 @@ public class Generator {
 
     private static void makePlanets()
     {
-        mPlanets = new Planet[10];
-
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i] = generatePlanet(i);
@@ -97,7 +99,6 @@ public class Generator {
                 type = VisualType.SUPERGIANT_STAR;
                 break;
         }
-        mSuns = new Star[1];
         Res res=new Res();
         mSuns[0] = new Star(Vector3f.ZERO, null, null, res, "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
         rootNode.addLight(mSuns[0].getPointLight());
@@ -162,7 +163,8 @@ public class Generator {
             if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
                 Element el=(Element)list.item(i);
                 String name=el.getAttribute("name");
-                String pos=el.getElementsByTagName("type").item(0).getTextContent(), poss[]=pos.split(",");
+                //System.out.print(el.getElementsByTagName("loc").item(0).getTextContent());
+                String pos=el.getElementsByTagName("loc").item(0).getTextContent(), poss[]=pos.split(",");
                 Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
                 String color=el.getElementsByTagName("color").item(0).getTextContent(); ColorRGBA col=new ColorRGBA(); col.fromIntRGBA(Integer.parseInt(color));
                 String res=el.getElementsByTagName("res").item(0).getTextContent();
@@ -186,7 +188,7 @@ public class Generator {
             if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
                 Element el=(Element)list.item(i);
                 String name=el.getAttribute("name");
-                String pos=el.getElementsByTagName("type").item(0).getTextContent(), poss[]=pos.split(",");
+                String pos=el.getElementsByTagName("loc").item(0).getTextContent(), poss[]=pos.split(",");
                 Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
                 String color=el.getElementsByTagName("color").item(0).getTextContent(); ColorRGBA col=new ColorRGBA(); col.fromIntRGBA(Integer.parseInt(color));
                 String res=el.getElementsByTagName("res").item(0).getTextContent();

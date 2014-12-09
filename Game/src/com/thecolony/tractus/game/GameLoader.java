@@ -66,9 +66,11 @@ public class GameLoader
         GraphicsManager.loadGraphics(assetManager);
         AudioManager.loadAudio(assetManager, rootNode);
         planetsNode = new Node("Planets Node");
+        mPlanets = new Planet[10];
         starsNode = new Node("Stars Node");
+        mSuns = new Star[1];
 
-        Generator.loadTerritories(rootNode,planetsNode,starsNode,assetManager,new Filer("tractus"));
+        Generator.loadTerritories(rootNode,planetsNode,mPlanets,starsNode,mSuns,assetManager,new Filer("tractus"));
         loadShips();
         loadAmbientLight();
         loadSkybox();
