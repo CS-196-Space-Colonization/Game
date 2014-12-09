@@ -47,14 +47,15 @@ public class Res implements Serializable {
     public Res(){
         pathName=dir+"resFile";
         path=Paths.get(pathName);
-        int i=1;
+        int i=0;
         try {
             while (Files.exists(path)) {
-                pathName = dir + "resFile" + i;
                 i++;
+                pathName = dir + "resFile" + i;
                 path = Paths.get(pathName);
             }
             path.toFile().createNewFile();
+            this.name="resFile"+i;
         }
         catch (Exception e){ e.printStackTrace();}
     }

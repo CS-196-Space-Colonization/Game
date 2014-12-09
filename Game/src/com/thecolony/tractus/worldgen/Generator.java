@@ -127,7 +127,7 @@ public class Generator {
         filer.addInfo(planet, "type", type);
         filer.addInfo(planet, "loc", loc);
         filer.addInfo(planet, "color", "" + p.getColor().asIntRGBA());
-        filer.addInfo(planet, "res", ""+p.getResName());
+        filer.addInfo(planet, "res", ""+p.getResName().substring(7));
         filer.addInfo(planet, "star", p.getSuperTerr().getName());
         filer.addInfo(planet, "conts", cont.length()==0?cont:cont.substring(0, cont.length() - 1));
         filer.write();
@@ -151,7 +151,7 @@ public class Generator {
         filer.addInfo(star, "type", type);
         filer.addInfo(star, "loc", loc);
         filer.addInfo(star, "color", "" + s.getColor().asIntRGBA());
-        filer.addInfo(star, "res", ""+s.getResName());
+        filer.addInfo(star, "res", ""+s.getResName().substring(7));
         filer.addInfo(star, "starSys", "");
         filer.addInfo(star, "planets", planets.length()==0?planets:planets.substring(0, planets.length() - 1));
         filer.write();
@@ -175,7 +175,7 @@ public class Generator {
                 else if (typ.equals("T")) {type=VisualType.TERRESTRIAL_PLANET;}
                 else if (typ.equals("M")) {type=VisualType.MININEPTUNE_PLANET;}
                 else {type=VisualType.GASGIANT_PLANET;}
-                mPlanets[i]=new Planet(vect,null,null,new Res(res),name,"no-one",planetsNode,assetManager,col,type);
+                mPlanets[i]=new Planet(vect,null,null,new Res("resFile"+res),name,"no-one",planetsNode,assetManager,col,type);
             }
         }
         return null;
@@ -198,7 +198,7 @@ public class Generator {
                 else if (typ.equals("M")) {type=VisualType.MAINSEQUENCE_STAR;}
                 else if (typ.equals("G")) {type=VisualType.GIANT_STAR;}
                 else {type=VisualType.SUPERGIANT_STAR;}
-                mSuns[i]=new Star(vect,null,null,new Res(res),name,"no-one",starsNode,assetManager,col,type);
+                mSuns[i]=new Star(vect,null,null,new Res("resFile"+res),name,"no-one",starsNode,assetManager,col,type);
             }
         }
         return null;
