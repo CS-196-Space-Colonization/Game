@@ -25,6 +25,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener
     int connections = 0;
     int connectionsOld = -1;
     Message update;
+    boolean started = false;
 
     public ServerMain()
     {
@@ -39,24 +40,27 @@ public class ServerMain extends SimpleApplication implements ConnectionListener
         {
 	  myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);
 	  update = new UpdateClientMessage(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
-	  new ClientMain();
 	  myServer.start();
+	  Globals.registerClasses();
+	  myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
+	  new ClientMain();
+	  
+	  myServer.broadcast(update);
         } catch (IOException ex)
         {
 	  System.out.println("Could not create network connection.");
         }
-        Globals.registerClasses();
-        myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
-
-
     }
 
     @Override
     public void simpleUpdate(float deltaTime)
     {
         connections = myServer.getConnections().size();
-        if (connections == 0)
+        if(connections == 1)
+	  started = true;
+        if (started && connections == 0)
         {
+	  System.out.println("destroy");
 	  destroy();
         }
         if (connectionsOld != connections)
