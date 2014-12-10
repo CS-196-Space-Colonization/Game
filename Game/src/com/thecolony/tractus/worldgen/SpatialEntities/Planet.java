@@ -44,12 +44,17 @@ public class Planet extends VisualEntity {
         String newInfo = "";
         for(int i = 0; i < basicInfo.length; i++)
             newInfo += basicInfo[i] + "\n";
-        for(int i = 0; i < firms.size(); i++)
+        try {
+            for(int i = 0; i < firms.size(); i++)
+            {
+                Firm firm = firms.get(i);
+                String firmInfo = firm.getProductionGood().getType() + "  production: " + firm.getQuantity();
+                newInfo += firmInfo + "\n";
+                newInfo += " " + firm.getCurrentInventory() + "\n";
+            }
+        } catch (NullPointerException npe)
         {
-            Firm firm = firms.get(i);
-            String firmInfo = firm.getProductionGood().getType() + "  production: " + firm.getQuantity();
-            newInfo += firmInfo + "\n";
-            newInfo += " " + firm.getCurrentInventory() + "\n";
+            
         }
         drawableObject.getModel().setUserData("Display Info", newInfo.split("\n"));
         return newInfo.split("\n");

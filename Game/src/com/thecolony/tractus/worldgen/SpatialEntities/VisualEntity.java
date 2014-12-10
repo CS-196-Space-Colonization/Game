@@ -65,7 +65,7 @@ public class VisualEntity extends Territory
             }
         }
         
-        setDisplayInfo();
+        this.setDisplayInfo();
         attachBoundingSphereToDrawable();
     }
     // Temporary
