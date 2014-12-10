@@ -37,6 +37,7 @@ public class Generator {
         //makeStars();
         for (int i = 0; i < mPlanets.length; i++)
         {
+            //null pointer?
             mPlanets[i].setSuperTerr(mSuns[0]);
         }
         mSuns[0].setSubTerr(mPlanets);
