@@ -1,19 +1,18 @@
 package com.thecolony.tractus.graphics.GUI;
 
-import com.jme3.system.AppSettings;
+import com.thecolony.tractus.audio.MenuAudio;
 import com.thecolony.tractus.game.Game;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -24,7 +23,8 @@ import javax.swing.UIManager;
 public class MainMenu extends JFrame
 {
     public static ArrayList<Color> GUIColors;
-    static {
+    static 
+    {
         GUIColors = new ArrayList<Color>();
         GUIColors.add(Color.yellow);
         GUIColors.add(Color.red);
@@ -123,6 +123,7 @@ public class MainMenu extends JFrame
 	  public void actionPerformed(ActionEvent e)
 	  {
 	      new SinglePlayerOptions();
+	      MenuAudio.playSound(MenuAudio.YAY);
 	      dispose();
 	  }
         });
@@ -149,6 +150,14 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.QUIT);
+	      try
+	      {
+		Thread.sleep(2284);
+	      } catch (InterruptedException ex)
+	      {
+		Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+	      }
 	      System.exit(0);
 	  }
         });
