@@ -20,8 +20,15 @@ public abstract class AudioManager
     private static AudioNode CREATE_GEAR_BURSTS;
     private static AudioNode CREATE_HAMMER;
     
+    private static AudioNode SHIP_DEATH;
+    
     public static void loadAudio(AssetManager assetManager, Node node)
-    {        
+    {      
+        SHIP_DEATH = new AudioNode(assetManager, "Sounds/Battle/laser2.ogg", false);
+        SHIP_DEATH.setLooping(false);
+        SHIP_DEATH.setPositional(false);
+        node.attachChild(SHIP_DEATH);
+        
         BATTLE_LASER_1 = new AudioNode(assetManager, "Sounds/Battle/laser1.ogg", false);
         BATTLE_LASER_1.setLooping(false);
         BATTLE_LASER_1.setPositional(false);
@@ -74,6 +81,8 @@ public abstract class AudioManager
         CREATE_DC_WIELDING.setVolume(volumeLevel);
         CREATE_GEAR_BURSTS.setVolume(volumeLevel);
         CREATE_HAMMER.setVolume(volumeLevel);
+        
+        SHIP_DEATH.setVolume(volumeLevel);
     }
     
     public static AudioNode getBattleLaser(int index)
@@ -108,5 +117,9 @@ public abstract class AudioManager
     public static AudioNode getHammer()
     {
         return CREATE_HAMMER.clone();
+    }
+    public static AudioNode getShipDeath()
+    {
+        return SHIP_DEATH.clone();
     }
 }

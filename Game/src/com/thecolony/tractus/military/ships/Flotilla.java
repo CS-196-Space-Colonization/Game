@@ -9,6 +9,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
+import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.game.Game;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
@@ -288,6 +289,7 @@ public class Flotilla extends MoveableBattleObject
             {
                 if (temp[i].getBattleStat(BattleObject.BATTLE_STAT_HP) == 0)
                 {
+		AudioManager.getShipDeath().playInstance();
                     flotilla[i].getMoveableObject3d().changeNodeState(false);
 
                     boolean passed = false;
