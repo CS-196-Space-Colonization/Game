@@ -122,7 +122,7 @@ public class Inventory {
 			result.append(p.getClass().getName());
 			result.append(": ");
 			result.append(getAmountOf(p));
-			result.append('\n');
+			result.append(' ');
 		}
 		return result.toString();
 	}

@@ -22,6 +22,8 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.ui.Picture;
 import com.thecolony.tractus.audio.AudioManager;
+import com.thecolony.tractus.economics.Firm;
+import com.thecolony.tractus.economics.Market;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
@@ -47,6 +49,7 @@ public class Game extends SimpleApplication
     private final float M_COMPRESS_SPEED = 1.0f;
     private final float M_ATTACK_DISTANCE = 50.0f;
     private Planet[] mPlanets;
+    private Market market;
     private Star[] mSuns;
     private ArrayList<Ship> loneShips;
     private ArrayList<Flotilla> flotillas;
@@ -131,6 +134,9 @@ public class Game extends SimpleApplication
         mPictureBoxSelect = (arr[index] instanceof Picture) ? (Picture) arr[index++] : null;
         mInfoHubText = (arr[index] instanceof ScrollText) ? (ScrollText) arr[index++] : null;
         selectedObjects = (arr[index] instanceof SelectedFamily) ? (SelectedFamily) arr[index++] : null;
+        market = (arr[index] instanceof Market) ? (Market) arr[index++] : null;
+        // I agree. This method is terrible. I'm not sure how to fix it though.
+        // Maybe just create an instance of game in GameLoader and copy the data here?
     }
 
     private void adjustCameraSettings()
@@ -494,6 +500,12 @@ public class Game extends SimpleApplication
             for (int i = 0; i < flotillas.size(); i++)
             {
                 flotillas.get(i).update(tpf);
+            }
+            // Update firms
+            for(Planet p: mPlanets)
+            {
+                for(Firm f: p.getFirms())
+                    f.step();
             }
 
 

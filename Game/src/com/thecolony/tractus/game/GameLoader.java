@@ -14,6 +14,10 @@ import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.audio.AudioManager;
+import com.thecolony.tractus.economics.BasicMarket;
+import com.thecolony.tractus.economics.Firm;
+import com.thecolony.tractus.economics.Market;
+import com.thecolony.tractus.economics.products.*;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.player.Player;
@@ -26,8 +30,12 @@ import com.thecolony.tractus.resources.Res;
 import com.thecolony.tractus.saveInfo.Filer;
 import com.thecolony.tractus.worldgen.Generator;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by wes on 12/5/14.
@@ -39,6 +47,7 @@ public class GameLoader
     private static InputManager inputManager;
     private static Planet[] mPlanets;
     private static Star[] mSuns;
+    private static Market market;
     private static ArrayList<Ship> loneShips;
     private static ArrayList<Flotilla> flotillas;
     private static ArrayList<FlotillaBattler> flotillaBattles;
@@ -67,10 +76,12 @@ public class GameLoader
         AudioManager.loadAudio(assetManager, rootNode);
         planetsNode = new Node("Planets Node");
         mPlanets = new Planet[10];
+        market = new BasicMarket();
         starsNode = new Node("Stars Node");
         mSuns = new Star[1];
 
         Generator.loadTerritories(rootNode,planetsNode,mPlanets,starsNode,mSuns,assetManager,new Filer("tractus"));
+        loadSuckyEconomicSystem();
         loadShips();
         loadAmbientLight();
         loadSkybox();
@@ -85,9 +96,48 @@ public class GameLoader
         {
             rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, 
             loneShipsNode, loneShips, flotillasNode, flotillas, flotillaBattles, mvmtPlane, 
-            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily
+            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily, market
         };
         return arr;
+    }
+    
+    private static void loadSuckyEconomicSystem()
+    {
+        Class[] products = new Class[]
+                {
+                    Carbon.class,
+                    Iron.class,
+                    OakWood.class,
+                    Steel.class
+                };
+        
+        for(Planet p: mPlanets)
+        {
+            // Choose a random product
+            Class productClass = products[(int)(Math.random()*products.length)];
+            Constructor c = null;
+            try {
+                c = productClass.getConstructor();
+            } catch (NoSuchMethodException ex) {
+                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                //Every planet produces labour
+                p.addFirm(new Firm(market, new Labor()));
+                //Add a random production firm on each 
+                p.addFirm(new Firm(market, (Product)c.newInstance()));
+            } catch (InstantiationException ex) {
+                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private static void loadSkybox()

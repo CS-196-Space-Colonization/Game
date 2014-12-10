@@ -7,6 +7,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Node;
 import com.thecolony.tractus.economics.Firm;
+import com.thecolony.tractus.economics.products.Product;
 import java.util.ArrayList;
 
 /**
@@ -38,15 +39,22 @@ public class Planet extends VisualEntity {
     @Override
     public String[] getDisplayInfo() {
         String[] basicInfo = super.getDisplayInfo();
-        String[] fullInfo = new String[basicInfo.length + firms.size()];
+        String[] fullInfo = new String[basicInfo.length + 2*firms.size()];
         for(int i = 0; i < basicInfo.length; i++)
             fullInfo[i] = basicInfo[i];
         for(int i = 0; i < firms.size(); i++)
         {
             Firm firm = firms.get(i);
-            String firmInfo = firm.getProductionGood().getType() + " factor production: " + firm.getQuantity();
-            fullInfo[i + basicInfo.length] = firmInfo;
+            String firmInfo = firm.getProductionGood().getType() + "  production: " + firm.getQuantity();
+            System.out.println(firm.getCurrentInventory());
+            fullInfo[2*i + basicInfo.length] = firmInfo;
+            fullInfo[2*i + 1 + basicInfo.length] = firm.getCurrentInventory();
         }
         return fullInfo;
-    } 
+    }
+    
+    public ArrayList<Firm> getFirms()
+    {
+        return firms;
+    }
 }

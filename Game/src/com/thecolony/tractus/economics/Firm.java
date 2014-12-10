@@ -48,4 +48,8 @@ public class Firm extends AbstractAgent {
 	public double getQuantity() {
 		return production.getYesterdaysProductionQty();
 	}
+        
+        public String getCurrentInventory() {
+            return production.getInventory().toString();
+        }
 }
