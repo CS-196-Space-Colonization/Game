@@ -7,8 +7,10 @@ package com.thecolony.tractus.military.ships;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.GraphicsManager;
+import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.military.battle.BattleObject;
 import static com.thecolony.tractus.military.battle.BattleObject.BATTLE_STAT_MOVEMENT_SPEED;
 import com.thecolony.tractus.military.battle.MoveableBattleObject;
@@ -30,6 +32,11 @@ public class Flotilla extends MoveableBattleObject
     private Vector3f centerPosition;
     private Geometry wireBoxGeometry;
     private Vector3f targetPoint;
+    
+    /**
+     * NOT ACTUALLY DRAWN, USED TO GET DISPLAY INFO.
+     */
+    private DrawableObject3d model;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // START CONSTRUCTORS /////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +74,8 @@ public class Flotilla extends MoveableBattleObject
         this.name = name;
 
         setMovementSpeed();
+        
+        setDisplayInfo();
     }
 
     private void setShipPositions()
@@ -124,6 +133,7 @@ public class Flotilla extends MoveableBattleObject
         wireBoxGeometry = new Geometry("Flotilla WireBox Geometry", wireBox);
         wireBoxGeometry.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(centerPosition);
+        model = new DrawableObject3d(name, new Node(), wireBoxGeometry.clone(), Vector3f.ZERO);
     }
 
     private void setMovementSpeed()
@@ -136,6 +146,37 @@ public class Flotilla extends MoveableBattleObject
             for (int i = 1; i < flotilla.length; i++)
                 qualities[BATTLE_STAT_MOVEMENT_SPEED] = (float) Math.min(getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), flotilla[i].getBattleStat(BattleObject.BATTLE_STAT_MOVEMENT_SPEED));
         }
+    }
+    
+    private void setDisplayInfo()
+    {
+        String[] display = new String[]
+        {
+            "Flotilla:",
+            " Name: " + name,
+            " Battle Stats",
+            "  HP: " + (int) getFlotillaStat(BattleObject.BATTLE_STAT_HP),
+            "  Reg Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_POWER),
+            "  Sp Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_POWER),
+            "  Reg Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_DEFENSE),
+            "  Sp Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_DEFENSE),
+            "  Reg Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ATTACK_COOLDOWN),
+            "  Sp Attack Cooldown: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ATTACK_COOLDOWN),
+            "  Reg Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ACCURACY),
+            "  Sp Accuracy: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ACCURACY),
+            "  Reg Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_RANGE),
+            "  Sp Range: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_RANGE),
+            "  Reg Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_ARMOR_STAT),
+            "  Sp Armor Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_ARMOR_STAT),
+            "  Reg Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_WEAPON_STAT),
+            "  Sp Weapon Stat: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_WEAPON_STAT),
+            "  Repair Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_REPAIR_ABILITY),
+            "  Transport Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_TRANSPORT_ABILITY),
+            "  Build Ability: " + getFlotillaStat(BattleObject.BATTLE_STAT_BUILD_ABILITY),
+            "  Movement Speed: " + getBattleStat(BATTLE_STAT_MOVEMENT_SPEED)
+        };
+        
+        model.getModel().setUserData("Display Info", display);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -658,6 +699,11 @@ public class Flotilla extends MoveableBattleObject
     public Vector3f getPosition()
     {
         return centerPosition;
+    }
+    
+    public DrawableObject3d getDrawableObject3d()
+    {
+        return model;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     // END GETTERS/SETTERS ////////////////////////////////////////////////////////////////////////////////////

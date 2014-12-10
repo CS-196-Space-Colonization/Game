@@ -21,11 +21,13 @@ public class Planet extends VisualEntity {
         super(pos, name, node, model, type);
         Res resy=res;
         firms = new ArrayList<Firm>();
+        setDisplayInfo();
     }
     public Planet(Vector3f pos, Star star, Continent[] continents, Res res, String name, String owner, Node node, AssetManager manager, ColorRGBA color, VisualType type){
         super(pos,star,continents,res,name,owner,node,manager,color,type);
         Res resy=res;
         firms = new ArrayList<Firm>();
+        setDisplayInfo();
     }
     
     public void addFirm(Firm firm) {
@@ -37,8 +39,8 @@ public class Planet extends VisualEntity {
     }
     
     @Override
-    public String[] getDisplayInfo() {
-        String[] basicInfo = super.getDisplayInfo();
+    protected String[] setDisplayInfo() {
+        String[] basicInfo = super.setDisplayInfo();
         String newInfo = "";
         for(int i = 0; i < basicInfo.length; i++)
             newInfo += basicInfo[i] + "\n";
@@ -49,6 +51,7 @@ public class Planet extends VisualEntity {
             newInfo += firmInfo + "\n";
             newInfo += " " + firm.getCurrentInventory() + "\n";
         }
+        drawableObject.getModel().setUserData("Display Info", newInfo.split("\n"));
         return newInfo.split("\n");
     }
     
