@@ -24,7 +24,7 @@ public abstract class AudioManager
     
     public static void loadAudio(AssetManager assetManager, Node node)
     {      
-        SHIP_DEATH = new AudioNode(assetManager, "Sounds/Battle/laser2.ogg", false);
+        SHIP_DEATH = new AudioNode(assetManager, "Sounds/Battle/laser3.ogg", false);
         SHIP_DEATH.setLooping(false);
         SHIP_DEATH.setPositional(false);
         node.attachChild(SHIP_DEATH);
