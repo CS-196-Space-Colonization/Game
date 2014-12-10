@@ -86,14 +86,14 @@ public class BattleGenerator {
                 break;
         }
         String stat="";
-        for(double d:stats) stat+=d;
+        for(double d:stats) stat+=d+",";
         String loc=s.getPosition().getX()+",0,"+s.getPosition().getZ();
         String node=s.getMoveableObject3d().getNode().toString();
         filer.addInfo(ship,"type",""+type);
         filer.addInfo(ship,"player",""+s.getPlayer().getPlayerNumber());
         filer.addInfo(ship,"node",""+node);
         filer.addInfo(ship,"loc",""+loc);
-        filer.addInfo(ship,"stats",""+stat);
+        filer.addInfo(ship,"stats",""+stat.substring(0,stat.length()-1));
         filer.addInfo(ship,"cost","0");
         filer.addInfo(ship,"crew","0");
         filer.addInfo(ship,"ammo","0");
