@@ -72,13 +72,13 @@ public class Game extends SimpleApplication
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private int timer;
     
     private static final int economicTimeStep = 120;
-=======
+//=======
     private PauseMenu pauseMenu;
->>>>>>> origin/master
+//>>>>>>> origin/master
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
