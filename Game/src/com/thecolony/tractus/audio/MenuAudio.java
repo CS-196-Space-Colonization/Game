@@ -23,6 +23,7 @@ public class MenuAudio
     public static final int YAY = 0;
     public static final int QUIT = 1;
     public static final int BACKGROUND = 2;
+    public static final int CLICK = 3;
 
     private static String getFileName(int file)
     {
@@ -34,6 +35,8 @@ public class MenuAudio
 	      return System.getProperty("user.dir") + "/assets/Sounds/Menu/quit.wav";
 	  case BACKGROUND:
 	      return System.getProperty("user.dir") + "/assets/Sounds/Menu/background.wav";
+	  case CLICK:
+	      return System.getProperty("user.dir") + "/assets/Sounds/Menu/click.wav";
 	  default:
 	      return "";
         }

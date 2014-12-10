@@ -4,6 +4,7 @@
  */
 package com.thecolony.tractus.graphics.GUI;
 
+import com.thecolony.tractus.audio.MenuAudio;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.networking.Globals;
 import com.thecolony.tractus.networking.ServerMain;
@@ -96,6 +97,7 @@ public class ServerInfoWindow extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      name = tName.getText();
 	      if (TYPE == CLIENT)
 	      {
@@ -120,6 +122,7 @@ public class ServerInfoWindow extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new MultiplayerMenu();
 	      dispose();
 	  }

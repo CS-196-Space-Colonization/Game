@@ -1,5 +1,6 @@
 package com.thecolony.tractus.graphics.GUI;
 
+import com.thecolony.tractus.audio.MenuAudio;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Font;
@@ -155,6 +156,7 @@ public class OptionWindow extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      if(resolution.getSelectedIndex() == 0)
 	      {
 		resWidth = 640;
@@ -181,6 +183,7 @@ public class OptionWindow extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new MainMenu();
 	      dispose();
 	  }

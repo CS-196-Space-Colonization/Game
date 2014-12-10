@@ -170,6 +170,7 @@ public class SinglePlayerOptions extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new MainMenu();
 	      dispose();
 	  }
