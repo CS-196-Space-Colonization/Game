@@ -27,7 +27,6 @@ import com.thecolony.tractus.military.battle.FlotillaBattler;
 import com.thecolony.tractus.military.ships.Flotilla;
 import com.thecolony.tractus.military.ships.SelectedFamily;
 import com.thecolony.tractus.military.ships.Ship;
-import com.thecolony.tractus.resources.Res;
 import com.thecolony.tractus.saveInfo.Filer;
 import com.thecolony.tractus.worldgen.Generator;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;

@@ -1,4 +1,4 @@
-package com.thecolony.tractus.resources;
+package com.thecolony.tractus.saveInfo;
 
 
 import java.io.BufferedReader;
@@ -22,8 +22,8 @@ import java.util.ArrayList;
 public class Res implements Serializable {
     //Initial assumption is a text file that has all the resource information
     private String pathName, name;
-    private final String dir="src/com/thecolony/tractus/resources/";
-    //private final String dir="resources/";
+    //private final String dir="src/com/thecolony/tractus/resources/";
+    private final String dir="resources/";
     private Path path;
     private BufferedReader reader;
     private BufferedWriter writer;
@@ -45,7 +45,7 @@ public class Res implements Serializable {
      * Empty constructor will create new file for this
      */
     public Res(){
-        pathName=dir+"resFile";
+        pathName=dir+"resFile0";
         path=Paths.get(pathName);
         int i=0;
         try {

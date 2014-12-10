@@ -2,12 +2,12 @@ package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.thecolony.tractus.resources.Res;
+import com.thecolony.tractus.saveInfo.Res;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Node;
 import com.thecolony.tractus.economics.Firm;
-import com.thecolony.tractus.economics.products.Product;
+
 import java.util.ArrayList;
 
 /**

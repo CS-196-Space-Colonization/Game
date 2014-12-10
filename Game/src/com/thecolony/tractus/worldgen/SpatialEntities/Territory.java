@@ -1,7 +1,7 @@
 package com.thecolony.tractus.worldgen.SpatialEntities;
 
 import com.jme3.math.Vector3f;
-import com.thecolony.tractus.resources.Res;
+import com.thecolony.tractus.saveInfo.Res;
 import com.jme3.network.serializing.Serializable;
 
 import java.util.ArrayList;
