@@ -16,32 +16,34 @@ import org.w3c.dom.NodeList;
 /**
  * Created by wes on 12/6/14.
  */
-public class Generator {
+public class TerrorGenerator {
     private static Planet[] mPlanets;
     private static Star[] mSuns;
     private static Node planetsNode,starsNode,rootNode;
     private static AssetManager assetManager;
     private static Filer filer;
-    public static void loadTerritories(Node rootNode, Node planetsNode, Planet[] planets, Node starsNode, Star[] stars, AssetManager assetManager, Filer filer)
+    public static void loadTerritories(boolean loadSave, Node rootNode, Node planetsNode, Planet[] planets, Node starsNode, Star[] stars, AssetManager assetManager, Filer filer)
     {
-        Generator.planetsNode=planetsNode;
-        Generator.mPlanets=planets;
-        Generator.starsNode=starsNode;
-        Generator.mSuns=stars;
-        Generator.rootNode=rootNode;
-        Generator.assetManager=assetManager;
-        Generator.filer=filer;
-        loadPlanet();
-        loadStar();
-        //makePlanets();
-        //makeStars();
-        for (int i = 0; i < mPlanets.length; i++)
-        {
-            //null pointer?
-            mPlanets[i].setSuperTerr(mSuns[0]);
+        TerrorGenerator.planetsNode=planetsNode;
+        TerrorGenerator.mPlanets=planets;
+        TerrorGenerator.starsNode=starsNode;
+        TerrorGenerator.mSuns=stars;
+        TerrorGenerator.rootNode=rootNode;
+        TerrorGenerator.assetManager=assetManager;
+        TerrorGenerator.filer=filer;
+        if(loadSave) {
+            loadPlanet();
+            loadStar();
+            for (int i = 0; i < mPlanets.length; i++) mPlanets[i].setSuperTerr(mSuns[0]);
+            mSuns[0].setSubTerr(mPlanets);
         }
-        mSuns[0].setSubTerr(mPlanets);
-        //addTerrs();
+        else {
+            makePlanets();
+            makeStars();
+            for (int i = 0; i < mPlanets.length; i++) mPlanets[i].setSuperTerr(mSuns[0]);
+            mSuns[0].setSubTerr(mPlanets);
+            addTerrs();
+        }
     }
 
     private static Planet generatePlanet(int index)

@@ -97,7 +97,7 @@ public class SinglePlayerOptions extends JFrame
 	  {
 	      boolean fullscreen = OptionWindow.fullscreen;          
 
-	      Game game = new Game();
+	      Game game = new Game(false);
 
 	      game.setShowSettings(false);
 	      AppSettings settings = new AppSettings(true);
@@ -133,7 +133,7 @@ public class SinglePlayerOptions extends JFrame
 	  {
 	      boolean fullscreen = OptionWindow.fullscreen;          
 
-	      Game game = new Game();
+	      Game game = new Game(true);
 
 	      game.setShowSettings(false);
 	      AppSettings settings = new AppSettings(true);

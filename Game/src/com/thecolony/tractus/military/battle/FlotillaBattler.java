@@ -21,7 +21,23 @@ public class FlotillaBattler
         this.attacker = attacker;
         this.defender = defender;
     }
-    
+
+    public Flotilla getAttacker() {
+        return attacker;
+    }
+
+    public void setAttacker(Flotilla attacker) {
+        this.attacker = attacker;
+    }
+
+    public Flotilla getDefender() {
+        return defender;
+    }
+
+    public void setDefender(Flotilla defender) {
+        this.defender = defender;
+    }
+
     /**
      * Simulates the battle between the attacker and defender flotillas.
      * @param deltaTime The time between two consecutive frames.

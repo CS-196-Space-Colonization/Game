@@ -32,7 +32,7 @@ import com.thecolony.tractus.military.ships.Flotilla;
 import com.thecolony.tractus.military.ships.SelectedFamily;
 import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.saveInfo.Filer;
-import com.thecolony.tractus.worldgen.Generator;
+import com.thecolony.tractus.worldgen.TerrorGenerator;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -68,10 +68,12 @@ public class GameLoader
     private static final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     private static Plane mvmtPlane;
     private static SelectedFamily selectedFamily;
+    private static boolean loadSave;
 
-    public static Object[] loadGame(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, 
+    public static Object[] loadGame(boolean loadSave,AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode,
             AudioRenderer audioRenderer, ViewPort guiViewport, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
     {
+        GameLoader.loadSave=loadSave;
         GameLoader.assetManager = assetManager;
         GameLoader.inputManager = inputManager;
         GameLoader.rootNode = rootNode;
@@ -90,7 +92,7 @@ public class GameLoader
         starsNode = new Node("Stars Node");
         mSuns = new Star[1];
 
-        Generator.loadTerritories(rootNode,planetsNode,mPlanets,starsNode,mSuns,assetManager,new Filer("tractus"));
+        TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, new Filer("tractus"));
         loadSuckyEconomicSystem();
         loadShips();
         loadAmbientLight();

@@ -61,6 +61,7 @@ public class Game extends SimpleApplication
     private Node flotillasNode;
     private SelectedFamily selectedObjects;
     private Plane mMovementPlane;
+    private boolean loadSave;
     private boolean mIsShiftPressed;
     private boolean isMoveToggleOn;
     private boolean isRotateToggleOn;
@@ -85,8 +86,11 @@ public class Game extends SimpleApplication
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Game()
     {
+        this(false);
+    }
+    public Game (boolean loadSave){
         super(new FlyCamAppState());
-
+        this.loadSave=loadSave;  //true==loadGame
         Logger.getLogger("").setLevel(Level.SEVERE);
     }
 
@@ -118,7 +122,7 @@ public class Game extends SimpleApplication
 
         adjustCameraSettings();
 
-        unpack(GameLoader.loadGame(assetManager, inputManager, guiNode, rootNode, audioRenderer, guiViewPort, guiFont, M_WIDTH, M_HEIGHT));
+        unpack(GameLoader.loadGame(loadSave,assetManager, inputManager, guiNode, rootNode, audioRenderer, guiViewPort, guiFont, M_WIDTH, M_HEIGHT));
         initializeListeners();
         
         pauseMenu = new PauseMenu(this);

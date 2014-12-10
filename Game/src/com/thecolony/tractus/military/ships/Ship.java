@@ -496,7 +496,11 @@ public class Ship extends MoveableBattleObject
             System.out.println("invalid input!!!!!");
         }
     }
-    
+
+    public SHIP_TYPE getType() {
+        return shipType;
+    }
+
     @Override
     public Vector3f getPosition()
     {
