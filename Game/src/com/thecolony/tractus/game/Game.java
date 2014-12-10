@@ -70,6 +70,9 @@ public class Game extends SimpleApplication
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
+    private int timer;
+    
+    private static final int economicTimeStep = 120;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -502,10 +505,16 @@ public class Game extends SimpleApplication
                 flotillas.get(i).update(tpf);
             }
             // Update firms
-            for(Planet p: mPlanets)
+            if(timer < economicTimeStep)
+                timer++;
+            else
             {
-                for(Firm f: p.getFirms())
-                    f.step();
+                timer = 0;
+                for(Planet p: mPlanets)
+                {
+                    for(Firm f: p.getFirms())
+                        f.step();
+                }
             }
 
 

@@ -46,8 +46,8 @@ public class Planet extends VisualEntity {
         {
             Firm firm = firms.get(i);
             String firmInfo = firm.getProductionGood().getType() + "  production: " + firm.getQuantity();
-            newInfo += firmInfo;
-            newInfo += firm.getCurrentInventory();
+            newInfo += firmInfo + "\n";
+            newInfo += " " + firm.getCurrentInventory() + "\n";
         }
         return newInfo.split("\n");
     }

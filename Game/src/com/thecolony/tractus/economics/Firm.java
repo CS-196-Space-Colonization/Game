@@ -5,14 +5,12 @@ import com.thecolony.tractus.economics.products.*;
 
 
 public class Firm extends AbstractAgent {
-	private Inventory inventory;
 	private Buyer supplier;
 	private Seller sales;
 	private Manufactory production;
 	
 	public Firm(Market m, Product product) {
 		super(m);
-		inventory = new Inventory();
 		supplier = new BasicBuyer(m);
 		sales = new BasicSeller(m);
 		production = new Manufactory(product);
@@ -29,7 +27,7 @@ public class Firm extends AbstractAgent {
 	}
 	
 	public void step() {
-		inventory = sales.take();
+            Inventory inventory = getInventory();
 		supplier.give(inventory);
 		supplier.buyGoods();
 		inventory = supplier.take();
@@ -39,6 +37,7 @@ public class Firm extends AbstractAgent {
 		inventory = production.take();
 		sales.give(inventory);
 		sales.postAdvertisements();
+                this.give(sales.take());
 	}
 	
 	public Product getProductionGood() {
@@ -50,6 +49,6 @@ public class Firm extends AbstractAgent {
 	}
         
         public String getCurrentInventory() {
-            return production.getInventory().toString();
+            return getInventory().toString();
         }
 }

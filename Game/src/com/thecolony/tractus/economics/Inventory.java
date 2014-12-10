@@ -119,7 +119,7 @@ public class Inventory {
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		for (Product p : getProducts()) {
-			result.append(p.getClass().getName());
+			result.append(p.getType());
 			result.append(": ");
 			result.append(getAmountOf(p));
 			result.append(' ');

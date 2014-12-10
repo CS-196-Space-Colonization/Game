@@ -133,7 +133,7 @@ public class GameLoader
                 Firm f1 = new Firm(market, (Product)c.newInstance());
                 Map<Product, Quantity> money = new HashMap<Product, Quantity>();
                 Money m = new Money();
-                money.put(m, new Quantity(m, 1.0));
+                money.put(m, new Quantity(m, 10.0));
                 Inventory moneyInv = new Inventory(money);
                 f1.give(moneyInv);
                 p.addFirm(f1);
