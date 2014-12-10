@@ -1,5 +1,6 @@
 package com.thecolony.tractus.networking;
 
+import com.thecolony.tractus.networking.messages.UpdateClientMessage;
 import com.jme3.network.MessageListener;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
@@ -21,7 +22,7 @@ public class ServerListener implements MessageListener<HostedConnection> {
         if(message instanceof UpdateClientMessage)
         {
 	  UpdateClientMessage msg = (UpdateClientMessage) message;
-	  System.out.println("Sever recieved Msg: " + msg.getGreeting());
+	  System.out.println("Sever recieved Msg: " + msg.getMessage());
         }
     }
 }

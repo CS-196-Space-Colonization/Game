@@ -1,5 +1,6 @@
 package com.thecolony.tractus.networking;
 
+import com.thecolony.tractus.networking.messages.UpdateClientMessage;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
@@ -33,7 +34,7 @@ public class ClientListener implements MessageListener<Client> {
         if(message instanceof UpdateClientMessage)
         {
 	  UpdateClientMessage msg = (UpdateClientMessage) message;
-	  System.out.println("Msg: " + msg.getGreeting());
+	  System.out.println("Msg: " + msg.getMessage());
         }
     }
 }

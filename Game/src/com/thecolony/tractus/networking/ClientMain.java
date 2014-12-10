@@ -4,6 +4,7 @@
  */
 package com.thecolony.tractus.networking;
 
+import com.thecolony.tractus.networking.messages.UpdateClientMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.network.Client;
 import com.jme3.network.ClientStateListener;

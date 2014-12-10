@@ -4,6 +4,7 @@
  */
 package com.thecolony.tractus.networking;
 
+import com.thecolony.tractus.networking.messages.UpdateClientMessage;
 import com.jme3.network.serializing.Serializer;
 
 public class Globals

@@ -4,6 +4,7 @@
  */
 package com.thecolony.tractus.networking;
 
+import com.thecolony.tractus.networking.messages.UpdateClientMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -39,7 +40,7 @@ public class ServerMain extends SimpleApplication implements ConnectionListener
         try
         {
 	  myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);
-	  update = new UpdateClientMessage(new Vector3f(20.0f, 0.0f, 20.0f), ColorRGBA.Blue);
+	  update = new UpdateClientMessage();
 	  myServer.start();
 	  Globals.registerClasses();
 	  myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
