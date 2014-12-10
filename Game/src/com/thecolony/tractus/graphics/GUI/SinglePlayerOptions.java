@@ -5,6 +5,7 @@
 package com.thecolony.tractus.graphics.GUI;
 
 import com.jme3.system.AppSettings;
+import com.thecolony.tractus.audio.MenuAudio;
 import com.thecolony.tractus.game.Game;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -95,6 +96,7 @@ public class SinglePlayerOptions extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.YAY);
 	      boolean fullscreen = OptionWindow.fullscreen;          
 
 	      Game game = new Game(false);
@@ -131,6 +133,7 @@ public class SinglePlayerOptions extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.YAY);
 	      boolean fullscreen = OptionWindow.fullscreen;          
 
 	      Game game = new Game(true);

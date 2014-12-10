@@ -124,7 +124,6 @@ public class MainMenu extends JFrame
 	  public void actionPerformed(ActionEvent e)
 	  {
 	      new SinglePlayerOptions();
-	      MenuAudio.playSound(MenuAudio.YAY);
 	      dispose();
 	  }
         });
