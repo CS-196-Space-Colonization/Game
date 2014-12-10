@@ -4,7 +4,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.thecolony.tractus.resources.Res;
+import com.thecolony.tractus.saveInfo.Res;
 import com.thecolony.tractus.saveInfo.Filer;
 import com.thecolony.tractus.worldgen.SpatialEntities.Planet;
 import com.thecolony.tractus.worldgen.SpatialEntities.Star;
@@ -65,7 +65,7 @@ public class Generator {
                 break;
         }
         int posNeg = (Math.random() < 0.5) ? -1 : 1;
-        int orbitRadius = 15 + (25 * (index + 1));
+        int orbitRadius = 25 + (20 * (index + 1));
         float xPos = posNeg * (int) (Math.random() * orbitRadius);
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
@@ -200,6 +200,7 @@ public class Generator {
                 else if (typ.equals("G")) {type=VisualType.GIANT_STAR;}
                 else {type=VisualType.SUPERGIANT_STAR;}
                 mSuns[i]=new Star(vect,null,null,new Res("resFile"+res),name,"no-one",starsNode,assetManager,col,type);
+                rootNode.addLight(mSuns[i].getPointLight());
             }
         }
     }

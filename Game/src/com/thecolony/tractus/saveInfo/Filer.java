@@ -8,6 +8,10 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -20,13 +24,15 @@ public class Filer {
     private Document doc;
     private Element root;
     private File file;
+    //private String dir="src/com/thecolony/tractus/saveInfo/";
+    private String dir="resources/";
 
     public Filer(String name) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
-            file = new File("src/com/thecolony/tractus/saveInfo/" + name + ".xml");
+            file = new File(dir + name + ".xml");
             if (file.exists()) {
                 doc = builder.parse(file);
                 root = doc.getDocumentElement();
@@ -60,9 +66,13 @@ public class Filer {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(file);
+            Path temp=Files.createTempFile(Paths.get(dir), null, null), path=file.toPath();
+            File tmp = temp.toFile();
+            StreamResult result = new StreamResult(tmp);
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(source, result);
+            Files.copy(temp,path, StandardCopyOption.REPLACE_EXISTING);
+            Files.delete(temp);
         }
         catch (Exception e){e.printStackTrace();}
     }
