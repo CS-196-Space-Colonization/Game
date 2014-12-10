@@ -9,6 +9,7 @@ import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.saveInfo.Filer;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 
@@ -79,7 +80,7 @@ public class BattleGenerator {
         String loc=s.getPosition().getX()+",0,"+s.getPosition().getZ();
         String node=s.getMoveableObject3d().getNode().toString();
         filer.addInfo(ship,"type",""+type);
-        filer.addInfo(ship,"player",""+s.getPlayer().toString());
+        filer.addInfo(ship,"player",""+s.getPlayer().getPlayerNumber());
         filer.addInfo(ship,"node",""+node);
         filer.addInfo(ship,"loc",""+loc);
         filer.addInfo(ship,"stats",""+stat);
@@ -125,5 +126,22 @@ public class BattleGenerator {
         Element flotillaBattle=filer.addObject("flotillaBattles","name","");
         filer.addInfo(flotillaBattle,"attacker",""+f.getAttacker().toString());
         filer.addInfo(flotillaBattle,"defender",""+f.getDefender().toString());
+    }
+    private static void loadShip(){
+        NodeList list=filer.getObject("ship");
+        for(int i=0;i<list.getLength();i++){
+            if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
+                Element el=(Element)list.item(i);
+                String name=el.getAttribute("name");
+                String pos=el.getElementsByTagName("loc").item(0).getTextContent(), poss[]=pos.split(",");
+                Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
+                String stat=el.getElementsByTagName("stats").item(0).getTextContent(), statss[]=stat.split(",");
+                double[] stats=new double[statss.length];
+                for(int j=0;j<statss.length;j++) stats[j]=Double.parseDouble(statss[j]);
+                String ply=el.getElementsByTagName("player").item(0).getTextContent();;
+                Player playa=new Player(Integer.parseInt(ply));
+                //loneShips.add(generateShip());
+            }
+        }
     }
 }

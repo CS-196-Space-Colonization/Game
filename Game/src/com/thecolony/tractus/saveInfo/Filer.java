@@ -42,6 +42,7 @@ public class Filer {
                 doc.appendChild(root);
                 //write();
             }
+            file.setWritable(true,false);
         } catch (Exception e) {
             e.printStackTrace();
         }
