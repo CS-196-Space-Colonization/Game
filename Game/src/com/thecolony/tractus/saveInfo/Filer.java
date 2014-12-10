@@ -53,6 +53,11 @@ public class Filer {
         root.appendChild(node);
         return node;
     }
+    public Element addObject(String name){
+        Element node=doc.createElement(name);
+        root.appendChild(node);
+        return node;
+    }
     public void addInfo(Element node,String element,String text){
         Element el=doc.createElement(element);
         el.appendChild(doc.createTextNode(text));

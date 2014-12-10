@@ -11,6 +11,7 @@ import com.thecolony.tractus.saveInfo.Filer;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -18,12 +19,12 @@ import java.util.ArrayList;
  */
 public class BattleGenerator {
     private static Node rootNode, loneShipsNode, flotillasNode;
-    private static ArrayList<Ship> loneShips;
+    private static ArrayList<Ship> loneShips,notLoneships;
     private static ArrayList<Flotilla> flotillas;
     private static ArrayList<FlotillaBattler> flotillaBattles;
     private static double[] stats;
     private static Filer filer;
-    public static void loadBattlers(Node rootNode, Node loneShipsNode, ArrayList<Ship> ships, Node flotillasNode, ArrayList<Flotilla> flotillas, ArrayList<FlotillaBattler> battles, double[] stats, Filer filer){
+    public static void loadBattlers(boolean loadSave, Node rootNode, Node loneShipsNode, ArrayList<Ship> ships, Node flotillasNode, ArrayList<Flotilla> flotillas, ArrayList<FlotillaBattler> battles, double[] stats, Filer filer){
         BattleGenerator.stats=stats;
         BattleGenerator.rootNode=rootNode;
         BattleGenerator.loneShipsNode=loneShipsNode;
@@ -32,8 +33,17 @@ public class BattleGenerator {
         BattleGenerator.flotillas=flotillas;
         BattleGenerator.flotillaBattles=battles;
         BattleGenerator.filer=filer;
-        makeShips();
-        makeFlotillas();
+        File file=new File("resources/tractus.xml");
+        if(!loadSave || !file.exists()){
+            makeShips();
+            makeFlotillas();
+            addThings();
+        }
+        else {
+            loadShip();
+            loadFlotilla();
+            loadBattles();
+        }
     }
     private static Ship generateShip(int player, Node node, int num, double[] stats) {
         return generateShip(player, node, num, Vector3f.ZERO, stats);
@@ -123,9 +133,17 @@ public class BattleGenerator {
         filer.addInfo(flotilla,"loc",""+loc);
     }
     private static void addFlotillaBattler(FlotillaBattler f){
-        Element flotillaBattle=filer.addObject("flotillaBattles","name","");
+        Element flotillaBattle=filer.addObject("flotillaBattles");
         filer.addInfo(flotillaBattle,"attacker",""+f.getAttacker().toString());
         filer.addInfo(flotillaBattle,"defender",""+f.getDefender().toString());
+    }
+    private static void addThings(){
+        for (int i=0;i<loneShips.size();i++) addShips(loneShips.get(i));
+        for (int i=0;i<flotillas.size();i++){
+            for (int j=0;j<flotillas.get(i).getFlotilla().length;j++) addShips(flotillas.get(i).getShip(j));
+            addFlotillas(flotillas.get(i));
+        }
+        for (int i=0;i<flotillaBattles.size();i++) addFlotillaBattler(flotillaBattles.get(i));
     }
     private static void loadShip(){
         NodeList list=filer.getObject("ship");
@@ -140,11 +158,16 @@ public class BattleGenerator {
                 for(int j=0;j<statss.length;j++) stats[j]=Double.parseDouble(statss[j]);
                 String ply=el.getElementsByTagName("player").item(0).getTextContent();;
                 int playa =Integer.parseInt(ply);
+                String typ=el.getElementsByTagName("loc").item(0).getTextContent();Ship.SHIP_TYPE type;
+                if(typ.equals("Fi")) {type= Ship.SHIP_TYPE.Fighter;}
+                else if(typ.equals("Fr")) {type= Ship.SHIP_TYPE.Frigate;}
+                else if(typ.equals("Cr")) {type= Ship.SHIP_TYPE.Cruiser;}
+                else {type= Ship.SHIP_TYPE.CapitalShip;}
                 if (el.getElementsByTagName("node").item(0).getTextContent().equals(loneShipsNode.toString())){
                     loneShips.add(generateShip(playa,loneShipsNode,i,vect,stats));
                 }
-                else if(el.getElementsByTagName("node").item(0).getTextContent().equals(flotillasNode.toString())){
-                    generateShip(playa,flotillasNode,i,stats);
+                else if(el.getElementsByTagName("node").item(0).getTextContent().equals(flotillasNode.toString())) {
+                    notLoneships.add(generateShip(playa,flotillasNode,i,type,stats));
                 }
             }
 
@@ -152,6 +175,7 @@ public class BattleGenerator {
     }
     private static void loadFlotilla(){
         NodeList list=filer.getObject("flotilla");
+        flotillas = new ArrayList<Flotilla>();
         for(int i=0;i<list.getLength();i++){
             if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
                 Element el=(Element)list.item(i);
@@ -159,7 +183,28 @@ public class BattleGenerator {
                 String pos=el.getElementsByTagName("loc").item(0).getTextContent(), poss[]=pos.split(",");
                 Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
                 String ship=el.getElementsByTagName("ships").item(0).getTextContent(), ships[]=ship.split(",");
-                Ship[] shipss=new Ship[ships.length];
+                ArrayList<Ship> flot=new ArrayList<Ship>();
+                for (int j=0;j<notLoneships.size();j++) {
+                    if (notLoneships.get(j).getPlayer().getPlayerNumber()==i) flot.add(notLoneships.get(j));
+                }
+                flotillas.add(new Flotilla(flot.toArray(new Ship[0]), false, vect, name));
+            }
+        }
+    }
+    private static void loadBattles() {
+        NodeList list = filer.getObject("flotilla");
+        flotillaBattles=new ArrayList<FlotillaBattler>();
+        for (int i = 0; i < list.getLength(); i++) {
+            if (list.item(i).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+                Element el=(Element)list.item(i);
+                String attack=el.getElementsByTagName("attacker").item(0).getTextContent();
+                String defender=el.getElementsByTagName("defender").item(0).getTextContent();
+                Flotilla ataturk=null,defLeppard=null;
+                for(int j=0;j<flotillas.size();j++){
+                    if(flotillas.get(j).getName().equals(attack)) ataturk=flotillas.get(j);
+                    if(flotillas.get(j).getName().equals(defender)) defLeppard=flotillas.get(j);
+                }
+                flotillaBattles.add(new FlotillaBattler(ataturk,defLeppard));
             }
         }
     }

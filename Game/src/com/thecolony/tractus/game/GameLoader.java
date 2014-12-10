@@ -25,6 +25,7 @@ import com.thecolony.tractus.economics.products.*;
 import com.thecolony.tractus.graphics.GUI.PauseMenu;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
+import com.thecolony.tractus.military.BattleGenerator;
 import com.thecolony.tractus.player.Player;
 import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.FlotillaBattler;
@@ -91,10 +92,10 @@ public class GameLoader
         market = new BasicMarket();
         starsNode = new Node("Stars Node");
         mSuns = new Star[1];
-
-        TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, new Filer("tractus",!loadSave));
+        Filer filer=new Filer("tractus",!loadSave);
+        TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, filer);
         loadSuckyEconomicSystem();
-        loadShips();
+        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,new double[5],filer);
         loadAmbientLight();
         loadSkybox();
         loadMovementPlane();
