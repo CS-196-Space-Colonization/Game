@@ -4,7 +4,7 @@
  */
 package com.thecolony.tractus.networking;
 
-import com.thecolony.tractus.networking.messages.UpdateClientMessage;
+import com.thecolony.tractus.networking.messages.UpdateMessage;
 import com.jme3.network.serializing.Serializer;
 
 public class Globals
@@ -17,7 +17,7 @@ public class Globals
 
     public static void registerClasses()
     {
-        Serializer.registerClass(UpdateClientMessage.class);
+        Serializer.registerClass(UpdateMessage.class);
         Serializer.registerClass(TestClass.class);
         Serializer.registerClass(TestSub.class);
     }

@@ -4,10 +4,11 @@
  */
 package com.thecolony.tractus.networking;
 
-import com.thecolony.tractus.networking.messages.UpdateClientMessage;
+import com.thecolony.tractus.networking.messages.UpdateMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.network.Client;
 import com.jme3.network.ClientStateListener;
+import com.jme3.network.Message;
 import com.jme3.network.Network;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
@@ -22,6 +23,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 {
 
     private Client myClient;
+    Message update;
 
     public ClientMain()
     {
@@ -60,6 +62,7 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
         game.setSettings(settings);
         game.start();
 
+        update = new UpdateMessage();
     }
 
     @Override
@@ -79,8 +82,14 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
 	  System.out.println("Failed to connect to server in init");
         }
         Globals.registerClasses();
-        myClient.addMessageListener(new ClientListener(this), UpdateClientMessage.class);
+        myClient.addMessageListener(new ClientListener(this), UpdateMessage.class);
         myClient.addClientStateListener(this);
+    }
+    
+    @Override
+    public void simpleUpdate(float deltaTime)
+    {
+        myClient.send(update);
     }
 
     @Override
@@ -102,5 +111,6 @@ public class ClientMain extends SimpleApplication implements ClientStateListener
      */
     public void clientDisconnected(Client client, ClientStateListener.DisconnectInfo info)
     {
+        
     }
 }

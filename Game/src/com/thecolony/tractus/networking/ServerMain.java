@@ -4,7 +4,7 @@
  */
 package com.thecolony.tractus.networking;
 
-import com.thecolony.tractus.networking.messages.UpdateClientMessage;
+import com.thecolony.tractus.networking.messages.UpdateMessage;
 import com.jme3.app.SimpleApplication;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -40,10 +40,10 @@ public class ServerMain extends SimpleApplication implements ConnectionListener
         try
         {
 	  myServer = Network.createServer(Globals.NAME, Globals.VERSION, 6143, 6143);
-	  update = new UpdateClientMessage();
+	  update = new UpdateMessage();
 	  myServer.start();
 	  Globals.registerClasses();
-	  myServer.addMessageListener(new ServerListener(), UpdateClientMessage.class);
+	  myServer.addMessageListener(new ServerListener(), UpdateMessage.class);
 	  new ClientMain();
 	  
 	  myServer.broadcast(update);
@@ -68,9 +68,8 @@ public class ServerMain extends SimpleApplication implements ConnectionListener
         {
 	  System.out.println("Server connections: " + connections);
 	  connectionsOld = connections;
-	  myServer.broadcast(update);
         }
-
+        myServer.broadcast(update);
     }
 
     @Override

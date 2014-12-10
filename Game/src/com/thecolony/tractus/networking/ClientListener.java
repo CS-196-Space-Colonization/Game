@@ -1,6 +1,6 @@
 package com.thecolony.tractus.networking;
 
-import com.thecolony.tractus.networking.messages.UpdateClientMessage;
+import com.thecolony.tractus.networking.messages.UpdateMessage;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
@@ -14,11 +14,9 @@ public class ClientListener implements MessageListener<Client> {
     public ClientListener(ClientMain app)
     {
         this.app = app;
-        System.out.println("created listner");
     }
     
     public void messageReceived(Client source, Message message) {
-        System.out.println("got a message");
 //        if (message instanceof GreetingMessage) {
 //            GreetingMessage helloMessage = (GreetingMessage) message;
 //            System.out.println("Client #" + source.getId()
@@ -31,9 +29,9 @@ public class ClientListener implements MessageListener<Client> {
 //            }
 //        }  
         
-        if(message instanceof UpdateClientMessage)
+        if(message instanceof UpdateMessage)
         {
-	  UpdateClientMessage msg = (UpdateClientMessage) message;
+	  UpdateMessage msg = (UpdateMessage) message;
 	  System.out.println("Msg: " + msg.getMessage());
         }
     }
