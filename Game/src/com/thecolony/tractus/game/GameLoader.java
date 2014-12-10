@@ -16,6 +16,7 @@ import com.jme3.util.SkyFactory;
 import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.economics.BasicMarket;
 import com.thecolony.tractus.economics.Firm;
+import com.thecolony.tractus.economics.Inventory;
 import com.thecolony.tractus.economics.Market;
 import com.thecolony.tractus.economics.products.*;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
@@ -34,6 +35,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -126,8 +129,15 @@ public class GameLoader
             try {
                 //Every planet produces labour
                 p.addFirm(new Firm(market, new Labor()));
-                //Add a random production firm on each 
-                p.addFirm(new Firm(market, (Product)c.newInstance()));
+                //Add a random production firm on each planet
+                // and give it some money because an economy needs money to work
+                Firm f1 = new Firm(market, (Product)c.newInstance());
+                Map<Product, Quantity> money = new HashMap<Product, Quantity>();
+                Money m = new Money();
+                money.put(m, new Quantity(m, 1.0));
+                Inventory moneyInv = new Inventory(money);
+                f1.give(moneyInv);
+                p.addFirm(f1);
             } catch (InstantiationException ex) {
                 Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {

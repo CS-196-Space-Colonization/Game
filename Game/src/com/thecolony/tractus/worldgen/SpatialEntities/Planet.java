@@ -39,18 +39,17 @@ public class Planet extends VisualEntity {
     @Override
     public String[] getDisplayInfo() {
         String[] basicInfo = super.getDisplayInfo();
-        String[] fullInfo = new String[basicInfo.length + 2*firms.size()];
+        String newInfo = "";
         for(int i = 0; i < basicInfo.length; i++)
-            fullInfo[i] = basicInfo[i];
+            newInfo += basicInfo[i] + "\n";
         for(int i = 0; i < firms.size(); i++)
         {
             Firm firm = firms.get(i);
             String firmInfo = firm.getProductionGood().getType() + "  production: " + firm.getQuantity();
-            System.out.println(firm.getCurrentInventory());
-            fullInfo[2*i + basicInfo.length] = firmInfo;
-            fullInfo[2*i + 1 + basicInfo.length] = firm.getCurrentInventory();
+            newInfo += firmInfo;
+            newInfo += firm.getCurrentInventory();
         }
-        return fullInfo;
+        return newInfo.split("\n");
     }
     
     public ArrayList<Firm> getFirms()
