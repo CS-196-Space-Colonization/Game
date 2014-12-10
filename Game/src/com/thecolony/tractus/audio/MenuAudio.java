@@ -22,6 +22,7 @@ public class MenuAudio
 
     public static final int YAY = 0;
     public static final int QUIT = 1;
+    public static final int BACKGROUND = 2;
 
     private static String getFileName(int file)
     {
@@ -31,6 +32,8 @@ public class MenuAudio
 	      return System.getProperty("user.dir") + "/assets/Sounds/Menu/yay.wav";
 	  case QUIT:
 	      return System.getProperty("user.dir") + "/assets/Sounds/Menu/quit.wav";
+	  case BACKGROUND:
+	      return System.getProperty("user.dir") + "/assets/Sounds/Menu/background.wav";
 	  default:
 	      return "";
         }
@@ -84,12 +87,42 @@ public class MenuAudio
         clip.start();
     }
 
-    public void loop()
+    public static void loop(int fileNum)
     {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        try
+        {
+	  File file = new File(getFileName(fileNum));
+	  if (file.exists())
+	  {
+	      AudioInputStream sound = AudioSystem.getAudioInputStream(file);
+	      // load the sound into memory (a Clip)
+	      clip = AudioSystem.getClip();
+	      clip.open(sound);
+	      clip.loop(Clip.LOOP_CONTINUOUSLY);
+	  } else
+	  {
+	      throw new RuntimeException("Sound: file not found: ");
+	  }
+        } catch (MalformedURLException e)
+        {
+	  e.printStackTrace();
+	  throw new RuntimeException("Sound: Malformed URL: " + e);
+        } catch (UnsupportedAudioFileException e)
+        {
+	  e.printStackTrace();
+	  throw new RuntimeException("Sound: Unsupported Audio File: " + e);
+        } catch (IOException e)
+        {
+	  e.printStackTrace();
+	  throw new RuntimeException("Sound: Input/Output Error: " + e);
+        } catch (LineUnavailableException e)
+        {
+	  e.printStackTrace();
+	  throw new RuntimeException("Sound: Line Unavailable Exception Error: " + e);
+        }
     }
 
-    public void stop()
+    public static void stop()
     {
         clip.stop();
     }
