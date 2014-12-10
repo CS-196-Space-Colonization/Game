@@ -39,10 +39,12 @@ public class ScrollText
         node.attachChild(bitmapText);
     }
     
-    public void addText(String... textContent)
+    public void addText(String textContent)
     {
-        for (int i = 0; i < textContent.length; i++)
-            text.add(textContent[i]);
+        String[] s = textContent.split("\n");
+        
+        for (int i = 0; i < s.length; i++)
+            text.add(s[i]);
         
         addTextToBitmap();
     }

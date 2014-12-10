@@ -9,6 +9,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
+import com.thecolony.tractus.game.Game;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.military.battle.BattleObject;
@@ -133,7 +134,7 @@ public class Flotilla extends MoveableBattleObject
         wireBoxGeometry = new Geometry("Flotilla WireBox Geometry", wireBox);
         wireBoxGeometry.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(centerPosition);
-        model = new DrawableObject3d(name, new Node(), wireBoxGeometry.clone(), Vector3f.ZERO);
+        model = new DrawableObject3d(name, new Node(), wireBoxGeometry.clone(), getCenterPosition());
     }
 
     private void setMovementSpeed()
@@ -176,7 +177,7 @@ public class Flotilla extends MoveableBattleObject
             "  Movement Speed: " + getBattleStat(BATTLE_STAT_MOVEMENT_SPEED)
         };
         
-        model.getModel().setUserData("Display Info", display);
+        model.getModel().setUserData("Display Info", Game.hashtagFixMyStringGurl(display));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

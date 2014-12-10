@@ -90,6 +90,7 @@ public class MainMenu extends JFrame
         addButtons();
         addTitleLabel();
         repaint();
+        MenuAudio.loop(MenuAudio.BACKGROUND);
     }
     
     private void addButtons()
@@ -150,10 +151,11 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.stop();
 	      MenuAudio.playSound(MenuAudio.QUIT);
 	      try
 	      {
-		Thread.sleep(2284);
+		Thread.sleep(1602);
 	      } catch (InterruptedException ex)
 	      {
 		Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);

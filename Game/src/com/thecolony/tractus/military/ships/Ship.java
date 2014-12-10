@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.WireBox;
+import com.thecolony.tractus.game.Game;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
 import com.thecolony.tractus.player.Player;
@@ -156,7 +157,7 @@ public class Ship extends MoveableBattleObject
         String[] display = new String[s.length + 1];
         System.arraycopy(s, 0, display, 1, s.length);
         display[0] = this.shipType.toString() + ":";
-        model.getModel().setUserData("Display Info", display);
+        model.getModel().setUserData("Display Info", Game.hashtagFixMyStringGurl(display));
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
