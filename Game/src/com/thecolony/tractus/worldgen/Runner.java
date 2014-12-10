@@ -1,7 +1,7 @@
 package com.thecolony.tractus.worldgen;
 
 import com.jme3.math.Vector3f;
-import com.thecolony.tractus.resources.*;
+import com.thecolony.tractus.saveInfo.*;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 /**
  * Created by chthonic7 on 10/15/14.

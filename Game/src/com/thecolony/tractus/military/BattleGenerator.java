@@ -139,8 +139,27 @@ public class BattleGenerator {
                 double[] stats=new double[statss.length];
                 for(int j=0;j<statss.length;j++) stats[j]=Double.parseDouble(statss[j]);
                 String ply=el.getElementsByTagName("player").item(0).getTextContent();;
-                Player playa=new Player(Integer.parseInt(ply));
-                //loneShips.add(generateShip());
+                int playa =Integer.parseInt(ply);
+                if (el.getElementsByTagName("node").item(0).getTextContent().equals(loneShipsNode.toString())){
+                    loneShips.add(generateShip(playa,loneShipsNode,i,vect,stats));
+                }
+                else if(el.getElementsByTagName("node").item(0).getTextContent().equals(flotillasNode.toString())){
+                    generateShip(playa,flotillasNode,i,stats);
+                }
+            }
+
+        }
+    }
+    private static void loadFlotilla(){
+        NodeList list=filer.getObject("flotilla");
+        for(int i=0;i<list.getLength();i++){
+            if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
+                Element el=(Element)list.item(i);
+                String name=el.getAttribute("name");
+                String pos=el.getElementsByTagName("loc").item(0).getTextContent(), poss[]=pos.split(",");
+                Vector3f vect=new Vector3f(Float.parseFloat(poss[0]),Float.parseFloat(poss[1]),Float.parseFloat(poss[2]));
+                String ship=el.getElementsByTagName("ships").item(0).getTextContent(), ships[]=ship.split(",");
+                Ship[] shipss=new Ship[ships.length];
             }
         }
     }
