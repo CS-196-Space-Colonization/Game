@@ -75,7 +75,7 @@ public class TerrorGenerator {
         float xPos = posNeg * (int) (Math.random() * orbitRadius);
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
-        Res res=new Res();
+        Res res=new Res("resFile"+index);
         return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null,res, "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
     }
 
@@ -105,7 +105,7 @@ public class TerrorGenerator {
                 type = VisualType.SUPERGIANT_STAR;
                 break;
         }
-        Res res=new Res();
+        Res res=new Res("resFile10",true);
         mSuns[0] = new Star(Vector3f.ZERO, null, null, res, "StarX", "no-one", starsNode, assetManager, ColorRGBA.White, type);
         rootNode.addLight(mSuns[0].getPointLight());
     }

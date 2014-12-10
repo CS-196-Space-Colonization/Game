@@ -3,6 +3,7 @@ package com.thecolony.tractus.saveInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,6 +33,11 @@ public class Res implements Serializable {
      * @param resFile file name for this resource
      */
     public Res(String resFile){
+        try {
+            File dire = new File(dir);
+            if (!dire.isDirectory()) Files.createDirectory(Paths.get(dir));
+        }
+        catch (Exception e){e.printStackTrace();}
         this.name=resFile;
         pathName=dir+resFile;
         path= Paths.get(pathName);
@@ -40,11 +46,35 @@ public class Res implements Serializable {
             path=null;
         }
     }
-
+    public Res(String resFile,boolean force){
+        try {
+            File dire = new File(dir);
+            if (!dire.isDirectory()) Files.createDirectory(Paths.get(dir));
+        }
+        catch (Exception e){e.printStackTrace();}
+        this.name=resFile;
+        pathName=dir+resFile;
+        path=Paths.get(pathName);
+        try{
+            if(force) {
+                Files.deleteIfExists(path);
+                path.toFile().createNewFile();
+            }
+            else{
+                //Undecided
+            }
+        }
+        catch (Exception e){e.printStackTrace();}
+    }
     /**
      * Empty constructor will create new file for this
      */
     public Res(){
+        try {
+            File dire = new File(dir);
+            if (!dire.isDirectory()) Files.createDirectory(Paths.get(dir));
+        }
+        catch (Exception e){e.printStackTrace();}
         pathName=dir+"resFile0";
         path=Paths.get(pathName);
         int i=0;
