@@ -13,6 +13,8 @@ import com.thecolony.tractus.worldgen.SpatialEntities.VisualType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.io.File;
+
 /**
  * Created by wes on 12/6/14.
  */
@@ -31,7 +33,8 @@ public class TerrorGenerator {
         TerrorGenerator.rootNode=rootNode;
         TerrorGenerator.assetManager=assetManager;
         TerrorGenerator.filer=filer;
-        if(loadSave) {
+        File file=new File("resources/tractus.xml");
+        if(loadSave && file.exists()) {
             loadPlanet();
             loadStar();
             for (int i = 0; i < mPlanets.length; i++) mPlanets[i].setSuperTerr(mSuns[0]);

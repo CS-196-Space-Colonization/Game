@@ -27,17 +27,16 @@ public class Filer {
     //private String dir="src/com/thecolony/tractus/saveInfo/";
     private String dir="resources/";
 
-    public Filer(String name) {
+    public Filer(String name,boolean ow) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
             file = new File(dir + name + ".xml");
-            if (file.exists()) {
+            if (file.exists() && !ow) {
                 doc = builder.parse(file);
                 root = doc.getDocumentElement();
             } else {
-                file.createNewFile();
                 doc = builder.newDocument();
                 root = doc.createElement("tractus");
                 doc.appendChild(root);
@@ -63,6 +62,7 @@ public class Filer {
     }
     public void write(){
         try {
+            if (!file.exists()) file.createNewFile();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);

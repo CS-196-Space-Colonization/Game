@@ -92,7 +92,7 @@ public class GameLoader
         starsNode = new Node("Stars Node");
         mSuns = new Star[1];
 
-        TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, new Filer("tractus"));
+        TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, new Filer("tractus",!loadSave));
         loadSuckyEconomicSystem();
         loadShips();
         loadAmbientLight();
