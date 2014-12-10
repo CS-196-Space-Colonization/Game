@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <tractus>
 <planet name="Planet 0">
-<type>M</type>
-<loc>9.0,0,-44.090816</loc>
-<color>-932395777</color>
+<type>G</type>
+<loc>-30.0,0,-33.54102</loc>
+<color>-1341090049</color>
 <res>0</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 1">
-<type>T</type>
-<loc>-28.0,0,-58.660038</loc>
-<color>1631330047</color>
+<type>S</type>
+<loc>0.0,0,65.0</loc>
+<color>-1005296129</color>
 <res>1</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 2">
-<type>M</type>
-<loc>27.0,0,-80.59776</loc>
-<color>-888304129</color>
+<type>S</type>
+<loc>66.0,0,53.563046</loc>
+<color>-832417025</color>
 <res>2</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 3">
 <type>G</type>
-<loc>7.0,0,-104.7664</loc>
-<color>1347870207</color>
+<loc>41.0,0,96.66437</loc>
+<color>1797569023</color>
 <res>3</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 4">
-<type>M</type>
-<loc>26.0,0,-122.266106</loc>
-<color>1246701311</color>
+<type>L</type>
+<loc>-26.0,0,122.266106</loc>
+<color>1508868095</color>
 <res>4</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 5">
-<type>L</type>
-<loc>98.0,0,106.86908</loc>
-<color>-27739393</color>
+<type>M</type>
+<loc>-38.0,0,-139.93213</loc>
+<color>-25811201</color>
 <res>5</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 6">
 <type>T</type>
-<loc>141.0,0,-85.69714</loc>
-<color>1982192895</color>
+<loc>152.0,0,64.195015</loc>
+<color>1101682431</color>
 <res>6</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 7">
-<type>L</type>
-<loc>-131.0,0,-130.62924</loc>
-<color>-2099689985</color>
+<type>T</type>
+<loc>-179.0,0,-46.733284</loc>
+<color>509710847</color>
 <res>7</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 8">
-<type>L</type>
-<loc>-161.0,0,126.901535</loc>
-<color>1253770495</color>
+<type>G</type>
+<loc>-61.0,0,195.71408</loc>
+<color>1951181567</color>
 <res>8</res>
 <star>StarX</star>
 <conts/>
 </planet>
 <planet name="Planet 9">
-<type>G</type>
-<loc>-86.0,0,-207.91585</loc>
-<color>1164600063</color>
+<type>M</type>
+<loc>112.0,0,195.14354</loc>
+<color>-647612673</color>
 <res>9</res>
 <star>StarX</star>
 <conts/>
@@ -88,4 +88,720 @@
 <starSys/>
 <planets>Planet 0,Planet 1,Planet 2,Planet 3,Planet 4,Planet 5,Planet 6,Planet 7,Planet 8,Planet 9</planets>
 </Star>
+<ship name="Fighter0">
+<type>Fi</type>
+<player>3</player>
+<node>Lone Ships (Node)</node>
+<loc>0.0,0,-30.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter1">
+<type>Fi</type>
+<player>3</player>
+<node>Lone Ships (Node)</node>
+<loc>0.0,0,-33.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter2">
+<type>Fi</type>
+<player>3</player>
+<node>Lone Ships (Node)</node>
+<loc>0.0,0,-36.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter3">
+<type>Fi</type>
+<player>3</player>
+<node>Lone Ships (Node)</node>
+<loc>0.0,0,-39.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter4">
+<type>Fi</type>
+<player>3</player>
+<node>Lone Ships (Node)</node>
+<loc>0.0,0,-42.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter0">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-54.806564,0,95.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter1">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-54.806564,0,97.59672</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter2">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-54.806564,0,100.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter3">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-54.806564,0,102.40328</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter4">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-54.806564,0,104.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter5">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-52.403282,0,95.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter6">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-52.403282,0,97.59672</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter7">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-52.403282,0,100.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter8">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-52.403282,0,102.40328</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter9">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-52.403282,0,104.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter10">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-50.0,0,95.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter11">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-50.0,0,97.59672</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter12">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-50.0,0,100.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter13">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-50.0,0,102.40328</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter14">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-50.0,0,104.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter15">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-47.596718,0,95.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter16">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-47.596718,0,97.59672</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter17">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-47.596718,0,100.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter18">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-47.596718,0,102.40328</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter19">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-47.596718,0,104.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter20">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-45.193436,0,95.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter21">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-45.193436,0,97.59672</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter22">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-45.193436,0,100.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter23">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-45.193436,0,102.40328</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter24">
+<type>Fi</type>
+<player>0</player>
+<node>Flotillas Node (Node)</node>
+<loc>-45.193436,0,104.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<flotilla name="Flotilla 1">
+<ships>Fighter0,Fighter1,Fighter2,Fighter3,Fighter4,Fighter5,Fighter6,Fighter7,Fighter8,Fighter9,Fighter10,Fighter11,Fighter12,Fighter13,Fighter14,Fighter15,Fighter16,Fighter17,Fighter18,Fighter19,Fighter20,Fighter21,Fighter22,Fighter23,Fighter24</ships>
+<loc>-50.0,0,100.0</loc>
+</flotilla>
+<ship name="Capital Ship0">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>36.4012,0,-13.598803</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship1">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>36.4012,0,0.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship2">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>36.4012,0,13.598803</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship3">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>50.0,0,-13.598803</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship4">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>50.0,0,0.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship5">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>50.0,0,13.598803</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship6">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>63.5988,0,-13.598803</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship7">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>63.5988,0,0.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Capital Ship8">
+<type>Ca</type>
+<player>1</player>
+<node>Flotillas Node (Node)</node>
+<loc>63.5988,0,13.598803</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<flotilla name="Flotilla 2">
+<ships>Capital Ship0,Capital Ship1,Capital Ship2,Capital Ship3,Capital Ship4,Capital Ship5,Capital Ship6,Capital Ship7,Capital Ship8</ships>
+<loc>50.0,0,0.0</loc>
+</flotilla>
+<ship name="Fighter0">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>95.193436,0,20.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter1">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>95.193436,0,22.596718</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter2">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>95.193436,0,25.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter3">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>95.193436,0,27.403282</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter4">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>95.193436,0,29.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter5">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>97.59672,0,20.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter6">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>97.59672,0,22.596718</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter7">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>97.59672,0,25.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter8">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>97.59672,0,27.403282</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter9">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>97.59672,0,29.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter10">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>100.0,0,20.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter11">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>100.0,0,22.596718</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter12">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>100.0,0,25.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter13">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>100.0,0,27.403282</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter14">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>100.0,0,29.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter15">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>102.40328,0,20.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter16">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>102.40328,0,22.596718</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter17">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>102.40328,0,25.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter18">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>102.40328,0,27.403282</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter19">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>102.40328,0,29.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter20">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>104.806564,0,20.193436</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter21">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>104.806564,0,22.596718</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter22">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>104.806564,0,25.0</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter23">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>104.806564,0,27.403282</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<ship name="Fighter24">
+<type>Fi</type>
+<player>2</player>
+<node>Flotillas Node (Node)</node>
+<loc>104.806564,0,29.806564</loc>
+<stats>0.00.00.00.00.00.00.00.00.00.00.05.00.00.00.00.00.00.00.0</stats>
+<cost>0</cost>
+<crew>0</crew>
+<ammo>0</ammo>
+<fuel>0</fuel>
+</ship>
+<flotilla name="Flotilla 3">
+<ships>Fighter0,Fighter1,Fighter2,Fighter3,Fighter4,Fighter5,Fighter6,Fighter7,Fighter8,Fighter9,Fighter10,Fighter11,Fighter12,Fighter13,Fighter14,Fighter15,Fighter16,Fighter17,Fighter18,Fighter19,Fighter20,Fighter21,Fighter22,Fighter23,Fighter24</ships>
+<loc>100.0,0,25.0</loc>
+</flotilla>
 </tractus>

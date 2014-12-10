@@ -98,6 +98,7 @@ public class BattleGenerator {
         filer.addInfo(ship,"crew","0");
         filer.addInfo(ship,"ammo","0");
         filer.addInfo(ship,"fuel","0");
+        filer.write();
     }
     private static void makeFlotillas(){
         Ship[] ships1 = new Ship[25];
@@ -127,15 +128,17 @@ public class BattleGenerator {
     private static void addFlotillas(Flotilla f){
         Element flotilla=filer.addObject("flotilla","name",f.getName());
         String ship="";
-        for(Ship s:f.getFlotilla()) ship+=s.getName();
+        for(Ship s:f.getFlotilla()) ship+=s.getName()+",";
         String loc=f.getPosition().getX()+",0,"+f.getPosition().getZ();
-        filer.addInfo(flotilla,"ships",""+ship);
+        filer.addInfo(flotilla,"ships",""+ship.substring(0,ship.length()-1));
         filer.addInfo(flotilla,"loc",""+loc);
+        filer.write();
     }
     private static void addFlotillaBattler(FlotillaBattler f){
         Element flotillaBattle=filer.addObject("flotillaBattles");
         filer.addInfo(flotillaBattle,"attacker",""+f.getAttacker().toString());
         filer.addInfo(flotillaBattle,"defender",""+f.getDefender().toString());
+        filer.write();
     }
     private static void addThings(){
         for (int i=0;i<loneShips.size();i++) addShips(loneShips.get(i));
