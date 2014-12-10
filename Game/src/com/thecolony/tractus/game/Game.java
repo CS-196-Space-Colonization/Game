@@ -29,6 +29,7 @@ import com.thecolony.tractus.graphics.GUI.PauseMenu;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.input.InputLoader;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.Player;
@@ -174,37 +175,11 @@ public class Game extends SimpleApplication
         isBoxSelectToggleOn = false;
         isAttackToggleOn = false;
 
-        inputManager.addMapping("Right Click", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        inputManager.addMapping("Left Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(mMouseActionListener, new String[]
-        {
-            "Right Click", "Left Click"
-        });
-
-        inputManager.addMapping("Shift", new KeyTrigger(KeyInput.KEY_LSHIFT), new KeyTrigger(KeyInput.KEY_RSHIFT));
-        inputManager.addMapping("Move", new KeyTrigger(KeyInput.KEY_M));
-        inputManager.addMapping("Rotate", new KeyTrigger(KeyInput.KEY_R));
-        inputManager.addMapping("Box Select", new KeyTrigger(KeyInput.KEY_B));
-        inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_P));
-        inputManager.addMapping("Compress", new KeyTrigger(KeyInput.KEY_C));
-        inputManager.addMapping("Decompress", new KeyTrigger(KeyInput.KEY_X));
-        inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_ESCAPE));
-        inputManager.addMapping("Exit", new KeyTrigger(KeyInput.KEY_BACK));
-        inputManager.addMapping("More Ships", new KeyTrigger(KeyInput.KEY_SPACE));
-
-        inputManager.addMapping("Scroll Up", new KeyTrigger(KeyInput.KEY_UP));
-        inputManager.addMapping("Scroll Down", new KeyTrigger(KeyInput.KEY_DOWN));
-
-        inputManager.addListener(mKeyboardActionListener, new String[]
-        {
-            "Shift", "Move", "Rotate", "Box Select",
-            "Attack", "Pause", "Exit", "Scroll Up",
-            "Scroll Down", "More Ships"
-        });
-        inputManager.addListener(mKeyboardAnalogListener, new String[]
-        {
-            "Compress", "Decompress"
-        });
+        InputLoader.loadInputMappings(inputManager);
+        
+        inputManager.addListener(mMouseActionListener, InputLoader.getMouseActionMappings());
+        inputManager.addListener(mKeyboardActionListener, InputLoader.getKeyboardActionMappings());
+        inputManager.addListener(mKeyboardAnalogListener, InputLoader.getKeyboardAnalogMappings());
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
