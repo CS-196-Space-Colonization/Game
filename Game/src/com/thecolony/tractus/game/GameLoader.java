@@ -68,7 +68,6 @@ public class GameLoader
     private static final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     private static Plane mvmtPlane;
     private static SelectedFamily selectedFamily;
-    private static PauseMenu pauseMenu;
 
     public static Object[] loadGame(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, 
             AudioRenderer audioRenderer, ViewPort guiViewport, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
@@ -102,13 +101,12 @@ public class GameLoader
         addNodes();
         loadCursors();
         loadSelectedFamily();
-        loadPauseMenu();
         
         Object[] arr =
         {
             rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, 
             loneShipsNode, loneShips, flotillasNode, flotillas, flotillaBattles, mvmtPlane, 
-            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily, market, pauseMenu
+            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily, market
         };
         return arr;
     }
@@ -286,10 +284,5 @@ public class GameLoader
     private static void loadSelectedFamily()
     {
         selectedFamily = new SelectedFamily(rootNode);
-    }
-    
-    private static void loadPauseMenu()
-    {
-        pauseMenu = new PauseMenu(new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewport));
     }
 }

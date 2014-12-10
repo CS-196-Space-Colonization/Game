@@ -120,6 +120,8 @@ public class Game extends SimpleApplication
 
         unpack(GameLoader.loadGame(assetManager, inputManager, guiNode, rootNode, audioRenderer, guiViewPort, guiFont, M_WIDTH, M_HEIGHT));
         initializeListeners();
+        
+        pauseMenu = new PauseMenu(this);
     }
 
     public void unpack(Object[] arr) //Such a horrible, horrible method. If someone can think of anything better, please replace this monstrosity
@@ -144,7 +146,6 @@ public class Game extends SimpleApplication
         mInfoHubText = (arr[index] instanceof ScrollText) ? (ScrollText) arr[index++] : null;
         selectedObjects = (arr[index] instanceof SelectedFamily) ? (SelectedFamily) arr[index++] : null;
         market = (arr[index] instanceof Market) ? (Market) arr[index++] : null;
-        pauseMenu = (arr[index] instanceof PauseMenu) ? (PauseMenu) arr[index++] : null;
         // I agree. This method is terrible. I'm not sure how to fix it though.
         // Maybe just create an instance of game in GameLoader and copy the data here?
     }
