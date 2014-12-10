@@ -72,6 +72,7 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 		return getInventory().getAmountOf((Product)needed.getUnit()) < needed.getQuantity();
 	}
 
+        // I think this is where the error happens
 	private void executeTransaction(Quantity needed, Transaction bestOffer) {
 		Product productNeeded = (Product)needed.getUnit();
 		double amtNeeded = needed.getQuantity();

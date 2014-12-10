@@ -123,12 +123,17 @@ public class GameLoader
                     Steel.class
                 };
         Firm ironFirm = new Firm(market, new Iron());
-        //Firm carbonFirm = new Firm(market, new Carbon());
-        //Firm steelFirm = new Firm(market, new Steel());
+        Firm carbonFirm = new Firm(market, new Carbon());
+        Firm steelFirm = new Firm(market, new Steel());
+        Firm woodFirm = new Firm(market, new OakWood());
         Map<Product, Quantity> moneyQuantity = new HashMap<Product, Quantity>();
         moneyQuantity.put(new Money(), new Quantity(new Money(), 10.0));
         Inventory moneyInventory = new Inventory(moneyQuantity);
+        steelFirm.give(moneyInventory);
         mPlanets[0].addFirm(ironFirm);
+        mPlanets[0].addFirm(carbonFirm);
+        mPlanets[0].addFirm(steelFirm);
+        mPlanets[0].addFirm(woodFirm);
         
 //        for(Planet p: mPlanets)
 //        {
