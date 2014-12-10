@@ -200,6 +200,7 @@ public class Generator {
                 else if (typ.equals("G")) {type=VisualType.GIANT_STAR;}
                 else {type=VisualType.SUPERGIANT_STAR;}
                 mSuns[i]=new Star(vect,null,null,new Res("resFile"+res),name,"no-one",starsNode,assetManager,col,type);
+                rootNode.addLight(mSuns[i].getPointLight());
             }
         }
     }
