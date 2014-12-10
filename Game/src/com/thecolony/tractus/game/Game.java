@@ -8,12 +8,8 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.FastMath;
 import com.jme3.math.Plane;
 import com.jme3.math.Ray;
@@ -42,6 +38,7 @@ import com.thecolony.tractus.military.ships.Ship;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * @author Joe Pagliuco
@@ -290,7 +287,8 @@ public class Game extends SimpleApplication
                 {
                     if (isBoxSelectToggleOn)
                     {
-                        selectedObjects.clearFamily();
+                        if (!mIsShiftPressed)
+                            selectedObjects.clearFamily();
 
                         // Create big ass selector cube...
                         Vector3f min = getMouseRayIntersectionPoint();
@@ -306,6 +304,13 @@ public class Game extends SimpleApplication
                             if (bigAssSelectorCube.getBound().intersects(shipBound))
                             {
                                 selectedObjects.addObjects(loneShips.get(i));
+                            }
+                        }
+                        for (int i = 0; i < flotillas.size(); i++)
+                        {
+                            if (bigAssSelectorCube.getBound().intersectsBoundingBox(flotillas.get(i).getBoundingBox()))
+                            {
+                                selectedObjects.addObjects(flotillas.get(i));
                             }
                         }
 
