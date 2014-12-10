@@ -124,7 +124,7 @@ public class Game extends SimpleApplication
 
         adjustCameraSettings();
 
-        unpack(GameLoader.loadGame(loadSave,assetManager, inputManager, guiNode, rootNode, audioRenderer, guiViewPort, guiFont, M_WIDTH, M_HEIGHT));
+        unpack(GameLoader.loadGame(loadSave, assetManager, inputManager, guiNode, rootNode, audioRenderer, guiViewPort, guiFont, M_WIDTH, M_HEIGHT));
         initializeListeners();
         
         pauseMenu = new PauseMenu(this);
