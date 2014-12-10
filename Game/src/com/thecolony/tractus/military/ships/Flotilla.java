@@ -156,7 +156,7 @@ public class Flotilla extends MoveableBattleObject
             "Flotilla:",
             " Name: " + name,
             " Battle Stats",
-            "  HP: " + (int) getFlotillaStat(BattleObject.BATTLE_STAT_HP),
+            "  HP: " + String.format("%.2f", getFlotillaStat(BattleObject.BATTLE_STAT_HP)),
             "  Reg Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_POWER),
             "  Sp Power: " + getFlotillaStat(BattleObject.BATTLE_STAT_SP_POWER),
             "  Reg Defense: " + getFlotillaStat(BattleObject.BATTLE_STAT_REG_DEFENSE),
@@ -203,7 +203,10 @@ public class Flotilla extends MoveableBattleObject
             Vector3f direction = targetPoint.subtract(centerPosition).normalize();
             wireBoxGeometry.move(direction.mult((float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED) * deltaTime));
             centerPosition.addLocal(direction.mult((float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED) * deltaTime));
+            model.getModel().move(direction.mult((float)getBattleStat(BATTLE_STAT_MOVEMENT_SPEED) * deltaTime));
         }
+        
+        setDisplayInfo();
     }
 
     public void move(Vector3f offset)

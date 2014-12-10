@@ -64,6 +64,10 @@ public final class SelectedFamily
         calculateCenterPosition();
     }
     
+    public void removeObject(MoveableBattleObject object)
+    {
+        removeObjects(objects.indexOf(object));
+    }
     public void removeObjects(int index)
     {
         removeObjects(index, index+1);
@@ -84,7 +88,10 @@ public final class SelectedFamily
         for (int i = 0; i < objects.size(); i++)
         {
             if (i == beginIndex)
-                i = endIndex;
+            {
+                i = endIndex - 1;
+                continue;
+            }
             newObjects.add(newObjects.get(i));
         }
         objects = newObjects;
@@ -146,7 +153,7 @@ public final class SelectedFamily
     
     public void update(float deltaTime)
     {
-        if (isTransforming)
-            calculateCenterPosition();
+        //XXX: Fix this, should only recalculate when moving
+        calculateCenterPosition();
     }
 }

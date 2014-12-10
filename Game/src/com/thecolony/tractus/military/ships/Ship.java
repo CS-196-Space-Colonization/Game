@@ -220,7 +220,7 @@ public class Ship extends MoveableBattleObject
             wireBoxGeometry.move(m.getDirection().mult(m.getMovementSpeed() * deltaTime));
         }
         
-        
+        setDisplayInfo();
     }
 
     public void move(Vector3f offset)

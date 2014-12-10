@@ -494,7 +494,7 @@ public abstract class BattleObject
         {
             "Name: " + name,
             "Battle Stats:",
-            "  HP: " + (int) qualities[BATTLE_STAT_HP],
+            "  HP: " + String.format("%.2f", qualities[BATTLE_STAT_HP]),
             "  Reg Power: " + qualities[BATTLE_STAT_REG_POWER],
             "  Sp Power: " + qualities[BATTLE_STAT_SP_POWER],
             "  Reg Defense: " + qualities[BATTLE_STAT_REG_DEFENSE],

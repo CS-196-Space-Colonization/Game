@@ -56,7 +56,6 @@ public class Planet extends VisualEntity {
             }
         } catch (NullPointerException npe)
         {
-            npe.printStackTrace();
         }
         drawableObject.getModel().setUserData("Display Info", Game.hashtagFixMyStringGurl(newInfo.split("\n")));
         return newInfo.split("\n");
