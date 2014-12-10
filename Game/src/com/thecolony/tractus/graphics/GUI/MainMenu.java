@@ -123,6 +123,7 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new SinglePlayerOptions();
 	      dispose();
 	  }
@@ -132,6 +133,7 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new MultiplayerMenu();
 	      dispose();
 	  }
@@ -141,6 +143,7 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new OptionWindow();
 	      dispose();
 	  }

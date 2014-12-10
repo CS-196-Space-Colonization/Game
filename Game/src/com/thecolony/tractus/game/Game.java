@@ -245,7 +245,7 @@ public class Game extends SimpleApplication
                         Flotilla f = flotillas.get(i);
                         if (f.isSelected())
                         {
-                            break;
+                            continue;
                         }
 
                         boolean hover = f.getBoundingBox().intersects(r);
@@ -560,6 +560,21 @@ public class Game extends SimpleApplication
                 int battle = flotillaBattles.get(i).update(tpf);
                 if (battle != 0)
                 {
+                    if (battle == -1)
+                    {
+                        Flotilla f = flotillaBattles.get(i).getDefender();
+                        if (f.isSelected())
+                            selectedObjects.removeObject(f);
+                        flotillas.remove(f);
+                    }
+                    else if (battle == 1)
+                    {
+                        Flotilla f = flotillaBattles.get(i).getAttacker();
+                        if (f.isSelected())
+                            selectedObjects.removeObject(f);
+                        flotillas.remove(f);
+                    }
+                    
                     flotillaBattles.remove(i--);
                 }
             }

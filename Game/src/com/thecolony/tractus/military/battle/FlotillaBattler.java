@@ -46,7 +46,11 @@ public class FlotillaBattler
      */
     public int update(float deltaTime)
     {
-        int battle = attacker.flotillaBattle(defender, deltaTime);        
+        int battle = attacker.flotillaBattle(defender, deltaTime);
+        if (battle == 1)
+            attacker.getDrawableObject3d().changeNodeState(false);
+        else if (battle == -1)
+            defender.getDrawableObject3d().changeNodeState(false);
         return battle;
     }
 }

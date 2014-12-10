@@ -4,6 +4,7 @@
  */
 package com.thecolony.tractus.graphics.GUI;
 
+import com.thecolony.tractus.audio.MenuAudio;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -91,6 +92,7 @@ public class MultiplayerMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new ServerInfoWindow(ServerInfoWindow.SERVER);
 	      dispose();
 	  }
@@ -100,6 +102,7 @@ public class MultiplayerMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new ServerInfoWindow(ServerInfoWindow.CLIENT);
 	      dispose();
 	  }
@@ -109,6 +112,7 @@ public class MultiplayerMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
+	      MenuAudio.playSound(MenuAudio.CLICK);
 	      new MainMenu();
 	      dispose();
 	  }
