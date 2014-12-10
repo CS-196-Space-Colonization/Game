@@ -95,15 +95,22 @@ public class ScrollText
             topIndex = 0;
         else if (topIndex > text.size() - 1)
             topIndex = text.size() - 1;
+        
+        addTextToBitmap();
     }
     
     private void addTextToBitmap()
     {
         String t = "";
-        int cap = Math.min(linesPerScreen, text.size() - topIndex);        
+        int cap = Math.min(linesPerScreen, text.size() - topIndex);
         for (int i = 0; i < cap; i++)
             t += text.get(i + topIndex) + "\n";
         
         bitmapText.setText(t);
+    }
+    
+    public boolean isEmpty()
+    {
+        return text.isEmpty();
     }
 }

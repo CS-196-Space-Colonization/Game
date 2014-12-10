@@ -518,8 +518,9 @@ public class Game extends SimpleApplication
                 somethingSelected = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound().intersects(r);
                 if (somethingSelected)
                 {
-                    mInfoHubText.clearText();
-                    mInfoHubText.addText(loneShips.get(i).getDisplayInfo());
+                    addTextToInfoHub(loneShips.get(i).getDisplayInfo());
+//                    mInfoHubText.clearText();
+//                    mInfoHubText.addText(loneShips.get(i).getDisplayInfo());
                     break;
                 }
             }
@@ -531,8 +532,9 @@ public class Game extends SimpleApplication
                     somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
                     if (somethingSelected)
                     {
-                        mInfoHubText.clearText();
-                        mInfoHubText.addText(flotillas.get(i).getDisplayInfo());
+                        addTextToInfoHub(flotillas.get(i).getDisplayInfo());
+//                        mInfoHubText.clearText();
+//                        mInfoHubText.addText(flotillas.get(i).getDisplayInfo());
                         break;
                     }
                 }
@@ -545,8 +547,9 @@ public class Game extends SimpleApplication
                     somethingSelected = p.getBoundingSphere().intersects(r);
                     if (somethingSelected)
                     {
-                        mInfoHubText.clearText();
-                        mInfoHubText.addText(p.getDisplayInfo());
+                        addTextToInfoHub(p.getDisplayInfo());
+//                        mInfoHubText.clearText();
+//                        mInfoHubText.addText(p.getDisplayInfo());
                         break;
                     }
                 }
@@ -559,8 +562,9 @@ public class Game extends SimpleApplication
                         somethingSelected = s.getBoundingSphere().intersects(r);
                         if (somethingSelected)
                         {
-                            mInfoHubText.clearText();
-                            mInfoHubText.addText(s.getDisplayInfo());
+                            addTextToInfoHub(s.getDisplayInfo());
+//                            mInfoHubText.clearText();
+//                            mInfoHubText.addText(s.getDisplayInfo());
                             break;
                         }
                     }
@@ -614,6 +618,12 @@ public class Game extends SimpleApplication
         Vector3f v = new Vector3f();
         r.intersectsWherePlane(mMovementPlane, v);
         return v;
+    }
+    
+    private void addTextToInfoHub(String[] text)
+    {
+        if (mInfoHubText.isEmpty())
+            mInfoHubText.addText(text);
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////
