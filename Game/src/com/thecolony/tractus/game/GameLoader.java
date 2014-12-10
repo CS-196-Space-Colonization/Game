@@ -1,6 +1,7 @@
 package com.thecolony.tractus.game;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioRenderer;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
@@ -9,6 +10,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Plane;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
+import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
@@ -19,6 +22,7 @@ import com.thecolony.tractus.economics.Firm;
 import com.thecolony.tractus.economics.Inventory;
 import com.thecolony.tractus.economics.Market;
 import com.thecolony.tractus.economics.products.*;
+import com.thecolony.tractus.graphics.GUI.PauseMenu;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.player.Player;
@@ -47,6 +51,8 @@ public class GameLoader
     private static Node planetsNode, starsNode, rootNode, guiNode, selectedShipsNode, selectedFlotillasNode, loneShipsNode, flotillasNode;
     private static AssetManager assetManager;
     private static InputManager inputManager;
+    private static AudioRenderer audioRenderer;
+    private static ViewPort guiViewport;
     private static Planet[] mPlanets;
     private static Star[] mSuns;
     private static Market market;
@@ -61,16 +67,19 @@ public class GameLoader
     private static final float M_INFO_HUB_WIDTH_PERCENTAGE = 10.0f / 1920.0f;
     private static final float M_INFO_HUB_HEIGHT_PERCENTAGE = 1.0f - 612.0f / 1080.0f;
     private static Plane mvmtPlane;
-    private static Vector3f selectedNodeCenterPos;
     private static SelectedFamily selectedFamily;
+    private static PauseMenu pauseMenu;
 
-    public static Object[] loadGame(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
+    public static Object[] loadGame(AssetManager assetManager, InputManager inputManager, Node guiNode, Node rootNode, 
+            AudioRenderer audioRenderer, ViewPort guiViewport, BitmapFont guiFont, int M_WIDTH, int M_HEIGHT)
     {
         GameLoader.assetManager = assetManager;
         GameLoader.inputManager = inputManager;
         GameLoader.rootNode = rootNode;
+        GameLoader.audioRenderer = audioRenderer;
         GameLoader.guiNode = guiNode;
         GameLoader.guiFont = guiFont;
+        GameLoader.guiViewport = guiViewport;
         GameLoader.M_HEIGHT = M_HEIGHT;
         GameLoader.M_WIDTH = M_WIDTH;
         
@@ -93,12 +102,13 @@ public class GameLoader
         addNodes();
         loadCursors();
         loadSelectedFamily();
+        loadPauseMenu();
         
         Object[] arr =
         {
             rootNode, guiNode, guiFont, inputManager, planetsNode, mPlanets, starsNode, mSuns, 
             loneShipsNode, loneShips, flotillasNode, flotillas, flotillaBattles, mvmtPlane, 
-            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily, market
+            mCursorSmiley, mPictureBoxSelect, mInfoHubText, selectedFamily, market, pauseMenu
         };
         return arr;
     }
@@ -276,5 +286,10 @@ public class GameLoader
     private static void loadSelectedFamily()
     {
         selectedFamily = new SelectedFamily(rootNode);
+    }
+    
+    private static void loadPauseMenu()
+    {
+        pauseMenu = new PauseMenu(new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewport));
     }
 }

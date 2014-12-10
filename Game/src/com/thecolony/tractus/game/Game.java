@@ -24,6 +24,7 @@ import com.jme3.ui.Picture;
 import com.thecolony.tractus.audio.AudioManager;
 import com.thecolony.tractus.economics.Firm;
 import com.thecolony.tractus.economics.Market;
+import com.thecolony.tractus.graphics.GUI.PauseMenu;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
@@ -70,6 +71,7 @@ public class Game extends SimpleApplication
     private boolean isRunning;
     private ClientMain client;
     private ArrayList<FlotillaBattler> flotillaBattles;
+    private PauseMenu pauseMenu;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // START INITIALIZATION METHODS /////////////////////////////////////////////////////////////////////////
@@ -109,7 +111,7 @@ public class Game extends SimpleApplication
 
         adjustCameraSettings();
 
-        unpack(GameLoader.loadGame(assetManager, inputManager, guiNode, rootNode, guiFont, M_WIDTH, M_HEIGHT));
+        unpack(GameLoader.loadGame(assetManager, inputManager, guiNode, rootNode, audioRenderer, guiViewPort, guiFont, M_WIDTH, M_HEIGHT));
         initializeListeners();
     }
 
@@ -135,6 +137,7 @@ public class Game extends SimpleApplication
         mInfoHubText = (arr[index] instanceof ScrollText) ? (ScrollText) arr[index++] : null;
         selectedObjects = (arr[index] instanceof SelectedFamily) ? (SelectedFamily) arr[index++] : null;
         market = (arr[index] instanceof Market) ? (Market) arr[index++] : null;
+        pauseMenu = (arr[index] instanceof PauseMenu) ? (PauseMenu) arr[index++] : null;
         // I agree. This method is terrible. I'm not sure how to fix it though.
         // Maybe just create an instance of game in GameLoader and copy the data here?
     }
@@ -336,6 +339,11 @@ public class Game extends SimpleApplication
                 isRunning = !isRunning;
 
                 flyCam.setEnabled(isRunning);
+                
+                if (isRunning)
+                    stateManager.detach(pauseMenu);
+                else
+                    stateManager.attach(pauseMenu);
             }
 
             if (isRunning)

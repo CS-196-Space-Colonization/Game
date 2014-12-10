@@ -9,7 +9,7 @@
 	<screen id="pause_menu" controller="com.thecolony.tractus.graphics.GUI.PauseMenu" >
 	
 		<layer id="background" childLayout="center" >
-			<image filename="Textures/pause_background.jpg" width="31.25%" height="74.07%" />
+			<image filename="Textures/pause_background.jpg" width="75%" height="85%" />
 		</layer>
 	
 	</screen>
