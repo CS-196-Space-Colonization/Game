@@ -75,7 +75,7 @@ public class TerrorGenerator {
         float xPos = posNeg * (int) (Math.random() * orbitRadius);
         posNeg = (Math.random() < 0.5) ? -1 : 1;
         float zPos = posNeg * (float) Math.sqrt(orbitRadius * orbitRadius - xPos * xPos);
-        Res res=new Res("resFile"+index);
+        Res res=new Res("resFile"+index,true);
         return new Planet(new Vector3f(xPos, 0.0f, zPos), null, null,res, "Planet " + Integer.toString(index), "no-one", planetsNode, assetManager, ColorRGBA.randomColor(), type);
     }
 
@@ -183,7 +183,7 @@ public class TerrorGenerator {
                 else if (typ.equals("T")) {type=VisualType.TERRESTRIAL_PLANET;}
                 else if (typ.equals("M")) {type=VisualType.MININEPTUNE_PLANET;}
                 else {type=VisualType.GASGIANT_PLANET;}
-                mPlanets[i]=new Planet(vect,null,null,new Res("resFile"+res),name,"no-one",planetsNode,assetManager,col,type);
+                mPlanets[i]=new Planet(vect,null,null,new Res("resFile"+res,true),name,"no-one",planetsNode,assetManager,col,type);
             }
         }
     }
@@ -205,7 +205,7 @@ public class TerrorGenerator {
                 else if (typ.equals("M")) {type=VisualType.MAINSEQUENCE_STAR;}
                 else if (typ.equals("G")) {type=VisualType.GIANT_STAR;}
                 else {type=VisualType.SUPERGIANT_STAR;}
-                mSuns[i]=new Star(vect,null,null,new Res("resFile"+res),name,"no-one",starsNode,assetManager,col,type);
+                mSuns[i]=new Star(vect,null,null,new Res("resFile"+res,true),name,"no-one",starsNode,assetManager,col,type);
                 rootNode.addLight(mSuns[i].getPointLight());
             }
         }
