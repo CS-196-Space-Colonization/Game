@@ -124,7 +124,7 @@ public class Flotilla extends MoveableBattleObject
         min.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
         min.add(10, 10, 10);
         
-        b = (BoundingBox) flotilla[flotilla.length - 1].getMoveableObject3d().getModel().getWorldBound();
+        b = (BoundingBox) flotilla[sideLength - 1].getMoveableObject3d().getModel().getWorldBound();
         Vector3f max = flotilla[flotilla.length - 1].getPosition();
         max.add(b.getXExtent(), b.getYExtent(), b.getZExtent());
         
