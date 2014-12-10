@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tractus>
+<planet name="Planet 0">
+<type>S</type>
+<loc>-1.0,0,-39.9875</loc>
+<color>-1388587009</color>
+<res>1</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 1">
+<type>T</type>
+<loc>3.0,0,64.93073</loc>
+<color>612554239</color>
+<res>2</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 2">
+<type>G</type>
+<loc>40.0,0,-80.622574</loc>
+<color>-50854145</color>
+<res>3</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 3">
+<type>L</type>
+<loc>-31.0,0,-110.74294</loc>
+<color>977174783</color>
+<res>4</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 4">
+<type>L</type>
+<loc>5.0,0,139.91069</loc>
+<color>1859767807</color>
+<res>5</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 5">
+<type>G</type>
+<loc>-29.0,0,-162.43152</loc>
+<color>1420730879</color>
+<res>6</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 6">
+<type>M</type>
+<loc>-81.0,0,171.86914</loc>
+<color>-945693185</color>
+<res>7</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 7">
+<type>T</type>
+<loc>115.0,0,181.65903</loc>
+<color>504393215</color>
+<res>8</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 8">
+<type>G</type>
+<loc>126.0,0,-204.26454</loc>
+<color>-1980138753</color>
+<res>9</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 9">
+<type>T</type>
+<loc>-170.0,0,-203.2855</loc>
+<color>546938367</color>
+<res>10</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<Star name="StarX">
+<type>M</type>
+<loc>0.0,0,0.0</loc>
+<color>-1</color>
+<res>11</res>
+<starSys/>
+<planets>Planet 0,Planet 1,Planet 2,Planet 3,Planet 4,Planet 5,Planet 6,Planet 7,Planet 8,Planet 9</planets>
+</Star>
+</tractus>

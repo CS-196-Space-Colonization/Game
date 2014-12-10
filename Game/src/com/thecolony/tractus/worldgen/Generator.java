@@ -31,16 +31,16 @@ public class Generator {
         Generator.rootNode=rootNode;
         Generator.assetManager=assetManager;
         Generator.filer=filer;
-        //loadPlanet();
-        //loadStar();
-        makePlanets();
-        makeStars();
+        loadPlanet();
+        loadStar();
+        //makePlanets();
+        //makeStars();
         for (int i = 0; i < mPlanets.length; i++)
         {
             mPlanets[i].setSuperTerr(mSuns[0]);
         }
         mSuns[0].setSubTerr(mPlanets);
-        addTerrs();
+        //addTerrs();
     }
 
     private static Planet generatePlanet(int index)
@@ -134,7 +134,7 @@ public class Generator {
         filer.write();
     }
     private static void addStar(Star s){
-        Element star=filer.addObject("star", "name", s.getName());
+        Element star=filer.addObject("Star", "name", s.getName());
         String type="?";
         switch (s.getType()){
             case DWARF_STAR: type="D";
@@ -157,7 +157,7 @@ public class Generator {
         filer.addInfo(star, "planets", planets.length()==0?planets:planets.substring(0, planets.length() - 1));
         filer.write();
     }
-    public static Planet loadPlanet(){
+    public static void loadPlanet(){
         NodeList list=filer.getObject("planet");
         for (int i=0;i<list.getLength();i++){
             if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
@@ -180,10 +180,9 @@ public class Generator {
                 mPlanets[i]=new Planet(vect,null,null,new Res("resFile"+res),name,"no-one",planetsNode,assetManager,col,type);
             }
         }
-        return null;
     }
-    public static Star loadStar(){
-        NodeList list=filer.getObject("star");
+    public static void loadStar(){
+        NodeList list=filer.getObject("Star");
         for (int i=0;i<list.getLength();i++){
             if(list.item(i).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
                 Element el=(Element)list.item(i);
@@ -203,6 +202,5 @@ public class Generator {
                 mSuns[i]=new Star(vect,null,null,new Res("resFile"+res),name,"no-one",starsNode,assetManager,col,type);
             }
         }
-        return null;
     }
 }
