@@ -7,6 +7,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Node;
 import com.thecolony.tractus.economics.Firm;
+import com.thecolony.tractus.game.Game;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class Planet extends VisualEntity {
         {
             
         }
-        drawableObject.getModel().setUserData("Display Info", newInfo.split("\n"));
+        drawableObject.getModel().setUserData("Display Info", Game.hashtagFixMyStringGurl(newInfo.split("\n")));
         return newInfo.split("\n");
     }
     

@@ -14,6 +14,7 @@ import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
 import com.thecolony.tractus.saveInfo.Res;
 
 import com.jme3.scene.Spatial;
+import com.thecolony.tractus.game.Game;
 
 import java.util.ArrayList;
 
@@ -123,7 +124,7 @@ public class VisualEntity extends Territory
             }
         }
         infos.add(name + " at (" + String.format("%.2f", this.location.getX()) + "," + String.format("%.2f", this.location.getZ()) + ")");
-        drawableObject.getModel().setUserData("Display Info", infos.toArray(new String[0]));
+        drawableObject.getModel().setUserData("Display Info", Game.hashtagFixMyStringGurl(infos.toArray(new String[0])));
         return infos.toArray(new String[0]);
     }
     

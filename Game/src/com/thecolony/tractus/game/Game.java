@@ -616,7 +616,7 @@ public class Game extends SimpleApplication
         if (somethingSelected)
         {
             mInfoHubText.clearText();
-            mInfoHubText.addText((String[])object.getModel().getUserData("Display Info"));
+            mInfoHubText.addText((String)object.getModel().getUserData("Display Info"));
         }
         
         return somethingSelected;
@@ -624,4 +624,16 @@ public class Game extends SimpleApplication
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public static String hashtagFixMyStringGurl(String[] strings)
+    {
+        String returnString = "";
+        for (int i = 0; i < strings.length; i++)
+        {
+            returnString += strings[i];
+            if (i != strings.length - 1)
+                returnString += "\n";
+        }
+        return returnString;
+    }
 }
