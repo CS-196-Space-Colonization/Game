@@ -95,11 +95,7 @@ public class GameLoader
         Filer filer=new Filer("tractus",!loadSave);
         TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, filer);
         loadSuckyEconomicSystem();
-        double[] stats = new double[19];
-        loneShipsNode = new Node("Lone Ships");
-        flotillasNode = new Node("Flotillas Node");
-        stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
-        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,stats,filer);
+        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,new double[5],filer);
         loadAmbientLight();
         loadSkybox();
         loadMovementPlane();
