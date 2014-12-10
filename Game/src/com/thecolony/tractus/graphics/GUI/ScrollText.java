@@ -47,11 +47,22 @@ public class ScrollText
         addTextToBitmap();
     }
     
+    /**
+     * To be called when the text and scroll index need to be reset.
+     */
+    public void reset()
+    {
+        clearText();
+        topIndex = 0;        
+    }
+    
+    /**
+     * Clears the text buffer.
+     */
     public void clearText()
     {
         bitmapText.setText("");
         text = new ArrayList<String>();
-        topIndex = 0;
     }
     
     /**

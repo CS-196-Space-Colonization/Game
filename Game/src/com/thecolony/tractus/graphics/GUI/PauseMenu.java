@@ -29,9 +29,9 @@ public class PauseMenu extends AbstractAppState implements ScreenController
         niftyDisplay = new NiftyJmeDisplay(app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
         
         Camera guiCam = app.getGuiViewPort().getCamera().clone();
+        guiCam.setViewPort(.05f, .95f, 0.1f, 0.9f);
         viewport = app.getRenderManager().createPostView("Nifty Gui", guiCam);
         viewport.setClearFlags(false, false, false);
-        viewport.addProcessor(niftyDisplay);
     }
 
     public void bind(Nifty nifty, Screen screen)
@@ -56,7 +56,6 @@ public class PauseMenu extends AbstractAppState implements ScreenController
         
         Nifty nifty = niftyDisplay.getNifty();
         nifty.fromXml("Interface/pause_menu.xml", "pause_menu", this);
-        System.out.println("Herro");
     }
 
     @Override
