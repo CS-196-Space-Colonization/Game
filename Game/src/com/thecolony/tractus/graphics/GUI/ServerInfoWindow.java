@@ -97,7 +97,7 @@ public class ServerInfoWindow extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      MenuAudio.playSound(MenuAudio.CLICK);
+	      MenuAudio.playSound(MenuAudio.YAY);
 	      name = tName.getText();
 	      if (TYPE == CLIENT)
 	      {
