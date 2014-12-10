@@ -34,6 +34,8 @@ public class MainMenu extends JFrame
         GUIColors.add(new Color(127, 51, 0));//brown?
         GUIColors.add(new Color(224,20,147));//deep pink
         GUIColors.add(new Color(57,255,20));//neon green
+        GUIColors.add(new Color(0x40836f));//patina green
+        GUIColors.add(new Color(0x8717fb));//painfull purple
     }
     
     private JPanel window;
@@ -120,39 +122,7 @@ public class MainMenu extends JFrame
         {
 	  public void actionPerformed(ActionEvent e)
 	  {
-	      boolean fullscreen = OptionWindow.fullscreen;
-//	      int input = JOptionPane.showConfirmDialog(null, "Full Screen Mode?");
-//	      if (input == JOptionPane.YES_OPTION)
-//		fullscreen = true;
-//	      else if (input == JOptionPane.CANCEL_OPTION || input == JOptionPane.CLOSED_OPTION)
-//		System.exit(0);            
-
-	      Game game = new Game();
-
-	      game.setShowSettings(false);
-	      AppSettings settings = new AppSettings(true);
-
-	      settings.setTitle("Tractus");
-	      settings.setFrameRate(60);
-	      settings.setVSync(true);
-	      settings.setFrequency(60);
-
-	      try {
-		settings.setFullscreen(fullscreen);
-	      } catch (Exception ex) { settings.setFullscreen(false); }
-
-	      if (fullscreen)
-	      {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		settings.setResolution(screenSize.width, screenSize.height);
-	      }
-	      else
-	      {
-		settings.setResolution(OptionWindow.resWidth, OptionWindow.resHeight);
-	      }
-
-	      game.setSettings(settings);
-	      game.start();
+	      new SinglePlayerOptions();
 	      dispose();
 	  }
         });
