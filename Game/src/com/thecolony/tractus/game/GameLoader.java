@@ -97,6 +97,7 @@ public class GameLoader
         loadSuckyEconomicSystem();
         BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,new double[5],filer);
         loadAmbientLight();
+        loadShips();
         loadSkybox();
         loadMovementPlane();
         loadPictures();
