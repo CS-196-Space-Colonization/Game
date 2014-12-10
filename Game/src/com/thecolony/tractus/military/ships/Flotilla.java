@@ -214,6 +214,7 @@ public class Flotilla extends MoveableBattleObject
         }
         centerPosition.addLocal(offset);
         wireBoxGeometry.move(offset);
+        model.getModel().move(offset);
     }
 
     public void sortByHP()

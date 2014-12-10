@@ -509,6 +509,8 @@ public class Game extends SimpleApplication
                         f.step();
                 }
             }
+            for (int i = 0; i < mPlanets.length; i++)
+                mPlanets[i].update();
 
 
             Ray r = getMouseRay();

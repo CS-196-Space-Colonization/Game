@@ -45,6 +45,7 @@ public class Planet extends VisualEntity {
         String newInfo = "";
         for(int i = 0; i < basicInfo.length; i++)
             newInfo += basicInfo[i] + "\n";
+       
         try {
             for(int i = 0; i < firms.size(); i++)
             {
@@ -55,7 +56,7 @@ public class Planet extends VisualEntity {
             }
         } catch (NullPointerException npe)
         {
-            
+            npe.printStackTrace();
         }
         drawableObject.getModel().setUserData("Display Info", Game.hashtagFixMyStringGurl(newInfo.split("\n")));
         return newInfo.split("\n");
@@ -64,5 +65,10 @@ public class Planet extends VisualEntity {
     public ArrayList<Firm> getFirms()
     {
         return firms;
+    }
+    
+    public void update()
+    {
+        setDisplayInfo();
     }
 }
