@@ -3,6 +3,7 @@ package com.thecolony.tractus.game;
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.bounding.BoundingSphere;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.font.BitmapFont;
@@ -27,6 +28,8 @@ import com.thecolony.tractus.economics.Market;
 import com.thecolony.tractus.graphics.GUI.PauseMenu;
 import com.thecolony.tractus.graphics.GUI.ScrollText;
 import com.thecolony.tractus.graphics.GraphicsManager;
+import com.thecolony.tractus.graphics.drawableobjects.DrawableObject3d;
+import com.thecolony.tractus.input.InputLoader;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
 import com.thecolony.tractus.networking.ClientMain;
 import com.thecolony.tractus.player.Player;
@@ -172,37 +175,11 @@ public class Game extends SimpleApplication
         isBoxSelectToggleOn = false;
         isAttackToggleOn = false;
 
-        inputManager.addMapping("Right Click", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        inputManager.addMapping("Left Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(mMouseActionListener, new String[]
-        {
-            "Right Click", "Left Click"
-        });
-
-        inputManager.addMapping("Shift", new KeyTrigger(KeyInput.KEY_LSHIFT), new KeyTrigger(KeyInput.KEY_RSHIFT));
-        inputManager.addMapping("Move", new KeyTrigger(KeyInput.KEY_M));
-        inputManager.addMapping("Rotate", new KeyTrigger(KeyInput.KEY_R));
-        inputManager.addMapping("Box Select", new KeyTrigger(KeyInput.KEY_B));
-        inputManager.addMapping("Attack", new KeyTrigger(KeyInput.KEY_P));
-        inputManager.addMapping("Compress", new KeyTrigger(KeyInput.KEY_C));
-        inputManager.addMapping("Decompress", new KeyTrigger(KeyInput.KEY_X));
-        inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_ESCAPE));
-        inputManager.addMapping("Exit", new KeyTrigger(KeyInput.KEY_BACK));
-        inputManager.addMapping("More Ships", new KeyTrigger(KeyInput.KEY_SPACE));
-
-        inputManager.addMapping("Scroll Up", new KeyTrigger(KeyInput.KEY_UP));
-        inputManager.addMapping("Scroll Down", new KeyTrigger(KeyInput.KEY_DOWN));
-
-        inputManager.addListener(mKeyboardActionListener, new String[]
-        {
-            "Shift", "Move", "Rotate", "Box Select",
-            "Attack", "Pause", "Exit", "Scroll Up",
-            "Scroll Down", "More Ships"
-        });
-        inputManager.addListener(mKeyboardAnalogListener, new String[]
-        {
-            "Compress", "Decompress"
-        });
+        InputLoader.loadInputMappings(inputManager);
+        
+        inputManager.addListener(mMouseActionListener, InputLoader.getMouseActionMappings());
+        inputManager.addListener(mKeyboardActionListener, InputLoader.getKeyboardActionMappings());
+        inputManager.addListener(mKeyboardAnalogListener, InputLoader.getKeyboardAnalogMappings());
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END INITIALIZATION METHODS ///////////////////////////////////////////////////////////////////////////
@@ -540,61 +517,40 @@ public class Game extends SimpleApplication
             // Check if mouse hovering over anything to update info hub...
             for (int i = 0; i < loneShips.size(); i++)
             {
-                somethingSelected = loneShips.get(i).getMoveableObject3d().getModel().getWorldBound().intersects(r);
+                somethingSelected = checkTextUpdates(loneShips.get(i).getMoveableObject3d(), false);
                 if (somethingSelected)
-                {
-                    mInfoHubText.clearText();
-                    mInfoHubText.addText(loneShips.get(i).getDisplayInfo());
                     break;
-                }
             }
             if (!somethingSelected)
             {
                 // Check if mouse hovering over anything to update info hub...
                 for (int i = 0; i < flotillas.size(); i++)
                 {
-                    somethingSelected = flotillas.get(i).getBoundingBox().intersects(r);
+                    somethingSelected = checkTextUpdates(flotillas.get(i).getDrawableObject3d(), false);
                     if (somethingSelected)
-                    {
-                        mInfoHubText.clearText();
-                        mInfoHubText.addText(flotillas.get(i).getDisplayInfo());
                         break;
-                    }
                 }
             }
             if (!somethingSelected) // Check Planets and Stars...
             {
                 for (int i = 0; i < mPlanets.length; i++)
                 {
-                    Planet p = mPlanets[i];
-                    somethingSelected = p.getBoundingSphere().intersects(r);
+                    somethingSelected = checkTextUpdates(mPlanets[i].getDrawableObject(), true);
                     if (somethingSelected)
-                    {
-                        mInfoHubText.clearText();
-                        mInfoHubText.addText(p.getDisplayInfo());
                         break;
-                    }
-                }
-
-                if (!somethingSelected)
-                {
-                    for (int i = 0; i < mSuns.length; i++)
-                    {
-                        Star s = mSuns[i];
-                        somethingSelected = s.getBoundingSphere().intersects(r);
-                        if (somethingSelected)
-                        {
-                            mInfoHubText.clearText();
-                            mInfoHubText.addText(s.getDisplayInfo());
-                            break;
-                        }
-                    }
                 }
             }
             if (!somethingSelected)
             {
-                mInfoHubText.reset();
+                for (int i = 0; i < mSuns.length; i++)
+                {
+                    somethingSelected = checkTextUpdates(mSuns[i].getDrawableObject(), true);
+                    if (somethingSelected)
+                        break;
+                }
             }
+            if (!somethingSelected)
+                mInfoHubText.reset();
 
             // Update battles...
             for (int i = 0; i < flotillaBattles.size(); i++)
@@ -639,6 +595,31 @@ public class Game extends SimpleApplication
         Vector3f v = new Vector3f();
         r.intersectsWherePlane(mMovementPlane, v);
         return v;
+    }
+    
+    /**
+     * Checks for mouse hover over object and updates text accordingly.
+     * @param object The DrawableObject3d to check against.
+     * @param useSphere true if the collision should use the model's attached
+     * sphere (used for planets and stars).
+     * @return true if mouse is hovering over object, false otherwise.
+     */
+    private boolean checkTextUpdates(DrawableObject3d object, boolean useSphere)
+    {
+        boolean somethingSelected;
+        
+        if (!useSphere)
+            somethingSelected = object.getModel().getWorldBound().intersects(getMouseRay());
+        else
+            somethingSelected = ((BoundingSphere)object.getModel().getUserData("Bounding")).intersects(getMouseRay());
+        
+        if (somethingSelected)
+        {
+            mInfoHubText.clearText();
+            mInfoHubText.addText((String[])object.getModel().getUserData("Display Info"));
+        }
+        
+        return somethingSelected;
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END UPDATE METHODS ///////////////////////////////////////////////////////////////////////////////////

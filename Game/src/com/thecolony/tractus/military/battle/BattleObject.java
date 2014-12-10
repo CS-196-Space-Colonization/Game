@@ -488,7 +488,7 @@ public abstract class BattleObject
         qualities[18] = regWeapon;
     }
 
-    public String[] getDisplayInfo()
+    protected String[] getBattleStatsAsString()
     {
         return new String[]
         {

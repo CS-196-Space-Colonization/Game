@@ -122,41 +122,48 @@ public class GameLoader
                     OakWood.class,
                     Steel.class
                 };
+        Firm ironFirm = new Firm(market, new Iron());
+        //Firm carbonFirm = new Firm(market, new Carbon());
+        //Firm steelFirm = new Firm(market, new Steel());
+        Map<Product, Quantity> moneyQuantity = new HashMap<Product, Quantity>();
+        moneyQuantity.put(new Money(), new Quantity(new Money(), 10.0));
+        Inventory moneyInventory = new Inventory(moneyQuantity);
+        mPlanets[0].addFirm(ironFirm);
         
-        for(Planet p: mPlanets)
-        {
-            // Choose a random product
-            Class productClass = products[(int)(Math.random()*products.length)];
-            Constructor c = null;
-            try {
-                c = productClass.getConstructor();
-            } catch (NoSuchMethodException ex) {
-                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                //Every planet produces labour
-                p.addFirm(new Firm(market, new Labor()));
-                //Add a random production firm on each planet
-                // and give it some money because an economy needs money to work
-                Firm f1 = new Firm(market, (Product)c.newInstance());
-                Map<Product, Quantity> money = new HashMap<Product, Quantity>();
-                Money m = new Money();
-                money.put(m, new Quantity(m, 10.0));
-                Inventory moneyInv = new Inventory(money);
-                f1.give(moneyInv);
-                p.addFirm(f1);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvocationTargetException ex) {
-                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        for(Planet p: mPlanets)
+//        {
+//            // Choose a random product
+//            Class productClass = products[(int)(Math.random()*products.length)];
+//            Constructor c = null;
+//            try {
+//                c = productClass.getConstructor();
+//            } catch (NoSuchMethodException ex) {
+//                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (SecurityException ex) {
+//                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            try {
+//                //Every planet produces labour
+//                p.addFirm(new Firm(market, new Labor()));
+//                //Add a random production firm on each planet
+//                // and give it some money because an economy needs money to work
+//                Firm f1 = new Firm(market, (Product)c.newInstance());
+//                Map<Product, Quantity> money = new HashMap<Product, Quantity>();
+//                Money m = new Money();
+//                money.put(m, new Quantity(m, 10.0));
+//                Inventory moneyInv = new Inventory(money);
+//                f1.give(moneyInv);
+//                p.addFirm(f1);
+//            } catch (InstantiationException ex) {
+//                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IllegalAccessException ex) {
+//                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IllegalArgumentException ex) {
+//                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (InvocationTargetException ex) {
+//                Logger.getLogger(GameLoader.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
     }
 
     private static void loadSkybox()

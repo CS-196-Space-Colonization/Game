@@ -136,6 +136,8 @@ public class Ship extends MoveableBattleObject
         model.getModel().setUserData("Selected", false);
 
         createWireBoxGeometry();
+        
+        setDisplayInfo();
     }
     
     private void createWireBoxGeometry()
@@ -146,6 +148,15 @@ public class Ship extends MoveableBattleObject
         wireBoxGeometry.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         wireBoxGeometry.setLocalTranslation(model.getPosition());
         wireBoxGeometry.scale(1.5f);
+    }
+    
+    protected void setDisplayInfo()
+    {
+        String[] s = super.getBattleStatsAsString();
+        String[] display = new String[s.length + 1];
+        System.arraycopy(s, 0, display, 1, s.length);
+        display[0] = this.shipType.toString() + ":";
+        model.getModel().setUserData("Display Info", display);
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,18 +292,6 @@ public class Ship extends MoveableBattleObject
     {
         return wireBoxGeometry;
     }
-
-    
-    @Override
-    public String[] getDisplayInfo()
-    {
-        String[] s = super.getDisplayInfo();
-        String[] ret = new String[s.length + 1];
-        System.arraycopy(s, 0, ret, 1, s.length);
-        ret[0] = this.shipType.toString() + ":";
-        return ret;
-    }
-
     
     public void setToFighter()
     {
