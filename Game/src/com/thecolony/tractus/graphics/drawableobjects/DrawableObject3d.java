@@ -10,9 +10,8 @@ import com.jme3.scene.Spatial;
  * @author Joe Pagliuco
  */
 public class DrawableObject3d
-{    
+{
     protected Spatial mModel;
-    protected String mName;
     
     protected Node node;
     
@@ -28,9 +27,9 @@ public class DrawableObject3d
         if (model != null)
         {
             mModel = model;
+            mModel.setName(name);
             mModel.setLocalTranslation(position);
         }
-        mName = name;
         
         this.node = node;
         node.attachChild(model);
@@ -59,14 +58,6 @@ public class DrawableObject3d
     public Vector3f getPosition()
     {
         return mModel.getLocalTranslation();
-    }
-    
-    /**
-     * @return Returns the name of this object.
-     */
-    public String getName()
-    {
-        return mName;
     }
     
     /**
