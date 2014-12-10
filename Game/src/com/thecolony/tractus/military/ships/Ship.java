@@ -13,7 +13,6 @@ import com.jme3.scene.debug.WireBox;
 import com.thecolony.tractus.graphics.GraphicsManager;
 import com.thecolony.tractus.graphics.drawableobjects.MoveableObject3d;
 import com.thecolony.tractus.player.Player;
-import com.thecolony.tractus.military.battle.BattleObject;
 import com.thecolony.tractus.military.battle.MoveableBattleObject;
 
 /**
@@ -116,19 +115,19 @@ public class Ship extends MoveableBattleObject
     {
         if (shipType == SHIP_TYPE.Fighter)
         {
-            model = new MoveableObject3d(name, node, GraphicsManager.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Fighter");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipFighterModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED);
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.Frigate)
         {
-            model = new MoveableObject3d(name, node, GraphicsManager.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Frigate");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipFrigateModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED);
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.Cruiser)
         {
-            model = new MoveableObject3d(name, node, GraphicsManager.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Cruiser");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipCruiserModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED);
             model.getModel().setLocalTranslation(position);
         } else if (shipType == SHIP_TYPE.CapitalShip)
         {
-            model = new MoveableObject3d(name, node, GraphicsManager.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED, "Capital Ship");
+            model = new MoveableObject3d(name, node, GraphicsManager.getShipCaptialShipModel(), Vector3f.ZERO, Vector3f.UNIT_X, (float) getBattleStat(BATTLE_STAT_MOVEMENT_SPEED), M_ROTATION_SPEED);
             model.getModel().setLocalTranslation(position);
         }
         

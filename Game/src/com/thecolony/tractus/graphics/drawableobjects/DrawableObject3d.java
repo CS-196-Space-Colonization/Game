@@ -11,8 +11,6 @@ import com.jme3.scene.Spatial;
  */
 public class DrawableObject3d
 {    
-    private String mClassType;
-    
     protected Spatial mModel;
     protected String mName;
     
@@ -24,22 +22,18 @@ public class DrawableObject3d
      * @param node A reference to the Node this object needs to be attached to.
      * @param model Model used to graphically represent the object.
      * @param position Position of object.
-     * @param classType The type of DrawableObject (ie Planet, Fighter, etc).
      */
-    public DrawableObject3d(String name, Node node, Spatial model, Vector3f position, String classType)
+    public DrawableObject3d(String name, Node node, Spatial model, Vector3f position)
     {        
         if (model != null)
         {
             mModel = model;
             mModel.setLocalTranslation(position);
-            mModel.setUserData("Type", classType);
         }
         mName = name;
         
         this.node = node;
         node.attachChild(model);
-        
-        mClassType = classType;
     }
     
     /**
@@ -49,7 +43,6 @@ public class DrawableObject3d
     public void setModel(Spatial model)
     {
         this.mModel = model;
-        mModel.setUserData("Type", mClassType);
     }
     /**
      * @return Returns the model representation of this object.

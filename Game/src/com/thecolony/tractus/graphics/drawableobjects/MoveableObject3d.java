@@ -19,9 +19,9 @@ public class MoveableObject3d extends DrawableObject3d
     protected boolean mIsMoving;
     protected boolean mIsRotating;
     
-    public MoveableObject3d(String name, Node node, Spatial model, Vector3f position, Vector3f direction, float movementSpeed, float rotationSpeed, String classType)
+    public MoveableObject3d(String name, Node node, Spatial model, Vector3f position, Vector3f direction, float movementSpeed, float rotationSpeed)
     {
-        super(name, node, model, position, classType);
+        super(name, node, model, position);
         
         mDirection = direction;
         mMovementSpeed = movementSpeed;

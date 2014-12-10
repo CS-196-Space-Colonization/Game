@@ -43,7 +43,7 @@ public class VisualEntity extends Territory{
     }
     protected void initialize(String name, Node node, Spatial model, Vector3f position)
     {
-        drawableObject = new DrawableObject3d(name, node, model, position, className);
+        drawableObject = new DrawableObject3d(name, node, model, position);
         this.name = name;
         BoundingVolume b = drawableObject.getModel().getWorldBound();
         if (b.getType() == BoundingVolume.Type.AABB)

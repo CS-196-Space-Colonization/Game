@@ -40,7 +40,7 @@ public class Bullet
         Geometry g = new Geometry("Bullet Line", line);
         g.setMaterial(GraphicsManager.getDefaultWhiteMaterial());
         
-        model = new MoveableObject3d("Bullet", node, g, ship.getPosition(), direction, BULLET_SPEED, 0.0f, "Bullet");
+        model = new MoveableObject3d("Bullet", node, g, ship.getPosition(), direction, BULLET_SPEED, 0.0f);
         
         hasBeenShot = false;
         isDead = false;
