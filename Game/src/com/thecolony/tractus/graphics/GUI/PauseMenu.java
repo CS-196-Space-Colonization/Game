@@ -46,16 +46,12 @@ public class PauseMenu extends AbstractAppState implements ScreenController
         
         Nifty nifty = niftyDisplay.getNifty();
         nifty.fromXml("Interface/pause_menu.xml", "pause_menu", this);
-        
-        stateAttached(stateManager);
     }
 
     @Override
     public void stateAttached(AppStateManager stateManager)
     {
-        try {
-            app.getGuiViewPort().addProcessor(niftyDisplay);
-        } catch (NullPointerException e) {  }
+        ((SimpleApplication)stateManager.getApplication()).getGuiViewPort().addProcessor(niftyDisplay);
         
         super.stateAttached(stateManager);
     }
@@ -63,8 +59,7 @@ public class PauseMenu extends AbstractAppState implements ScreenController
     @Override
     public void stateDetached(AppStateManager stateManager)
     {
-        System.out.println("Herro?");
-        app.getGuiViewPort().removeProcessor(niftyDisplay);
+        ((SimpleApplication)stateManager.getApplication()).getGuiViewPort().removeProcessor(niftyDisplay);
         
         super.stateDetached(stateManager);
     }
