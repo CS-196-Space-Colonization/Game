@@ -27,7 +27,7 @@ public class Firm extends AbstractAgent {
 	}
 	
 	public void step() {
-            Inventory inventory = getInventory();
+            Inventory inventory = take();
 		supplier.give(inventory);
 		supplier.buyGoods();
 		inventory = supplier.take();

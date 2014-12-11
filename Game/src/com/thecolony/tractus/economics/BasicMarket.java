@@ -42,7 +42,7 @@ public class BasicMarket implements Market, Observer {
 	public double getLastPrice(Product product) {
 		Double lastPrice = lastPrices.get(product);
 		if (lastPrice == null)
-			return 0.0;
+			return product.getInitialPrice();
 		return lastPrice;
 	}
 
