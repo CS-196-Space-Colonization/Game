@@ -77,6 +77,8 @@ public class BasicBuyer extends AbstractAgent implements Buyer {
 		Product productNeeded = (Product)needed.getUnit();
 		double amtNeeded = needed.getQuantity();
 		Quantity bought = getInventory().getQuantityOf(productNeeded);
+                if(amtNeeded < bought.getQuantity())
+                    return;
 		double amountActuallyBought = calculateBought(bestOffer, amtNeeded - bought.getQuantity());
 		bestOffer.execute(amountActuallyBought);
 		getInventory().addQuantityOfProduct(productNeeded, amountActuallyBought);
