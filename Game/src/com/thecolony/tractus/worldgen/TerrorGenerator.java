@@ -47,6 +47,8 @@ public class TerrorGenerator {
             mSuns[0].setSubTerr(mPlanets);
             addTerrs();
         }
+        rootNode.attachChild(planetsNode);
+        rootNode.attachChild(starsNode);
     }
 
     private static Planet generatePlanet(int index)

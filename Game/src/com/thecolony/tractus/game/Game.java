@@ -48,7 +48,7 @@ public class Game extends SimpleApplication
 
     public static int M_WIDTH, M_HEIGHT;
     private final float M_COMPRESS_SPEED = 1.0f;
-    private final float M_ATTACK_DISTANCE = 50.0f;
+    private final float M_ATTACK_DISTANCE = 100.0f;
     private Planet[] mPlanets;
     private Market market;
     private Star[] mSuns;

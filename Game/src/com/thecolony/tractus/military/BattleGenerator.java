@@ -44,6 +44,8 @@ public class BattleGenerator {
             loadFlotilla();
             loadBattles();
         }
+        rootNode.attachChild(loneShipsNode);
+        rootNode.attachChild(flotillasNode);
     }
     private static Ship generateShip(int player, Node node, int num, double[] stats) {
         return generateShip(player, node, num, Vector3f.ZERO, stats);

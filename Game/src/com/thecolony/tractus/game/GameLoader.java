@@ -95,7 +95,11 @@ public class GameLoader
         Filer filer=new Filer("tractus",!loadSave);
         TerrorGenerator.loadTerritories(loadSave,rootNode, planetsNode, mPlanets, starsNode, mSuns, assetManager, filer);
         loadSuckyEconomicSystem();
-        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,new double[5],filer);
+        loneShipsNode = new Node("Lone Ships");
+        flotillasNode = new Node("Flotillas Node");
+        double[] stats = new double[19];
+        stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
+//        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,stats,filer);
         loadAmbientLight();
         loadShips();
         loadSkybox();
@@ -279,11 +283,22 @@ public class GameLoader
         {
             ships3[i] = generateShip(2, flotillasNode, i, stats);
         }
+        
+        Ship[] ship4 = new Ship[169];
+        for (int i = 0; i < ship4.length; i++)
+            ship4[i] = generateShip(3, flotillasNode, i, stats);
+        
+        Ship[] ship5 = new Ship[25];
+        for (int i = 0; i < ship5.length; i++)
+            ship5[i] = generateShip(4, flotillasNode, i, Ship.SHIP_TYPE.CapitalShip, stats);
+        
 
         flotillas = new ArrayList<Flotilla>();
         flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 100.0f), "Flotilla 1"));
         flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 2"));
         flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
+        flotillas.add(new Flotilla(ship4, false, new Vector3f(300.0f, 0.0f, -50.0f), "Flotilla 4"));
+        flotillas.add(new Flotilla(ship5, false, new Vector3f(250, 0.0f, 0.0f), "Flotilla 5"));
         flotillaBattles = new ArrayList<FlotillaBattler>();
 //        attackers = new ArrayList<ArrayList<Flotilla>>();
 //        defenders = new ArrayList<Flotilla>();
