@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tractus>
+<planet name="Planet 0">
+<type>G</type>
+<loc>20.0,0,40.311287</loc>
+<color>116631039</color>
+<res>0</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 1">
+<type>L</type>
+<loc>17.0,0,-62.73755</loc>
+<color>-1229032961</color>
+<res>1</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 2">
+<type>G</type>
+<loc>75.0,0,-40.0</loc>
+<color>848866047</color>
+<res>2</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 3">
+<type>G</type>
+<loc>78.0,0,70.292244</loc>
+<color>1849509119</color>
+<res>3</res>
+<star>StarX</star>
+<conts/>
+</planet>
+<planet name="Planet 4">
+<type>G</type>
+<loc>38.0,0,119.08401</loc>
+<color>-426641921</color>
+<res>4</res>
+<star>StarX</star>
+<conts/>
+</planet>
+</tractus>

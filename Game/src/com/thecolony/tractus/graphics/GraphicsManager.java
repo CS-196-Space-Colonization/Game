@@ -33,6 +33,10 @@ public abstract class GraphicsManager
         M_SHIP_CAPITAL_SHIP.setMaterial(new Material(contentMan, "Common/MatDefs/Misc/Unshaded.j3md"));
         M_SHIP_CAPITAL_SHIP.scale(0.5f);
         
+        M_SHIP_CRUISER = contentMan.loadModel("Models/cruiser.scene");
+        M_SHIP_CRUISER.setMaterial(new Material(contentMan, "Common/MatDefs/Misc/Unshaded.j3md"));
+        M_SHIP_CRUISER.scale(0.35f);
+        
         M_DEFAULT_WHITE_MATERIAL = new Material(contentMan, "Common/MatDefs/Misc/Unshaded.j3md");
         M_DEFAULT_WHITE_MATERIAL.setColor("Color", ColorRGBA.White);
     }

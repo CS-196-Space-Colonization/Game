@@ -275,7 +275,7 @@ public class GameLoader
         Ship[] ships2 = new Ship[9];
         for (int i = 0; i < ships2.length; i++)
         {
-            ships2[i] = generateShip(1, flotillasNode, i, Ship.SHIP_TYPE.CapitalShip, stats);
+            ships2[i] = generateShip(1, flotillasNode, i, Ship.SHIP_TYPE.Cruiser, stats);
         }
 
         Ship[] ships3 = new Ship[25];
@@ -294,14 +294,14 @@ public class GameLoader
         
 
         flotillas = new ArrayList<Flotilla>();
-        flotillas.add(new Flotilla(ships1, false, new Vector3f(-50.0f, 0.0f, 100.0f), "Flotilla 1"));
+        flotillas.add(new Flotilla(ships1, false, new Vector3f(-100.0f, 0.0f, 100.0f), "Flotilla 1"));
         flotillas.add(new Flotilla(ships2, false, new Vector3f(50.0f, 0.0f, 0.0f), "Flotilla 2"));
-        flotillas.add(new Flotilla(ships3, false, new Vector3f(100.0f, 0.0f, 25.0f), "Flotilla 3"));
-        flotillas.add(new Flotilla(ship4, false, new Vector3f(300.0f, 0.0f, -50.0f), "Flotilla 4"));
-        flotillas.add(new Flotilla(ship5, false, new Vector3f(250, 0.0f, 0.0f), "Flotilla 5"));
+        flotillas.add(new Flotilla(ships3, false, new Vector3f(150.0f, 0.0f, 100.0f), "Flotilla 3"));
+        flotillas.add(new Flotilla(ship4, false, new Vector3f(400.0f, 0.0f, -50.0f), "Flotilla 4"));
+        flotillas.add(new Flotilla(ship5, false, new Vector3f(300.0f, 0.0f, 0.0f), "Flotilla 5"));
+        
+        
         flotillaBattles = new ArrayList<FlotillaBattler>();
-//        attackers = new ArrayList<ArrayList<Flotilla>>();
-//        defenders = new ArrayList<Flotilla>();
     }
     
     private static void addNodes()
