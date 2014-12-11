@@ -387,7 +387,7 @@ public class Ship extends MoveableBattleObject
 
     public void setToCruiser()
     {
-        level = level * 3;
+        level = level *4;
         crew = 20;
         //Cruisers	Bigger ships with a crew of 20 people, only 5 per flotilla
         if (Qual.equals("Heal"))
@@ -434,7 +434,7 @@ public class Ship extends MoveableBattleObject
     public void setToCapital()
     {
         crew = 100;
-        level = level * 4;
+        level = level * 6;
         //Capital Ships	Massive ships with crews of 100 people, only one per flotilla
         if (Qual.equals("Heal"))
         {
