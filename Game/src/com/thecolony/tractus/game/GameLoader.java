@@ -99,7 +99,7 @@ public class GameLoader
         flotillasNode = new Node("Flotillas Node");
         double[] stats = new double[19];
         stats[BattleObject.BATTLE_STAT_MOVEMENT_SPEED] = 5.0;
-//        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,stats,filer);
+        BattleGenerator.loadBattlers(loadSave,rootNode,loneShipsNode,loneShips,flotillasNode,flotillas,flotillaBattles,stats,filer);
         loadAmbientLight();
         loadShips();
         loadSkybox();
