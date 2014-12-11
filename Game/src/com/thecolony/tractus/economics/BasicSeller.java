@@ -11,7 +11,7 @@ public class BasicSeller extends AbstractAgent implements Seller, Observer {
 	
 	@Override
 	public void postAdvertisements() {
-		Inventory inventory = peek();
+		Inventory inventory = getInventory();
 		Market market = getMarket();
 		for (Product product : inventory.getProducts()) {
 			Quantity offer = new Quantity(product, inventory.getAmountOf(product));
@@ -29,6 +29,6 @@ public class BasicSeller extends AbstractAgent implements Seller, Observer {
 		Quantity money = completed.getRevenue();
 		Inventory inv = getInventory();
 		inv.addQuantityOfProduct(money);
-		inv.setQuantityOf(asset);
+		inv.removeQuantityOfProduct(asset);
 	}
 }

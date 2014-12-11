@@ -50,9 +50,9 @@ public class Planet extends VisualEntity {
             for(int i = 0; i < firms.size(); i++)
             {
                 Firm firm = firms.get(i);
-                String firmInfo = firm.getProductionGood().getType() + "  production: " + firm.getQuantity();
+                String firmInfo = firm.getProductionGood().getType() + "  production: " + String.format("%.2f", firm.getQuantity());
                 newInfo += firmInfo + "\n";
-                newInfo += " " + firm.getCurrentInventory() + "\n";
+                newInfo += "  " + firm.getCurrentInventory() + "\n";
             }
         } catch (NullPointerException npe)
         {

@@ -121,7 +121,7 @@ public class Inventory {
 		for (Product p : getProducts()) {
 			result.append(p.getType());
 			result.append(": ");
-			result.append(getAmountOf(p));
+			result.append(String.format("%.2f",getAmountOf(p)));
 			result.append(' ');
 		}
 		return result.toString();

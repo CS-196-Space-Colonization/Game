@@ -10,6 +10,7 @@ public abstract class AbstractAgent implements EconomicAgent {
 	
 	public void give(Inventory other) {
 		inventory.addInventoryFrom(other);
+                other.clear();
 	}
 	
 	public Inventory take() {

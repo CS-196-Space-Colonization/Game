@@ -35,8 +35,6 @@ import com.thecolony.tractus.military.ships.Ship;
 import com.thecolony.tractus.saveInfo.Filer;
 import com.thecolony.tractus.worldgen.TerrorGenerator;
 import com.thecolony.tractus.worldgen.SpatialEntities.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,7 +131,7 @@ public class GameLoader
         Firm steelFirm = new Firm(market, new Steel());
         Firm woodFirm = new Firm(market, new OakWood());
         Map<Product, Quantity> moneyQuantity = new HashMap<Product, Quantity>();
-        moneyQuantity.put(new Money(), new Quantity(new Money(), 10.0));
+        moneyQuantity.put(new Money(), new Quantity(new Money(), 1000.0));
         Inventory moneyInventory = new Inventory(moneyQuantity);
         steelFirm.give(moneyInventory);
         mPlanets[0].addFirm(ironFirm);

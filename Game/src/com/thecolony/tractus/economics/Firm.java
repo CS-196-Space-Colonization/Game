@@ -27,17 +27,18 @@ public class Firm extends AbstractAgent {
 	}
 	
 	public void step() {
-            Inventory inventory = take();
-		supplier.give(inventory);
-		supplier.buyGoods();
-		inventory = supplier.take();
-		production.give(inventory);
-		production.runProductionStep();
-		production.performMaintenance();
-		inventory = production.take();
-		sales.give(inventory);
-		sales.postAdvertisements();
-                this.give(sales.take());
+            Inventory inv = take();
+            supplier.give(inv);
+            supplier.buyGoods();
+            inv = supplier.take();
+            production.give(inv);
+            production.runProductionStep();
+            production.performMaintenance();
+            inv = production.take();
+            sales.give(inv);
+            sales.postAdvertisements();
+            inv = sales.take();
+            this.give(inv);
 	}
 	
 	public Product getProductionGood() {
