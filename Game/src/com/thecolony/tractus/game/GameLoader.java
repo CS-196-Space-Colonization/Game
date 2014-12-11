@@ -292,6 +292,22 @@ public class GameLoader
         for (int i = 0; i < ship5.length; i++)
             ship5[i] = generateShip(4, flotillasNode, i, Ship.SHIP_TYPE.CapitalShip, stats);
         
+        
+        Ship[] ship6 = new Ship[49];
+        for (int i = 0; i < ship6.length; i++)
+            ship6[i] = generateShip(4, flotillasNode, i, Ship.SHIP_TYPE.Cruiser, stats);
+        
+        Ship[] ship7 = new Ship[36];
+        for (int i = 0; i < ship7.length; i++)
+            ship7[i] = generateShip(1, flotillasNode, i, Ship.SHIP_TYPE.Fighter, stats);
+        
+        Ship[] ship8 = new Ship[144];
+        for (int i = 0; i < ship8.length; i++)
+            ship8[i] = generateShip(2, flotillasNode, i, Ship.SHIP_TYPE.CapitalShip, stats);
+        
+        Ship[] ship9 = new Ship[400];
+        for (int i = 0; i < ship9.length; i++)
+            ship9[i] = generateShip(3, flotillasNode, i, Ship.SHIP_TYPE.Fighter, stats);
 
         flotillas = new ArrayList<Flotilla>();
         flotillas.add(new Flotilla(ships1, false, new Vector3f(-100.0f, 0.0f, 100.0f), "Flotilla 1"));
@@ -299,6 +315,10 @@ public class GameLoader
         flotillas.add(new Flotilla(ships3, false, new Vector3f(150.0f, 0.0f, 100.0f), "Flotilla 3"));
         flotillas.add(new Flotilla(ship4, false, new Vector3f(400.0f, 0.0f, -50.0f), "Flotilla 4"));
         flotillas.add(new Flotilla(ship5, false, new Vector3f(300.0f, 0.0f, 0.0f), "Flotilla 5"));
+        flotillas.add(new Flotilla(ship6, false, new Vector3f(-150.0f, 0.0f, 200.0f), "Flotilla 6"));
+        flotillas.add(new Flotilla(ship7, false, new Vector3f(-100.0f, 0.0f, -50.0f), "Flotilla 7"));
+        flotillas.add(new Flotilla(ship8, false, new Vector3f(100.0f, 0.0f, -300.0f), "Flotilla 8"));
+        flotillas.add(new Flotilla(ship9, false, new Vector3f(-100.0f, 0.0f, -300.0f), "Flotilla 9"));
         
         
         flotillaBattles = new ArrayList<FlotillaBattler>();

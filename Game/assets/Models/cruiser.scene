@@ -1,8 +1,8 @@
-<scene previous_export_time="0" exported_by="jbpagliuco" export_time="1418260600.494174" formatVersion="1.0.1" >
+<scene previous_export_time="1418260600.494174" exported_by="jbpagliuco" export_time="1418261225.889956" formatVersion="1.0.1" >
   <nodes >
     <node name="Cube" >
       <position z="-0.000000" x="0.000000" y="0.000000" />
-      <rotation qz="-0.000000" qy="0.000000" qx="0.000000" qw="1.000000" />
+      <rotation qz="-0.000000" qy="-0.707107" qx="0.000000" qw="0.707107" />
       <scale z="5.909300" x="1.000000" y="1.000000" />
       <game >
         <sensors />

@@ -12,6 +12,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.FastMath;
 import com.jme3.math.Plane;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -49,6 +50,7 @@ public class Game extends SimpleApplication
     public static int M_WIDTH, M_HEIGHT;
     private final float M_COMPRESS_SPEED = 1.0f;
     private final float M_ATTACK_DISTANCE = 75.0f;
+    private final float M_PLANET_DISTANCE = 50.0f;
     private Planet[] mPlanets;
     private Market market;
     private Star[] mSuns;
@@ -78,6 +80,10 @@ public class Game extends SimpleApplication
     private static final int economicTimeStep = 120;
 //=======
     private PauseMenu pauseMenu;
+    
+    private float cameraSpeed = 75.0f;
+    private Vector3f cameraTargetPoint;
+    private boolean cameraMoving = false;
 //>>>>>>> origin/master
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,6 +285,25 @@ public class Game extends SimpleApplication
                     Vector2f cursorPos = inputManager.getCursorPosition();
                     mPictureBoxSelect.setUserData("Initial Position", cursorPos.clone());
                     guiNode.attachChild(mPictureBoxSelect);
+                }
+                
+                else
+                {
+                    Ray r = getMouseRay();
+                    for (int i = 0; i < mPlanets.length; i++)
+                    {
+                        Planet p = mPlanets[i];
+                        if (p.getBoundingSphere().intersects(r))
+                        {
+                            Vector3f targetDirection = p.getDrawableObject().getPosition().subtract(cam.getLocation());
+                            float change = M_PLANET_DISTANCE / targetDirection.length();
+                            cameraTargetPoint = p.getDrawableObject().getPosition().clone().interpolate(cam.getLocation(), change);
+                            
+                            cameraMoving = true;
+                            
+                            break;
+                        }
+                    }
                 }
             }
             else
@@ -582,6 +607,13 @@ public class Game extends SimpleApplication
                     
                     flotillaBattles.remove(i--);
                 }
+            }
+            
+            if (cameraMoving)
+            {
+                cam.setLocation(cam.getLocation().add((cameraTargetPoint.subtract(cam.getLocation()).normalize()).mult(cameraSpeed * tpf)));
+                if (cam.getLocation().distance(cameraTargetPoint) < 1.0f)
+                    cameraMoving = false;
             }
         }
     }
